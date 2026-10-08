@@ -10,7 +10,7 @@ aliases: [Moduli WROOM WROVER MINI, ESP32 Modules]
 
 # Модулі WROOM vs WROVER vs MINI-1
 
-EN version: `01-Hardware/05-Moduli-WROOM-WROVER-MINI.en.md`
+EN version: `01-Hardware/05-WROOM-WROVER-MINI-Modules.en.md`
 
 ![[assets/img/wroom-wrover-mini-compare.png|600]]
 

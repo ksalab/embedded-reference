@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # Живлення STM32 - домени, декуплінг і нагляд
 
+EN version: `02-Zhivlennya/01-Power-Supply-Rails.en.md`
+
 ![[assets/img/stm32-power-rails-scheme.png|600]]
 *Рис. Домени живлення, декуплінг, нагляд за просадкою і порядок запуску.*
 

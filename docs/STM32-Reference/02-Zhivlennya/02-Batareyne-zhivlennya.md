@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # Батарейне живлення - хімії, заряд і облік
 
+EN version: `02-Zhivlennya/02-Battery-Power.en.md`
+
 ![](../../../STM32-Reference/assets/img/stm32-battery-scheme.png)
 *Рис. Хімії батарей, заряд літію, домен резерву і облік заряду вузла.*
 

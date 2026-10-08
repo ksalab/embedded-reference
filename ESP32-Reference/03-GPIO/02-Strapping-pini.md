@@ -8,6 +8,8 @@ date: 2026-09-27
 
 # Strapping-піни ESP32
 
+EN version: `03-GPIO/02-Strapping-Pins.en.md`
+
 ![[assets/img/gpio-strapping-boot-scheme.png|600]]
 *Рис. Strapping-піни: стани на boot і безпечні комбінації.*
 

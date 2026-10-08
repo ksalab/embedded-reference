@@ -17,7 +17,7 @@ type: reference
 
 # Глосарій ESP32 - 90+ термінів
 
-EN version: `00-Start/02-Glosariy.en.md`
+EN version: `00-Start/02-Glossary.en.md`
 
 > [!tip] Як користуватись
 > Таблиця відсортована за темами. Колонка «Посилання» веде до розділів довідника: старт - [[00-Start/01-Yak-koristuvatis-dovidnikom|Як користуватись]], чипи - [[00-Start/03-Porivnyannya-chipiv|Порівняння чипів]], плати - [[00-Start/04-Devkit-plati|DevKit плати]], SDK - [[00-Start/05-Vibir-seredovischa|Вибір середовища]], структура датчика - [[_templates/Component-Template|Шаблон компонента]], огляд - [[Home|Home]].

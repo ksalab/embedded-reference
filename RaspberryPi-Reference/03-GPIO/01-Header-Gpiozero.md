@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # Гребінка 40 пінів і gpiozero - перший LED, кнопка і датчик
 
+EN version: `03-GPIO/01-Header-Gpiozero.en.md`
+
 ![[assets/img/rpi-header-gpiozero-scheme.png|600]]
 *Рис. Гребінка J8: 5V/3V3/GND - живлення, зелені - GPIO, сині - шини; нумерація BCM, не за порядком!*
 

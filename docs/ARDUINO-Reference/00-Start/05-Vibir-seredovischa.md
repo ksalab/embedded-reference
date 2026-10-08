@@ -9,7 +9,7 @@ date: 2026-10-05
 
 # Середовище Arduino - IDE, CLI і бібліотеки
 
-EN version: `00-Start/05-Vibir-seredovischa.en.md`
+EN version: `00-Start/05-Environment-Choice.en.md`
 
 ![](../../../ARDUINO-Reference/assets/img/arduino-env-choose-scheme.png)
 *Рис. Вибір середовища: редактор консоль плати бібліотеки монітор порту.*

@@ -1,7 +1,10 @@
 # i18n spec: UA → EN translation rules (strict)
 
 ## File layout
-- Translation lives next to the original: `NN-Tema.md` → `NN-Tema.en.md`.
+- Translation lives next to the original: `NN-Tema.md` → `NN-English-Name.en.md`.
+- The `.en.md` filename MUST be English, never transliteration
+  (e.g. `03-Chip-Comparison.en.md`, NOT `03-Porivnyannya-chipiv.en.md`;
+  names already in English stay as-is: `01-ESP32-Classic.en.md`).
 - NEVER edit/create anything except the assigned `*.en.md` files.
   UA originals, `Home.md`, `CHANGELOG.md`, scripts are maintained separately.
 
@@ -37,6 +40,10 @@ date: <today YYYY-MM-DD>
 - `[[folder/X]]` → `[[folder/X.en]]`. Keep `#fragment` suffixes as-is.
 - `[[Home]]` → `[[Home.en]]`. Never link `CHANGELOG`/`TODO` from EN notes.
 - Map EVERY wikilink, even if the target twin is translated by another batch.
+- IMPORTANT: if the target is NOT yet translated and its future English name
+  is unknown, link the UA original as-is and append
+  `vault/<UA path> -> <Your-Guess>.en.md` to tools/i18n-names.md.
+  NEVER invent `[[*.en]]` links that match no existing file.
 - Length: keep ≥150 lines per note (same as original).
 
 ## Glossary (use these, do not invent)

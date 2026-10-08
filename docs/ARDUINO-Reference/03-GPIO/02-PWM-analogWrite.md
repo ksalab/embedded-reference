@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # ШІМ Arduino - analogWrite і таймери
 
+EN version: `03-GPIO/02-PWM-analogWrite.en.md`
+
 ![](../../../ARDUINO-Reference/assets/img/arduino-pwm-scheme.png)
 *Рис. ШІМ: шпаруватість, таймери, звук і грубий ЦАП на фільтрі.*
 

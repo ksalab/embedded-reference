@@ -10,7 +10,7 @@ aliases: [Anteni RF, ESP32 Antenna]
 
 # Антени та RF
 
-EN version: `01-Hardware/08-Anteni-RF.en.md`
+EN version: `01-Hardware/08-Antennas-RF.en.md`
 
 ![[assets/img/placeholder.png]]
 

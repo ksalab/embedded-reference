@@ -16,7 +16,7 @@ type: guide
 
 # Як користуватись довідником
 
-EN version: `00-Start/01-Yak-koristuvatis-dovidnikom.en.md`
+EN version: `00-Start/01-How-to-Use-Guide.en.md`
 
 > [!tip] Правило 30 секунд
 > Будь-яку відповідь можна знайти за 30 секунд: `Ctrl+P` для файлів, `Ctrl+Shift+F` для тексту, клік по тегу `#esp32/*` або перехід з [Головної карти](../../../ESP32-Reference/Home.md).

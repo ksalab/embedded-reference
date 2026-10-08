@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # EXTI і NVIC - зовнішні переривання STM32
 
+EN version: `03-GPIO/03-EXTI-NVIC.en.md`
+
 ![](../../../STM32-Reference/assets/img/stm32-exti-nvic-scheme.png)
 *Рис. Шлях сигналу: пін порту, мультиплексор SYSCFG, лінії EXTI, контролер NVIC.*
 

@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # ШІМ і переривання на Raspberry Pi - яскравість, серво і події
 
+EN version: `03-GPIO/02-PWM-Interrupts.en.md`
+
 ![[assets/img/rpi-pwm-pererivannya-scheme.png|600]]
 *Рис. Апаратний ШІМ - на фіксованих пінах, переривання - по фронтах; решта - програмна емуляція з джитером.*
 

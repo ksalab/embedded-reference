@@ -8,6 +8,8 @@ date: 2026-09-27
 
 # Переривання та PWM (LEDC)
 
+EN version: `03-GPIO/04-Interrupts-PWM.en.md`
+
 ![[assets/img/gpio-interrupt-pwm-scheme.png|600]]
 *Рис. Переривання + LEDC: режими, ISR-правила, канали PWM.*
 

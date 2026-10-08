@@ -10,6 +10,8 @@ aliases: [Lancjugi zhivlennya, ESP32 Power]
 
 # Ланцюги живлення ESP32
 
+EN version: `02-Zhivlennya/01-Power-Rails.en.md`
+
 ![](../../../ESP32-Reference/assets/img/placeholder.png)
 
 > [!warning] Тільки 3.3V на кристал!

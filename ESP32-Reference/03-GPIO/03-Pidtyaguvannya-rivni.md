@@ -8,6 +8,8 @@ date: 2026-09-27
 
 # Підтягування та рівні 3.3V
 
+EN version: `03-GPIO/03-Pull-Ups-Levels.en.md`
+
 ![[assets/img/gpio-pullup-levels-scheme.png|600]]
 *Рис. Підтяжки і рівні: внутрішні/зовнішні pull, дільник 5V→3.3V, TXS0108.*
 

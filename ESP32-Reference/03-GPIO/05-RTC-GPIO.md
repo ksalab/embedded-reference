@@ -8,6 +8,8 @@ date: 2026-09-27
 
 # RTC GPIO - hold та wakeup
 
+EN version: `03-GPIO/05-RTC-GPIO.en.md`
+
 ![[assets/img/gpio-rtc-sleep-scheme.png|600]]
 *Рис. RTC-GPIO: hold рівня, ULP, EXT0/EXT1 wake.*
 

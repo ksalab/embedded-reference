@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Цифрові піни Arduino - режими і струми
 
+EN version: `03-GPIO/01-Digital-Pins.en.md`
+
 ![[assets/img/arduino-digital-scheme.png|600]]
 *Рис. Цифрові піни: режими, підтяжки, струми і захист виходів.*
 

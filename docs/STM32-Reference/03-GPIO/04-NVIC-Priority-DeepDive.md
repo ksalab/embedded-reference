@@ -9,6 +9,8 @@ date: 2026-10-02
 
 # NVIC STM32 - пріоритети, групування і затримки
 
+EN version: `03-GPIO/04-NVIC-Priority-DeepDive.en.md`
+
 ![](../../../STM32-Reference/assets/img/stm32-nvic-priority-scheme.png)
 *Рис. Хто кого перебиває: групування пріоритетів і черги.*
 

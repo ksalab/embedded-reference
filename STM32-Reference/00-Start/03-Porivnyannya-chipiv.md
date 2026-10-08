@@ -9,7 +9,7 @@ date: 2026-10-01
 
 # Порівняння родин STM32
 
-EN version: `00-Start/03-Porivnyannya-chipiv.en.md`
+EN version: `00-Start/03-Chip-Comparison.en.md`
 
 ![[assets/img/stm32-families-compare-scheme.png|600]]
 *Рис. Родини STM32: від бюджетного G0 до флагманського H5, бездротові WB/WL окремо.*

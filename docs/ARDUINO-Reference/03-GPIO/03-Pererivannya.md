@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Переривання Arduino - події без опитування
 
+EN version: `03-GPIO/03-Interrupts.en.md`
+
 ![](../../../ARDUINO-Reference/assets/img/arduino-interrupt-scheme.png)
 *Рис. Переривання: події, режими спрацьовування і короткі колбеки.*
 

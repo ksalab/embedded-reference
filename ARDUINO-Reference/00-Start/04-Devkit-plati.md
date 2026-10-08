@@ -9,7 +9,7 @@ date: 2026-10-05
 
 # Плати Arduino - Uno, Nano і Mega на столі
 
-EN version: `00-Start/04-Devkit-plati.en.md`
+EN version: `00-Start/04-Dev-Boards.en.md`
 
 ![[assets/img/arduino-devkit-boards-scheme.png|600]]
 *Рис. Плати на столі: живлення гребінки порт вибір перший запуск.*

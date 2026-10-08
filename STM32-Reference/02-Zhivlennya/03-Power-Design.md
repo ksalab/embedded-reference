@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Живлення плати зі STM32: розрахунок, layout, захист
 
+EN version: `02-Zhivlennya/03-Power-Design.en.md`
+
 ![[assets/img/stm32-power-scheme.png|600]]
 *Рис. Дерево живлення: USB 5 В → buck SY8113 → 3.3 В → LDO VDDA 1.8 В + домени VDDIO.*
 

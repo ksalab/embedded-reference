@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # HAT-плати і EEPROM-ідентифікація - стандарт розширення Pi
 
+EN version: `03-GPIO/03-HAT-EEPROM.en.md`
+
 ![](../../../RaspberryPi-Reference/assets/img/rpi-hat-eeprom-scheme.png)
 *Рис. HAT-стек: плата сідає на гребінку 40, ID_SD/ID_SC читають EEPROM, оверлей піднімає драйвери.*
 

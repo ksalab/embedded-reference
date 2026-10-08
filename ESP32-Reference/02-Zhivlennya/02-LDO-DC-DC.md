@@ -10,6 +10,8 @@ aliases: [LDO DC-DC, ESP32 Stabilizatori]
 
 # LDO vs DC-DC для ESP32
 
+EN version: `02-Zhivlennya/02-LDO-DC-DC.en.md`
+
 ![[assets/img/placeholder.png]]
 
 > [!warning] Вихід завжди 3.3V!

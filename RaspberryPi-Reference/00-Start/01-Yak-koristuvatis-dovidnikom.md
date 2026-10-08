@@ -8,7 +8,7 @@ date: 2026-10-06
 
 # Як користуватись довідником RaspberryPi-Reference - маршрути і стандарт
 
-EN version: `00-Start/01-Yak-koristuvatis-dovidnikom.en.md`
+EN version: `00-Start/01-How-to-Use-Guide.en.md`
 
 ![[assets/img/rpi-start-map-scheme.png|600]]
 *Рис. Три маршрути: новачок (плата → ОС → перший LED), мейкер (GPIO → шини → HAT), IoT (мережа → хмара).*

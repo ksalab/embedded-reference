@@ -29,7 +29,8 @@ def main() -> int:
             if target.startswith("assets/") or target.endswith(".png"):
                 continue
             total += 1
-            if pathlib.Path(target).stem not in basenames:
+            stem = pathlib.Path(target).stem
+            if stem not in basenames and (stem + ".en") not in basenames:
                 broken[target] = broken.get(target, 0) + 1
 
     have = {p.name for p in (VAULT / "assets" / "img").glob("*.png")}

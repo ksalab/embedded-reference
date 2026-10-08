@@ -1,0 +1,27 @@
+# Decided EN filenames (use these in future waves, do not invent others)
+ESP32-Reference/99-Dodatki/03-Cheklisti-montazhu.md -> 03-Assembly-Checklists.en.md
+ESP32-Reference/11-Vivid/03-NeoPixel-Servo-Rele-MOSFET.md -> 03-NeoPixel-Servo-Relay-MOSFET.en.md
+ESP32-Reference/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md -> 01-Timers-MCPWM-PCNT-RMT.en.md
+STM32-Reference/02-Zhivlennya/01-Lancjugi-zhivlennya.md -> 01-Power-Supply-Rails.en.md
+STM32-Reference/02-Zhivlennya/02-Batareyne-zhivlennya.md -> 02-Battery-Power.en.md
+STM32-Reference/02-Zhivlennya/03-Power-Design.md -> 03-Power-Design.en.md
+STM32-Reference/02-Zhivlennya/04-USB-C-PD.md -> 04-USB-C-PD.en.md
+STM32-Reference/03-GPIO/01-GPIO-rezhimi.md -> 01-GPIO-Modes.en.md
+STM32-Reference/03-GPIO/02-AF-maping.md -> 02-AF-Mapping.en.md
+STM32-Reference/03-GPIO/03-EXTI-NVIC.md -> 03-EXTI-NVIC.en.md
+STM32-Reference/03-GPIO/04-NVIC-Priority-DeepDive.md -> 04-NVIC-Priority-DeepDive.en.md
+STM32-Reference/06-Analog/01-ADC.md -> 01-ADC.en.md
+STM32-Reference/06-Analog/05-Shunt-OPAMP.md -> 05-Shunt-OPAMP.en.md
+STM32-Reference/07-Timeri-Son/01-GPTIM-ADTIM.md -> 01-GPTIM-ADTIM.en.md
+STM32-Reference/07-Timeri-Son/03-Sleep-Stop-Standby.md -> 03-Sleep-Stop-Standby.en.md
+STM32-Reference/09-Proshivka/01-CubeIDE-CubeMX.md -> 01-CubeIDE-CubeMX.en.md
+STM32-Reference/09-Proshivka/02-HAL-LL.md -> 02-HAL-LL.en.md
+STM32-Reference/09-Proshivka/03-ST-Link-Proshivka.md -> 03-ST-Link-Flashing.en.md
+STM32-Reference/10-Sensori/04-INA219-HX711.md -> 04-INA219-HX711.en.md
+STM32-Reference/13-Moduli-zhivlennya-rivniv/01-Buck-Boost.md -> 01-Buck-Boost.en.md
+ARDUINO-Reference/07-Timeri-Son/02-Son-WDT.md -> 02-Sleep-WDT.en.md
+RaspberryPi-Reference/04-Shini/01-I2C-SPI-UART.md -> 01-I2C-SPI-UART.en.md
+RaspberryPi-Reference/09-Proshivka/03-OS-Nalashtuvannya.md -> 03-OS-Setup.en.md
+RaspberryPi-Reference/14-Devboards/01-Pi5-Flagman.md -> 01-Pi5-Flagship.en.md
+RaspberryPi-Reference/14-Devboards/02-Pi4-Robocha.md -> 02-Pi4-Workhorse.en.md
+RaspberryPi-Reference/14-Devboards/04-Zero-2W.md -> 04-Zero-2W.en.md

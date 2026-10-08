@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # STM32 USB-C Power Delivery - приймач TPS25750 і домовленість про вати
 
+EN version: `02-Zhivlennya/04-USB-C-PD.en.md`
+
 ![](../../../STM32-Reference/assets/img/stm32-usb-c-pd-scheme.png)
 *Рис. PD-ланцюг: зарядник → CC-лінії → TPS25750 → домовлені 15V → buck → 5V/3.3V плати.*
 

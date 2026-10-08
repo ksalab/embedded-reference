@@ -10,6 +10,8 @@ aliases: [Akumulyatori TP4056, ESP32 Battery]
 
 # Акумулятори та TP4056
 
+EN version: `02-Zhivlennya/04-Batteries-TP4056.en.md`
+
 ![[assets/img/placeholder.png]]
 
 > [!warning] ESP32 - тільки 3.3V, не 4.2V!

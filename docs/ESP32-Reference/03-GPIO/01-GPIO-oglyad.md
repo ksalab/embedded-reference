@@ -8,6 +8,8 @@ date: 2026-09-27
 
 # GPIO ESP32 - огляд матриці
 
+EN version: `03-GPIO/01-GPIO-Overview.en.md`
+
 ![](../../../ESP32-Reference/assets/img/gpio-overview-matrix-scheme.png)
 *Рис. GPIO-матриця: безпечні піни, струмові ліміти, LED через резистор/драйвер.*
 

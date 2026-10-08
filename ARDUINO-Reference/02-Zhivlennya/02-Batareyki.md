@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Батарейки Arduino - автономність вузла
 
+EN version: `02-Zhivlennya/02-Battery-Power.en.md`
+
 ![[assets/img/arduino-battery-scheme.png|600]]
 *Рис. Автономний вузол на батарейках з сонячною панеллю і сном між вимірами для економії заряду.*
 

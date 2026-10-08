@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # Живлення Raspberry Pi - USB-C PD, просадки і блискавка undervoltage
 
+EN version: `02-Zhivlennya/01-USB-C-PD.en.md`
+
 ![[assets/img/rpi-usb-c-pd-scheme.png|600]]
 *Рис. Ланцюг живлення: БЖ 5V → якісний кабель → USB-C → PMIC → 3.3V/1.8V; слабка ланка дає блискавку.*
 

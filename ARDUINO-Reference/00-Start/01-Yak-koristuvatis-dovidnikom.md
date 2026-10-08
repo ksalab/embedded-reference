@@ -9,7 +9,7 @@ date: 2026-10-05
 
 # Як користуватись довідником Arduino
 
-EN version: `00-Start/01-Yak-koristuvatis-dovidnikom.en.md`
+EN version: `00-Start/01-How-to-Use-Guide.en.md`
 
 ![[assets/img/arduino-howto-map-scheme.png|600]]
 *Рис. Карта довідника: старт, живлення, піни, шини, пам'ять і проекти.*

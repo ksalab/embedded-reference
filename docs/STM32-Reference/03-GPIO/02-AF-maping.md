@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # Альтернативні функції GPIO - AF-мапінг
 
+EN version: `03-GPIO/02-AF-Mapping.en.md`
+
 ![](../../../STM32-Reference/assets/img/stm32-af-mapping-scheme.png)
 *Рис. Мультиплексор альтернативних функцій: один пін, шістнадцять варіантів AF0-AF15.*
 

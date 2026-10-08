@@ -10,6 +10,8 @@ aliases: [Spozhivannya, ESP32 Power Modes]
 
 # Споживання ESP32
 
+EN version: `02-Zhivlennya/03-Power-Consumption.en.md`
+
 ![[assets/img/placeholder.png]]
 
 > [!warning] Вимірюй на шині 3.3V!

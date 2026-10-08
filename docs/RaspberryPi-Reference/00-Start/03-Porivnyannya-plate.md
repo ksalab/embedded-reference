@@ -8,7 +8,7 @@ date: 2026-10-06
 
 # Порівняння плат Raspberry Pi - Pi 5, Pi 4, Zero, Pico, CM і 400/500
 
-EN version: `00-Start/03-Porivnyannya-plate.en.md`
+EN version: `00-Start/03-Board-Comparison.en.md`
 
 ![](../../../RaspberryPi-Reference/assets/img/rpi-models-compare-scheme.png)
 *Рис. Лінійка: Pi 5 - флагман, Pi 4 - робоча конячка, Zero 2 W - малюк, Pico - мікроконтролер, CM - вбудовування.*

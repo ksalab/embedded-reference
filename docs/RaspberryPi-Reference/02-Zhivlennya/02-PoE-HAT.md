@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # PoE HAT для Raspberry Pi - живлення і мережа одним кабелем
 
+EN version: `02-Zhivlennya/02-PoE-HAT.en.md`
+
 ![](../../../RaspberryPi-Reference/assets/img/rpi-poe-hat-scheme.png)
 *Рис. PoE-тракт: світч-інжектор → вита пара → трансформатор HAT → 5V на плату + кулер.*
 

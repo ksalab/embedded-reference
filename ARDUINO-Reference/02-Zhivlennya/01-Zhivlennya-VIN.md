@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Живлення Arduino - USB, VIN і LDO
 
+EN version: `02-Zhivlennya/01-VIN-Power-Supply.en.md`
+
 ![[assets/img/arduino-vin-power-scheme.png|600]]
 *Рис. Живлення плати від USB і VIN через діод захисту і стабілізатор з роздачею на шини.*
 

@@ -8,7 +8,7 @@ date: 2026-10-06
 
 # SoC Raspberry Pi - від BCM2835 до BCM2712, VideoCore і RP1
 
-EN version: `RaspberryPi-Reference/01-Hardware/01-SoC-Oglyad.en.md`
+EN version: `RaspberryPi-Reference/01-Hardware/01-SoC-Overview.en.md`
 
 ![](../../../RaspberryPi-Reference/assets/img/rpi-soc-oglyad-scheme.png)
 *Рис. Еволюція SoC: CPU росте A53→A76, графіка VideoCore VI→VII, периферія Pi 5 винесена в RP1.*

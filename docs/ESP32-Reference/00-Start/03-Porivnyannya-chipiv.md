@@ -18,7 +18,7 @@ type: reference
 
 # Порівняння чипів ESP32
 
-EN version: `00-Start/03-Porivnyannya-chipiv.en.md`
+EN version: `00-Start/03-Chip-Comparison.en.md`
 
 > [!tip] Короткий вибір
 > Універсальний - **ESP32-Classic** або **S3**. Дешевий Wi-Fi датчик - **C3**. Камера/ML/USB - **S3**. Zigbee/Thread - **C6/H2**. Терміни дивіться у [Глосарії](../../../ESP32-Reference/00-Start/02-Glosariy.md), плати - [DevKit плати](../../../ESP32-Reference/00-Start/04-Devkit-plati.md), SDK - [Вибір середовища](../../../ESP32-Reference/00-Start/05-Vibir-seredovischa.md). Структура довідника - [Як користуватись](../../../ESP32-Reference/00-Start/01-Yak-koristuvatis-dovidnikom.md), карта - [Home](../../../ESP32-Reference/Home.md).

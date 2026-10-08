@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # GPIO STM32 - режими, регістри і струми
 
+EN version: `03-GPIO/01-GPIO-Modes.en.md`
+
 ![[assets/img/stm32-gpio-modes-scheme.png|600]]
 *Рис. Структура піна GPIO: режими MODER, вихідний каскад, підтяжки і захист входу.*
 

@@ -8,7 +8,7 @@ date: 2026-10-06
 
 # Глосарій Raspberry Pi - SoC, GPIO, HAT, CSI, PIO і всі терміни бази
 
-EN version: `00-Start/02-Glosariy.en.md`
+EN version: `00-Start/02-Glossary.en.md`
 
 ![[assets/img/rpi-glossary-scheme.png|600]]
 *Рис. Карта термінів: залізо (SoC→плата→HAT), інтерфейси (GPIO→шини→CSI/DSI), софт (OS→бібліотеки→хмара).*
