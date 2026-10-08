@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # 32-біт ARM за межами Due/Zero: Nano 33 BLE, MKR, Portenta
 
+EN version: `ARDUINO-Reference/01-Hardware/05-Nano33-BLE-ARM.en.md`
+
 ![[assets/img/ard-nano33-scheme.png|600]]
 *Рис. ARM-плати Arduino: Due (M3), Zero (M0), Nano 33 BLE (M4+BLE), MKR (LTE), Portenta (M7).*
 

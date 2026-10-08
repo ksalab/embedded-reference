@@ -10,6 +10,8 @@ aliases: [Boot Strapping Reset, ESP32 Boot]
 
 # Boot, Strapping, Reset
 
+EN version: `01-Hardware/07-Boot-Strapping-Reset.en.md`
+
 ![[assets/img/devkit-usb-power.png|600]]
 
 > [!warning] Strapping - рівні 3.3V!

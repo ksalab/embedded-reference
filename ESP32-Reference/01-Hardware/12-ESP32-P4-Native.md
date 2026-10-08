@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # ESP32-P4 нативно - MIPI, H.264 і USB без Arduino-ядра
 
+EN version: `01-Hardware/12-ESP32-P4-Native.en.md`
+
 ![[assets/img/esp32-p4-native-scheme.png|600]]
 *Рис. P4 нативно: MIPI-камера → H.264 → запис/стрим, USB-OTG HS - флешки і камери, C6 - радіо.*
 

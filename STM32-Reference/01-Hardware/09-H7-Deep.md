@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # STM32H7 глибоко - M7/M4, кеші, ART і швидка пам'ять
 
+EN version: `01-Hardware/09-H7-Deep.en.md`
+
 ![[assets/img/stm32-h7-deep-scheme.png|600]]
 *Рис. H7: M7 з кешами + ART, другий M4, три домени живлення, FMC веде на SDRAM.*
 

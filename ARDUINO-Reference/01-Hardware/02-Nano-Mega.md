@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Nano і Mega - компакт і піни
 
+EN version: `ARDUINO-Reference/01-Hardware/02-Nano-Mega.en.md`
+
 ![[assets/img/arduino-nano-mega-scheme.png|600]]
 *Рис. Маленька Nano для макетки і велика Mega: спільне ядро, різна кількість пінів.*
 

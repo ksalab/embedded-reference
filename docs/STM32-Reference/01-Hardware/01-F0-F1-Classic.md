@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # STM32 F0 / F1 - класика і Blue Pill
 
+EN version: `01-Hardware/01-F0-F1-Classic.en.md`
+
 ![](../../../STM32-Reference/assets/img/stm32-f0-f1-classic-scheme.png)
 *Рис. F0/F1: живлення, bootloader, межі класики.*
 

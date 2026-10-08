@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # STM32U5 глибоко - Cortex-M33, TrustZone і ультранизьке споживання
 
+EN version: `01-Hardware/10-U5-Deep.en.md`
+
 ![[assets/img/stm32-u5-deep-scheme.png|600]]
 *Рис. U5: M33 спить у Stop 3 з SRAM, прокидається від LPUART/RTC, секрети - у TrustZone.*
 

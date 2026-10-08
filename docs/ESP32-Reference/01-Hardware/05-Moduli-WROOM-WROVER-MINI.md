@@ -10,6 +10,8 @@ aliases: [Moduli WROOM WROVER MINI, ESP32 Modules]
 
 # Модулі WROOM vs WROVER vs MINI-1
 
+EN version: `01-Hardware/05-Moduli-WROOM-WROVER-MINI.en.md`
+
 ![](../../../ESP32-Reference/assets/img/wroom-wrover-mini-compare.png)
 
 > [!warning] Усі модулі - 3.3V!

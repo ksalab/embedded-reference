@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Due і Zero - Arduino на ARM
 
+EN version: `ARDUINO-Reference/01-Hardware/03-Due-Zero-ARM.en.md`
+
 ![[assets/img/arduino-due-zero-scheme.png|600]]
 *Рис. Due для швидких обчислень і Zero для налагодження: спільна мова, інша напруга.*
 

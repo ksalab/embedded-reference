@@ -10,6 +10,8 @@ aliases: [Flash PSRAM, ESP32 Memory]
 
 # Flash та PSRAM
 
+EN version: `01-Hardware/06-Flash-PSRAM.en.md`
+
 ![[assets/img/flash-psram-scheme.png|500]]
 *Рис. Flash/PSRAM: режими з даташиту, PSRAM в menuconfig, OTA від 4 МБ.*
 

@@ -10,6 +10,8 @@ aliases: [ESP32-C6-H2-Mesh, Zigbee-Thread-Matter]
 
 # ESP32-C6 / H2 - 802.15.4 mesh глибоко
 
+EN version: `01-Hardware/11-ESP32-C6-H2-Mesh.en.md`
+
 ![](../../../ESP32-Reference/assets/img/c6-h2-zigbee-thread-scheme.png)
 
 ![](../../../ESP32-Reference/assets/img/esp32-c6-h2-pinout.png)

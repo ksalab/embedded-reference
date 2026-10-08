@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # STM32 WB / WL - бездротові чипи
 
+EN version: `01-Hardware/06-WB-WL.en.md`
+
 ![[assets/img/stm32-wb-wl-radio-scheme.png|600]]
 *Рис. M4 - код, M0+ - радіо, FUS окремо.*
 

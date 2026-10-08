@@ -10,6 +10,8 @@ aliases: [ESP32 Classic, ESP32-WROOM-32, ESP32 LX6]
 
 # ESP32 Classic (ESP32-D0WD-V3) - база
 
+EN version: `01-Hardware/01-ESP32-Classic.en.md`
+
 ![[assets/img/esp32-classic-pinout.png|600]]
 
 > [!warning] Логіка строго 3.3V!

@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # AVR і Uno R3 - класика 8 біт
 
+EN version: `ARDUINO-Reference/01-Hardware/01-AVR-Uno.en.md`
+
 ![](../../../ARDUINO-Reference/assets/img/arduino-uno-r3-scheme.png)
 *Рис. Плата Uno R3: стабілізатор, перетворювач USB, гребінки пінів і кнопка скидання.*
 

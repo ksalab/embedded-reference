@@ -9,6 +9,8 @@ date: 2026-10-02
 
 # Errata і міграція - переїзд між родинами STM32
 
+EN version: `01-Hardware/07-Errata-Migratsiya.en.md`
+
 ![[assets/img/stm32-families-compare-scheme.png|600]]
 *Рис. Переїзд без болю: що читати до плати і що міняти в коді.*
 

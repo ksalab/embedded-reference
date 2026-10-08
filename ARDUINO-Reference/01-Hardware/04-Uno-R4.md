@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Uno R4 - Renesas з WiFi
 
+EN version: `ARDUINO-Reference/01-Hardware/04-Uno-R4.en.md`
+
 ![[assets/img/arduino-uno-r4-scheme.png|600]]
 *Рис. Сучасний Uno R4: знайомі гребінки, нове ядро і матриця світлодіодів.*
 

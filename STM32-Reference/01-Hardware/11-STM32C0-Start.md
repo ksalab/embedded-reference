@@ -9,6 +9,8 @@ date: 2026-10-07
 
 # STM32 C0 - старт з C011/C031
 
+EN version: `01-Hardware/11-STM32C0-Start.en.md`
+
 ![[assets/img/stm32-c0-start-scheme.png|600]]
 *Рис. C011 - TSSOP20, C031 - LQFP32; обидва з USB, дешевий старт для нового проєкту.*
 

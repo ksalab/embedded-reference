@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # STM32F7 - міст між F4 і H7
 
+EN version: `01-Hardware/08-F7-Bridge.en.md`
+
 ![[assets/img/stm32-f7-scheme.png|600]]
 *Рис. F7: сила M7 без складнощів H7.*
 
