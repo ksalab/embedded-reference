@@ -41,7 +41,6 @@ graph LR
 
 ## 2. Роль через OTG-ID
 
-
 - `GPIO19` (на ESP32-S3) — `OTG_ID`; якщо підключено `GND` → Host; якщо `VCC/плаває` → Device;
 - `GPIO20` / `GPIO21` — `USB_D-` / `USB_D+` (HS через внутрішні PHY);
 - Для Host-режиму: пін живлення USB (`5V`) має давати `500 мА` (зовнішній БЖ або хаб); плата не живить з `3.3V` регулятора.
@@ -92,7 +91,6 @@ from usb_hid import HIDServer
 | MSC не бачить флешку | Формат NTFS / exFAT / більший розділ | Форматувати FAT32; розмір < 32 ГБ |
 | `Task watchdog` після USB | Buffer overflow на UVC-потоці | Зменшіть роздільність (480p) / зменшіть FPS |
 
-
 ## 2.1 Частоти та протоколи
 
 - Full-Speed USB 2.0 = 12 Мбіт/с; достатньо для HID (клавіатура 8 байт/запит, 125 Гц) та MSC (флешка до 32 ГБ FAT32).
@@ -122,7 +120,6 @@ void app_main() {
 
 > [!warning] У SDK 5.2 UVC-стек видалено з базового бандла — перевіряйте `component.mk` на наявність `usb_stream`.
 
-
 ## Див. також
 
 - [[12-Moduli-zvyazku/32-USB-UVC-Host-Deep | USB-UVC-Host глибоко]] - глибша схема UVC-потоку;
@@ -136,16 +133,18 @@ void app_main() {
 - [UVC specs (USB-IF)](https://www.usb.org/document-library/video-class-v11-specification) - клас UVC.
 - [ESP32-S3 Datasheet (Espressif)](https://www.espressif.com/sites/default/files/esp32-s3_datasheet_en.pdf) - USB-OTG, DMA, UART.
 
-## 7. Живлення USB-Host для торгівлі
+## 7. Живлення USB-Host
 
-- Розрахунок сумарного струму: 500 мА (камерa) + 100 мА (PWM-кулер) + 50 мА (контролер) = 650 мА мінімум.
-- БЖ з PD-протоколом (5 В / 5 А = 27 Вт) дає запас для піків при USB-запуску.
-- Якщо БЖ дає лише 3 А — обмежуйте до одной камери + HID, без MSC.
-- Перевіряйте `ESP-IDF debug лог` (Pi) або `usb_host_printf(USB_HOST_LOG_LEVEL_DEBUG)` (ESP32) для діагностики.
+- Розрахунок сумарного струму: 500 мА (камера) + 100 мА (PWM-кулер) + 50 мА (контролер) = 650 мА мінімум;
+- БЖ з PD-протоколом (5 В / 5 А = 27 Вт) дає запас для піків при старті USB;
+- якщо БЖ дає лише 3 А - обмежитись однією камерою + HID, без MSC;
+- діагностика: `usb_host_printf(USB_HOST_LOG_LEVEL_DEBUG)` показує енумерацію пристроїв.
 
-> [!warning] USB-Host без зовнішнього БЖ > 2 А — гарантоване падіння 5V і скидання ESP32 під навантаженням.
-1) Якість
-## Офіційні джерела
-- [USB-Host ESP-IDF docs] (https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/usb/usb_host.html) - офіційний стек.
+> [!warning] USB-Host без зовнішнього БЖ на 2 А - гарантоване просідання 5V і скидання ESP32 під навантаженням.
+
 ## 10. Завершення
-- USB-Host на ESP32-S3/P4: FS/HS, UVC/HID/MSC; OTG-ID керує роллю; 5V 500мА мінімум; SDK 5.2+ перевіряти наявність UVC.
+
+- USB-Host на ESP32-S3/P4: FS/HS, UVC/HID/MSC; OTG-ID керує роллю; 5V 500 мА мінімум; SDK 5.2+ перевіряти наявність UVC.
+- BOOTSEL і прошивка не залежать від USB-ролі: UF2 заливається в обох режимах.
+- Перший тест Host: HID-миша (дешево, FS, видно одразу в логах).
+- UVC-камера: починати з 480p MJPEG, потім піднімати роздільність.

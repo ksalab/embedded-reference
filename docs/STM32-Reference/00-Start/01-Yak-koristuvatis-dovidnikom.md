@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # Як користуватись довідником
 
+EN version: `00-Start/01-Yak-koristuvatis-dovidnikom.en.md`
+
 ![](../../../STM32-Reference/assets/img/stm32-howto-map-scheme.png)
 *Рис. Карта руху: Home → розділ → нота → код → залізо.*
 

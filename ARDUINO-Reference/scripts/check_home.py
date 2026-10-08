@@ -33,7 +33,7 @@ def main() -> int:
         if not p.is_dir():
             errors.append(f"нема папки: {d}")
             continue
-        actual = len(list(p.glob("*.md")))
+        actual = len([x for x in p.glob("*.md") if not x.name.endswith(".en.md")])
         if actual != claimed:
             errors.append(f"{d}: на Home {claimed}, файлів {actual}")
 
@@ -48,6 +48,8 @@ def main() -> int:
         if ".obsidian" in str(p):
             continue
         rel = p.relative_to(VAULT)
+        if p.name.endswith(".en.md"):
+            continue
         if p.name in META or rel.parts[0] in META_DIRS:
             continue
         if p.stem not in linked:

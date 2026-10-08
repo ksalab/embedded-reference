@@ -1,6 +1,6 @@
 ---
 title: PlatformIO : збірка і прошивка Arduino
-description: Налаштування проекту через platformio.ini вибір платформи atmelavr компіляція скетчу прошивка через CLI та VS Code таблиця типових помилок.
+description: Пояснює PlatformIO для Arduino: platformio.ini, lib_deps, build/upload/monitor; показує конфіги, команди і таблиці.
 tags: [arduino, platformio, atmelavr, cli, ini]
 category: Proshivka
 date-created: 2026-10-07
@@ -9,7 +9,7 @@ date: 2026-10-07
 
 # PlatformIO : збірка і прошивка Arduino
 
-![[assets/img/platformio-flow.png|600]]
+![[assets/img/platformio-flow-scheme.png|600]]
 *Рис. Схема збирання через PlatformIO: ini -> ядро -> компілятор -> прошивка.*
 
 > [!tip] Призначення ноти
@@ -21,7 +21,7 @@ date: 2026-10-07
 
 PlatformIO обирають коли потрібна версифікація бібліотек чітке опис плати та автоматичний цикл перевірки на сервері. Редактор може залишатися будь-яким VS Code з розширенням або CLI в терміналі. Усі дії зводяться до трьох кроків: ini -> src/sketch.ino -> команда.
 
-Звʼязок з іншими нотами: вибір середовища у [[00-Start/05-Vibir-seredovischa|вибір середовища]]; прошивка через avrdude у [[09-Proshivka/02-Bootloader-AVRDUDE|завантажувач і avrdude]]; класична плата у [[01-Hardware/01-AVR-Uno|AVR Uno]].
+Звʼязок з іншими нотами: вибір середовища у [[00-Start/05-Vibir-seredovischa|вибір середовища]]; прошивка через avrdude у [[09-Proshivka/02-Bootloader-AVRDUDE|завантажувач і avrdude]]; класична плата у [[01-Hardware/01-AVR-Uno | Uno-класика]].
 
 ## 2. Що дає PlatformIO
 
@@ -152,7 +152,7 @@ flowchart LR
 ## Див. також
 
 - [[00-Start/05-Vibir-seredovischa|вибір середовища]]
-- [[01-Hardware/01-AVR-Uno|AVR Uno]]
+- [[01-Hardware/01-AVR-Uno | Uno-класика]]
 - [[01-Hardware/02-Nano-Mega|компакт і ноги]]
 - [[09-Proshivka/02-Bootloader-AVRDUDE|завантажувач і avrdude]]
 - [[09-Proshivka/01-IDE-CLI.md|IDE і CLI : збірка скетчів]]

@@ -19,6 +19,8 @@ type: guide
 
 # DevKit плати - вибір та живлення
 
+EN version: `00-Start/04-Devkit-plati.en.md`
+
 > [!tip] Що купити у 2026
 > Перша плата - **ESP32-DevKitC V4 / DOIT V1 (WROOM-32)** для сумісності. Друга - **ESP32-S3-DevKitC-1** для камери/дисплеїв. Третя - **C3 SuperMini** для мініатюрних датчиків. Порівняння кристалів - [[00-Start/03-Porivnyannya-chipiv|Порівняння чипів]], терміни - [[00-Start/02-Glosariy|Глосарій]], прошивка - [[00-Start/05-Vibir-seredovischa|Вибір середовища]].
 >

@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # Глосарій STM32 - терміни
 
+EN version: `00-Start/02-Glosariy.en.md`
+
 ![[assets/img/stm32-glossary-terms-scheme.png|600]]
 *Рис. Шари STM32: залізо → CMSIS → HAL/LL → твій код; збоку - інструменти.*
 

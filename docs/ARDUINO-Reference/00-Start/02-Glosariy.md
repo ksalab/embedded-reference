@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Глосарій Arduino - скетч, шилд і рівні
 
+EN version: `00-Start/02-Glosariy.en.md`
+
 ![](../../../ARDUINO-Reference/assets/img/arduino-glossary-terms-scheme.png)
 *Рис. Словник у схемі: програма, плата, живлення, шини і рівні сигналів.*
 

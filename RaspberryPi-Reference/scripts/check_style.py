@@ -95,7 +95,14 @@ def check_file(p: pathlib.Path) -> list[str]:
     dm = re.search(r"^description:\s*(.+)$", fm, re.M)
     if dm:
         d = dm.group(1).strip()
-        verb = re.search(
+        is_en = bool(re.search(r"^lang:\s*en\s*$", fm, re.M))
+        if is_en:
+            verb = re.search(
+                r"(\bis\b|\bare\b|explains|shows|covers|provides|describes|helps|"
+                r"compares|lists|teaches|guides|gives|offers|contains|includes|"
+                r"\bfor\b|\bto\b|\bwith\b|\band\b|how\b)", d, re.I)
+        else:
+            verb = re.search(
             r"(є |є,|дає|має|працює|використовується|призначений|забезпечує|дозволяє|"
             r"вимірює|керує|читає|містить|підтримує|вміє|служить|опис|огляд|гайд|розбір|"
             r"йдеться|потрібно|треба|можна|показує|пояснює|будує|збирає|закриває|"
@@ -110,9 +117,15 @@ def check_file(p: pathlib.Path) -> list[str]:
         bad.append("no-image")
     if "```mermaid" not in text:
         bad.append("no-mermaid")
-    if not re.search(r"Типові (помилки|проблеми)|\| Симптом \|", text):
+    is_en_doc = bool(re.search(r"^lang:\s*en\s*$", fm, re.M))
+    if is_en_doc:
+        err_ok = bool(re.search(r"Common (issues|problems)|\| Symptom \|", text))
+    else:
+        err_ok = bool(re.search(r"Типові (помилки|проблеми)|\| Симптом \|", text))
+    if not err_ok:
         bad.append("no-errors")
-    if "Офіційні джерела" not in text:
+    src_ok = ("Official sources" in text) if is_en_doc else ("Офіційні джерела" in text)
+    if not src_ok:
         bad.append("no-sources")
     if text.count("\n") + 1 < 150:
         bad.append("thin")
@@ -153,7 +166,8 @@ def main() -> int:
     by_check["no-frontmatter"] = 0
     for p in sorted(files):
         rel = str(p.relative_to(VAULT))
-        if p.name in SKIP or rel.split("/")[0] in SKIP_DIRS:
+        base_name = p.name[:-len(".en.md")] + ".md" if p.name.endswith(".en.md") else p.name
+        if base_name in SKIP or p.name in SKIP or rel.split("/")[0] in SKIP_DIRS:
             continue
         bad = check_file(p)
         if bad:
@@ -161,8 +175,10 @@ def main() -> int:
             for b in bad:
                 by_check[b] = by_check.get(b, 0) + 1
             print(f"{rel}: {', '.join(bad)}")
-    checked = len([p for p in files
-                   if p.name not in SKIP and str(p.relative_to(VAULT)).split("/")[0] not in SKIP_DIRS])
+    def _counted(p):
+        base_name = p.name[:-len(".en.md")] + ".md" if p.name.endswith(".en.md") else p.name
+        return base_name not in SKIP and p.name not in SKIP and str(p.relative_to(VAULT)).split("/")[0] not in SKIP_DIRS
+    checked = len([p for p in files if _counted(p)])
     print(f"checked={checked} violations={total_viol} {by_check}")
     return 1 if total_viol else 0
 

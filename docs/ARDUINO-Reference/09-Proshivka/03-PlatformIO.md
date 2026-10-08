@@ -1,6 +1,6 @@
 ---
 title: PlatformIO : збірка і прошивка Arduino
-description: Налаштування проекту через platformio.ini вибір платформи atmelavr компіляція скетчу прошивка через CLI та VS Code таблиця типових помилок.
+description: Пояснює PlatformIO для Arduino: platformio.ini, lib_deps, build/upload/monitor; показує конфіги, команди і таблиці.
 tags: [arduino, platformio, atmelavr, cli, ini]
 category: Proshivka
 date-created: 2026-10-07
@@ -9,7 +9,7 @@ date: 2026-10-07
 
 # PlatformIO : збірка і прошивка Arduino
 
-![](../../../ARDUINO-Reference/assets/img/platformio-flow.png)
+![](../../../ARDUINO-Reference/assets/img/platformio-flow-scheme.png)
 *Рис. Схема збирання через PlatformIO: ini -> ядро -> компілятор -> прошивка.*
 
 > [!tip] Призначення ноти
@@ -21,7 +21,7 @@ date: 2026-10-07
 
 PlatformIO обирають коли потрібна версифікація бібліотек чітке опис плати та автоматичний цикл перевірки на сервері. Редактор може залишатися будь-яким VS Code з розширенням або CLI в терміналі. Усі дії зводяться до трьох кроків: ini -> src/sketch.ino -> команда.
 
-Звʼязок з іншими нотами: вибір середовища у [вибір середовища](../../../ARDUINO-Reference/00-Start/05-Vibir-seredovischa.md); прошивка через avrdude у [завантажувач і avrdude](../../../ARDUINO-Reference/09-Proshivka/02-Bootloader-AVRDUDE.md); класична плата у [AVR Uno](../../../ARDUINO-Reference/01-Hardware/01-AVR-Uno.md).
+Звʼязок з іншими нотами: вибір середовища у [вибір середовища](../../../ARDUINO-Reference/00-Start/05-Vibir-seredovischa.md); прошивка через avrdude у [завантажувач і avrdude](../../../ARDUINO-Reference/09-Proshivka/02-Bootloader-AVRDUDE.md); класична плата у [Uno-класика](../../../ARDUINO-Reference/01-Hardware/01-AVR-Uno.md).
 
 ## 2. Що дає PlatformIO
 
@@ -152,7 +152,7 @@ flowchart LR
 ## Див. також
 
 - [вибір середовища](../../../ARDUINO-Reference/00-Start/05-Vibir-seredovischa.md)
-- [AVR Uno](../../../ARDUINO-Reference/01-Hardware/01-AVR-Uno.md)
+- [Uno-класика](../../../ARDUINO-Reference/01-Hardware/01-AVR-Uno.md)
 - [компакт і ноги](../../../ARDUINO-Reference/01-Hardware/02-Nano-Mega.md)
 - [завантажувач і avrdude](../../../ARDUINO-Reference/09-Proshivka/02-Bootloader-AVRDUDE.md)
 - [IDE і CLI : збірка скетчів](../../../ARDUINO-Reference/09-Proshivka/01-IDE-CLI.md)

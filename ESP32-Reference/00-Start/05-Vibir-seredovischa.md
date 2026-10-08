@@ -21,6 +21,8 @@ type: guide
 
 # Вибір середовища - ESP-IDF vs Arduino vs MicroPython vs PlatformIO
 
+EN version: `00-Start/05-Vibir-seredovischa.en.md`
+
 > [!tip] Правило вибору за 10 секунд
 > Продакшн/робота - **ESP-IDF**. Швидкий прототип/Arduino-бекграунд - **Arduino-core**. Навчання/тест датчика за 5 хв - **MicroPython**. Багато бібліотек/команда - **PlatformIO**. Деталі заліза - [[00-Start/03-Porivnyannya-chipiv|Порівняння чипів]] та [[00-Start/04-Devkit-plati|DevKit плати]], терміни - [[00-Start/02-Glosariy|Глосарій]], структура - [[00-Start/01-Yak-koristuvatis-dovidnikom|Як користуватись]], карта - [[Home|Home]].
 >

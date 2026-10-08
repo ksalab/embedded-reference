@@ -9,6 +9,8 @@ date: 2026-10-06
 
 # RaspberryPi Reference - головна карта довідника
 
+EN version: `Home.en.md`
+
 > MOC всього довідника. Стандарт ноти: frontmatter, рисунок, mermaid, ASCII, код, помилки, джерела. Валідатори: `check_style` / `check_links` / `check_home` - усі в нуль.
 
 | Маршрут | Ланцюжок |

@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # DevKit плати - Blue Pill, Black Pill, Nucleo, Discovery
 
+EN version: `00-Start/04-Devkit-plati.en.md`
+
 ![](../../../STM32-Reference/assets/img/stm32-devkit-boards-scheme.png)
 *Рис. Від $2 Blue Pill (без нічого) до Nucleo (ST-Link + Morpho на борту).*
 

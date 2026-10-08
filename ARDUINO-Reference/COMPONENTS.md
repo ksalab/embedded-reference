@@ -1,20 +1,20 @@
 # Реєстр компонентів ARDUINO-Reference
 
-> Згенеровано 2026-10-07: `python3 scripts/comp_inventory.py --registry COMPONENTS.md`. НЕ редагувати вручну — перегенерувати!
+> Згенеровано 2026-10-08: `python3 scripts/comp_inventory.py --registry COMPONENTS.md`. НЕ редагувати вручну — перегенерувати!
 >
 > ✅ = хоча б в одній ноті-згадці є посилання виробника. Це НЕ гарантує, що лінк саме на цей компонент — звіряти вручну!
 >
-> ❌ = у жодній ноті-згадці немає виробничих посилань. Пріоритетні кандидати на додавання даташитів.
+> ❌ = у жодній ноті-згадці нема виробничих посилань. Пріоритетні кандидати на додавання даташитів.
 
-**Позначень:** 96; **з datasheet:** 96; **без:** 0.
+**Позначень:** 104; **з datasheet:** 104; **без:** 0.
 
 ## Де шукати даташити (перевірено 2026-09-30)
 
 | Сайт | Доступ ботом | Профіль |
 | --- | --- | --- |
-| alldatasheet.com (`view.jsp?Searchword=XXX`) | ❌ безпосередньо (403), ✅ через проксі/браузер; є дзеркала `alldatasheetru.com` та ін. | Найбільший архів; китайські/хобі-мікросхеми (GalaxyCore, Tontek, Holtek) |
-| datasheets.com (`/search?q=XXX`) | ✅ | Західні каталогові + ціни/залишки (Microchip, TI, NXP); китайських дисплеїв/сенсорів немає |
-| octopart.com (`/search?q=XXX`) | ✅ | Метапошук дистриб'юторів; тільки авторизовані канали — хобі-Китаю немає |
+| alldatasheet.com (`view.jsp?Searchword=XXX`) | ❌ напряму (403), ✅ через проксі/браузер; є дзеркала `alldatasheetru.com` та ін. | Найбільший архів; китайські/хобі-мікросхеми (GalaxyCore, Tontek, Holtek) |
+| datasheets.com (`/search?q=XXX`) | ✅ | Західні каталогові + ціни/залишки (Microchip, TI, NXP); китайських дисплеїв/сенсорів нема |
+| octopart.com (`/search?q=XXX`) | ✅ | Метапошук дистриб'юторів; тільки авторизовані канали — хобі-Китаю нема |
 | findchips.com (`/search/XXX`) | ✅ | Те саме, що Octopart, швидший |
 | lcsc.com (пошук на сайті) | ❌ JS — тільки вручну | Китайські компоненти: картка + PDF одразу |
 | tme.eu / mouser.com / digikey.com | ❌ боти ріжуться — вручну | Параметричний пошук + гарантовано свіжий PDF виробника |
@@ -28,19 +28,23 @@
 | AMS1117 | живлення | 01-Zhivlennya-VIN | ✅ `docs.arduino.cc`, `www.arduino.cc` |
 | BH1750 | сенсори | 09-Svitlo-Tisk-ToF | ✅ `www.st.com` |
 | BH1750FVI | сенсори | 09-Svitlo-Tisk-ToF | ✅ `www.st.com` |
-| BME280 | сенсори, живлення/рівні, проєкти | 01-DHT-DS18B20, 02-BME280, 03-HC-SR04-PIR, 04-LM35-NTC +6 | ✅ `docs.arduino.cc`, `invensense.tdk.com`, `www.analog.com` |
+| BME280 | чипи/модулі, сенсори, живлення/рівні, проєкти | 05-Nano33-BLE-ARM, 01-DHT-DS18B20, 02-BME280, 03-HC-SR04-PIR +7 | ✅ `docs.arduino.cc`, `docs.nordicsemi.com`, `invensense.tdk.com` |
 | BME680 | сенсори | 11-CO2-Povitrya | ✅ `docs.arduino.cc`, `www.winsen-sensor.com` |
+| BME688 | чипи/модулі | 05-Nano33-BLE-ARM | ✅ `docs.arduino.cc`, `docs.nordicsemi.com` |
 | BMP280 | сенсори | 09-Svitlo-Tisk-ToF | ✅ `www.st.com` |
 | COMF10 | таймери | 03-Timeri-16bit-Deep | ✅ `docs.arduino.cc`, `ww1.microchip.com` |
 | COMF11 | таймери | 03-Timeri-16bit-Deep | ✅ `docs.arduino.cc`, `ww1.microchip.com` |
 | CP2102 | старт, чипи/модулі, шини, додатки | 04-Devkit-plati, 05-Nano33-BLE-ARM, 04-USB-AVR, 03-Diagnostic-Map | ✅ `docs.arduino.cc`, `docs.nordicsemi.com`, `playground.arduino.cc` |
 | CR2032 | сенсори | 12-Mag-Gesture-RTC | ✅ `www.u-blox.com` |
+| CYW43 | плати | 04-RP2040 | ✅ `datasheets.raspberrypi.com`, `docs.arduino.cc`, `docs.platformio.org` |
+| CYW43439 | плати | 04-RP2040 | ✅ `datasheets.raspberrypi.com`, `docs.arduino.cc`, `docs.platformio.org` |
 | DFR0299 | вивід/актуатори | 06-Indikatsiya-Audio | ✅ `www.analog.com`, `www.seeedstudio.com` |
 | DHT11 | сенсори | 01-DHT-DS18B20 | ✅ `docs.arduino.cc`, `www.analog.com`, `www.arduino.cc` |
+| DRV8833 | вивід/актуатори | 05-Servo-Motor-L298N | ✅ `docs.arduino.cc`, `www.arduino.cc` |
 | DS18B20 | сенсори, проєкти | 01-DHT-DS18B20, 02-BME280, 03-HC-SR04-PIR, 04-LM35-NTC +1 | ✅ `docs.arduino.cc`, `www.analog.com`, `www.arduino.cc` |
 | DS3231 | сенсори | 12-Mag-Gesture-RTC | ✅ `www.u-blox.com` |
 | DW01 | живлення, живлення/рівні | 02-Batareyki, 02-Level-Shift-TP4056 | ✅ `docs.arduino.cc`, `www.arduino.cc` |
-| ESP32 | чипи/модулі, плати, протоколи | 04-Uno-R4, 05-Nano33-BLE-ARM, 03-Nano-ESP32-GIGA, 03-HTTP-Web | ✅ `docs.arduino.cc`, `docs.nordicsemi.com`, `mqtt.org` |
+| ESP32 | чипи/модулі, плати, протоколи | 04-Uno-R4, 05-Nano33-BLE-ARM, 03-Nano-ESP32-GIGA, 04-RP2040 +1 | ✅ `datasheets.raspberrypi.com`, `docs.arduino.cc`, `docs.nordicsemi.com` |
 | ESP8266 | модулі зв'язку, протоколи | 03-ESP8266-WiFi, 04-GPS-NEO, 05-BT-Ethernet, 03-HTTP-Web | ✅ `docs.arduino.cc`, `docs.espressif.com`, `mqtt.org` |
 | FAT32 | вивід/актуатори | 06-Indikatsiya-Audio, 08-Nextion-HMI | ✅ `docs.arduino.cc`, `www.analog.com`, `www.seeedstudio.com` |
 | HD44780 | вивід/актуатори | 01-LCD1602 | ✅ `docs.arduino.cc`, `www.arduino.cc` |
@@ -54,6 +58,7 @@
 | LM2596 | живлення/рівні | 01-Buck-peretvoryuvach | ✅ `docs.arduino.cc`, `www.ti.com` |
 | LM35 | сенсори, вивід/актуатори | 01-DHT-DS18B20, 02-BME280, 03-HC-SR04-PIR, 04-LM35-NTC +2 | ✅ `docs.arduino.cc`, `www.analog.com`, `www.arduino.cc` |
 | LOG00001 | пам'ять | 02-SD-FatFS-Deep | ✅ `docs.arduino.cc` |
+| LSM9DS1 | чипи/модулі | 05-Nano33-BLE-ARM | ✅ `docs.arduino.cc`, `docs.nordicsemi.com` |
 | MAX7219 | вивід/актуатори | 06-Indikatsiya-Audio | ✅ `www.analog.com`, `www.seeedstudio.com` |
 | MCP4725 | аналог | 02-DAC-nema | ✅ `docs.arduino.cc`, `www.arduino.cc` |
 | MCP4728 | аналог | 02-DAC-nema | ✅ `docs.arduino.cc`, `www.arduino.cc` |
@@ -88,6 +93,8 @@
 | RF95 | радіо | 01-LoRa-moduli | ✅ `www.semtech.com` |
 | RFM95 | радіо | 01-LoRa-moduli | ✅ `www.semtech.com` |
 | RFM96 | радіо | 01-LoRa-moduli | ✅ `www.semtech.com` |
+| RP2040 | плати | 04-RP2040 | ✅ `datasheets.raspberrypi.com`, `docs.arduino.cc`, `docs.platformio.org` |
+| RP2350 | плати | 04-RP2040 | ✅ `datasheets.raspberrypi.com`, `docs.arduino.cc`, `docs.platformio.org` |
 | RS485 | шини | 01-UART | ✅ `docs.arduino.cc`, `www.arduino.cc` |
 | SAM3X8E | чипи/модулі | 03-Due-Zero-ARM | ✅ `docs.arduino.cc`, `www.arduino.cc` |
 | SAM3X8X | чипи/модулі | 05-Nano33-BLE-ARM | ✅ `docs.arduino.cc`, `docs.nordicsemi.com` |
@@ -106,6 +113,7 @@
 | STM32H747 | плати | 03-Nano-ESP32-GIGA | ✅ `docs.arduino.cc` |
 | SX1276 | радіо | 01-LoRa-moduli | ✅ `www.semtech.com` |
 | SX1278 | радіо | 01-LoRa-moduli | ✅ `www.semtech.com` |
+| TB6612 | вивід/актуатори | 05-Servo-Motor-L298N | ✅ `docs.arduino.cc`, `www.arduino.cc` |
 | TCCR1A | таймери | 03-Timeri-16bit-Deep | ✅ `docs.arduino.cc`, `ww1.microchip.com` |
 | TCCR1B | таймери | 03-Timeri-16bit-Deep | ✅ `docs.arduino.cc`, `ww1.microchip.com` |
 | TM1637 | вивід/актуатори | 06-Indikatsiya-Audio | ✅ `www.analog.com`, `www.seeedstudio.com` |
@@ -117,6 +125,6 @@
 | VL53L0X | сенсори | 09-Svitlo-Tisk-ToF | ✅ `www.st.com` |
 | WGM12 | таймери | 03-Timeri-16bit-Deep | ✅ `docs.arduino.cc`, `ww1.microchip.com` |
 | WGM13 | таймери | 03-Timeri-16bit-Deep | ✅ `docs.arduino.cc`, `ww1.microchip.com` |
-| WS2812 | вивід/актуатори | 03-NeoPixel-Servo-Rele | ✅ `docs.arduino.cc`, `www.arduino.cc` |
+| WS2812 | вивід/актуатори, плати | 03-NeoPixel-Servo-Rele, 04-RP2040 | ✅ `datasheets.raspberrypi.com`, `docs.arduino.cc`, `docs.platformio.org` |
 | XL4015 | живлення/рівні | 01-Buck-peretvoryuvach | ✅ `docs.arduino.cc`, `www.ti.com` |
 | XPT2046 | вивід/актуатори | 07-TFT-Touch-Deep | ✅ `docs.arduino.cc` |

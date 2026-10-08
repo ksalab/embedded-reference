@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # Плати і аксесуари Raspberry Pi - офіційний БЖ, SD, корпуси, камери
 
+EN version: `00-Start/04-Devkit-plati.en.md`
+
 ![](../../../RaspberryPi-Reference/assets/img/rpi-boards-choice-scheme.png)
 *Рис. Обов'язковий мінімум: плата + офіційний БЖ + SD A2 + охолодження; далі - камера, дисплей, HAT.*
 

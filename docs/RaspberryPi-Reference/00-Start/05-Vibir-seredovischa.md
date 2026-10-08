@@ -8,6 +8,8 @@ date: 2026-10-06
 
 # Вибір середовища Raspberry Pi - Pi OS, Ubuntu, DietPi і Pico SDK
 
+EN version: `00-Start/05-Vibir-seredovischa.en.md`
+
 ![](../../../RaspberryPi-Reference/assets/img/rpi-os-choice-scheme.png)
 *Рис. Вибір за гілками: Linux-моделі - Pi OS/Ubuntu/DietPi, Pico - C SDK або MicroPython.*
 

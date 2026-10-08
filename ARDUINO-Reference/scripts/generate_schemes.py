@@ -14,6 +14,16 @@ def fonts():
 
 # name: (заголовок, [рядки схеми])
 C = {
+"platformio-flow-scheme.png": ("PlatformIO - ini, build, upload",
+ ["platformio.ini: плата і фреймворк",
+  "lib_deps: бібліотеки з версіями",
+  "Build: компіляція без сюрпризів",
+  "Upload + Monitor: прошивка і лог"]),
+"ard-rp2040-voltages-scheme.png": ("RP2040 - 3V3 і PIO",
+ ["3V3 логіка, 5V вбиває пін",
+  "BOOTSEL: затиснути при старті",
+  "PIO-автомати: точні протоколи",
+  "Arduino-core або MicroPython"]),
 "arduino-howto-map-scheme.png": ("Карта довідника — куди йти",
  ["Home — вхід", "Розділи 00–99 — теми",
   "Нота: призначення → код → помилки", "Не знайшов за 5 хв — пошук!"]),

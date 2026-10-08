@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Порівняння плат Arduino - Uno, Nano, Mega, R4
 
+EN version: `00-Start/03-Porivnyannya-plat.en.md`
+
 ![[assets/img/arduino-families-compare-scheme.png|600]]
 *Рис. Родини плат: класика, компакт, гігант і нове покоління з мережею.*
 

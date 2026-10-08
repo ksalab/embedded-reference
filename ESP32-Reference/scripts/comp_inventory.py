@@ -84,7 +84,7 @@ def iter_md():
         if ".obsidian" in root:
             continue
         for f in files:
-            if f.endswith(".md"):
+            if f.endswith(".md") and not f.endswith(".en.md"):
                 yield pathlib.Path(root) / f
 
 

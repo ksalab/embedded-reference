@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # Вибір середовища - STM32CubeIDE vs Arduino vs PlatformIO
 
+EN version: `00-Start/05-Vibir-seredovischa.en.md`
+
 ![[assets/img/stm32-env-choose-scheme.png|600]]
 *Рис. Три шляхи: CubeIDE (повний контроль), Arduino (швидкий старт), PlatformIO (залежності + CI).*
 

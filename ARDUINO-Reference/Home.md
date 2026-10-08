@@ -9,6 +9,8 @@ date: 2026-10-05
 
 # Arduino Reference - головна карта довідника
 
+EN version: `Home.en.md`
+
 > MOC всього довідника. Стандарт ноти: frontmatter, рисунок, mermaid, ASCII, код, помилки, джерела. Валідатори: `check_style` / `check_links` / `check_home` - усі в нуль.
 
 | Маршрут | Ланцюжок |
@@ -36,7 +38,6 @@ date: 2026-10-05
 | `16-Proekti` | Проєкти (4 ноти) | [[16-Proekti/01-Meteostantsiya | Метео]], [[16-Proekti/02-Rozumniy-dim | Дім]], [[16-Proekti/03-Treker | Трекер]], [[16-Proekti/04-Loger-SD | Логер]] |
 | `17-Lab` | Лабораторія (2 ноти) | [[17-Lab/01-Priladi | Прилади]], [[17-Lab/02-Maketka-PCB | Макетка]] |
 | `99-Dodatki` | Додатки (3 ноти) | [[99-Dodatki/01-Troubleshooting-FAQ | FAQ]], [[99-Dodatki/02-Cheklisti-Datasheet | Чеклісти]], [[99-Dodatki/03-Diagnostic-Map | Карта]] |
-
 
 ## Див. також
 

@@ -17,6 +17,8 @@ type: MOC
 
 # ESP32 Reference - головна карта довідника
 
+EN version: `Home.en.md`
+
 > [!tip] Навігація
 > Це MOC всього довідника. Старт: [Як користуватись](../../ESP32-Reference/00-Start/01-Yak-koristuvatis-dovidnikom.md) → [Порівняння чипів](../../ESP32-Reference/00-Start/03-Porivnyannya-chipiv.md) → [DevKit плати](../../ESP32-Reference/00-Start/04-Devkit-plati.md) → [Вибір середовища](../../ESP32-Reference/00-Start/05-Vibir-seredovischa.md).
 

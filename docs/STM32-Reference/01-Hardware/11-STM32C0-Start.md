@@ -9,7 +9,7 @@ date: 2026-10-07
 
 # STM32 C0 - старт з C011/C031
 
-![](../../../STM32-Reference/assets/img/stm32-c0-start.png)
+![](../../../STM32-Reference/assets/img/stm32-c0-start-scheme.png)
 *Рис. C011 - TSSOP20, C031 - LQFP32; обидва з USB, дешевий старт для нового проєкту.*
 
 > [!tip] Призначення ноти
@@ -58,7 +58,7 @@ flowchart TB
     USB2 -->|Ні| C031N[C031C6 без USB, більше GPIO]
 ```
 
-## BOOT0 / RDP - типові помилки старту
+## Типові помилки BOOT0 / RDP при старті
 
 | # | Помилка | Чому погано | Як правильно |
 | --- | --- | --- | --- |

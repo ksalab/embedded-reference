@@ -9,6 +9,8 @@ date: 2026-10-01
 
 # STM32 Reference - головна карта довідника
 
+EN version: `Home.en.md`
+
 > MOC всього довідника. Стандарт ноти: frontmatter, рисунок, mermaid, ASCII, код, помилки, джерела. Валідатори: `check_style` / `check_links` / `check_home` - усі в нуль.
 
 | Маршрут | Ланцюжок |
@@ -36,7 +38,6 @@ date: 2026-10-01
 | `16-Proekti` | Проєкти (6 нот) | [[16-Proekti/01-Meteostantsiya | Метео]], [[16-Proekti/02-GPS-treker | Трекер]], [[16-Proekti/03-Energomonitor | Енергія]], [[16-Proekti/04-Modbus-Gateway | Шлюз]], [[16-Proekti/05-USB-Logger | Логер]], [[16-Proekti/06-Drone-FC | Дрон]] |
 | `17-Lab` | Лабораторія (5 нот) | [[17-Lab/01-Priladi | Прилади]], [[17-Lab/02-Plata-PCB | Плата]], [[17-Lab/03-Hardware-Design-Guidelines | Схемотехніка]], [[17-Lab/04-EMI-EMC-Protection | EMI]], [[17-Lab/05-Maketka | Макетка]] |
 | `99-Dodatki` | Додатки (5 нот) | [[99-Dodatki/01-Troubleshooting-FAQ | FAQ]], [[99-Dodatki/02-Cheklisti | Чеклісти]], [[99-Dodatki/03-Datasheet-Links | Даташити]], [[99-Dodatki/04-Diagnostic-Map | Карта]], [[99-Dodatki/05-Pinout-Quickref | Піни]] |
-
 
 ## Див. також
 

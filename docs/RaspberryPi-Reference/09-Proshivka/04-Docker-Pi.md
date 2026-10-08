@@ -1,6 +1,6 @@
 ---
 title: Docker на Raspberry Pi - контейнери, томи, systemd
-pescription: Встановлення Docker Engine на Raspberry Pi OS, запуск контейнерів з томами, автозапуск через systemd, типові помилки, compose-файл.
+description: Пояснює Docker на Raspberry Pi: встановлення, томи, systemd-автозапуск; показує compose, команди і таблиці.
 tags: [raspberrypi, docker, container, systemd, compose, raspberrypi-os, gpio, deployment]
 category: Proshivka
 date: 2026-10-07
@@ -8,7 +8,7 @@ date: 2026-10-07
 
 # Docker на Raspberry Pi - контейнери, томи, systemd
 
-![](../../../RaspberryPi-Reference/assets/img/rpi-docker-systemd.png)
+![](../../../RaspberryPi-Reference/assets/img/rpi-docker-systemd-scheme.png)
 *Рис. Контейнер з томом на хості Pi, керування через systemd - автономний сервіс без cron.*
 
 > [!tip] Що це за нота
