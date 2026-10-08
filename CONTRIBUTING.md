@@ -1,9 +1,21 @@
-# Як доповнювати базу знань
+# Contributing
 
-Ця база живе за рахунок точності: кожна нота проходить три автоматичні
-чекери. Дотримуйтесь порядку нижче — і перевірки залишаться зеленими.
+This base lives on precision: every note passes three automatic checkers.
+Follow the order below and the checks stay green.
 
-## 1. Нова нота: повний цикл (7 кроків)
+## 0. Languages (i18n)
+
+Ukrainian is the first language, not the only one. Rules for translations:
+
+- A translation lives next to the original: `NN-Tema.md` → `NN-Tema.en.md`
+  (later `.de.md`, `.pl.md`, …). Same folder, same number.
+- Frontmatter gains `lang: en` and `original: NN-Tema.md`; the original gains
+  a one-line pointer under its H1: `EN version: [[NN-Tema.en | English]]`.
+- Translated note follows the same skeleton (§2) and the same checks (§5).
+- `Home.md` stays canonical until a full translated MOC exists; do not
+  renumber folders for a translation.
+
+## 1. New note: full cycle (7 steps)
 
 1. Файл — у правильну папку, ім'я `NN-Tema.md` (наступний вільний номер, без дублів).
 2. Запис у `scripts/generate_schemes.py`, словник `C`:
@@ -51,6 +63,8 @@ mermaid → код → таблиця `| Симптом | Причина | Лі�
 ```bash
 python3 scripts/check_style.py && python3 scripts/check_links.py && python3 scripts/check_home.py
 markdownlint "<Vault>/**/*.md"   # з кореня репо, діє .markdownlint.yaml
+python3 tools/export_github.py   # оновити docs/ після зміни vaults
 ```
 
-Усі три чеки — в нуль, лінт — чистий. Інакше PR не приймається.
+Усі три чеки — в нуль, лінт — чистий, `docs/` — перегенеровано.
+Інакше PR не приймається.
