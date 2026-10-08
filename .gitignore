@@ -1,0 +1,14 @@
+# Obsidian
+.obsidian/
+# Python
+__pycache__/
+*.pyc
+# Node (markdownlint-cli, якщо ставите локально)
+node_modules/
+# OS / редактори
+.DS_Store
+Thumbs.db
+*~
+*.swp
+# Тимчасові файли
+/tmp/

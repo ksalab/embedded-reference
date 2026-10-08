@@ -1,0 +1,21 @@
+# markdownlint config for *-Reference knowledge bases.
+# Run from this directory:
+#   markdownlint "ESP32-Reference/**/*.md" "STM32-Reference/**/*.md" \
+#     "ARDUINO-Reference/**/*.md" "RaspberryPi-Reference/**/*.md"
+default: true
+# Line length: tables and links are long by nature.
+MD013: false
+# Duplicate headings allowed (numbered sections like "## 9.1 ...").
+MD024: false
+# No inline HTML in use.
+MD033: false
+# First line is YAML frontmatter, not the H1.
+MD041: false
+# MD025: frontmatter `title:` counts as the document title (single-title rule).
+MD025:
+  front_matter_title: ""
+# MD056: table cells contain Obsidian [[target|alias]] links whose alias
+# separator "|" is REQUIRED by house checkers (check_style bad-pipe forbids
+# "\|" and check_links parses the alias form). Strict cell counting
+# conflicts with Obsidian syntax, so the rule is off by design.
+MD056: false
