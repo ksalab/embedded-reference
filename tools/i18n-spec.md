@@ -44,6 +44,8 @@ date: <today YYYY-MM-DD>
   is unknown, link the UA original as-is and append
   `vault/<UA path> -> <Your-Guess>.en.md` to tools/i18n-names.md.
   NEVER invent `[[*.en]]` links that match no existing file.
+  Names already recorded in tools/i18n-names.md are RESERVED for future
+  waves' filenames — do NOT use them as link targets until the file exists.
 - Length: keep ≥150 lines per note (same as original).
 
 ## Glossary (use these, do not invent)

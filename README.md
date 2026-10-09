@@ -32,11 +32,11 @@ see [CONTRIBUTING.md](CONTRIBUTING.md) for how translations are added.
 
 Ukrainian first, English mirror growing. Entry points per vault:
 
-| Vault | Українська | English |
-|---|---|---|
-| ESP32 | [Home](docs/ESP32-Reference/Home.md) | [Home.en](docs/ESP32-Reference/Home.en.md) |
-| STM32 | [Home](docs/STM32-Reference/Home.md) | [Home.en](docs/STM32-Reference/Home.en.md) |
-| Arduino | [Home](docs/ARDUINO-Reference/Home.md) | [Home.en](docs/ARDUINO-Reference/Home.en.md) |
+| Vault        | Українська                                 | English                                          |
+| ------------ | ------------------------------------------ | ------------------------------------------------ |
+| ESP32        | [Home](docs/ESP32-Reference/Home.md)       | [Home.en](docs/ESP32-Reference/Home.en.md)       |
+| STM32        | [Home](docs/STM32-Reference/Home.md)       | [Home.en](docs/STM32-Reference/Home.en.md)       |
+| Arduino      | [Home](docs/ARDUINO-Reference/Home.md)     | [Home.en](docs/ARDUINO-Reference/Home.en.md)     |
 | Raspberry Pi | [Home](docs/RaspberryPi-Reference/Home.md) | [Home.en](docs/RaspberryPi-Reference/Home.en.md) |
 
 Rules: translation lives next to the original (`NN-Tema.en.md`), links

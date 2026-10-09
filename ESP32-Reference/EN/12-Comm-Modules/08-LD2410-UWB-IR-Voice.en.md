@@ -1,0 +1,385 @@
+---
+category: Moduli
+lang: en
+title: LD2410 радар, DWM1000 UWB, VS1838 IR, SU-03T голос
+description: LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування - LD2410 mmWave-радар присутності (UART + OUT); Легенда пінів модуля LD2410; ASCII-схема; shows schematics, code and tables.
+tags: [esp32, ld2410, mmwave, radar, uwb, dwm1000, ir, vs1838, rmt, voice, su-03t]
+date: 2026-10-08
+---
+
+# LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування
+
+> [!info] Призначення
+> Нотатка про «невидимі» канали: **LD2410** (mmWave-радар 24 ГГц - бачить присутність людини навіть without руху, on відміну from PIR), **DWM1000** (UWB - точна дальність/позиціонування до ±10 см), **VS1838** (ІЧ-приймач 38 кГц - пульт ДК via RMT), **SU-03T** (голосове керування офлайн - команди without інтернету). Спільне: виявляють людину/команду and будять або командують ESP32.
+
+Характеристики (порівняльна table):
+
+| module | Принцип | Інтерфейс | Живлення | Дальність | Особливості |
+| --- | --- | --- | --- | --- | --- |
+| LD2410 (HLK) | FMCW радар 24 ГГц | UART 256000 (конфіг) + OUT (присутність) | 5V (всередині LDO 3.3V) | 0.75-6 м, гейти per 0.75 м | Розрізняє рух/статика, чутливість per гейтах 0-100 |
+| DWM1000 (Decawave) | UWB 3.5-6.5 ГГц, TWR | SPI + RST/IRQ | 3.3V | до 100 м (пряма видимість), точність ±10 см | Потрібні 2+ модулі (tag + anchor), антена on платі |
+| VS1838B | ІЧ-фотоприймач 38 кГц | Цифровий OUT | 3.3V (або 5V with дільником OUT) | 5-10 м (with пультом) | Демодулятор всередині; ESP32 RMT декодує NEC/RC5 |
+| SU-03T | Voice AI (NPU офлайн) | UART 115200 + GPIO-виходи | 5V | Мікрофон 3-5 м | Прошивка команд via WiseLight; відповідь синтезом/пінами |
+
+Навігація: UART [[04-Interfaces/01-UART|UART]], SPI [[04-Interfaces/02-SPI|SPI]], I2C [[04-Interfaces/03-I2C|I2C]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]], радіомодулі [[EN/12-Comm-Modules/02-NRF24-LoRa.en]], start [[EN/Home.en]].
+
+## Purpose
+
+LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування - LD2410 mmWave-радар присутності (UART + OUT); Легенда пінів модуля LD2410; ASCII-схема. LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування. Навігація: UART [[04-Interfaces/01-UART|UART]], SPI [[04-Interfaces/02-SPI|SPI]], I2C [[04-Interfaces/03-I2C|I2C]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]], радіомодулі 12-Comm-Modules/02-NRF24-LoRa, start Home.
+
+## 1. LD2410 mmWave-радар присутності (UART + OUT)
+
+Головна фішка: бачить **нерухому** людину (дихання), де PIR сліпне. Вихід **OUT** = HIGH коли хтось in зоні (можна without UART взагалі - how PIR). Тонке налаштування - per UART 256000 протоколом HLK (мобільний застосунок via BLE-версію LD2410B або `ld2410` tool): гейти 0-8 (кожен 0.75 м), чутливість руху/статики 0-100, затримка утримання.
+
+![[assets/img/ld2410-scheme.png|500]]
+*Fig. LD2410 - живлення 5V, OUT on GPIO how PIR, UART for конфігурації гейтів.*
+
+### Module pin legend LD2410
+
+| Пін | Тип | Куди | Примітка |
+| --- | --- | --- | --- |
+| VCC 5V | Живлення вхід | 5V | 5V стабільно; струм ~80 мА; ripple просаджує чутливість - електроліт 220 мкФ біля VCC |
+| GND | Земля | GND | Спільна земля |
+| OUT (OT1) | Вихід цифра 3.3V | GPIO4 (будь-which, with перериванням) | HIGH = присутність; можна працювати взагалі without UART - how PIR-датчик |
+| RX | Вхід UART | GPIO17 (TX2) | Швидкість 256000 for конфігурації; in робочому режимі можна NC |
+| TX | Вихід UART | GPIO16 (RX2) | Протокол HLK-кадрів (див. code); in простому режимі NC |
+| SDA / SCL | I2C (резерв) | NC | on стандартній прошивці not використовуються |
+
+Налаштування гейтів (example for кімнати 4 м): гейти 0-1 (0-1.5 м) чутливість руху 80/статики 60; гейти 5-8 (далеко for стіною) - 0 (відсікти сусідів!). Затримка unmanned delay 30-60 с проти блимання.
+
+### ASCII schematic
+
+```text
+ESP32 DevKit              LD2410
+─────────────              ──────
+5V ─────────────────────►  VCC 5V (+220мкФ!)
+GND ────────────────────   GND
+GPIO4 ◄─────────────────   OUT (HIGH=присутність, як PIR)
+GPIO17 (TX2) ──────────►   RX (256000, тільки для конфігу)
+GPIO16 (RX2) ◄──────────   TX (256000, тільки для конфігу)
+
+Мінімум (без конфігу): VCC + GND + OUT → GPIO4. Готово!
+Радар вішати вертикально, чіпом від стіни, метал позаду — екран.
+```
+
+### Mermaid
+
+```mermaid
+graph LR
+    ESP32[ESP32<br/>GPIO4 + UART2] -->|5V| VCC[VCC 5V]
+    ESP32 -->|GND| GNDM[GND]
+    OUT[OUT] -->|GPIO4 IRQ| ESP32
+    ESP32 -->|GPIO17 256000| RXM[RX]
+    TXM[TX] -->|GPIO16| ESP32
+```
+
+## 2. DWM1000 UWB-позиціонування (SPI, TWR)
+
+UWB-module Decawave DW1000: вимірює **час прольоту** радіоімпульсу (Two-Way Ranging) and дає дальність with точністю ~10 см. Мінімальна система: 1 tag (on об'єкті) + 1 anchor (база) = дальність; 3-4 anchor = 2D/3D-позиція (трилатерація). Бібліотеки Arduino: `thotro/arduino-dw1000`, `Makerfabs DW1000_Ranging`.
+
+> [!warning] UWB чутливий до живлення: ripple 3.3V >50 мВ погіршує точність. Окремий LDO + ферит + 100 нФ біля VCC.
+
+### Module pin legend DWM1000
+
+| Пін | Тип | Куди | Примітка |
+| --- | --- | --- | --- |
+| VCC 3.3V | Живлення вхід | 3V3 (окремий LDO рекомендовано) | Тільки 3.3V; струм TX до 150 мА імпульсно; ферит + 100 нФ |
+| GND | Земля | GND | Коротка, товста; спільна площина with антеною - not різати полігон |
+| SCK | Вхід SPI | GPIO18 | SPI до 20 МГц; дроти <10 см (UWB чутливий до джитера!) |
+| MOSI | Вхід SPI | GPIO23 | VSPI MOSI |
+| MISO | Вихід SPI | GPIO19 | VSPI MISO |
+| CS | Вхід SPI | GPIO5 | Chip select |
+| RST (RSTn) | Вхід, active low | GPIO15 | Апаратний reset: LOW 10 мс at startі |
+| IRQ | Вихід | GPIO4 | Переривання RX/TX done - обов'язково for TWR-таймінгів |
+| WAKEUP | Вхід | NC / 3V3 | for сну; in базовому прикладі NC |
+| ANT | Вбудована антена | Вільний простір! | not закривати металом/рукою; орієнтація модулів однакова; відстань from ESP32-антени ≥5 см |
+
+### ASCII schematic
+
+```text
+ESP32 DevKit              DWM1000
+─────────────              ───────
+3V3 (LDO!) ─────────────►  VCC 3.3V (+100нФ + ферит!)
+GND ────────────────────   GND
+GPIO18 (SCK) ───────────►  SCK (SPI <10см!)
+GPIO23 (MOSI) ──────────►  MOSI
+GPIO19 (MISO) ◄──────────  MISO
+GPIO5 (CS) ─────────────►  CS
+GPIO15 ─────────────────►  RST (LOW 10мс при startі)
+GPIO4 ◄─────────────────   IRQ (обов'язково!)
+                           [вбудована UWB-антена → вільний простір]
+```
+
+### Mermaid
+
+```mermaid
+graph LR
+    ESP32[ESP32<br/>VSPI + RST/IRQ] -->|3V3 LDO| VCC[VCC]
+    ESP32 -->|GND| GNDM[GND]
+    ESP32 -->|GPIO18| SCK[SCK]
+    ESP32 -->|GPIO23| MOSI[MOSI]
+    MISO[MISO] -->|GPIO19| ESP32
+    ESP32 -->|GPIO5| CS[CS]
+    ESP32 -->|GPIO15| RST[RST]
+    IRQ[IRQ] -->|GPIO4| ESP32
+    ANT[(UWB-антена<br/>вільний простір)] --- RF[DW1000]
+```
+
+## 3. VS1838 ІЧ-приймач (38 кГц, RMT)
+
+Три піни: живлення, земля, демодульований OUT (active low). ESP32 приймає NEC-кадри via **RMT-периферію** (бібліотека `IRremoteESP8266` або `Arduino-IRremote` with RMT). Дальність залежить from пульта and кута (±45°).
+
+### Module pin legend VS1838
+
+| Пін | Тип | Куди | Примітка |
+| --- | --- | --- | --- |
+| VCC | Живлення вхід | 3V3 (рекоменд.) або 5V | from 3.3V OUT-рівень безпечний безпосередньо; at 5V - OUT 5V → дільник 1к/2к on GPIO! |
+| GND | Земля | GND | Спільна земля |
+| OUT (S) | Вихід цифра, active low | GPIO13 (RMT-вхід, будь-which) | in спокої HIGH, посилки - пачки LOW 38 кГц; pull-up 10к до VCC (часто вже on платі) |
+
+> [!tip] VS1838 сліпне from ламп денного світла and сонця (ІЧ-шум 100 Гц). Ставити in тінь, додати програмний дебаунс повторів NEC (адреса+команда+інверсія).
+
+### ASCII schematic
+
+```text
+ESP32 DevKit              VS1838
+─────────────              ──────
+3V3 ────────────────────►  VCC (3.3V — OUT безпечний!)
+GND ────────────────────   GND (середня нога!)
+GPIO13 ◄────────────────   OUT (RMT-вхід, pull-up 10к)
+                           "віконце" → у бік пульта, не на сонце!
+
+Цоколівка фронтально (кулькою до себе): зліва OUT, середина GND, справа VCC!
+У модулів-Keyes порядок на платі підписаний: VCC-GND-OUT (перевірити шовкографію!).
+```
+
+### Mermaid
+
+```mermaid
+graph LR
+    ESP32[ESP32<br/>RMT RX] -->|3V3| VCC[VCC]
+    ESP32 -->|GND| GNDM[GND]
+    OUT[OUT] -->|GPIO13 RMT| ESP32
+    REMOTE((ІЧ-пульт<br/>NEC 38кГц)) -.->|світло| OUT
+```
+
+## 4. SU-03T голосове керування (UART, офлайн)
+
+module with NPU: розпізнає закладені команди without інтернету («включи світло», «відкрий ворота»). Прошивка команд - in середовищі **WiseLight** (ключові слова + відповіді + GPIO-дії). with ESP32 спілкується per UART (рядок розпізнаної команди) або готовими GPIO-виходами (B1-B6 HIGH-імпульс).
+
+### Module pin legend SU-03T
+
+| Пін | Тип | Куди | Примітка |
+| --- | --- | --- | --- |
+| VCC 5V | Живлення вхід | 5V | 5V, ~150 мА; чутливий до шуму БЖ - окремий LDO/електроліт 470 мкФ |
+| GND | Земля | GND | Спільна земля |
+| TX | Вихід UART | GPIO16 (RX2) | 115200 8N1; формат: `+ASR: команда\r\n` (залежить from firmwares WiseLight) |
+| RX | Вхід UART | GPIO17 (TX2) | Команди синтезу відповіді / керування with ESP32 |
+| B1-B6 (GPIO) | Виходи, HIGH-імпульс | GPIO4/13/... (опційно) | Пряме керування реле without ESP32-парсингу: кожній команді - свій пін |
+| MIC+/MIC− | Аналог | Штатний MEMS-мікрофон | not подовжувати дроти мікрофона! module ближче до джерела голосу |
+
+### ASCII schematic
+
+```text
+ESP32 DevKit              SU-03T
+─────────────              ──────
+5V ─────────────────────►  VCC 5V (+470мкФ!)
+GND ────────────────────   GND
+GPIO16 (RX2) ◄──────────   TX (115200, "+ASR: ...")
+GPIO17 (TX2) ──────────►   RX
+GPIO4 ◄─────────────────   B1 (HIGH-імпульс команди 1, опційно)
+                           MIC → штатний мікрофон (не подовжувати!)
+```
+
+### Mermaid
+
+```mermaid
+graph LR
+    ESP32[ESP32<br/>UART2] -->|5V| VCC[VCC]
+    ESP32 -->|GND| GNDM[GND]
+    TXM[TX 115200] -->|GPIO16| ESP32
+    ESP32 -->|GPIO17| RXM[RX]
+    B1[B1..B6] -->|GPIO4| ESP32
+    MIC[(мікрофон)] --- AU[SU-03T NPU]
+```
+
+## Code - присутність / дальність / ІЧ / голос
+
+### Arduino (LD2410 - OUT how PIR + UART-конфіг читання кадру)
+
+```cpp
+// Простий режим: OUT -> GPIO4
+#define RADAR_OUT 4
+void setup() {
+  Serial.begin(115200);
+  pinMode(RADAR_OUT, INPUT);
+}
+void loop() {
+  Serial.println(digitalRead(RADAR_OUT) ? "Присутність!" : "Порожньо");
+  delay(500);
+}
+```
+
+```cpp
+// Розширений: читання HLK-кадрів LD2410 (256000 бод, інженерний режим)
+void setup() {
+  Serial.begin(115200);
+  Serial2.begin(256000, SERIAL_8N1, 16, 17); // RX=16 TX=17
+  // Увімкнути інженерний режим: F4 F3 F2 F1 0E 00 62 00 ... (див. мануал HLK)
+}
+void loop() {
+  // Кадр: F4 F3 F2 F1 LEN(2) TYPE(2) DATA... CRC F8 F7 F6 F5
+  // Інженерний тип 0x01: рух-дальність, статика-дальність, енергії гейтів.
+  // Для продакшену візьміть бібліотеку ld2410 (ncmreynolds) — парсинг готовий.
+  while (Serial2.available()) Serial.printf("%02X ", Serial2.read());
+  Serial.println(); delay(200);
+}
+```
+
+### Arduino (VS1838 - IRremoteESP8266 + RMT)
+
+```cpp
+#include <IRremoteESP8266.h>
+#include <IRrecv.h>
+#include <IRutils.h>
+#define IR_PIN 13
+IRrecv ir(IR_PIN);
+decode_results res;
+void setup() {
+  Serial.begin(115200);
+  ir.enableIRIn(); // RMT під капотом на ESP32
+}
+void loop() {
+  if (ir.decode(&res)) {
+    Serial.println(resultToHumanReadableBasic(&res)); // протокол + код NEC
+    ir.resume();
+  }
+}
+```
+
+### Arduino (DWM1000 - ranging, бібліотека arduino-dw1000)
+
+```cpp
+// Потрібна бібліотека thotro/arduino-dw1000. Піни: CS=5, RST=15, IRQ=4.
+#include <DW1000.h>
+void setup() {
+  Serial.begin(115200);
+  SPI.begin(18, 19, 23, 5);
+  DW1000.begin(5, 15, 4);
+  DW1000.configureAsTag(); // повний конфіг (адреса, канал, PRF) — див. RangingTag
+  Serial.println("DWM1000 tag ready");
+}
+```
+
+> [!warning] code вище - каркас: повний TWR-example беріть with `examples/RangingTag` / `RangingAnchor` бібліотеки (там же конфіг каналу 5, PRF 64 МГц, преамбула 128). Tag and Anchor - різні firmwares on двох ESP32!
+
+### ESP-IDF (LD2410 OUT + RMT NEC-декодер, концепт)
+
+```c
+#include "driver/gpio.h"
+#include "driver/rmt_rx.h"
+#define RADAR_OUT 4
+#define IR_PIN 13
+void app_main(void) {
+    gpio_set_direction(RADAR_OUT, GPIO_MODE_INPUT);
+    // RMT RX-канал для NEC: resolution 1 МГц, min duration фільтр 100 нс.
+    // rmt_new_rx_channel() + rmt_new_copy_encoder... повний приклад:
+    // examples/peripherals/rmt/rmt_rx_nec в ESP-IDF.
+    while (1) {
+        int present = gpio_get_level(RADAR_OUT);
+        // TODO: опублікувати present по MQTT / увімкнути світло.
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
+}
+```
+
+### MicroPython (LD2410 OUT + VS1838 polling + SU-03T UART)
+
+```python
+from machine import Pin, UART
+import time
+radar = Pin(4, Pin.IN)          # LD2410 OUT
+ir = Pin(13, Pin.IN)            # VS1838 OUT (спрощено: детект посилки)
+voice = UART(2, baudrate=115200, rx=16, tx=17)  # SU-03T
+last = 0
+while True:
+    if radar.value():
+        print("Радар: присутність")
+    if ir.value() == 0 and time.ticks_ms() - last > 300:
+        last = time.ticks_ms()
+        print("ІЧ: посилка (декодування — по RMT/IR-библіотеці)")
+    if voice.any():
+        print("Голос:", voice.readline().decode(errors="ignore").strip())
+    time.sleep_ms(200)
+```
+
+### HB100: доплер 10 ГГц for $3 (дід усіх радарів)
+
+| Параметр | HB100 | RCWL-0516 | LD2410 |
+| --- | --- | --- | --- |
+| Частота | 10.525 ГГц (доплер!) | ~3 ГГц доплер | 24 ГГц FMCW |
+| Вихід | Аналоговий IF (мікровольти!) | Цифровий тригер | UART + гейти |
+| Підсилення | Потрібен ОУ (LM358 ×1000) | Вбудовано | Вбудовано |
+| that вміє | Тільки РУХ (швидкість!), відстані немає | Рух крізь стіни | Рух + відстань + нерухомі |
+| Коли | Радіоаматорство, навчання доплеру | Дешевий тригер | Все інше |
+
+```text
+HB100 + LM358: IF → компаратор → GPIO-переривання ESP32.
+Чутливість гвинтом на модулі; дощ/гойдання дерев — хибні спрацювання (як у всіх доплерів!).
+Для продакшену — LD2410: той самий цінник, але з відстанню і фільтрами.
+```
+
+### LD2410C / HLK-LD2420 - молодші брати
+
+| Параметр | LD2410 | LD2410C | HLK-LD2420 |
+| --- | --- | --- | --- |
+| Формат | module with антенами on платі | Компактна версія, менша плата | Мінімалістичний, дешевший |
+| Керування | OUT + UART 256000 | OUT + UART (спрощений протокол) | OUT + UART |
+| Гейти | 0-8 with чутливістю руху/статики | Скорочений набір | Базовий поріг + затримка |
+| Коли брати | Повний контроль зон | Тісні корпуси, ціна | Простий тригер присутності |
+
+```text
+ESP32 GPIO4 ◄── OUT LD2410C/LD2420 (HIGH=присутність, як PIR)
+5V ──► VCC (+100мкФ), GND спільна
+```
+
+> Усі три - одна родина HLK: OUT-логіка сумісна, UART-протоколи відрізняються деталями - конфіг-утиліту брати під конкретну модель.
+
+![[assets/img/ld2410c-out-scheme.png|500]]
+*Fig. LD2410C/LD2420: мінімум VCC+GND+OUT, UART лише for конфігурації.*
+
+## typical errors
+
+| # | Symptom | Cause | Виправлення |
+| --- | --- | --- | --- |
+| 1 | LD2410 бачить сусідів for стіною | Заводська чутливість 100 on всіх гейтах | Занулити далекі гейти (5-8 → 0), встановити дистанцію max 3-4 м, unmanned delay 30 с |
+| 2 | LD2410 блимає присутність/порожньо | Вентилятор/штора гойдається; БЖ-ripple | Прибрати рухомі предмети with променя; електроліт 220 мкФ; збільшити delay |
+| 3 | LD2410 not відповідає per UART | Швидкість not 256000; переплутані RX/TX | `Serial2.begin(256000, SERIAL_8N1, 16, 17)`; поміняти місцями; OUT at цьому працює and without UART |
+| 4 | DWM1000 `init fail` / дальність стрибає ±2 м | Довгі SPI-дроти; ripple живлення; антена закрита | SPI <10 см; окремий LDO + ферит; вільний простір навколо антени; однакова орієнтація пари |
+| 5 | DWM1000 дає 0 м завжди | Tag говорить with Tag (немає Anchor) / різні конфіги каналу | Прошити пару Tag+Anchor with прикладів; однакові channel/PRF/preamble on обох |
+| 6 | VS1838 ловить фантоми / not бачить пульт | Люмінесцентні лампи/сонце; сілий OUT without pull-up; пульт not NEC | Затінити датчик; pull-up 10к; вивести `resultToHumanReadableBasic` - дізнатись протокол пульта |
+| 7 | VS1838 мовчить | Цоколівка переплутана (OUT/GND/VCC) | Звірити шовкографію плати Keyes (VCC-GND-OUT), but not «голий» даташит |
+| 8 | SU-03T not розпізнає | Шумний БЖ; мікрофон далеко/подовжено; немає firmwares команд | Окреме живлення + 470 мкФ; module ближче до користувача; прошити WiseLight-словник українською |
+| 9 | LD2410C/LD2420 конфігурять утилітою from LD2410 | Протоколи схожі, але not ідентичні | Утиліта/бібліотека строго під свою модель; OUT-режим - універсальний |
+
+![[assets/img/radar-uwb-ir-voice-scheme.png|500]]
+*Fig. Загальна схема: LD2410 OUT + VS1838 RMT + SU-03T UART + DWM1000 SPI on одному ESP32.*
+
+## Official sources
+
+- [HLK-LD2410 - виробник (Hi-Link)](https://www.hlktech.net/index.php?id=988) - мануал, фото, гейти 0-8.
+- [LD2410 + ESP32 - туторіал with кодом](https://how2electronics.com/ld2410-sensor-with-esp32-human-presence-detection/) - бібліотека ld2410.h, дистанція/енергія.
+- [LD2410 - ESPHome](https://esphome.io/components/sensor/ld2410.html) - YAML-конфіг, калібрування порогів гейтів.
+- DWM1000 (Qorvo/Decawave), VS1838, SU-03T - *verify вручну* (єдиних сторінок вендорів for модулів немає).
+
+- LD2410B Datasheet (Hi-Link, пошук PDF): [LD2410B search](https://www.alldatasheet.com/view.jsp?Searchword=LD2410B) - радар + BLE.
+
+## See also
+
+- [[04-Interfaces/01-UART|UART]] - UART2 for LD2410/SU-03T, швидкості 256000/115200
+- [[04-Interfaces/02-SPI|SPI]] - VSPI for DWM1000, вимоги до довжини
+- [[04-Interfaces/03-I2C|I2C]] - шини датчиків (резервні інтерфейси)
+- [[02-Power-Supply/01-Lancjugi-zhivlennya]] - LDO, ферити, електроліти for радіо
+- [[EN/12-Comm-Modules/01-RC522-RFID.en]] - антенні практики (метал, орієнтація)
+- [[EN/12-Comm-Modules/02-NRF24-LoRa.en]] - радіодальність, порівняння with UWB
+- [[EN/Home.en]] - startова сторінка довідника
