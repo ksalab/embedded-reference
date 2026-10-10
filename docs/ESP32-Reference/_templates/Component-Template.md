@@ -16,7 +16,7 @@ type: template
 # Шаблон компонента
 
 > [!tip] Як використовувати
-> Скопіюйте цей файл для кожного нового датчика/модуля в `05-Sensors/` або `06-Actuators/`. Заповніть усі таблиці. Приклади структури дивіться у [Як користуватись](../../../ESP32-Reference/00-Start/01-Yak-koristuvatis-dovidnikom.md) та термінологію у [Глосарії](../../../ESP32-Reference/00-Start/02-Glosariy.md). Вибір чипа звіряйте з [Порівнянням чипів](../../../ESP32-Reference/00-Start/03-Porivnyannya-chipiv.md), плату - з [DevKit](../../../ESP32-Reference/00-Start/04-Devkit-plati.md), середовище - з [Вибором середовища](../../../ESP32-Reference/00-Start/05-Vibir-seredovischa.md).
+> Скопіюйте цей файл для кожного нового датчика/модуля в `05-Sensors/` або `06-Actuators/`. Заповніть усі таблиці. Приклади структури дивіться у [Як користуватись](../../../ESP32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md) та термінологію у [Глосарії](../../../ESP32-Reference/UA/00-Start/02-Glosariy.md). Вибір чипа звіряйте з [Порівнянням чипів](../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md), плату - з [DevKit](../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md), середовище - з [Вибором середовища](../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md).
 >
 > [!warning] 3.3V логіка!
 > Усі GPIO ESP32 - 3.3V, **не 5V-толерантні**. Якщо модуль має 5V живлення (наприклад HC-SR04, реле 5V), сигнальні лінії до ESP32 узгоджуйте через дільник або TXS0108E. Інакше - пошкодження кристала.
@@ -30,7 +30,7 @@ type: template
 | Інтерфейс | I2C / SPI / UART (зазначити) |
 | Живлення модуля | 3.3V / 5V (зазначити) |
 | Рівень сигналів | 3.3V (обов'язково для ESP32) |
-| Сумісність | ESP32 / S3 / C3 ([таблиця чипів](../../../ESP32-Reference/00-Start/03-Porivnyannya-chipiv.md)) |
+| Сумісність | ESP32 / S3 / C3 ([таблиця чипів](../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)) |
 
 ## Характеристики
 
@@ -43,7 +43,7 @@ type: template
 | Робоча температура | -40…+85 °C | - |
 
 > [!tip] Живлення
-> Живіть ESP32 DevKit через USB 5V або VIN 5V (далі AMS1117 → 3.3V), див. [DevKit плати](../../../ESP32-Reference/00-Start/04-Devkit-plati.md). Сам кристал і GPIO - тільки 3.3V.
+> Живіть ESP32 DevKit через USB 5V або VIN 5V (далі AMS1117 → 3.3V), див. [DevKit плати](../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md). Сам кристал і GPIO - тільки 3.3V.
 
 ## Розпіновка модуля
 
@@ -115,7 +115,7 @@ i2c = I2C(0, sda=Pin(21), scl=Pin(22), freq=100000)
 print(i2c.scan())
 ```
 
-Детальніше про середовища: [Вибір середовища](../../../ESP32-Reference/00-Start/05-Vibir-seredovischa.md).
+Детальніше про середовища: [Вибір середовища](../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md).
 
 ## Типові помилки
 
@@ -128,9 +128,9 @@ print(i2c.scan())
 
 ## Див. також
 
-- [Як користуватись довідником](../../../ESP32-Reference/00-Start/01-Yak-koristuvatis-dovidnikom.md)
-- [Глосарій](../../../ESP32-Reference/00-Start/02-Glosariy.md)
-- [Порівняння чипів](../../../ESP32-Reference/00-Start/03-Porivnyannya-chipiv.md)
-- [DevKit плати](../../../ESP32-Reference/00-Start/04-Devkit-plati.md)
-- [Вибір середовища](../../../ESP32-Reference/00-Start/05-Vibir-seredovischa.md)
+- [Як користуватись довідником](../../../ESP32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md)
+- [Глосарій](../../../ESP32-Reference/UA/00-Start/02-Glosariy.md)
+- [Порівняння чипів](../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
+- [DevKit плати](../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md)
+- [Вибір середовища](../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
 - [Головна карта довідника](../../../ESP32-Reference/Home.md)

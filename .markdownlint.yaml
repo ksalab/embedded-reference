@@ -1,7 +1,7 @@
 # markdownlint config for *-Reference knowledge bases.
 # Run from this directory:
-#   markdownlint "ESP32-Reference/**/*.md" "STM32-Reference/**/*.md" \
-#     "ARDUINO-Reference/**/*.md" "RaspberryPi-Reference/**/*.md"
+#   markdownlint "obsidian_vault/ESP32-Reference/**/*.md" "obsidian_vault/STM32-Reference/**/*.md" \
+#     "obsidian_vault/ARDUINO-Reference/**/*.md" "obsidian_vault/RaspberryPi-Reference/**/*.md"
 default: true
 # Line length: tables and links are long by nature.
 MD013: false

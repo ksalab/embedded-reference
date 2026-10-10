@@ -16,6 +16,7 @@ import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 VAULTS = ["ESP32-Reference", "STM32-Reference", "ARDUINO-Reference", "RaspberryPi-Reference"]
+VAULT_ROOT = ROOT / "obsidian_vault"
 OUT = ROOT / "docs"
 
 WIKILINK = re.compile(r"(!?)\[\[([^\]]+)\]\]")
@@ -75,7 +76,7 @@ def convert_line(ln: str, doc_path: pathlib.PurePosixPath, vault: str, stems: di
 def main() -> None:
     n = 0
     for vault in VAULTS:
-        vp = ROOT / vault
+        vp = VAULT_ROOT / vault
         stems = build_stem_map(vp)
         for src in sorted(vp.rglob("*.md")):
             if ".obsidian" in str(src):

@@ -168,8 +168,8 @@
 - P1 (GSM/GPS/SIM): нова `12-Moduli-zvyazku/26-SIM-Power` (341→401: SIM/eSIM/PIN/PUK/DET/ESD + VBAT/TX-бурсти/buck/суперкап/шунт + антени розд. 8); PNG 117-118.
 - P1: `03-SIM800L-GPS` 256→595 (SMS/дзвінки/USSD/APN/GPRS/HTTPS/сон + NEO-порівняння/AssistNow/PPS/V_BCKP).
 - P1: `18-Cellular-LoRa-2` 932→1034 (TinyGSM vs стеки, TLS/час, keepalive, офлайн-буфер).
-- P1: `[GPS Tracker](../../ESP32-Reference/16-Proekti/02-GPS-Tracker.md)` 234→355 (бюджет батареї, локальний geofence, буфер, OTA, АКБ 12V, IP65).
-- P2: 9 нових нот - `[Industrial Sensors](../../ESP32-Reference/10-Sensori/38-Industrial-Sensors.md)`, `39-Wireless-Sensors`; `[ESP32C6 Boards](../../ESP32-Reference/14-Devboards/13-ESP32C6-Boards.md)`, `14-ESP32H2-Boards`; `[AWS IoT](../../ESP32-Reference/15-Protokoli/12-AWS-IoT.md)`, `13-Azure-IoT`, `14-MQTT-SN`; `13-Moduli-zhivlennya-rivniv/07-Stencil-Reflow`, `08-Conformal-Coating`; PNG 119-127.
+- P1: `[GPS Tracker](../../ESP32-Reference/UA/16-Proekti/02-GPS-Tracker.md)` 234→355 (бюджет батареї, локальний geofence, буфер, OTA, АКБ 12V, IP65).
+- P2: 9 нових нот - `[Industrial Sensors](../../ESP32-Reference/UA/10-Sensori/38-Industrial-Sensors.md)`, `39-Wireless-Sensors`; `[ESP32C6 Boards](../../ESP32-Reference/UA/14-Devboards/13-ESP32C6-Boards.md)`, `14-ESP32H2-Boards`; `[AWS IoT](../../ESP32-Reference/UA/15-Protokoli/12-AWS-IoT.md)`, `13-Azure-IoT`, `14-MQTT-SN`; `13-Moduli-zhivlennya-rivniv/07-Stencil-Reflow`, `08-Conformal-Coating`; PNG 119-127.
 - `Home.md`: навігація доповнена (10→39, 12→26, 13→7, 14→14, 15→14 нот).
 - Перевірка: 196 файлів / 3537 лінків / 0 broken / PNG 162 (missing NONE).
 
@@ -183,13 +183,13 @@
 
 - Схеми PNG 112-116 (`agro-soil-weather`, `bio-2-ecg-emg`, `diy-instruments-ad9833`, `secure-elements-atecc`, `mqtt-client-3stack`); таблиця `assets/README.md` доповнена, список зайнятих імен оновлено.
 - `TODO.md` - реєстр недоробленого і план розширення (P0/P1/P2/P3).
-- Рис. 2 у `[Cloud 2](../../ESP32-Reference/15-Protokoli/11-Cloud-2.md).md` (три MQTT-стеки поруч).
+- Рис. 2 у `[Cloud 2](../../ESP32-Reference/UA/15-Protokoli/11-Cloud-2.md).md` (три MQTT-стеки поруч).
 
 ### Виправлено
 
 - `scripts/generate_schemes.py`: 5 записів черги 16 перенесено всередину `C = {...}` (були поза словником → SyntaxError); скрипт знову генерує 134 PNG.
-- Битий лінк на `[BLE Bluetooth](../../ESP32-Reference/05-Radio/02-BLE-Bluetooth.md)` (залишок старого імені).
-- Вставки зображень: `[Agro](../../ESP32-Reference/10-Sensori/36-Agro.md).md` (2× формат `![][`, рис. 1-2), `[Bio 2](../../ESP32-Reference/10-Sensori/37-Bio-2.md).md` (ембед у бектиках не рендерився), `12-Moduli-zvyazku/25-Secure-Elements.md` (формат `![][`).
+- Битий лінк на `[BLE Bluetooth](../../ESP32-Reference/UA/05-Radio/02-BLE-Bluetooth.md)` (залишок старого імені).
+- Вставки зображень: `[Agro](../../ESP32-Reference/UA/10-Sensori/36-Agro.md).md` (2× формат `![][`, рис. 1-2), `[Bio 2](../../ESP32-Reference/UA/10-Sensori/37-Bio-2.md).md` (ембед у бектиках не рендерився), `12-Moduli-zvyazku/25-Secure-Elements.md` (формат `![][`).
 - Розсинхрон змісту: `mqtt-client-3stack-scheme.png` замість невідповідного `cloud-2-firebase-shelly` (нота 11-Cloud-2 - про MQTT-клієнт, не Firebase/Shelly).
 - Перевірка: 186 файлів / 3357 лінків / 0 broken / PNG 151 (missing NONE).
 
@@ -204,11 +204,11 @@
 
 ### Змінено
 
-- Поглиблено чергу 14 до «дуже докладно»: `[PCB Design](../../ESP32-Reference/17-Lab/04-PCB-Design.md)` 491→846 (розрахунки з числами), `[Tails](../../ESP32-Reference/10-Sensori/35-Tails.md)` 261→559 (ENS210/SGP41/TGS8100, ZMOD4510→«не брати»), `[Versions](../../ESP32-Reference/99-Dodatki/07-Versions.md)` 125→318 (міграції IDF/Arduino/MP, deprecated-таблиця), Strapping/UART/SPI/SD/WDT/Sleep - всі 400+.
+- Поглиблено чергу 14 до «дуже докладно»: `[PCB Design](../../ESP32-Reference/UA/17-Lab/04-PCB-Design.md)` 491→846 (розрахунки з числами), `[Tails](../../ESP32-Reference/UA/10-Sensori/35-Tails.md)` 261→559 (ENS210/SGP41/TGS8100, ZMOD4510→«не брати»), `[Versions](../../ESP32-Reference/UA/99-Dodatki/07-Versions.md)` 125→318 (міграції IDF/Arduino/MP, deprecated-таблиця), Strapping/UART/SPI/SD/WDT/Sleep - всі 400+.
 
 ### Виправлено
 
-- Прибрано сміттєвий рядок `uint16т dummy` з CRC-прикладa в `[UART](../../ESP32-Reference/04-Shini/01-UART.md).md`.
+- Прибрано сміттєвий рядок `uint16т dummy` з CRC-прикладa в `[UART](../../ESP32-Reference/UA/04-Shini/01-UART.md).md`.
 
 ## [v0.13] - 2026-09-29
 
@@ -226,31 +226,31 @@
 
 ### Додано
 
-- Черга 12: `14-Devboards/10-12` (міні/HMI/ретро), `[ESP32 C5 C61](../../ESP32-Reference/01-Hardware/10-ESP32-C5-C61.md)`, Porivnyannya 88→191.
+- Черга 12: `14-Devboards/10-12` (міні/HMI/ретро), `[ESP32 C5 C61](../../ESP32-Reference/UA/01-Hardware/10-ESP32-C5-C61.md)`, Porivnyannya 88→191.
 - Черга 13: `12-Moduli-zvyazku/17-20` (RTK, Cat-1/LoRa-2, дротові-2, NFC-2).
-- Черга 14: `[PCB Design](../../ESP32-Reference/17-Lab/04-PCB-Design.md)`, `[Tails](../../ESP32-Reference/10-Sensori/35-Tails.md)`, `[Versions](../../ESP32-Reference/99-Dodatki/07-Versions.md)`, поглиблено Strapping/UART/SPI/SD/WDT/Sleep (+70-166).
+- Черга 14: `[PCB Design](../../ESP32-Reference/UA/17-Lab/04-PCB-Design.md)`, `[Tails](../../ESP32-Reference/UA/10-Sensori/35-Tails.md)`, `[Versions](../../ESP32-Reference/UA/99-Dodatki/07-Versions.md)`, поглиблено Strapping/UART/SPI/SD/WDT/Sleep (+70-166).
 - Схеми PNG 98-108; рядки Home оновлено.
 
 ## [v0.10] - 2026-09-29
 
 ### Додано
 
-- Черга 11 (звук/голос): I2S 76→520 рядків (DMA/TDM/PDM), `[MP3 TTS Amps](../../ESP32-Reference/11-Vivid/18-MP3-TTS-Amps.md)`, `19-WebRadio-Streaming`, `12-Moduli-zvyazku/16-Offline-Voice`, `[Voice Assistant](../../ESP32-Reference/15-Protokoli/10-Voice-Assistant.md)`.
+- Черга 11 (звук/голос): I2S 76→520 рядків (DMA/TDM/PDM), `[MP3 TTS Amps](../../ESP32-Reference/UA/11-Vivid/18-MP3-TTS-Amps.md)`, `19-WebRadio-Streaming`, `12-Moduli-zvyazku/16-Offline-Voice`, `[Voice Assistant](../../ESP32-Reference/UA/15-Protokoli/10-Voice-Assistant.md)`.
 - Схеми PNG 93-97; рядки Home оновлено.
 
 ## [v0.9] - 2026-09-29
 
 ### Додано
 
-- Черга 10: `12-Moduli-zvyazku/15-RFID-Advanced` (977 рядків: Mifare-deep, T5577, UHF, Wiegand/OSDP), `[BLE Gateway Tracker](../../ESP32-Reference/05-Radio/06-BLE-Gateway-Tracker.md)` (ESPresense, pvvx), `[BLE5 LongRange Audio](../../ESP32-Reference/05-Radio/07-BLE5-LongRange-Audio.md)` (Coded, LE Audio).
+- Черга 10: `12-Moduli-zvyazku/15-RFID-Advanced` (977 рядків: Mifare-deep, T5577, UHF, Wiegand/OSDP), `[BLE Gateway Tracker](../../ESP32-Reference/UA/05-Radio/06-BLE-Gateway-Tracker.md)` (ESPresense, pvvx), `[BLE5 LongRange Audio](../../ESP32-Reference/UA/05-Radio/07-BLE5-LongRange-Audio.md)` (Coded, LE Audio).
 - Схеми PNG 90-92; рядки Home оновлено.
 
 ## [v0.8] - 2026-09-29
 
 ### Додано
 
-- Черга 8: `10-Sensori/28-33` (клімат-newgen, радар/лідар 60ГГц, термопари, IMU-3, світло-2, ввід/IO-2), `[Displays 3](../../ESP32-Reference/11-Vivid/14-Displays-3.md)`.
-- Черга 9: `[EInk](../../ESP32-Reference/11-Vivid/15-EInk.md)` (SSD1680, partial refresh), `16-LCD-Char` (HD44780 вглиб), `17-Touchscreens` (CST816/GT911/XPT2046), `[Buttons Switches Pots](../../ESP32-Reference/10-Sensori/34-Buttons-Switches-Pots.md)` (NO-NC, дебаунс ×3), `12-Moduli-zvyazku/14-Proximity-Inputs` (LJ12A3, NPN/PNP, PC817).
+- Черга 8: `10-Sensori/28-33` (клімат-newgen, радар/лідар 60ГГц, термопари, IMU-3, світло-2, ввід/IO-2), `[Displays 3](../../ESP32-Reference/UA/11-Vivid/14-Displays-3.md)`.
+- Черга 9: `[EInk](../../ESP32-Reference/UA/11-Vivid/15-EInk.md)` (SSD1680, partial refresh), `16-LCD-Char` (HD44780 вглиб), `17-Touchscreens` (CST816/GT911/XPT2046), `[Buttons Switches Pots](../../ESP32-Reference/UA/10-Sensori/34-Buttons-Switches-Pots.md)` (NO-NC, дебаунс ×3), `12-Moduli-zvyazku/14-Proximity-Inputs` (LJ12A3, NPN/PNP, PC817).
 - Схеми PNG 78-89 у `scripts/generate_schemes.py` + `assets/README.md`; рядки Home оновлено.
 
 ### Виправлено
@@ -270,17 +270,17 @@
 ### Додано
 
 - Розділ `17-Lab`: 3 ноти про інструменти, soldering та сертифікацію.
-- Сенсори хвиля-4: `[Env NewGen](../../ESP32-Reference/10-Sensori/28-Env-NewGen.md)`, `29-Range-Lidar-60GHz`, `30-Temp-Precision`, `31-IMU-Mag-3`.
-- Ноти виводу `[Displays 3](../../ESP32-Reference/11-Vivid/14-Displays-3.md)`: SSD1322/1351/ST7796/GC9A01/RA8875/FT81x.
-- Ноти протоколу `[Matter Thread Zigbee](../../ESP32-Reference/15-Protokoli/09-Matter-Thread-Zigbee.md)`, `[BLE Mesh A2DP HID](../../ESP32-Reference/05-Radio/05-BLE-Mesh-A2DP-HID.md)`, `[Audio Codecs](../../ESP32-Reference/11-Vivid/13-Audio-Codecs.md)`.
+- Сенсори хвиля-4: `[Env NewGen](../../ESP32-Reference/UA/10-Sensori/28-Env-NewGen.md)`, `29-Range-Lidar-60GHz`, `30-Temp-Precision`, `31-IMU-Mag-3`.
+- Ноти виводу `[Displays 3](../../ESP32-Reference/UA/11-Vivid/14-Displays-3.md)`: SSD1322/1351/ST7796/GC9A01/RA8875/FT81x.
+- Ноти протоколу `[Matter Thread Zigbee](../../ESP32-Reference/UA/15-Protokoli/09-Matter-Thread-Zigbee.md)`, `[BLE Mesh A2DP HID](../../ESP32-Reference/UA/05-Radio/05-BLE-Mesh-A2DP-HID.md)`, `[Audio Codecs](../../ESP32-Reference/UA/11-Vivid/13-Audio-Codecs.md)`.
 - Ноти зв'язку `12-Moduli-zvyazku/12-RC-Protocols`, `13-Camera-Streaming`.
 - Оновлено `scripts/generate_schemes.py` (95 PNG) та `assets/README.md` (позиції 53-77).
-- Змінено `[Official Sources Modules](../../ESP32-Reference/99-Dodatki/06-Official-Sources-Modules.md).md` та `05-Official-Sources-Sensors`.
+- Змінено `[Official Sources Modules](../../ESP32-Reference/UA/99-Dodatki/06-Official-Sources-Modules.md).md` та `05-Official-Sources-Sensors`.
 
 ### Змінено
 
 - `Home.md`: додавання нових розділів у навігацію та індекс сторінок.
-- `[Porivnyannya chipiv](../../ESP32-Reference/00-Start/03-Porivnyannya-chipiv.md).md`: оновлена таблиця чипів з C2/P4.
+- `[Porivnyannya chipiv](../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md).md`: оновлена таблиця чипів з C2/P4.
 
 ### Виправлено
 
