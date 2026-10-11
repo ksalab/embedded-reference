@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. CANopen node: FDCAN bus 1 Mbit/s, object dictionary, SDO server, event TPDO.*
 
 > [!tip] What this note is
-> Industrial CAN one level above raw CAN: node addressing, standardized data, configuration with no reflashing. CANopenNode stack + FDCAN. Base: [[04-Interfaces/04-FDCAN.en | FDCAN bus]], [[12-Comm-Modules/02-RS485-CAN-Ethernet | RS485/CAN/Ethernet]].
+> Industrial CAN one level above raw CAN: node addressing, standardized data, configuration with no reflashing. CANopenNode stack + FDCAN. Base: [[04-Interfaces/04-FDCAN.en | FDCAN bus]], [[EN/12-Comm-Modules/02-RS485-CAN-Ethernet.en| RS485/CAN/Ethernet]].
 
 ## 1. Goal
 
@@ -180,7 +180,7 @@ Honestly: a full MicroPython stack is for learning; production is C + CANopenNod
 
 - [[04-Interfaces/04-FDCAN.en | FDCAN bus]] - iron level.
 - [[15-Protocols/01-Modbus.en | Modbus protocol]] - younger brother.
-- [[12-Comm-Modules/02-RS485-CAN-Ethernet | RS485/CAN/Ethernet]] - transceivers.
+- [[EN/12-Comm-Modules/02-RS485-CAN-Ethernet.en| RS485/CAN/Ethernet]] - transceivers.
 - [[09-Firmware/06-FreeRTOS.en | RTOS operation]] - stack tasks.
 - [[Home.en | Main map]] - full navigation.
 

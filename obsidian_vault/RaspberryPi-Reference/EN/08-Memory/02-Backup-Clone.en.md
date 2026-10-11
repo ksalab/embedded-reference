@@ -131,7 +131,7 @@ Hardlink copies (`cp -al`) - 7 daily slices for the price of one plus deltas. Ro
 - [[EN/08-Memory/01-SD-eMMC-NVMe.en|storage media]] - what we back up.
 - [[EN/09-Firmware/01-Imager-Headless.en|Imager flashing]] - writing images back.
 - [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - what goes into the golden image.
-- [[15-Protocols/01-MQTT|broker config backup]] - what to store.
+- [[EN/15-Protocols/01-MQTT.en|broker config backup]] - what to store.
 - [[Home.en|main map]] - full navigation.
 
 ## 9.1 Backup calendar

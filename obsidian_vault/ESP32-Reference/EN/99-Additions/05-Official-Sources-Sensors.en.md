@@ -60,10 +60,10 @@ date: 2026-10-08
 
 - [[EN/Home.en]]
 - [[EN/99-Additions/04-Datasheet-Links.en]]
-- [[10-Sensors/03-BME280-BMP280-SHT31]]
-- [[11-Vivid/01-OLED-SSD1306]]
-- [[11-Vivid/02-TFT-LCD-Epaper]]
+- [[EN/10-Sensors/03-BME280-BMP280-SHT31.en]]
+- [[EN/11-Vivid/01-OLED-SSD1306.en]]
+- [[EN/11-Vivid/02-TFT-LCD-Epaper.en]]
 
 ![[assets/img/sources-sensors-scheme.png|600]]
 
-> UA original twin: [[99-Additions/05-Official-Sources-Sensors.md | UA]]
+> UA original twin: [[EN/99-Additions/05-Official-Sources-Sensors.en| UA]]

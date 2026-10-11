@@ -45,6 +45,6 @@ date: 2026-10-08
 
 - [[EN/Home.en]]
 - [[EN/01-Hardware/01-ESP32-Classic.en]]
-- [[01-Hardware/04-ESP32-C3-C6-H2]]
+- [[EN/01-Hardware/04-ESP32-C3-C6-H2.en]]
 
-> UA original twin: [[99-Additions/07-Versions.md | UA]]
+> UA original twin: [[EN/99-Additions/07-Versions.en| UA]]

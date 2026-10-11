@@ -115,7 +115,7 @@ TIM_Trigger_ADC();                 // вимір у тихий момент ШІ
 | 3 | Store in node EEPROM |
 | 4 | Check once a year |
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -145,7 +145,7 @@ TIM_Trigger_ADC();                 // вимір у тихий момент ШІ
 | PGA | x64 gives 3.2 V to ADC |
 | Resolution | 10 A / 4096 is about 2.4 mA per least bit |
 
-## Official Sources
+## Official sources
 
 - [AN4834 Current sensing (ST)](https://www.st.com/resource/en/application_note/an4834.pdf) - shunts, op-amps, sync.
 - [INA18x datasheets (TI)](https://www.ti.com/lit/ds/symlink/ina180.pdf) - high-side practice (for external stages).
@@ -155,6 +155,6 @@ TIM_Trigger_ADC();                 // вимір у тихий момент ШІ
 - [[Home.en]]
 - [[EN/06-Analog/03-COMP-OPAMP.en|comparators and op-amps]]
 - [[EN/06-Analog/01-ADC.en|signal measurement]]
-- [[10-Sensors/04-INA219-HX711|current and weight]]
+- [[EN/10-Sensors/04-INA219-HX711.en|current and weight]]
 - [[EN/01-Hardware/03-G0-G4.en|G4 analog]]
-- [[16-Projects/03-Energomonitor|energy metering]]
+- [[EN/16-Projects/03-Energy-Monitor.en|energy metering]]

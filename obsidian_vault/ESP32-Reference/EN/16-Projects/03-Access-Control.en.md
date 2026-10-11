@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Access control: ESP32 + RC522 RFID + relay + 12V electric lock, MQTT uplink, NVS lists.*
 
 > [!tip] What we are building
-> Door access with MIFARE cards: read UID, check allow/deny lists in NVS, open relay for 5 s, publish event, accept remote add/del/sync commands. Base: [[12-Comm-Modules/01-RC522-RFID.en | RC522]], [[11-Vivid/03-NeoPixel-Servo-Rele-MOSFET.en | Relay]], [[15-Protocols/01-MQTT.en | MQTT]], [[04-Interfaces/03-I2C | I2C]].
+> Door access with MIFARE cards: read UID, check allow/deny lists in NVS, open relay for 5 s, publish event, accept remote add/del/sync commands. Base: [[12-Comm-Modules/01-RC522-RFID.en | RC522]], [[11-Vivid/03-NeoPixel-Servo-Rele-MOSFET.en | Relay]], [[15-Protocols/01-MQTT.en | MQTT]], [[EN/04-Interfaces/03-I2C.en| I2C]].
 
 ## 1. Goal
 
@@ -55,9 +55,9 @@ Requirements:
 | Electric lock 12V + 12V PSU 2A | [[11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.en | Power]] | $20 |
 | Diode 1N4007 parallel to lock | [[11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.en | Power]] | $0.2 |
 | Buzzer + red/green LED | [[11-Vivid/04-L298N-TB6612-A4988-Buzzer.en | Sound]] | $1 |
-| Exit button (NO) | [[03-GPIO/04-Pererivannya-PWM | GPIO]] | $1 |
-| 5V 2A PSU for ESP32+relay | [[02-Power-Supply/02-LDO-DC-DC | LDO]] | $5 |
-| Enclosure + UTP cable to reader | [[99-Additions/03-Cheklisti-montazhu | Assembly checklists]] | $4 |
+| Exit button (NO) | [[EN/03-GPIO/04-Interrupts-PWM.en| GPIO]] | $1 |
+| 5V 2A PSU for ESP32+relay | [[EN/02-Power-Supply/02-LDO-DC-DC.en| LDO]] | $5 |
+| Enclosure + UTP cable to reader | [[EN/99-Additions/03-Cheklisti-montazhu.en| Assembly checklists]] | $4 |
 
 Total: ~$41.
 
@@ -178,6 +178,6 @@ void loop() {
 - [[12-Comm-Modules/01-RC522-RFID.en | RC522]]
 - [[11-Vivid/03-NeoPixel-Servo-Rele-MOSFET.en | Relay]]
 - [[15-Protocols/01-MQTT.en | MQTT]]
-- [[04-Interfaces/03-I2C | I2C]]
+- [[EN/04-Interfaces/03-I2C.en| I2C]]
 - [[16-Projects/01-Weather-Station.en | Weather Station]]
 - [[16-Projects/04-Energy-Monitor.en | Energy Monitor]]

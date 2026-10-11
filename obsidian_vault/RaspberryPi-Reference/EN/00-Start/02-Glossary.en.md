@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Term map: hardware (SoC to board to HAT), interfaces (GPIO to buses to CSI/DSI), software (OS to libraries to cloud).*
 
 > [!tip] What this note is
-> Base dictionary: each term in one paragraph linked to a note. Read it on the first meeting with an unknown word. Entry: [[00-Start/01-Yak-koristuvatis-dovidnikom|how to use]], next: [[00-Start/03-Porivnyannya-plate|board comparison]].
+> Base dictionary: each term in one paragraph linked to a note. Read it on the first meeting with an unknown word. Entry: [[EN/00-Start/01-How-to-Use-Guide.en|how to use]], next: [[EN/00-Start/03-Board-Comparison.en|board comparison]].
 
 ## 1. Goal
 
@@ -42,7 +42,7 @@ flowchart TB
 
 | Term | Meaning | Note |
 | --- | --- | --- |
-| SoC | crystal with CPU+GPU+memory (BCM2712, RP2040) | [[01-Hardware/01-SoC-Oglyad| SoC overview]] |
+| SoC | crystal with CPU+GPU+memory (BCM2712, RP2040) | [[EN/01-Hardware/01-SoC-Overview.en| SoC overview]] |
 | BCM2712 | Pi 5 chip: 4xA76 2.4 GHz, VideoCore VII | [[01-Hardware/02-BCM2712-Pi5.en | BCM2712 and Pi 5]] |
 | RP2040/RP2350 | Pico microcontrollers: M0+/M33, PIO | [[01-Hardware/03-RP2040-RP2350.en | RP2040 and RP2350]] |
 | Pi 5/4/Zero/Pico | board models of various classes | [[14-Devboards/01-Pi5-Flagman.en | Pi 5 flagship]] |
@@ -145,9 +145,9 @@ flowchart TB
 
 ## 9. Related notes
 
-- [[00-Start/01-Yak-koristuvatis-dovidnikom|how to use]] - reading paths.
-- [[00-Start/03-Porivnyannya-plate|board comparison]] - hardware choice.
-- [[00-Start/05-Vibir-seredovischa|environment choice]] - software choice.
+- [[EN/00-Start/01-How-to-Use-Guide.en|how to use]] - reading paths.
+- [[EN/00-Start/03-Board-Comparison.en|board comparison]] - hardware choice.
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]] - software choice.
 - [[Home.en|home map]] - full navigation.
 
 ## Official sources

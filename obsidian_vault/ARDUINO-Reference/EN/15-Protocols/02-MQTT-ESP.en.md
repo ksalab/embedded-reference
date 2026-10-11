@@ -225,4 +225,4 @@ flowchart TB
 - [[Home.en]]
 - [[EN/04-Interfaces/01-UART.en|serial port]]
 - [[EN/15-Protocols/01-Modbus.en|industrial protocol]]
-- [[16-Projects/01-Meteostantsiya|weather node]]
+- [[EN/16-Proekti/01-Weather-Station.en|weather node]]

@@ -132,8 +132,8 @@ pause()
 
 - [[EN/00-Start/02-Glossary.en|glossary]] - all terms.
 - [[EN/03-GPIO/02-PWM-Interrupts.en|PWM and interrupts]] - next level.
-- [[04-Interfaces/01-I2C-SPI-UART|I2C/SPI/UART buses]] - bus sensors.
-- [[09-Firmware/03-OS-Nalashtuvannya|OS setup]] - groups and rights.
+- [[EN/04-Interfaces/01-I2C-SPI-UART.en|I2C/SPI/UART buses]] - bus sensors.
+- [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - groups and rights.
 - [[Home.en|main map]] - full navigation.
 
 ## 11. Pocket pin card

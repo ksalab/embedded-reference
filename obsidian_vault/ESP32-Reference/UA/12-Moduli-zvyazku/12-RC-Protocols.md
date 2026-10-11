@@ -4,6 +4,7 @@ title: RC-протоколи - SBUS, CRSF-ELRS, IBUS, MAVLink, DShot, S.Port-F.P
 tags: [esp32, rc, sbus, crsf, elrs, ibus, mavlink, dshot, telemetry, uart, failsafe]
 category: Moduli
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # RC-протоколи - SBUS / CRSF-ELRS / IBUS / MAVLink / DShot

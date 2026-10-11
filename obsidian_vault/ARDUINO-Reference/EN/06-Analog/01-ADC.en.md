@@ -350,5 +350,5 @@ Calibration removes systematic error.
 
 - [[Home.en]]
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
-- [[06-Analog/02-DAC-nema|DAC replacement]]
-- [[07-Timers/01-Timeri-millis|timers and time]]
+- [[EN/06-Analog/02-No-DAC.en|DAC replacement]]
+- [[EN/07-Timers/01-Timers-millis.en|timers and time]]

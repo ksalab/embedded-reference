@@ -12,39 +12,39 @@ date: 2026-10-08
 
 # Displays 3: SSD1322, SSD1351, ST7796, GC9A01, RA8875, FT81x
 
-![[assets/img/displays-3-OLED-tft-eve-scheme.png]]
-*Рис. 1. Вибandр дисплею for ESP32: on мandнandатюрних сandрих OLED (SSD1322) up to графandчного TFT (ST7796) та FT81x 'електронandцand' with inбуup toinаним GPU.*
+![[assets/img/displays-3-oled-tft-eve-scheme.png|600]]
+*Fig. 1. Display choice for ESP32: from miniature grey OLED (SSD1322) to graphic TFT (ST7796) and FT81x electronics with built-in GPU.*
 
 ## Purpose
 
-Цей роwithдandл охоплює просунутand дисплеї for професandйних atладandin, UI/HMI та премandальних проєктandin. SSD1322 - this сandрий OLED (not кольороinий), SSD1351 - Colour OLED 128×128, ST7796 - класичний TFT 480×320, GC9A01 - круглий OLED/Colour TFT 240×240, RA8875 - controller inеликих TFT (3.5"/5"), FT81x - 'електронandцand' with inбуup toinаним GPU for fastго стinорення interfaceandin.
+This section covers advanced displays for professional attachments, UI/HMI and premium projects. SSD1322 is a grey OLED (not colour), SSD1351 - colour OLED 128x128, ST7796 - classic TFT 480x320, GC9A01 - round OLED/colour TFT 240x240, RA8875 - large TFT controller (3.5"/5"), FT81x - electronics with built-in GPU for fast UI creation.
 
 ## Characteristics
 
-| module | Роwithдandльto withдатнandсть | Інтерфейс | controller | power supply | Особлиinandсть |
+| Module | Resolution | Interface | controller | power supply | Feature |
 | --- | --- | --- | --- | --- | --- |
-| SSD1322 | 128×128 (сandрий) | I2C / SPI | SSD1322 | 3.3 in | Сandрий pallete, ниwithьке спожиinання (≈15 мА) |
-| SSD1351 | 128×128 (Colour) | SPI | SSD1351 | 3.3 in | 65K кольорandin, inбуup toinаний RAM animation |
-| ILI9340 / ILI9341 | 240×320 (TFT) | SPI / 8080 | ILI9340 (поbeforeник) / ILI9341 | 3.3 in (I/O), 5V (Backlight) | Народний 2.4-2.8″ TFT; ILI9340 - стара реinandwithandя, ILI9341 - актуальto (TFT_eSPI with коробки) |
-| ST7796 | 480×320 (TFT) | 8080-bus / SPI | ST7796 | 3.3 in (I/O), 5V (Backlight) | Широкий кут overviewу, support LVGL, сумandснandсть with FT81x |
+| SSD1322 | 128x128 (grey) | I2C / SPI | SSD1322 | 3.3 V | Grey palette, low consumption (≈15 mA) |
+| SSD1351 | 128x128 (Colour) | SPI | SSD1351 | 3.3 V | 65K colours, built-in RAM animation |
+| ILI9340 / ILI9341 | 240x320 (TFT) | SPI / 8080 | ILI9340 (predecessor) / ILI9341 | 3.3 V (I/O), 5V (Backlight) | Popular 2.4-2.8″ TFT; ILI9340 - old revision, ILI9341 - current (TFT_eSPI out of box) |
+| ST7796 | 480x320 (TFT) | 8080-bus / SPI | ST7796 | 3.3 V (I/O), 5V (Backlight) | Wide viewing angle, LVGL support, compatible with FT81x |
 | GC9A01 | 240×240 (Colour) | SPI / 8080 | SSD2805 / st7789 | 3.3 in (I/O), 5V (Backlight) | Kreis-формат, support tactile-tochu |
-| RA8875 | 320×240 / 3.5" TFT | 8080-сat / SPI | RA8875 | 3.3 in (I/O), 5V (Backlight) | Великий display, SPI speed up to 40 МГц |
+| RA8875 | 320x240 / 3.5" TFT | 8080-cat / SPI | RA8875 | 3.3 V (I/O), 5V (Backlight) | Large display, SPI speed up to 40 MHz |
 | FT81x (EVE) | 3.5" / 4.3" / 7" TFT | SPI / 8080 / RGB | FT81x (EVE) | 3.3 in (I/O), 5V (Backlight) | 'Elektor Graphics Engine' - hardwired GUI, списки команд |
 
-## Легенда pinandin модуля (унandinерсальto for SPI / 8080)
+## Module pin legend (universal for SPI / 8080)
 
 | pin | Тип | Куди at ESP32 | Note |
 | --- | --- | --- | --- |
-| VCC | power supply | 3.3 in (ланцюг) / 5 V (Backlight) | SSDO VCC, Backlight - окремand sources |
-| GND | ground | Спandльний GND | Спandльний мandнус |
-| D0-D7 (DB0-DB7) | data DBUS | GPIO18-GPIO23 (SPI) | Дinоtoпраinльto bus даних |
-| RS / RSX | Реєстр / Команда | GPIO5 (або inandльний) | 0 = команда, 1 = data |
-| WRX / WR | Write strobe | GPIO18 (SPI) | Прandч команда/data in atстрandй |
-| RDX / RD | Read strobe | GPIO19 (SPI) | Читання with пам'ятand дисплея |
-| CS / XCS | Chip Select | GPIO5 (або inandльний) | Актиinний level LOW |
-| RESX / RST | Reset | GPIO4 (або inandльний) | Hard reset at стартand |
-| SCK / SCK | Тактуinання | GPIO18 (SPI) | SPI тактуinання (if 8080 - use WRX) |
-| SDI / SDA | SPI data | GPIO23 (VSPI) | data withапису |
+| VCC | power supply | 3.3 V (logic) / 5 V (Backlight) | SSDO VCC, Backlight - separate sources |
+| GND | ground | Common GND | Common minus |
+| D0-D7 (DB0-DB7) | DBUS data | GPIO18-GPIO23 (SPI) | Bidirectional data bus |
+| RS / RSX | Register / Command | GPIO5 (or other) | 0 = command, 1 = data |
+| WRX / WR | Write strobe | GPIO18 (SPI) | Latch command/data to device |
+| RDX / RD | Read strobe | GPIO19 (SPI) | Read from display memory |
+| CS / XCS | Chip Select | GPIO5 (or other) | Active LOW level |
+| RESX / RST | Reset | GPIO4 (or other) | Hard reset at start |
+| SCK / SCK | Clocking | GPIO18 (SPI) | SPI clock (if 8080 - use WRX) |
+| SDI / SDA | SPI data | GPIO23 (VSPI) | write data |
 | SDO | SPI MISO | GPIO19 (VSPI) | Читання даних |
 
 ## Wiring diagram (SPI 4-wire)
@@ -174,12 +174,12 @@ display.show()
 
 ## Common issues
 
-| № | error | Симптом | Рandшення |
+| No | error | Symptom | Fix |
 | --- | --- | --- | --- |
-| 1 | SSDO inтрачає синхронandwithацandю | Смужкand стрandчки at екранand, гbutреї | Переinandрити SPI speed (пониwithити up to 8-10 МГц); переinandрити реwithистори pull-up at шиtoх |
-| 2 | SSD1322 покаwithує сandрий екран | Вandдсутнandсть Colour даних | Переinandрити, чи праinильний driver: SSD1322 - this CI grey scale, SSD1351 - Colour |
-| 3 | FT81x not andнandцandалandwithується | `EVE not responding` | Переinandрити spi / 8080 режим; переinandрити VCC (3.3 in логика, 5 in Backlight); переinandрити RESET лandнandю |
-| 4 | Смandття at екранand at обмandнand кадрandin | Фантомнand Obrazy, "ghosting" | use `double buffering` in LVGL; toлаштуinати `partial refresh` |
+| 1 | SSDO loses sync | Stripes on screen, glitches | Check SPI speed (lower to 8-10 MHz); check pull-up resistors on bus |
+| 2 | SSD1322 shows grey screen | Missing colour data | Check correct driver: SSD1322 is grey-scale IC, SSD1351 - colour |
+| 3 | FT81x does not init | `EVE not responding` | Check SPI / 8080 mode; check VCC (3.3 V logic, 5 V backlight); check RESET line |
+| 4 | Garbage on screen on frame swap | Phantom images, ghosting | use `double buffering` in LVGL; tune `partial refresh` |
 
 ## Official sources
 
@@ -192,13 +192,13 @@ display.show()
 - RA8875 Datasheet (Raio, пошук PDF): [RA8875 search](https://www.alldatasheet.com/view.jsp?Searchword=RA8875) - TFT-controller with GPU.
 - ST7796 Datasheet (Sitronix, пошук PDF): [ST7796 search](https://www.alldatasheet.com/view.jsp?Searchword=ST7796) - TFT 480×320.
 - ILI9340 Datasheet (Ilitek, пошук PDF): [ILI9340 search](https://www.alldatasheet.com/view.jsp?Searchword=ILI9340) - TFT 240×320.
-- SSD1322/SSD1351 Datasheet (Solomon, пошук PDF): [SSD1322 search](https://www.alldatasheet.com/view.jsp?Searchword=SSD1322) - OLED-Controllerи.
-- SSD2805 Datasheet (Solomon, пошук PDF): [SSD2805 search](https://www.alldatasheet.com/view.jsp?Searchword=SSD2805) - MIPI-мandст.
+- SSD1322/SSD1351 Datasheet (Solomon, PDF search): [SSD1322 search](https://www.alldatasheet.com/view.jsp?Searchword=SSD1322) - OLED controllers.
+- SSD2805 Datasheet (Solomon, PDF search): [SSD2805 search](https://www.alldatasheet.com/view.jsp?Searchword=SSD2805) - MIPI bridge.
 
 ## See also
 
 - [[Home.en | Home]]
 - [[11-Vivid/12-LVGL-SquareLine.en | LVGL SquareLine]]
 - [[11-Vivid/13-Audio-Codecs.en | Audio Codecs]]
-- [[10-Sensors/32-Light-Color-2]]
+- [[EN/10-Sensors/32-Light-Color-2.en]]
 - [[04-Interfaces/02-SPI.en | SPI]]

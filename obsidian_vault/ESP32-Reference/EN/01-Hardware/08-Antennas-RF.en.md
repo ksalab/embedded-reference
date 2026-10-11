@@ -44,7 +44,7 @@ Antennas and RF - PCB vs IPEX; keepout zone and layout; ESP-NOW range. TX power 
 | USB / DC-DC kept away | minimum 20 mm from the antenna |
 
 > [!tip] Layout tips
-> Antenna - to the board corner, ground polygon with a cutout. 3.3V tracks wide (20 mil+). Quartz and flash kept away from the antenna. Chip comparison for RF: [[00-Start/03-Porivnyannya-chipiv]].
+> Antenna - to the board corner, ground polygon with a cutout. 3.3V tracks wide (20 mil+). Quartz and flash kept away from the antenna. Chip comparison for RF: [[EN/00-Start/03-Chip-Comparison.en]].
 
 ## ESP-NOW range
 
@@ -207,7 +207,7 @@ flowchart TB
 ## See also
 
 - [[EN/Home.en]]
-- [[00-Start/03-Porivnyannya-chipiv]]
+- [[EN/00-Start/03-Chip-Comparison.en]]
 - [[EN/03-GPIO/01-GPIO-oglyad.en]]
 - [[EN/03-GPIO/02-Strapping-pini.en]]
 - [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]]

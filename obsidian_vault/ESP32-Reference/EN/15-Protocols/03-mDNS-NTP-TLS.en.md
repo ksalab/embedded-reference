@@ -15,7 +15,7 @@ date: 2026-10-08
 > [!warning] without NTP час = 1970 рік - and падає БУДЬ-which TLS (HTTPS, MQTTS)!
 > Порядок старту: WiFi → SNTP-синхронізація → тільки потім TLS-with'єднання.
 
-Огляд мережі: [[05-Radio/01-WiFi-STA-AP]], MQTT [[15-Protocols/01-MQTT|MQTT]], HTTP [[15-Protocols/02-HTTP-WebSocket]], старт [[Home]].
+Огляд мережі: [[EN/05-Radio/01-WiFi-STA-AP.en]], MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], HTTP [[EN/15-Protocols/03-HTTP-Client.en]], старт [[Home.en]].
 
 ## Призначення
 
@@ -83,7 +83,7 @@ that вміє: відповідати on `esp32.local`, анонсувати с�
 - Android without спеціального резолвера `.local` not бачить (iOS/macOS/Windows with Bonjour - бачать);
 - VPN and гостьові WiFi with ізоляцією клієнтів ріжуть multicast.
 
-Практика: mDNS - for домашньої лабораторії and демо, in продакшені - статичний IP / DHCP-reservation + свій DNS або конфіг via provisioning, див. [[15-Protocols/04-Provisioning|Provisioning]].
+Практика: mDNS - for домашньої лабораторії and демо, in продакшені - статичний IP / DHCP-reservation + свій DNS або конфіг via provisioning, див. [[EN/15-Protocols/04-Provisioning.en|Provisioning]].
 
 ## SNTP-синхронізація and часові пояси
 
@@ -95,7 +95,7 @@ that вміє: відповідати on `esp32.local`, анонсувати с�
 Київ:  EET-2EEST,M3.5.0/3,M10.5.0/4
 ```
 
-Після `setenv("TZ", ...); tzset();` функція `localtime()` повертає київський час with автоматичним переходом. on MicroPython пояса немає - тримати UTC and додавати 2/3 год вручну або on сервері.
+Після `setenv("TZ",...); tzset();` функція `localtime()` повертає київський час with автоматичним переходом. on MicroPython пояса немає - тримати UTC and додавати 2/3 год вручну або on сервері.
 
 ## TLS on практиці
 
@@ -227,15 +227,15 @@ local = time.localtime(time.time() + KYIV_OFFSET)
 
 ## Див. також
 
-- [[Home]]
-- [[05-Radio/01-WiFi-STA-AP|WiFi STA/AP]] - транспорт for mDNS/NTP/TLS
-- [[08-Memory/03-OTA|OTA]] - HTTPS-доставка прошивок потребує часу and CA
-- [[08-Memory/01-Partitions-NVS|NVS]] - зберігання CA and TZ-рядка
-- [[99-Additions/02-Troubleshooting-FAQ|FAQ]] - TLS FAIL, час 1970
-- [[15-Protocols/01-MQTT|MQTT]] - споживач NTP+TLS (mqtts 8883)
-- [[15-Protocols/02-HTTP-WebSocket|HTTP/WebSocket]] - споживач CA-bundle
-- [[15-Protocols/04-Provisioning|Provisioning]] - mDNS how знахідка порталу
-- [[15-Protocols/05-Cloud-Pipeline|Cloud-Pipeline]] - мітки часу in InfluxDB
+- [[Home.en]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - транспорт for mDNS/NTP/TLS
+- [[EN/08-Memory/03-OTA.en|OTA]] - HTTPS-доставка прошивок потребує часу and CA
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - зберігання CA and TZ-рядка
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - TLS FAIL, час 1970
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - споживач NTP+TLS (mqtts 8883)
+- [[EN/15-Protocols/03-HTTP-Client.en|HTTP/WebSocket]] - споживач CA-bundle
+- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - mDNS how знахідка порталу
+- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud-Pipeline]] - мітки часу in InfluxDB
 
 ## Common issues
 

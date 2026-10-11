@@ -28,9 +28,9 @@ Cover current measurement for three scenarios:
 
 | Sensor | Range | Accuracy | Interface |
 | --- | --- | --- | --- |
-| ACS712-05/20/30 | 5/20/30 A DC+AC | About 1.5 %, noise about 20 mA | analog, 185/100/66 mV/A |
-| INA226 | 0-36V, shunt of choice | 0.1 %, 16 bit | I2C, alerts |
-| PZEM-004T | 220V, up to 100 A with CT | About 1 % | UART Modbus, ready |
+| ACS712-05/20/30 | 5/20/30 A DC+AC | About 1.5%, noise about 20 mA | analog, 185/100/66 mV/A |
+| INA226 | 0-36V, shunt of choice | 0.1%, 16 bit | I2C, alerts |
+| PZEM-004T | 220V, up to 100 A with CT | About 1% | UART Modbus, ready |
 
 ## 2. Architecture
 
@@ -119,7 +119,7 @@ Call once a second with averaged current. The 20 mA zero threshold cuts Hall noi
 | Request | `B0 C0 A8 01 00 00 1D 94` - register read |
 | Reply | voltage, current, power, energy, frequency, PF |
 | Address | one on the bus by default, changed with a command |
-| Bridge | publish further over [[12-Comm-Modules/06-WiFi-ESP-AT|WiFi modem]] or [[EN/15-Protocols/01-Modbus.en|Modbus bus]] |
+| Bridge | publish further over [[EN/12-Comm-Modules/06-WiFi-ESP-AT.en|WiFi modem]] or [[EN/15-Protocols/01-Modbus.en|Modbus bus]] |
 
 The module counts energy (kWh) alone and never resets it on reboot - a ready meter out of the box.
 
@@ -127,7 +127,7 @@ The module counts energy (kWh) alone and never resets it on reboot - a ready met
 
 - ACS712: zero with no load, scale with a 1 A reference load (lamp plus multimeter);
 - INA226: calibration register = 0.00512 / (Rshunt x Imax), check with a lab PSU;
-- PZEM: compare against a home meter over a day, mismatch up to 2 % is normal;
+- PZEM: compare against a home meter over a day, mismatch up to 2% is normal;
 - Hall temperature drift - re-calibrate zero once a season.
 
 ## 8. Common issues
@@ -146,7 +146,7 @@ The module counts energy (kWh) alone and never resets it on reboot - a ready met
 - [[EN/10-Sensors/04-INA219-HX711.en|INA219 and strain gauges]] - the younger brother of INA226.
 - [[EN/06-Analog/05-Shunt-OPAMP.en|shunt and op amp]] - analog front end.
 - [[EN/06-Analog/01-ADC.en|STM32 ADC]] - resolution, VREF, DMA.
-- [[16-Projects/03-Energomonitor|energy monitor]] - ready project.
+- [[EN/16-Projects/03-Energy-Monitor.en|energy monitor]] - ready project.
 - [[EN/15-Protocols/01-Modbus.en|Modbus protocol]] - PZEM as slave.
 
 ## Official sources

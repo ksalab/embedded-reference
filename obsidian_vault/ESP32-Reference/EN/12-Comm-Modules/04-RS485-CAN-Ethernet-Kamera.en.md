@@ -5,15 +5,16 @@ title: RS485 CAN Ethernet Камера
 description: RS485 / CAN / Ethernet / Камера - RS485 - MAX485 (DE/RE); Легенда пінів модуля MAX485; ASCII-схема (MAX485); shows schematics, code and tables.
 tags: [esp32, rs485, can, ethernet, lan8720, ov2640, camera]
 date: 2026-10-08
+original: 12-Moduli-zvyazku/04-RS485-CAN-Ethernet-Kamera.md
 ---
 
 # RS485 / CAN / Ethernet / Камера
 
-Навігація: UART [[04-Interfaces/01-UART|UART]], SPI [[04-Interfaces/02-SPI|SPI]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]], піни [[99-Additions/01-Pinout-tablici]], diagnostics [[99-Additions/02-Troubleshooting-FAQ]], start [[EN/Home.en]], рівні [[13-Power-Modules/02-Level-Shifters]].
+Навігація: UART [[EN/04-Interfaces/01-UART.en|UART]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], піни [[EN/99-Additions/01-Pinout-tablici.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start [[EN/Home.en]], рівні [[EN/13-Power-Modules/02-Level-Shifters.en]].
 
 ## Purpose
 
-RS485 / CAN / Ethernet / Камера - RS485 - MAX485 (DE/RE); Легенда пінів модуля MAX485; ASCII-схема (MAX485). Навігація: UART [[04-Interfaces/01-UART|UART]], SPI [[04-Interfaces/02-SPI|SPI]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]], піни [[99-Additions/01-Pinout-tablici]], diagnostics [[99-Additions/02-Troubleshooting-FAQ]], start Home, рівні 13-Power-Modules/02-Level-Shifters. MAX485: напівдуплекс, DE=Driver Enable HIGH=передача, RE=Receiver Enable LOW=прийом. Зазвичай DE+RE with'єднані and керуються одним GPIO. Термінатор 120 Ом on кінцях лінії A-B. Fail-safe bias 680 Ом for потреби.
+RS485 / CAN / Ethernet / Камера - RS485 - MAX485 (DE/RE); Легенда пінів модуля MAX485; ASCII-схема (MAX485). Навігація: UART [[EN/04-Interfaces/01-UART.en|UART]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], піни [[EN/99-Additions/01-Pinout-tablici.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start Home, рівні 13-Power-Modules/02-Level-Shifters. MAX485: напівдуплекс, DE=Driver Enable HIGH=передача, RE=Receiver Enable LOW=прийом. Зазвичай DE+RE with'єднані and керуються одним GPIO. Термінатор 120 Ом on кінцях лінії A-B. Fail-safe bias 680 Ом for потреби.
 
 ## 1. RS485 - MAX485 (DE/RE)
 
@@ -40,7 +41,7 @@ MAX485: напівдуплекс, DE=Driver Enable HIGH=передача, RE=Rec
 - **DE+RE bridge:** DE активний HIGH, RE активний LOW - therefore їх with'єднують разом on один GPIO: `HIGH` = передавач увімкнено / приймач вимкнено (TX), `LOW` = навпаки (RX). Економить пін and виключає колізію «обидва увімкнені». in коді: підняв GPIO → `write()` → `flush()` → затримка 100 мкс → опустив GPIO.
 - **Термінатор 120 Ом:** резистор між A and B on двох крайніх вузлах лінії гасить відбиття сигналу. on середніх вузлах - not ставити! without термінаторів on 100+ м and 115200 бод - «тиша» або сміття.
 - **Fail-safe bias:** пара 680 Ом (A до VCC, B до GND) тримає лінію in MARK коли всі передавачі мовчать. on коротких лініях зазвичай not потрібна.
-- **Вита пара:** A/B вести витою парою (UTP), GND - окремим дротом. Довжина до 1200 м on 9600 бод, див. [[04-Interfaces/01-UART|UART]].
+- **Вита пара:** A/B вести витою парою (UTP), GND - окремим дротом. Довжина до 1200 м on 9600 бод, див. [[EN/04-Interfaces/01-UART.en|UART]].
 
 | ESP32 | MAX485 | Примітка |
 | --- | --- | --- |
@@ -142,7 +143,7 @@ ESP32 classic має вбудований CAN (SJA1000-сумісний, теп�
 
 - **Rs (slope resistor):** керує фронтами: Rs притягнутий до GND (0 Ом або 10к до землі) = круті фронти, швидкість до 1 Мбіт; Rs до VCC = standby/sleep. Типово for тестів - перемичка Rs→GND (high-speed). for ЕМС on довгих лініях - резистор 10к-50к до GND (пологі фронти, менше випромінювання).
 - **CANH/CANL:** диференційна пара 120 Ом хвильовий опір, два термінатори per 120 Ом on кінцях (паралельно дають 60 Ом - так and перевіряють мультиметром вимкнену шину).
-- **Мінімум 2 вузли:** один трансивер сам with собою not говорить - for тесту потрібні два ESP32+трансивери або один + CAN-аналізатор. Інакше `bus-off`, див. [[99-Additions/02-Troubleshooting-FAQ]].
+- **Мінімум 2 вузли:** один трансивер сам with собою not говорить - for тесту потрібні два ESP32+трансивери або один + CAN-аналізатор. Інакше `bus-off`, див. [[EN/99-Additions/02-Troubleshooting-FAQ.en]].
 
 | ESP32 | SN65HVD230 | Примітка |
 | --- | --- | --- |
@@ -216,7 +217,7 @@ void setup(){ twai_general_config_t g = TWAI_GENERAL_CONFIG_DEFAULT((gpio_num_t)
 
 Пояснення RMII:
 
-- **RMII vs MII:** RMII - урізана версія with тактом 50 МГц and 2-бітними busми TX/RX замість 4-бітних. Менше пінів, але таймінги жорсткіші - дроти Dupont not годяться, тільки плата типу WT32-ETH01 або коротка розводка.
+- **RMII vs MII:** RMII is a reduced version with a 50 MHz clock and 2-bit TX/RX buses instead of 4-bit ones. Fewer pins, but tighter timing - Dupont wires are not suitable, only a WT32-ETH01 style board or short PCB routing.
 - **REF_CLK 50 МГц:** генерує PHY with власного кварца and віддає ESP32 on GPIO0. without цього клоку MAC мовчить. Перевіряється осцилографом/логіканалізатором 50 МГц.
 - **MDC/MDIO (SMI):** двопровідний менеджмент for налаштування швидкості/дуплексу PHY. MDIO without pull-up 1.5к not працює.
 - **Тільки classic:** in ESP32-S3/C3 немає апаратного EMAC під RMII - for них брати SPI-Ethernet W5500. LAN8720 купувати лише під classic D0WD / WT32-ETH01.
@@ -300,7 +301,7 @@ ESP32-CAM (classic) застаріла. Новий стандарт: ESP32-S3 wi
 - **VSYNC/HREF/PCLK + D0-D7:** паралельна bus DVP: PCLK тактує кожен піксель, HREF обрамляє рядок, VSYNC - кадр. Довгі «соплі» on DVP = смуги/артефакти.
 - **XCLK 20 МГц:** ESP32-S3 генерує мастер-клок сенсору. Нестабільний XCLK = плаваючі кольори.
 - **PWDN/RESET:** PWDN in сон (HIGH), RESET скидання (LOW). on платах зазвичай підтягнуті правильно, але verify.
-- **without PSRAM not працює UXGA:** кадр UXGA 1600×1200 JPEG ~300-500 кБ not влазить in 320 кБ SRAM S3. without PSRAM - лише QQVGA/QVGA або падіння with `fb alloc failed`. Купувати плату S3R8+ (8 МБ PSRAM), див. [[99-Additions/02-Troubleshooting-FAQ]].
+- **without PSRAM not працює UXGA:** кадр UXGA 1600×1200 JPEG ~300-500 кБ not влазить in 320 кБ SRAM S3. without PSRAM - лише QQVGA/QVGA або падіння with `fb alloc failed`. Купувати плату S3R8+ (8 МБ PSRAM), див. [[EN/99-Additions/02-Troubleshooting-FAQ.en]].
 
 | ESP32-S3 | OV2640 | Примітка |
 | --- | --- | --- |
@@ -365,15 +366,15 @@ Arduino: example CameraWebServer (вибрати CAMERA_MODEL_... + PSRAM). ESP-
 ## See also
 
 - [[EN/Home.en]]
-- [[04-Interfaces/01-UART|UART]]
-- [[04-Interfaces/02-SPI|SPI]]
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]]
-- [[03-GPIO/01-GPIO-oglyad]]
-- [[05-Radio/01-WiFi-STA-AP]]
+- [[EN/04-Interfaces/01-UART.en|UART]]
+- [[EN/04-Interfaces/02-SPI.en|SPI]]
+- [[EN/02-Power-Supply/01-Power-Rails.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en]]
 - [[EN/12-Comm-Modules/01-RC522-RFID.en]]
 - [[EN/12-Comm-Modules/02-NRF24-LoRa.en]]
 - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]]
 - [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]]
-- [[13-Power-Modules/02-Level-Shifters]]
-- [[99-Additions/01-Pinout-tablici]]
-- [[99-Additions/02-Troubleshooting-FAQ]]
+- [[EN/13-Power-Modules/02-Level-Shifters.en]]
+- [[EN/99-Additions/01-Pinout-tablici.en]]
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en]]

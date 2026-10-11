@@ -282,7 +282,7 @@ Never place an original with no power check either.
 
 Build an own board when more than ten copies are needed.
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -293,7 +293,7 @@ Build an own board when more than ten copies are needed.
 | 5 | Old bootloader | Flash tears at the end | Pick the old version in the menu or reflash |
 | 6 | Whole batch at once | Fault times ten | One for a trial, then the batch |
 
-## Official Sources
+## Official sources
 
 - [Drivers and boards at docs.arduino.cc](https://docs.arduino.cc/software/ide/) - environment install, port pick, first flash.
 - [Board comparison at arduino.cc](https://www.arduino.cc/en/hardware) - original boards, power, jack maps.
@@ -305,4 +305,4 @@ Build an own board when more than ten copies are needed.
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
 - [[EN/09-Firmware/02-Bootloader-AVRDUDE.en|bootloader and avrdude]]
 - [[EN/14-Devboards/01-Shields.en|expansion floors]]
-- [[12-Comm-Modules/01-NRF24|radio module]]
+- [[EN/12-Comm-Modules/01-NRF24.en|radio module]]

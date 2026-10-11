@@ -222,7 +222,7 @@ flowchart TB
     Irq --> Done
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -233,7 +233,7 @@ flowchart TB
 | 5 | Long spread traces from shunt | Loop picks up switching spikes | Route as short close pair, filter after amplifier |
 | 6 | Automatic PWM restart after fault | Rhythmic current hits and overheating | Hold outputs muted until deliberate program unlock |
 
-## Official Sources
+## Official sources
 
 - [STM32 comparator application guide (ST)](https://www.st.com/resource/en/application_note/an4071-comparator-usage-in-stm32-microcontrollers--stmicroelectronics.pdf) - references, hysteresis, timer link.
 - [Op-amp description in STM32G4 (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32g474re.html) - modes, programmable gain, calibration.
@@ -244,8 +244,8 @@ flowchart TB
 - [[Home.en]]
 - [[EN/01-Hardware/02-F3-F4.en|analog F3 and F4]]
 - [[EN/01-Hardware/03-G0-G4.en|G4 analog]]
-- [[09-Firmware/01-CubeIDE-CubeMX|CubeMX setup]]
-- [[09-Firmware/02-HAL-LL|HAL and LL layers]]
+- [[EN/09-Firmware/01-CubeIDE-CubeMX.en|CubeMX setup]]
+- [[EN/09-Firmware/02-HAL-LL.en|HAL and LL layers]]
 - [[EN/06-Analog/01-ADC.en|measurement over ADC]]
 - [[EN/06-Analog/02-DAC.en|generation over DAC]]
 - [[EN/06-Analog/04-DFSDM.en|sigma-delta filter]]

@@ -4,6 +4,7 @@ title: SIM7080G/A7670/LoRa-UART-E32/SX1262/HC-11 - стільниковий та
 tags: [esp32, cellular, nbiot, cat-m, sim7080g, a7670, lora, e32, sx1262, uart, gnss]
 category: Zvyazok
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Стільниковий та UART-радіо - SIM7080G, A7670, LoRa-UART E32, SX1262, HC-11

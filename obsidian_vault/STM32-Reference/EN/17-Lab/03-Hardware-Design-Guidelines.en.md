@@ -105,7 +105,7 @@ flowchart TB
 | LED power + user LED | See board is alive |
 | Current measurement jumper | Break supply for ammeter |
 
-## Common errors
+## Common issues
 
 | # | Error | Why bad | How right |
 | --- | --- | --- | --- |

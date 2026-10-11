@@ -13,9 +13,9 @@ date: 2026-10-08
 # Voice assistant on ESP32 - microWakeWord → Assist → Wyoming → Piper TTS
 
 > [!info] Призначення
-> Нотатка про повний Voice конвеєр: **microWakeWord** слухає wake word прямо on ESP32 → аудіо летить in **Home Assistant Assist** → **Wyoming-протокол** роздає задачі сервісам → **Piper TTS** озвучує відповідь назад on динамік → **STT** (faster-whisper/Vosk) on сервері розпізнає фразу. Плюс: порівняння wake-двигунів (Porcupine/Rhino/Cobra/OpenWakeWord), готова прошивка **ESPHome voice + Atom Echo**, оглядово **VoIP/SIP-домофон** та **intercom ESP32↔ESP32**, чесна розмова про **приватність** (все локально vs хмара). Офлайн-команди without сервера - [[12-Comm-Modules/16-Offline-Voice]], нейромережі on чипі - [[12-Comm-Modules/11-TinyML-Voice]].
+> Нотатка про повний Voice конвеєр: **microWakeWord** слухає wake word прямо on ESP32 → аудіо летить in **Home Assistant Assist** → **Wyoming-протокол** роздає задачі сервісам → **Piper TTS** озвучує відповідь назад on динамік → **STT** (faster-whisper/Vosk) on сервері розпізнає фразу. Плюс: порівняння wake-двигунів (Porcupine/Rhino/Cobra/OpenWakeWord), готова прошивка **ESPHome voice + Atom Echo**, оглядово **VoIP/SIP-домофон** та **intercom ESP32↔ESP32**, чесна розмова про **приватність** (все локально vs хмара). Офлайн-команди without сервера - [[EN/12-Comm-Modules/16-Offline-Voice.en]], нейромережі on чипі - [[EN/12-Comm-Modules/11-TinyML-Voice.en]].
 
-Огляд мережі: [[05-Radio/01-WiFi-STA-AP]], звук [[04-Interfaces/04-I2S|I2S]], команди in будинок [[15-Protocols/01-MQTT|MQTT]], старт [[Home]].
+Огляд мережі: [[EN/05-Radio/01-WiFi-STA-AP.en]], звук [[EN/04-Interfaces/04-I2S.en|I2S]], команди in будинок [[EN/15-Protocols/01-MQTT.en|MQTT]], старт [[Home.en]].
 
 ## Призначення
 
@@ -38,7 +38,7 @@ date: 2026-10-08
 
 Коли not брати:
 
-- немає сервера 24/7 - беріть офлайн-модулі [[12-Comm-Modules/16-Offline-Voice]];
+- немає сервера 24/7 - беріть офлайн-модулі [[EN/12-Comm-Modules/16-Offline-Voice.en]];
 - треба реакція <300 мс on одну кнопку-команду - швидше GPIO/BLE-пульт;
 - лише українські фіксовані команди and нуль WiFi - SU-61T/SYN7318 дешевші.
 
@@ -307,7 +307,7 @@ this огляд: повний SIP-стек (SDP, NAT, STUN) - тема окре�
 Кнопка PTT: поки затиснута — TX; відпустив — RX (half-duplex, без AEC!)
 ```
 
-Full-duplex (говорити одночасно) вимагає AEC (див. ESP-SR AFE, [[12-Comm-Modules/11-TinyML-Voice]]) - on двох ESP32 via WiFi with джиттером this not злітає. Half-duplex + PTT - робоча схема for гаража/дачі.
+Full-duplex (говорити одночасно) вимагає AEC (див. ESP-SR AFE, [[EN/12-Comm-Modules/11-TinyML-Voice.en]]) - on двох ESP32 via WiFi with джиттером this not злітає. Half-duplex + PTT - робоча схема for гаража/дачі.
 
 ## 10. Приватність: все локально vs хмара
 
@@ -611,7 +611,7 @@ while True:
         # echo "<text>" | piper --model uk_UA-medium.onnx --output_file out.wav
 ```
 
-Детальніше про середовища: [[00-Start/05-Vibir-seredovischa|Вибір середовища]].
+Детальніше про середовища: [[EN/00-Start/05-Environment-Choice.en|Вибір середовища]].
 
 ## typical errors
 
@@ -649,14 +649,14 @@ while True:
 
 ## Див. також
 
-- [[Home]]
-- [[15-Protocols/01-MQTT|MQTT]] - команди Assist → реле/датчики per топіках
-- [[05-Radio/01-WiFi-STA-AP|WiFi STA/AP]] - without стабільного WiFi стрім 16 кГц рветься
-- [[04-Interfaces/04-I2S|I2S]] - INMP441 + MAX98357A, формати 16 кГц/16 біт
-- [[12-Comm-Modules/11-TinyML-Voice|TinyML/Голос]] - ESP-SR, WakeNet, нейромережі on S3
-- [[12-Comm-Modules/16-Offline-Voice|Offline-Voice]] - LD3320/SU-61T/SYN7318: команди without сервера взагалі
-- [[01-Hardware/03-ESP32-S3|ESP32-S3]] - PSRAM під wake word and буфери
-- [[15-Protocols/03-mDNS-NTP-TLS|mDNS/NTP/TLS]] - пошук Wyoming-сервісів in LAN, час for TLS
+- [[Home.en]]
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - команди Assist → реле/датчики per топіках
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - without стабільного WiFi стрім 16 кГц рветься
+- [[EN/04-Interfaces/04-I2S.en|I2S]] - INMP441 + MAX98357A, формати 16 кГц/16 біт
+- [[EN/12-Comm-Modules/11-TinyML-Voice.en|TinyML/Голос]] - ESP-SR, WakeNet, нейромережі on S3
+- [[EN/12-Comm-Modules/16-Offline-Voice.en|Offline-Voice]] - LD3320/SU-61T/SYN7318: команди without сервера взагалі
+- [[EN/01-Hardware/03-ESP32-S3.en|ESP32-S3]] - PSRAM під wake word and буфери
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS/NTP/TLS]] - пошук Wyoming-сервісів in LAN, час for TLS
 
 
 ## Common issues

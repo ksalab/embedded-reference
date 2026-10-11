@@ -65,7 +65,7 @@ All C6 boards use native USB (USB-Serial-JTAG built into the chip). No driver ne
 
 ## Buttons
 
-DevKitC: large BOOT+RESET. Beetle/XIAO: small but reachable. SuperMini C6: microscopic (tweezers!). Double-click Reset on XIAO = UF2 (drag the .uf2 over). RGB on GPIO8 is the mode indicator after boot.
+DevKitC: large BOOT+RESET. Beetle/XIAO: small but reachable. SuperMini C6: microscopic (tweezers!). Double-click Reset on XIAO = UF2 (drag the.uf2 over). RGB on GPIO8 is the mode indicator after boot.
 
 ## What it fits
 

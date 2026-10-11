@@ -5,6 +5,8 @@ tags: [esp32, camera, ov2640, mjpeg, rtsp, qr, apriltag, telegram, timelapse, ps
 category: Moduli
 lang: en
 date-created: 2026-09-28
+date: 2026-10-10
+original: 12-Moduli-zvyazku/13-Camera-Streaming.md
 ---
 
 # Камера OV2640 - MJPEG-стрим, RTSP, QR/AprilTag, Timelapse, Telegram
@@ -68,7 +70,7 @@ for живленням камери. without PSRAM - лише QQVGA and ніяк
 | GPIO8-GPIO20 | D0-D7 дані DVP | Паралельна bus | Мапа залежить from плати - звіряти with `camera_pins.h`! |
 | GPIO45 | XCLK 20 МГц | Мастер-клок | Генерує S3; тремтіння = плаваючі кольори |
 | BOOT/USB | Прошивка | USB-Serial | Утримати BOOT at заливці, якщо немає auto-reset |
-| SD (SPI/SDIO) | Карта пам'яті | SD 1-біт/4-біт | Timelapse and буфер фото; див. [[08-Memory/02-Filesystem | Файлові системи]] |
+| SD (SPI/SDIO) | Карта пам'яті | SD 1-біт/4-біт | Timelapse and буфер фото; див. [[EN/08-Memory/02-Filesystem.en| Файлові системи]] |
 
 Пояснення:
 
@@ -120,7 +122,7 @@ on `broadcastCurrentFrame()` віддає JPEG-кадр how RTP-пак.wav по�
 - Довгий timelapse (доба+) - живлення from павербанка via 5V-пін, USB-порт
   комп'ютера not потягне піки WiFi (хоча timelapse зазвичай without WiFi).
 - Збірка відео: `ffmpeg -framerate 30 -i IMG_%04d.jpg out.mp4` вже on ПК.
-- Файлова система and знос карти - див. [[08-Memory/02-Filesystem|Файлові системи]].
+- Файлова система and знос карти - див. [[EN/08-Memory/02-Filesystem.en|Файлові системи]].
 
 ## Telegram-фото
 
@@ -129,7 +131,7 @@ ESP32 шле фото via Bot API `sendPhoto` (multipart/form-data, ліміт ~
 → `/capture` → HTTPS POST on `https://api.telegram.org/bot<token>/sendPhoto`.
 Нюанси: потрібен коректний час (NTP, інакше TLS рветься), токен зберігати in NVS,
 but not in коді; for відео - `sendVideo` not тягне MJPEG, тільки MP4 (ESP32 not кодує -
-not використовувати). Сповіщення/голосові - див. [[15-Protocols/07-Notify-Voice]].
+not використовувати). Сповіщення/голосові - див. [[EN/15-Protocols/02-Notify-Voice.en]].
 
 ## Вимоги освітлення and фокуса
 
@@ -377,6 +379,15 @@ while True:
 11. **Сторожевой task watchdog in стрим-циклі** → немає поступок планувальнику at RTSP +
     детекція in одному ядрі. Детекцію - окремим таском with паузою, див. example вище.
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| fb alloc failed or reboot on UXGA | No PSRAM or PSRAM off in menuconfig | Use S3R8+ board, enable octal PSRAM 80 MHz, add bulk cap |
+| Brownout at capture | WiFi plus sensor peak sags rail | 100 uF cap on 3V3, short thick power wires, lower TX power |
+| Blurry dark frames | Bad focus or weak light, wrong exposure | Refocus lens, add light, fix exposure and white balance |
+| MJPEG stream stalls | WiFi bandwidth below frame rate needs | Lower resolution or fps, use wired-adjacent AP, check RSSI |
+| Telegram photo rejected | File over bot size limit or wrong format | Downscale to 1280 max, send JPEG under 10 MB |
 ## Official sources
 
 - [OV2640 - OmniVision](https://www.ovt.com/sensors/OV2640) - 2 Мп, DVP, формати виводу.
@@ -391,10 +402,10 @@ while True:
 
 - [[EN/Home.en]]
 - [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]]
-- [[08-Memory/02-Filesystem|Файлові системи]]
-- [[15-Protocols/07-Notify-Voice]]
+- [[EN/08-Memory/02-Filesystem.en|Файлові системи]]
+- [[EN/15-Protocols/02-Notify-Voice.en]]
 - [[EN/12-Comm-Modules/12-RC-Protocols.en]]
-- [[11-Vivid/12-LVGL-SquareLine]]
-- [[05-Radio/01-WiFi-STA-AP]]
-- [[04-Interfaces/07-SD-SDIO]]
-- [[99-Additions/02-Troubleshooting-FAQ]]
+- [[EN/11-Vivid/12-LVGL-SquareLine.en]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en]]
+- [[EN/04-Interfaces/07-SD-SDIO.en]]
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en]]

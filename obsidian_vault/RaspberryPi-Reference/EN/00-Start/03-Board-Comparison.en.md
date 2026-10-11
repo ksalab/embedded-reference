@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Lineup: Pi 5 - flagship, Pi 4 - workhorse, Zero 2 W - tiny one, Pico - microcontroller, CM - embedding.*
 
 > [!tip] What this note is
-> Main choice table: all current models side by side - CPU, RAM, radio, USB, power, price, purpose. After choice - [[00-Start/04-Devkit-plati|what to buy]] and [[00-Start/05-Vibir-seredovischa|environment]]. Board details - board section.
+> Main choice table: all current models side by side - CPU, RAM, radio, USB, power, price, purpose. After choice - [[EN/00-Start/04-Dev-Boards.en|what to buy]] and [[EN/00-Start/05-Environment-Choice.en|environment]]. Board details - board section.
 
 ## 1. Goal
 
@@ -55,7 +55,7 @@ flowchart TB
   Q1 -->|Ready PC| P400[Pi 400 / 500]
 ```
 
-Three questions close 95 % of choices. The rest - nuances below.
+Three questions close 95% of choices. The rest - nuances below.
 
 ## 4. What each one cannot do
 
@@ -95,7 +95,7 @@ Silence rule: server in a bedroom - Pi 4 with passive Flirc or Zero 2 W. Pi 5 wi
 
 - board alone - from a Pico price to a Pi 5 16 GB price (about x20 range);
 - must buy extra: official PSU, A2 SD card, case with cooling;
-- starter kit (board+PSU+SD+case+cables) - plus about 50 % over the board price;
+- starter kit (board+PSU+SD+case+cables) - plus about 50% over the board price;
 - market "5V 3A" PSU clones - first cause of undervoltage lightning.
 
 ## 7. Compatibility and migration
@@ -120,7 +120,7 @@ Seller questions: revision, RAM, whether the PSU is official, whether the SD is 
 Extra for batches:
 
 - same revisions in a batch (images interchangeable);
-- 10 % board spare for defects and repairs;
+- 10% board spare for defects and repairs;
 - separate test bench - do not run firmware on live nodes;
 - logged MAC/serial of each board in a table;
 - one "golden" image for the whole batch, clone from it;
@@ -140,11 +140,11 @@ Extra for batches:
 
 ## 9. Related notes
 
-- [[00-Start/04-Devkit-plati|boards and accessories]] - what to buy extra.
+- [[EN/00-Start/04-Dev-Boards.en|boards and accessories]] - what to buy extra.
 - [[EN/14-Devboards/01-Pi5-Flagman.en|Pi 5 flagship]] - board in detail.
 - [[EN/14-Devboards/03-Pico-W-Family.en|Pico family]] - microcontrollers.
 - [[EN/14-Devboards/05-CM4-CM5.en|CM modules]] - embedding.
-- [[00-Start/05-Vibir-seredovischa|environment choice]] - OS for the board.
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]] - OS for the board.
 
 ## Official sources
 

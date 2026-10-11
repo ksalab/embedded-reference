@@ -175,4 +175,4 @@ RCC->AHBENR |= RCC_AHBENR_GPIOCEN;   // інша шина!
 - [[01-Hardware/01-F0-F1-Classic.en | Chip classics]]
 - [[01-Hardware/03-G0-G4.en | Modern families]]
 - [[01-Hardware/04-H5-H7.en | Flagships]]
-- [[00-Start/03-Porivnyannya-chipiv| Chip comparison]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]

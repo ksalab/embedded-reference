@@ -467,5 +467,5 @@ The log helps spot card guessing.
 - [[EN/04-Interfaces/02-SPI.en|fast bus]]
 - [[EN/03-GPIO/01-Digital-Pins.en|digital pins]]
 - [[EN/10-Sensors/05-MPU6050.en|motion and tilt]]
-- [[10-Sensors/08-Encoder|rotation steps]]
-- [[12-Comm-Modules/02-RC522-RFID|RC522 radio side]] - antenna power supply and SPI practice
+- [[EN/10-Sensors/08-Encoder.en|rotation steps]]
+- [[EN/12-Comm-Modules/02-RC522-RFID.en|RC522 radio side]] - antenna power supply and SPI practice

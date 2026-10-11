@@ -15,7 +15,7 @@ date: 2026-10-08
 Three modes: **STA** (router client), **AP** (access point), **STA+AP** (both at once). RSSI below -75 dBm is unstable, reconnection is mandatory.
 
 > [!info] WIFI_STA + modem-sleep
-> For battery nodes - [[07-Timers/03-Sleep-ULP|modem-sleep]] + periodic wake-up. A permanent STA connection eats ~100-200 mA.
+> For battery nodes - [[EN/07-Timers/03-Sleep-ULP.en|modem-sleep]] + periodic wake-up. A permanent STA connection eats ~100-200 mA.
 
 ## Purpose
 
@@ -212,7 +212,7 @@ w.connect("SSID", "PASS")
 ```
 
 > [!warning] IP conflict
-> Check that the address is outside the router DHCP pool (e.g. pool .100-.200, ESP32 at .50). Two devices with one IP = both "blink".
+> Check that the address is outside the router DHCP pool (e.g. pool.100-.200, ESP32 at.50). Two devices with one IP = both "blink".
 
 ## Promiscuous sniffer (short)
 
@@ -261,8 +261,8 @@ Universities/offices: WPA2-Enterprise (EAP-PEAP/TTLS, login+password, sometimes 
 Warnings:
 
 - Enterprise eats **~30-50 KB of heap** (TLS inside) - on a C3 without PSRAM + MQTT/TLS it may not fit.
-- Certificates need renewal (see [[08-Memory/02-Filesystem|Filesystems]] + [[15-Protocols/03-mDNS-NTP-TLS|TLS]]).
-- Often it is simpler to ask IT for a **separate IoT SSID with PSK** or to connect the ESP32 via a wired gateway ([[12-Comm-Modules/07-SIM7600-W5500-MCP2515|W5500]]) than to fight EAP and password rotation policies.
+- Certificates need renewal (see [[EN/08-Memory/02-Filesystem.en|Filesystems]] + [[EN/15-Protocols/03-mDNS-NTP-TLS.en|TLS]]).
+- Often it is simpler to ask IT for a **separate IoT SSID with PSK** or to connect the ESP32 via a wired gateway ([[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|W5500]]) than to fight EAP and password rotation policies.
 
 ### Mermaid: WiFi will not connect
 
@@ -299,5 +299,5 @@ flowchart TB
 - [[EN/05-Radio/03-ESP-NOW.en|ESP-NOW]]
 - [[EN/05-Radio/04-ESP-MESH.en|ESP-MESH]]
 - [[EN/05-Radio/02-BLE-Bluetooth.en|BLE]]
-- [[07-Timers/03-Sleep-ULP|Sleep]]
+- [[EN/07-Timers/03-Sleep-ULP.en|Sleep]]
 - [[EN/05-Radio/03-ESP-NOW.en|MQTT]]

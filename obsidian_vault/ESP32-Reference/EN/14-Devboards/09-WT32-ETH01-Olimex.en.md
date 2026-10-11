@@ -134,7 +134,7 @@ ESP-IDF: `esp_eth` + `esp_netif` components, `ethernet/basic` example. ESPHome: 
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![[assets/img/devboard-wt32-eth01.png|600]]
+> [!example] Photo/schematic:![[assets/img/devboard-wt32-eth01.png|600]]
 
 ```text
 WT32-ETH01: [FTDI 3.3V] ─TX─► GPIO3 / ─RX─◄ GPIO1 / GND──►GND
@@ -177,7 +177,7 @@ flowchart TB
 - [[12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en | RS485/CAN/Camera]]
 - [[12-Comm-Modules/07-SIM7600-W5500-MCP2515.en | 4G/Ethernet/CAN]]
 - [[04-Interfaces/01-UART.en | UART]]
-- [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART]]
+- [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART]]
 - [[11-Vivid/03-NeoPixel-Servo-Rele-MOSFET.en | NeoPixel/Servo/Relay]]
 - [[09-Firmware/02-Arduino-PlatformIO.en | Arduino/PlatformIO]]
 - [[09-Firmware/04-Esptool-Flash.en | Esptool]]

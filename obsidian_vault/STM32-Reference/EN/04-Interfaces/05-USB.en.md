@@ -251,7 +251,7 @@ flowchart TB
 
 Place the connector at the board edge, the ESD pack right behind it, route D plus and D minus as an equal-length pair with no sharp corners. Hold solid ground under the pair, route no fast digital signals nearby. A ceramic capacitor near the controller and a ferrite on supply cut ringing that the host reads as packet errors.
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Fix |
 | --- | --- | --- | --- |
@@ -263,7 +263,7 @@ Place the connector at the board edge, the ESD pack right behind it, route D plu
 | 6 | Long market cable | Speed falls and dropouts | Short quality cable up to five meters |
 | 7 | No ESD protection | First static kills the port | Protection pack right behind the connector |
 
-## Official Sources
+## Official sources
 
 - [USB on STM32 overview (ST)](https://www.st.com/en/interfaces-and-transceivers/usb.html) - controllers, physics, classes.
 - [AN4879 USB hardware design (ST)](https://www.st.com/resource/en/application_note/an4879-usb-hardware-and-pcb-guidelines-using-stm32-mcus-stmicroelectronics.pdf) - connectors, protection, routing.
@@ -272,9 +272,9 @@ Place the connector at the board edge, the ESD pack right behind it, route D plu
 ## See also
 
 - [[Home.en]]
-- [[09-Firmware/01-CubeIDE-CubeMX | CubeMX setup]]
-- [[09-Firmware/02-HAL-LL | HAL and LL layers]]
-- [[09-Firmware/03-ST-Link-Proshivka | Flashing via ST-Link]]
+- [[EN/09-Firmware/01-CubeIDE-CubeMX.en| CubeMX setup]]
+- [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en| Flashing via ST-Link]]
 - [[03-GPIO/01-GPIO-rezhimi.en | GPIO modes]]
 - [[04-Interfaces/04-FDCAN.en | FDCAN bus]]
 - [[04-Interfaces/06-SDMMC-QUADSPI.en | Cards and external flash]]

@@ -16,7 +16,7 @@ date: 2026-10-08
 > [!tip] Note assignment
 > Give a table-route: symptom - device - signal. An addition to the FAQ, not a duplicate.
 
-## 1. How to use the card Find the symptom, take the device, check the signal. There is no signal - the reason has been found. Analysis of the reasons - in [[99-Additions/01-Troubleshooting-FAQ | answers to questions]], here only the route of measurements.
+## 1. How to use the card Find the symptom, take the device, check the signal. There is no signal - the reason has been found. Analysis of the reasons - in [[EN/99-Additions/01-Troubleshooting-FAQ.en| answers to questions]], here only the route of measurements.
 ## 2. Filling and port
 
 | Symptom | Device | Signal |
@@ -54,7 +54,7 @@ date: 2026-10-08
 
 ## Mermaid: diagnostic route```mermaid
 flowchart TB
-S[Symptom] --> T{What class?}T -->|Not sewn| PORT[Cable, driver, BOOT]T -->|Does not start| BLINK[Naked Blink]T -->|Bugs| MON[Monitor and RAM]T -->|Tyres| SCAN[Scanner and speed]T -->|Food| MM[Multimeter under load]PORT --> SIG [There is a signal - continue]    BLINK --> SIG
+S[Symptom] --> T{What class?}T -->|Not sewn| PORT[Cable, driver, BOOT]T -->|Does not start| BLINK[Naked Blink]T -->|Bugs| MON[Monitor and RAM]T -->|Tyres| SCAN[Scanner and speed]T -->|Food| MM[Multimeter under load]PORT --> SIG [There is a signal - continue] BLINK --> SIG
     MON --> SIG
     SCAN --> SIG
     MM --> SIG
@@ -135,10 +135,10 @@ SIG --> LOC[Localized to one node]```
 - [Arduino Language Reference (Arduino)](https://docs.arduino.cc/language-reference/) - functions and behavior.
 
 ## See also- [[Home | Home]]
-- [[99-Additions/01-Troubleshooting-FAQ | answers to questions]]
-- [[99-Additions/02-Cheklisti-Datasheet | lists and datasheets]]
-- [[17-Lab/01-Priladi | measuring devices]]
-- [[09-Firmware/01-IDE-CLI | environment and CLI]]
+- [[EN/99-Additions/01-Troubleshooting-FAQ.en| answers to questions]]
+- [[EN/99-Additions/02-Cheklisti-Datasheet.en| lists and datasheets]]
+- [[EN/17-Lab/01-Instruments.en| measuring devices]]
+- [[EN/09-Firmware/01-IDE-CLI.en| environment and CLI]]
 
 
 ## Common issues

@@ -173,6 +173,6 @@ Purchase priority:
 - [[EN/99-Additions/03-Cheklisti-montazhu.en]]
 - [[EN/17-Lab/01-Instruments.en]]
 - [[EN/17-Lab/05-Breadboard-Mezhi.en]]
-- [[09-Firmware/05-JTAG-Debug]]
+- [[EN/09-Firmware/05-JTAG-Debug.en]]
 
-> UA original twin: [[99-Additions/08-Diagnostic-Map.md | UA]]
+> UA original twin: [[EN/99-Additions/08-Diagnostic-Map.en| UA]]

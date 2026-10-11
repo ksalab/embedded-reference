@@ -152,4 +152,4 @@ RC522_AntennaOn();   // без цього карток не видно!
 - [[EN/10-Sensors/03-MPU6050-IMU.en|motion and orientation]]
 - [[EN/04-Interfaces/02-SPI.en|exchange bus]]
 - [[EN/15-Protocols/03-Security.en|product protection]]
-- [[16-Projects/03-Energomonitor|accounting and log]]
+- [[EN/16-Projects/03-Energy-Monitor.en|accounting and log]]

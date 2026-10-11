@@ -185,7 +185,7 @@ flowchart TB
     DBG --> OK[Board blinks and responds]
 ```
 
-## Common errors
+## Common issues
 
 | # | Error | Why bad | How right |
 | --- | --- | --- | --- |

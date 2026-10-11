@@ -15,7 +15,7 @@ date: 2026-10-08
 > [!warning] Готова прошивка ≠ відсутність ризиків: чужий бінарник бачить твій WiFi-пароль and MQTT-логін!
 > Прошивай тільки with офіційних релізів (WLED/Tasmota GitHub), одразу міняй дефолтні паролі, закривай відкритий AP. Струм LED-стрічки рахуй ОКРЕМО - прошивка not врятує тонкі дроти!
 
-Огляд мережі: [[05-Radio/01-WiFi-STA-AP]], телеметрія [[15-Protocols/01-MQTT|MQTT]], живлення стрічок [[11-Vivid/09-LED-Strip-Power-SK6812-APA102]], старт [[Home]].
+Огляд мережі: [[EN/05-Radio/01-WiFi-STA-AP.en]], телеметрія [[EN/15-Protocols/01-MQTT.en|MQTT]], живлення стрічок [[EN/11-Vivid/09-LED-Strip-Power-SK6812-APA102.en]], старт [[Home.en]].
 
 ## Призначення
 
@@ -30,7 +30,7 @@ date: 2026-10-08
 
 Коли not брати:
 
-- батарейний вузол with deep-sleep мікроамперами - Ready firmwares тримають WiFi and їдять десятки мА (див. сон [[07-Timers/03-Sleep-ULP]]);
+- батарейний вузол with deep-sleep мікроамперами - Ready firmwares тримають WiFi and їдять десятки мА (див. сон [[EN/07-Timers/03-Sleep-ULP.en]]);
 - сертифікований комерційний виріб with власним брендом застосунку - Blynk Enterprise коштує грошей, WLED/Tasmota тягнуть GPL/EUPL-зобов'язання;
 - екзотична периферія without готового драйвера - швидше написати своє, ніж пиляти usermod with нуля.
 
@@ -145,7 +145,7 @@ data:
   option: "My Preset"
 ```
 
-Струм стрічок - ОБОВ'ЯЗКОВО прочитати [[11-Vivid/09-LED-Strip-Power-SK6812-APA102]]:
+Струм стрічок - ОБОВ'ЯЗКОВО прочитати [[EN/11-Vivid/09-LED-Strip-Power-SK6812-APA102.en]]:
 
 - 300× WS2812B on білому 100% = ~18 but @ 5 in. Один USB-блок on 2 but згорить або просадить напругу - кінець стрічки почервоніє.
 - Живити стрічку with ОБОХ кінців (and кожні 2-3 м), спільна земля with ESP, data via резистор 33-100 Ом, конденсатор 1000 мкФ for живленням.
@@ -186,7 +186,7 @@ Template / GPIO-конфіг (`Configure → Configure Template`):
 ; 224 = Relay1, 320 = Button1, 2304 = Led1 (індекси компонентів Tasmota)
 ```
 
-MQTT-топіки `tele / stat / cmnd` (база [[15-Protocols/01-MQTT|MQTT]]):
+MQTT-топіки `tele / stat / cmnd` (база [[EN/15-Protocols/01-MQTT.en|MQTT]]):
 
 ```text
 cmnd/tasmota_01/POWER1 ON        → команда (QoS 1, без retain)
@@ -349,13 +349,13 @@ c.publish(BASE + b"/$state", b"ready", retain=True)
 | Deep-sleep мкА | так | ні | ні | ні | так |
 | Масштаб 100+ вузлів | свій fleet-менеджмент | MQTT+HA | MQTT+HA | Blynk Orgs/Air | свій + discovery |
 
-Правило: прототип on готовій прошивці → якщо виріб «полетів» and впираєшся in стелю (сон, брендинг, екзотика) - переписуєш on свою, зберігаючи топіки (Homie або `device/<id>/...` with [[15-Protocols/01-MQTT|MQTT]]).
+Правило: прототип on готовій прошивці → якщо виріб «полетів» and впираєшся in стелю (сон, брендинг, екзотика) - переписуєш on свою, зберігаючи топіки (Homie або `device/<id>/...` with [[EN/15-Protocols/01-MQTT.en|MQTT]]).
 
 ## typical errors
 
 | Симптом | Причина | Рішення |
 | --- | --- | --- |
-| Кінець LED-стрічки жовтить/червонить | просадка 5 in on тонких/довгих дротах | живлення with обох кінців, провід ≥ 1.5 мм², спільна земля; див. [[11-Vivid/09-LED-Strip-Power-SK6812-APA102]] |
+| Кінець LED-стрічки жовтить/червонить | просадка 5 in on тонких/довгих дротах | живлення with обох кінців, провід ≥ 1.5 мм², спільна земля; див. [[EN/11-Vivid/09-LED-Strip-Power-SK6812-APA102.en]] |
 | WLED-AP not зникає після налаштування | failsafe AP лишено увімкненим | `WiFi Setup → Disable AP`, поставити пароль |
 | Плутаються кольори R/B | not той порядок каналів | `LED Preferences → Color Order`: GRB for WS2812B, RGB for SK6812 |
 | UDP-sync смикається | різні версії WLED / WiFi-лаги | одна версія on всіх, ведучий 1, multicast доступний |
@@ -379,13 +379,13 @@ c.publish(BASE + b"/$state", b"ready", retain=True)
 
 ## Див. також
 
-- [[Home]]
-- [[15-Protocols/01-MQTT|MQTT]] - broker, QoS, LWT for Tasmota/Homie
-- [[15-Protocols/07-Notify-Voice|Notify/Voice]] - сповіщення and голосове керування готовими прошивками
-- [[05-Radio/01-WiFi-STA-AP|WiFi STA/AP]] - режими радіо, AP-портали першого запуску
-- [[11-Vivid/09-LED-Strip-Power-SK6812-APA102|LED Strip Power]] - струм, дроти, ABL for WLED - читати ДО стрічки!
-- [[99-Additions/02-Troubleshooting-FAQ|FAQ]] - діагностика обривів and живлення
-- [[15-Protocols/04-Provisioning|Provisioning]] - BlynkEdgent vs WiFiManager vs wifi_provisioning
+- [[Home.en]]
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - broker, QoS, LWT for Tasmota/Homie
+- [[EN/15-Protocols/02-Notify-Voice.en|Notify/Voice]] - сповіщення and голосове керування готовими прошивками
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - режими радіо, AP-портали першого запуску
+- [[EN/11-Vivid/09-LED-Strip-Power-SK6812-APA102.en|LED Strip Power]] - струм, дроти, ABL for WLED - читати ДО стрічки!
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - діагностика обривів and живлення
+- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - BlynkEdgent vs WiFiManager vs wifi_provisioning
 
 
 ## Common issues

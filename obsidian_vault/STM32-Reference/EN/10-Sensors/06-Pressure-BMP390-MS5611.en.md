@@ -153,4 +153,4 @@ raw_temp  = buf[5] << 16 | buf[4] << 8 | buf[3];
 - [[EN/10-Sensors/02-BME280-SHT3x.en|climate over I2C]]
 - [[EN/10-Sensors/03-MPU6050-IMU.en|motion and orientation]]
 - [[EN/04-Interfaces/03-I2C.en|exchange bus]]
-- [[16-Projects/01-Meteostantsiya|weather node]]
+- [[EN/16-Projects/01-Weather-Station.en|weather node]]

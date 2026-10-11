@@ -15,10 +15,10 @@ date-created: 2026-09-29
 
 Centimeter navigation for ESP32: RTK receivers u-blox ZED-F9P and Unicore UM980 give `0.01 m + 1 ppm CEP` accuracy in RTK Fix mode instead of `1.5 - 2.5 m` for standard NEO-6M / NEO-M8N. Note covers full chain: dual-band antenna -> rover on ESP32 -> base station / NTRIP client / RTCM / NMEA / u-center / RTKLIB.
 
-![[assets/img/gnss-rtk-rover-base.png|600]]
+![[assets/img/gnss-rtk-zedf9p-scheme.png|600]]
 *Fig. RTK chain: base station (static, known position) -> RTCM corrections -> NTRIP server / local radio -> rover ESP32 + ZED-F9P -> NMEA / UBX outputs.*
 
-Links to [[EN/Home.en]], [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]], [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], [[04-Interfaces/02-SPI|SPI]], [[04-Interfaces/01-UART|UART]], [[02-Power-Supply/01-Lancjugi-zhivlennya]].
+Links to [[EN/Home.en]], [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]], [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], [[EN/04-Interfaces/02-SPI.en|SPI]], [[EN/04-Interfaces/01-UART.en|UART]], [[EN/02-Power-Supply/01-Power-Rails.en]].
 
 ## Characteristics (Comparison Table)
 
@@ -168,6 +168,36 @@ NTRIP / Wi-Fi / 4G:
 | ATGM336H / NEO-M8N | 10-30 | Basic, no RTK |
 | ESP32-S3 + ZED-F9P + ESP32-C3 (base) | 200 + 50 | Full chain, Wi-Fi / 4G |
 
+### RTK chain
+
+```mermaid
+flowchart LR
+    ANT["Dual-band antenna<br/>ground plane"]
+    ROV["Rover ZED-F9P<br/>UART2 ESP32"]
+    NET["NTRIP via WiFi 4G<br/>RTCM corrections"]
+    FIX["RTK Fix<br/>1 cm"]
+    LOG["u-center RTKLIB<br/>verify"]
+    ANT --> ROV
+    NET --> ROV
+    ROV --> FIX
+    FIX --> LOG
+```
+
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| No fix, only 3D single | No RTCM corrections or baseline too long | Connect NTRIP caster, check mountpoint, stay within 30 km of base |
+| Fix drops every minute | Weak antenna placement or RF noise | Ground plane 100 mm, away from WiFi antenna, separate LDO |
+| NTRIP connects then stalls | Wrong credentials or RTCM age too old | Verify user and mountpoint, check caster stream is alive |
+| UART garbage at 115200 | Module sends UBX plus NMEA mixed | Set matching baud both sides, filter to needed messages only |
+| PPS time drifts | PPS pin floating or wrong edge | Wire PPS to GPIO interrupt, use rising edge, shield cable |
+
+## Official sources
+
+- [ZED-F9P product page (u-blox)](https://www.u-blox.com) - dual-band RTK receiver data; search ZED-F9P on the site. - `check manually`.
+- [ESP32 UART (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/uart.html) - UART2 wiring for GPS and RTCM input.
+- [RTKLIB manual (RTKLIB project)](https://github.com/tomojitakasu/RTKLIB) - post-processing and base setup. - `check manually if moved`.
 ## References
 
 - u-blox ZED-F9P datasheet

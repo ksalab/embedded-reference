@@ -27,7 +27,7 @@ date: 2026-10-08
 # Environment choice - ESP-IDF vs Arduino vs MicroPython vs PlatformIO
 
 > [!tip] 10-second chooser
-> Production/work - **ESP-IDF**. Fast prototype/Arduino background - **Arduino-core**. Learning/5-min sensor test - **MicroPython**. Many libraries/team - **PlatformIO**. Hardware details - [[00-Start/03-Porivnyannya-chipiv| Chip comparison]] and [[00-Start/04-Devkit-plati| DevKit boards]], terms - [[00-Start/02-Glosariy| Glossary]], structure - [[00-Start/01-Yak-koristuvatis-dovidnikom| How to use it]], map - [[Home.en | Home map]].
+> Production/work - **ESP-IDF**. Fast prototype/Arduino background - **Arduino-core**. Learning/5-min sensor test - **MicroPython**. Many libraries/team - **PlatformIO**. Hardware details - [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]] and [[EN/00-Start/04-Dev-Boards.en| DevKit boards]], terms - [[EN/00-Start/02-Glossary.en| Glossary]], structure - [[EN/00-Start/01-How-to-Use-Guide.en| How to use it]], map - [[Home.en | Home map]].
 >
 > [!warning] 3.3V in every toolchain!
 > No SDK saves GPIO from 5V. `digitalWrite()`/`gpio_set_level()`/`Pin.value()` drive a 3.3V pin. Describe sensors via the [[_templates/Component-Template.en | Component template]] with level matching.
@@ -51,7 +51,7 @@ date: 2026-10-08
 
 | Task | Advice |
 | --- | --- |
-| Serial device, µA deep-sleep, OTA with rollback | ESP-IDF, see [[00-Start/03-Porivnyannya-chipiv| C3/S3 chip choice]] |
+| Serial device, µA deep-sleep, OTA with rollback | ESP-IDF, see [[EN/00-Start/03-Chip-Comparison.en| C3/S3 chip choice]] |
 | Fast MQTT sensor, WS2812, servo | Arduino-core |
 | Probe an I2C address in 2 minutes | MicroPython `i2c.scan()` |
 | One code for ESP32 + STM32 + AVR | PlatformIO |
@@ -61,13 +61,13 @@ date: 2026-10-08
 
 | Toolchain | Commands |
 | --- | --- |
-| ESP-IDF | `git clone esp-idf; ./install.sh esp32s3; . export.sh; idf.py create-project demo; idf.py -p /dev/ttyUSB0 flash monitor` |
+| ESP-IDF | `git clone esp-idf;./install.sh esp32s3;. export.sh; idf.py create-project demo; idf.py -p /dev/ttyUSB0 flash monitor` |
 | Arduino IDE | Boards Manager → `esp32 by Espressif` → board `DOIT ESP32 DEVKIT V1` → port → Upload |
 | MicroPython | `esptool --chip esp32 write_flash -z 0x1000 firmware.bin` → `mpremote connect /dev/ttyUSB0 repl` → `import machine` |
 | PlatformIO | `pio project init -b esp32dev -o demo; pio run -t upload -t monitor` |
 
 > [!tip] esptool - the common base
-> All toolchains call esptool underneath. Base commands: `esptool.py --port /dev/ttyUSB0 chip_id`, `read_mac`, `write_flash -z 0x1000 fw.bin`, `erase_flash`. Drop speed to 460800/115200 on clones [[00-Start/04-Devkit-plati| DevKit]].
+> All toolchains call esptool underneath. Base commands: `esptool.py --port /dev/ttyUSB0 chip_id`, `read_mac`, `write_flash -z 0x1000 fw.bin`, `erase_flash`. Drop speed to 460800/115200 on clones [[EN/00-Start/04-Dev-Boards.en| DevKit]].
 >
 > [!example] Same Blink in 3 SDKs
 >
@@ -99,7 +99,7 @@ date: 2026-10-08
 | Wi-Fi STA | `esp_wifi_set_mode(WIFI_MODE_STA)` | `WiFi.begin(ssid,pass)` | `WLAN(STA_IF).connect()` |
 | NVS | `nvs_set_i32()` | `Preferences.putInt()` | `config.json` file |
 
-> [!example] Photo/schematic: ![[assets/img/placeholder.png]]
+> [!example] Photo/schematic:![[assets/img/placeholder.png]]
 > Bench to verify all SDKs (one LED + button):
 
 | ESP32 DevKit | Part | Note |
@@ -113,8 +113,8 @@ date: 2026-10-08
 ## See also
 
 - [[Home.en | Home map]]
-- [[00-Start/01-Yak-koristuvatis-dovidnikom| How to use it]]
-- [[00-Start/02-Glosariy| Glossary]]
-- [[00-Start/03-Porivnyannya-chipiv| Chip comparison]]
-- [[00-Start/04-Devkit-plati| DevKit boards]]
+- [[EN/00-Start/01-How-to-Use-Guide.en| How to use it]]
+- [[EN/00-Start/02-Glossary.en| Glossary]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]
+- [[EN/00-Start/04-Dev-Boards.en| DevKit boards]]
 - [[_templates/Component-Template.en | Component template]]

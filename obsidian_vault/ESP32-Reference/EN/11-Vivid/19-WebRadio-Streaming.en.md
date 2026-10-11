@@ -142,6 +142,23 @@ player.begin();
 - [AirPlay / Shairport](https://github.com/mikebrady/shairport-sync) - AirPlay receiver.
 - [ESP-ADF Streaming examples](https://docs.espressif.com/projects/esp-adf/en/latest/) - network audio pipeline.
 
+![[assets/img/placeholder.png|600]]
+*Fig. 1. WebRadio pipeline: Icecast stream, WiFi buffer in PSRAM, MP3/AAC decode, I2S output to DAC or amp.*
+
+### Streaming chain
+
+```mermaid
+flowchart LR
+    NET["Icecast/Shoutcast<br/>MP3 AAC stream"]
+    WIFI["ESP32 WiFi<br/>HTTP client"]
+    BUF["Buffer<br/>PSRAM 64KB+"]
+    DEC["Decoder<br/>Helix VS1053"]
+    OUT["I2S output<br/>DAC or amp"]
+    NET --> WIFI
+    WIFI --> BUF
+    BUF --> DEC
+    DEC --> OUT
+```
 ## See also
 
 - [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|DFPlayer / MAX98357A]] - simpler audio.

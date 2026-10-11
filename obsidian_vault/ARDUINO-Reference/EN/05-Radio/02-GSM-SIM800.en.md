@@ -208,7 +208,7 @@ The diagram reads top down. With no antenna and no bulk capacitor, go no further
 ## See also
 
 - [[Home.en]]
-- [[05-Radio/01-LoRa-moduli|long-range radio]]
+- [[EN/05-Radio/01-LoRa-Modules.en|long-range radio]]
 - [[EN/04-Interfaces/01-UART.en|serial port]]
 - [[EN/02-Power-Supply/02-Battery-Power.en|autonomous power]]
 - [[EN/02-Power-Supply/01-VIN-Power-Supply.en|VIN power supply]]

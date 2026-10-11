@@ -24,7 +24,7 @@ Build a home air monitoring post on STM32:
 - PM1.0/PM2.5/PM10 in ug/m3 - PMS5003 or SPS30;
 - VOC index and raw ethanol/hydrogen - SGP40;
 - WHO thresholds: PM2.5 over 15 ug/m3 (yearly norm) means alert;
-- 5-minute averaging, send over [[12-Comm-Modules/06-WiFi-ESP-AT|WiFi modem]].
+- 5-minute averaging, send over [[EN/12-Comm-Modules/06-WiFi-ESP-AT.en|WiFi modem]].
 
 | Sensor | What it measures | Interface | Price/effort |
 | --- | --- | --- | --- |
@@ -126,7 +126,7 @@ SGP40 VOC index: 100 is mean clean air, below 100 cleaner, above 100 worse, scal
 - SGP40 - inside the room, away from the kitchen and alcohol-based products;
 - louvered case, sensors vertical (PMS fan blows up);
 - first 24 hours - burn-in run, do not publish data;
-- cross-check: two same sensors side by side for a week, PM2.5 mismatch up to 20 % is hobby-class normal.
+- cross-check: two same sensors side by side for a week, PM2.5 mismatch up to 20% is hobby-class normal.
 
 ## 8. Common issues
 
@@ -136,7 +136,7 @@ SGP40 VOC index: 100 is mean clean air, below 100 cleaner, above 100 worse, scal
 | Checksum never matches | frame shift after restart | search for the 42 4D header, resync |
 | SGP40 always 100 | no RH/T compensation | connect BME280, send ticks every second |
 | PM2.5 jumps 10 times | fan clogged with dust | SPS30 auto-clean, blow out PMS |
-| Data spikes at night | moisture/fog counts as PM | humidity filter: RH over 85 % means mark data suspect |
+| Data spikes at night | moisture/fog counts as PM | humidity filter: RH over 85% means mark data suspect |
 | I2C hangs after SGP40 | clock-stretching on a slow bus | 100 kHz, 4.7 kOhm pull-ups, HAL timeouts |
 
 ## 9. Related Notes
@@ -145,7 +145,7 @@ SGP40 VOC index: 100 is mean clean air, below 100 cleaner, above 100 worse, scal
 - [[EN/10-Sensors/02-BME280-SHT3x.en|BME280 and humidity]] - compensation for SGP40.
 - [[EN/10-Sensors/10-MQ-Gas.en|MQ gas sensors]] - cheap VOC alternative.
 - [[EN/04-Interfaces/03-I2C.en|I2C bus]] - addresses, pull-ups, clock-stretching.
-- [[16-Projects/01-Meteostantsiya|weather station]] - where to fit the post.
+- [[EN/16-Projects/01-Weather-Station.en|weather station]] - where to fit the post.
 
 ## Official sources
 

@@ -90,11 +90,61 @@ First power-on procedure:
 - Use multimeter in series to measure sleep current (cut USB-UART power for real sleep).
 - INA219 module can log current over time.
 
+### Lab measurement chain
+
+```mermaid
+flowchart LR
+    PSU["Lab PSU 5V<br/>CC limit 200mA"]
+    DUT["ESP32 DevKit<br/>device under test"]
+    DMM["Multimeter<br/>V + A in gap"]
+    SCOPE["Oscilloscope<br/>VIN sag trigger"]
+    LA["Logic analyzer<br/>I2C SPI UART"]
+    PSU --> DUT
+    DUT --- DMM
+    DUT --- SCOPE
+    DUT --- LA
+```
+
+## Measurement cheat-sheet
+
+| Question | Instrument | How | Pass bar |
+| --- | --- | --- | --- |
+| Deep-sleep current | Multimeter uA range in series | Cut USB-UART power, wake by timer | 10-150 uA for ESP32 |
+| WiFi TX sag | Oscilloscope on VIN, falling trigger 3.0 V | Capture 1 ms/div at connect | No dip below 3.0 V |
+| I2C NACK | Logic analyzer + PulseView | Decode address byte, check ACK bit | Every address ACKed |
+| UART baud | Oscilloscope on TX, measure start bit | 1/115200 = 8.7 us per bit | Within 2 percent |
+| LDO heat | Finger + multimeter temp probe | Full WiFi TX for 5 min | Below 70 C on package |
+| Cable data or charge-only | USB tester + try flash | Flash 1 MB firmware | Flash succeeds, no retries |
+
+## First deep-sleep current measurement
+
+1. Power DevKit from lab PSU at 5.0 V with CC limit 200 mA, multimeter in series on mA range.
+2. Flash minimal firmware: wake from timer every 10 s, no WiFi, no UART logs.
+3. Switch multimeter to uA range after boot (burden voltage matters, keep leads short).
+4. Read sleep current between wake pulses; expect 10-150 uA depending on board (USB-UART chip adds mA).
+5. For true chip current, cut USB-UART power jumper or measure on bare module.
+
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Board reboots at WiFi start | VIN sags below brownout on TX peak 300-500 mA | Shorter USB cable or 5V 2A PSU, 470 uF bulk cap on VIN |
+| Sleep current in milliamps | USB-UART bridge and LEDs stay powered | Cut bridge power jumper, desolder power LED or use bare module |
+| I2C NACK on scanner | Missing 4.7k pull-ups or 5V device on bus | Add pull-ups to 3V3, level-shift 5V devices, shorten wires |
+| Garbage on UART at 115200 | Wrong baud or charge-only cable dropping bytes | Fix baud on both sides, use data cable under 1 m |
+| Oscilloscope shows SPI noise | Probe ground too far from chip | Clip probe ground to board GND next to chip, use 10x probe |
+| LDO hot to touch | AMS1117 drops 5V to 3.3V at 500 mA TX peaks | External buck for load, copper pour heatsink, duty-cycle WiFi |
+
+## Official sources
+
+- [ESP32 Datasheet (Espressif)](https://www.espressif.com/sites/default/files/esp32-datasheet-en.pdf) - absolute maximums and current figures for reference.
+- [ESP32 Hardware Design Guidelines (Espressif)](https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32/index.html) - power, decoupling and grounding rules.
+- [Oscilloscope Basics (SparkFun)](https://learn.sparkfun.com/tutorials/oscilloscope-basics) - probes, triggering and capture basics.
 ## See Also
 
 - [[EN/Home.en]]
 - [[EN/17-Lab/02-Soldering-Connectors.en]]
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]]
+- [[EN/02-Power-Supply/01-Power-Rails.en]]
 - [[EN/99-Additions/01-Pinout-tablici.en]]
 
-> UA original twin: [[17-Lab/01-Instruments.md | UA]]
+> UA original twin: [[EN/17-Lab/01-Instruments.en| UA]]

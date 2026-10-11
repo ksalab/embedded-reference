@@ -350,4 +350,4 @@ A ladder teaches the principle but loses exactness.
 - [[Home.en]]
 - [[EN/06-Analog/01-ADC.en|voltage measurement]]
 - [[EN/03-GPIO/02-PWM-analogWrite.en|pulse-width modulation]]
-- [[07-Timers/01-Timeri-millis|timers and time]]
+- [[EN/07-Timers/01-Timers-millis.en|timers and time]]

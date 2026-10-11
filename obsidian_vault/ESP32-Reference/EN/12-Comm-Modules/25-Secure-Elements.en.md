@@ -5,6 +5,8 @@ tags: [esp32, secure-element, cryptography, authentication, i2c, spi]
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/25-Secure-Elements.md
 ---
 
 # Secure Elements - захищені елементи for ESP32
@@ -340,8 +342,8 @@ except ImportError:
 ```
 
 - [[EN/Home.en]]
-- [[08-Memory/04-Secure-Boot-Encrypt]]
-- [[15-Protocols/08-Security-Hardening]]
-- [[15-Protocols/03-mDNS-NTP-TLS]]
+- [[EN/08-Memory/04-Secure-Boot-Encrypt.en]]
+- [[EN/15-Protocols/06-Secure-Boot.en]]
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en]]
 
-25→(Home, [[08-Memory/04-Secure-Boot-Encrypt]], [[15-Protocols/08-Security-Hardening]], [[15-Protocols/03-mDNS-NTP-TLS]])
+25→(Home, [[EN/08-Memory/04-Secure-Boot-Encrypt.en]], [[EN/15-Protocols/06-Secure-Boot.en]], [[EN/15-Protocols/03-mDNS-NTP-TLS.en]])

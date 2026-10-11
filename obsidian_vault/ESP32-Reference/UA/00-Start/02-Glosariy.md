@@ -1,5 +1,6 @@
 ---
 title: Глосарій ESP32 - 90+ термінів
+description: Глосарій ESP32: понад 90 термінів за темами з посиланнями на розділи довідника, плати та середовища розробки.
 tags:
 
   - esp32
@@ -13,6 +14,7 @@ aliases:
   - Словник термінів
 
 type: reference
+date: 2026-10-08
 ---
 
 # Глосарій ESP32 - 90+ термінів
@@ -147,7 +149,7 @@ EN version: `00-Start/02-Glossary.en.md`
 | PTC | Самовідновлюваний запобіжник | Полімерний: росте опір при перегріві струмом | [[13-Moduli-zhivlennya-rivniv/04-LDO-Buck-XL4015-Protect | Захист]] |
 | TVS | Супресор перенапруги | SMBJ5.0A гасить ESD/сплески наносекунди | [[13-Moduli-zhivlennya-rivniv/04-LDO-Buck-XL4015-Protect | Захист]] |
 
-> [!example] Фото/схема: ![[assets/img/placeholder.png]]
+> [!example] Фото/схема:![[assets/img/placeholder.png]]
 > Опорна схема рівнів для глосарію:
 
 | ESP32 | Модуль 3.3V | Модуль 5V |

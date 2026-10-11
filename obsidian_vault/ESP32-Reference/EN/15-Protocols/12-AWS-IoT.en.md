@@ -16,7 +16,7 @@ date: 2026-10-08
 
 AWS IoT Core - керований MQTT-broker with authorization ТІЛЬКИ for X.509-сертифікатами (логін/пароль not приймається!). Плюс Thing Shadow (цифровий двійник) and Jobs (команди/OTA парку). ESP32 підключається via esp-mqtt with клієнтським сертифікатом.
 
-База: старт - [[Home]], MQTT-база - [[15-Protocols/01-MQTT|MQTT]], TLS/NTP - [[15-Protocols/03-mDNS-NTP-TLS]], пайплайн - [[15-Protocols/05-Cloud-Pipeline]], OTA - [[08-Memory/03-OTA|OTA]], час - [[10-Sensors/27-Time-Mem-IO-DAC]].
+База: старт - [[Home.en]], MQTT-база - [[EN/15-Protocols/01-MQTT.en|MQTT]], TLS/NTP - [[EN/15-Protocols/03-mDNS-NTP-TLS.en]], пайплайн - [[EN/15-Protocols/05-Cloud-Pipeline.en]], OTA - [[EN/08-Memory/03-OTA.en|OTA]], час - [[EN/10-Sensors/27-Time-Mem-IO-DAC.en]].
 
 > [!danger] Три речі, without яких AWS not підключить
 >
@@ -155,14 +155,14 @@ void setup() {
 
 ## Див. також
 
-- [[Home|Головна]]
-- [[15-Protocols/01-MQTT|MQTT]]
-- [[15-Protocols/03-mDNS-NTP-TLS|TLS/NTP]]
-- [[15-Protocols/05-Cloud-Pipeline|Cloud-Pipeline]]
-- [[15-Protocols/13-Azure-IoT]]
-- [[08-Memory/03-OTA|OTA]]
-- [[08-Memory/04-Secure-Boot-Encrypt|Secure Boot]]
-- [[17-Lab/03-Enclosure-Cert-Factory|mfg-NVS]]
+- [[Home.en|Головна]]
+- [[EN/15-Protocols/01-MQTT.en|MQTT]]
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|TLS/NTP]]
+- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud-Pipeline]]
+- [[EN/15-Protocols/13-Azure-IoT.en]]
+- [[EN/08-Memory/03-OTA.en|OTA]]
+- [[EN/08-Memory/04-Secure-Boot-Encrypt.en|Secure Boot]]
+- [[EN/17-Lab/03-Enclosure-Cert-Factory.en|mfg-NVS]]
 
 
 ## Common issues

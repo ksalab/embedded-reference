@@ -19,7 +19,7 @@ original: 01-Hardware/05-Moduli-WROOM-WROVER-MINI.md
 
 ## Purpose
 
-WROOM vs WROVER vs MINI-1 modules: comparison; selection table; antennas and current. Related topics: module supply - [[02-Power-Supply/01-Lancjugi-zhivlennya.en | power supply chains]], memory - [[01-Hardware/06-Flash-PSRAM.en | Flash and PSRAM]], chip comparison - [[00-Start/03-Porivnyannya-chipiv| chip comparison]]. WROOM is the default with a PCB antenna; WROVER adds PSRAM for cameras and GUI; MINI-1 is tiny with U.FL for an external antenna.
+WROOM vs WROVER vs MINI-1 modules: comparison; selection table; antennas and current. Related topics: module supply - [[02-Power-Supply/01-Lancjugi-zhivlennya.en | power supply chains]], memory - [[01-Hardware/06-Flash-PSRAM.en | Flash and PSRAM]], chip comparison - [[EN/00-Start/03-Chip-Comparison.en| chip comparison]]. WROOM is the default with a PCB antenna; WROVER adds PSRAM for cameras and GUI; MINI-1 is tiny with U.FL for an external antenna.
 
 ## Comparison
 
@@ -135,7 +135,7 @@ void setup() {
 void loop() {}
 ```
 
-Related topics: module supply - [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]], memory - [[EN/01-Hardware/06-Flash-PSRAM.en]], chip comparison - [[00-Start/03-Porivnyannya-chipiv]].
+Related topics: module supply - [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]], memory - [[EN/01-Hardware/06-Flash-PSRAM.en]], chip comparison - [[EN/00-Start/03-Chip-Comparison.en]].
 
 ### Board mounting and footprint compatibility
 
@@ -182,7 +182,7 @@ flowchart TB
 ## See also
 
 - [[EN/Home.en]]
-- [[00-Start/03-Porivnyannya-chipiv]]
+- [[EN/00-Start/03-Chip-Comparison.en]]
 - [[EN/03-GPIO/01-GPIO-oglyad.en]]
 - [[EN/03-GPIO/02-Strapping-pini.en]]
 - [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]]

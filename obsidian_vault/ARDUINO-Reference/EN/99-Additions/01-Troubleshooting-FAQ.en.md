@@ -29,30 +29,30 @@ Write down what you checked: the log saves hours when repeating the problem.
 
 ## 2. Big table: symptom, cause, solution
 
-| Symptom                                                                                                                                                                                                                                                                                                                                                                                                                     | The most likely cause                                                              | Solution                                                                |
+| Symptom | The most likely cause | Solution |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| The sketch does not load, access error                                                                                                                                                                                                                                                                                                                                                                                      | The port is occupied by a monitor or another program                               | Close the port monitor, select the correct port, repeat                 |
-| The port disappeared from the list                                                                                                                                                                                                                                                                                                                                                                                          | Bad cable with no data lines or bridge driver                                      | Replace the cable with a tested one, install the converter driver       |
-| Pouring begins and breaks                                                                                                                                                                                                                                                                                                                                                                                                   | Power sag or autoreboot failed                                                     | Short cable, press manual reset at the time of filling                  |
-| The sketch remains, but does not start                                                                                                                                                                                                                                                                                                                                                                                      | Freezes while waiting for a port or at the start of a program                      | Remove port waiting without timeout, add flashing at start              |
-| Garbage in port monitor                                                                                                                                                                                                                                                                                                                                                                                                     | The monitor speed does not match the sketch                                        | Put the same speed on both sides, start with 9600                       |
-| The I2C sensor is silent                                                                                                                                                                                                                                                                                                                                                                                                    | Wrong address, no power or weak braces                                             | Run the bus scanner, check the power and ground of the module           |
-| The stabilizer is heated Output overload or input voltage too high                                                                                                                                                                                                                                                                                                                                                          | Remove the load, reduce the input voltage, add a radiator                          |
-| The sketch does not fit into the memory                                                                                                                                                                                                                                                                                                                                                                                     | Rows and buffers ate flash or RAM Transfer lines to program memory, reduce buffers |
-| The board is rebooted in cycles                                                                                                                                                                                                                                                                                                                                                                                             | The start current exceeds the power supply                                         | Separate power supply for engines, electrolyte for the bus, thick wires |
-| Works on USB, silent on battery                                                                                                                                                                                                                                                                                                                                                                                             | The battery is dead or does not draw current                                       | Measure the voltage under the load, take a fresh source```text          |
-| A quick survey of the dead charge in one minute:Is the power on? ......... no -> USB cable, socket, fuseIs the port visible? ............... no -> data cable, bridge driverIs the filling going? .............. no -> the monitor is closed, the board is selected correctlyStart flashing? ........... no -> hangs at the start, simplify the setupData in the monitor? .......... no -> speed, terrain, signal levels``` |
+| The sketch does not load, access error | The port is occupied by a monitor or another program | Close the port monitor, select the correct port, repeat |
+| The port disappeared from the list | Bad cable with no data lines or bridge driver | Replace the cable with a tested one, install the converter driver |
+| Pouring begins and breaks | Power sag or autoreboot failed | Short cable, press manual reset at the time of filling |
+| The sketch remains, but does not start | Freezes while waiting for a port or at the start of a program | Remove port waiting without timeout, add flashing at start |
+| Garbage in port monitor | The monitor speed does not match the sketch | Put the same speed on both sides, start with 9600 |
+| The I2C sensor is silent | Wrong address, no power or weak braces | Run the bus scanner, check the power and ground of the module |
+| The stabilizer is heated Output overload or input voltage too high | Remove the load, reduce the input voltage, add a radiator |
+| The sketch does not fit into the memory | Rows and buffers ate flash or RAM Transfer lines to program memory, reduce buffers |
+| The board is rebooted in cycles | The start current exceeds the power supply | Separate power supply for engines, electrolyte for the bus, thick wires |
+| Works on USB, silent on battery | The battery is dead or does not draw current | Measure the voltage under the load, take a fresh source```text |
+| A quick survey of the dead charge in one minute:Is the power on?......... no -> USB cable, socket, fuseIs the port visible?............... no -> data cable, bridge driverIs the filling going?.............. no -> the monitor is closed, the board is selected correctlyStart flashing?........... no -> hangs at the start, simplify the setupData in the monitor?.......... no -> speed, terrain, signal levels``` |
 
 ## 3. Does not overflow: step-by-step analysis
 
-| Step | Verification                                                                                    | How to understand that a step has been passed                         |
+| Step | Verification | How to understand that a step has been passed |
 | ---- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| 1    | The board is chosen precisely and                                                               | The name of the board coincides with the inscription on the textolite |
-| 2    | The port is selected correctly The port disappears from the list when the board is disconnected |
-| 3    | Data cable                                                                                      | The port can be seen through it and the Blink                         |
-| 4    | The port monitor is closed                                                                      | No window holds the port while pouring                                |
-| 5    | The bridge driver is installed                                                                  | The chip near the USB is recognized by the system                     |
-| 6    | Manual reset in the fill window                                                                 | The LED flashed, the filling started                                  |
+| 1 | The board is chosen precisely and | The name of the board coincides with the inscription on the textolite |
+| 2 | The port is selected correctly The port disappears from the list when the board is disconnected |
+| 3 | Data cable | The port can be seen through it and the Blink |
+| 4 | The port monitor is closed | No window holds the port while pouring |
+| 5 | The bridge driver is installed | The chip near the USB is recognized by the system |
+| 6 | Manual reset in the fill window | The LED flashed, the filling started |
 
 An access error almost always means a busy port: a monitor, a plotter, or a second copy of the environment.
 A synchronization error hints at someone else's bootloader: choose the appropriate item in the processor menu.
@@ -197,67 +197,67 @@ H[Hot LDO or rebuts] --> LOAD{What is powered by the board?}LOAD -->|Motors/Rela
 
 ## B1. The charging cable ate up the evening
 
-| Field      | Record                                    |
+| Field | Record |
 | ---------- | ----------------------------------------- |
-| Symptom    | There is no port at all                   |
-| Dimension  | The same port with a different cable - is |
-| The reason | Thin cable without data lines             |
-| Fix        | Mark data cables with insulating tape     |
+| Symptom | There is no port at all |
+| Dimension | The same port with a different cable - is |
+| The reason | Thin cable without data lines |
+| Fix | Mark data cables with insulating tape |
 
 #
 
 ## B2. The monitor holds the port
 
-| Field      | Record                                       |
+| Field | Record |
 | ---------- | -------------------------------------------- |
-| Symptom    | Pouring fails with a busy port               |
-| Dimension  | Closed monitor - filling is in progress      |
-| The reason | Two processes on one COM                     |
-| Fix        | Close the monitor and plotter before pouring |
+| Symptom | Pouring fails with a busy port |
+| Dimension | Closed monitor - filling is in progress |
+| The reason | Two processes on one COM |
+| Fix | Close the monitor and plotter before pouring |
 
 #
 
 ## B3. 9V on VIN and hot LDO
 
-| Field      | Record                               |
+| Field | Record |
 | ---------- | ------------------------------------ |
-| Symptom    | Rebut every minute                   |
-| Dimension  | LDO burns, current 400 mA            |
+| Symptom | Rebut every minute |
+| Dimension | LDO burns, current 400 mA |
 | The reason | A drop of 9→5 V heats the stabilizer |
-| Fix        | VIN 7.5 V or a separate buck         |
+| Fix | VIN 7.5 V or a separate buck |
 
 #
 
 ## B4. The I2C address is not the same
 
-| Field      | Record                                       |
+| Field | Record |
 | ---------- | -------------------------------------------- |
-| Symptom    | The sensor is silent from example            |
-| Dimension  | Scanner showed 0x3F instead of 0x27          |
+| Symptom | The sensor is silent from example |
+| Dimension | Scanner showed 0x3F instead of 0x27 |
 | The reason | The revision of the I2C adapter is different |
-| Fix        | Scanner before each new module               |
+| Fix | Scanner before each new module |
 
 #
 
 ## B5. SRAM ate the strings
 
-| Field      | Record                                  |
+| Field | Record |
 | ---------- | --------------------------------------- |
-| Symptom    | Accidental drops on long texts          |
-| Dimension  | There are 200 bytes of free RAM         |
-| The reason | Rows in SRAM instead of Flash           |
-| Fix        | F() and PROGMEM everywhere in the texts |
+| Symptom | Accidental drops on long texts |
+| Dimension | There are 200 bytes of free RAM |
+| The reason | Rows in SRAM instead of Flash |
+| Fix | F() and PROGMEM everywhere in the texts |
 
 ## Typical errors
 
-| #   | Error                                                                                           | Why bad                                                                           | How correct                                     |
+| # | Error | Why bad | How correct |
 | --- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------- |
-| 1   | Change everything at once without a hypothesis It is not clear what helped, the bug will return | One check at a time, results log                                                  |
-| 2   | Faith lesson instead of tire scanner                                                            | Module addresses differ by revision                                               | The scanner shows the actual address            |
-| 3   | Waiting for port without timeout                                                                | The sketch hangs forever on the battery Timeout two seconds or start without port |
-| 4   | Ignoring stabilizer heating                                                                     | Thermal protection gives cyclic restarts                                          | Calculate the power, unload the output          |
-| 5   | Long cable through passive hub                                                                  | Pouring breaks and phantom bugs                                                   | Pay directly to the computer with a short cable |
-| 6   | A question without a minimal example                                                            | No one will reproduce the bug and help One file, start beacon, three facts        |
+| 1 | Change everything at once without a hypothesis It is not clear what helped, the bug will return | One check at a time, results log |
+| 2 | Faith lesson instead of tire scanner | Module addresses differ by revision | The scanner shows the actual address |
+| 3 | Waiting for port without timeout | The sketch hangs forever on the battery Timeout two seconds or start without port |
+| 4 | Ignoring stabilizer heating | Thermal protection gives cyclic restarts | Calculate the power, unload the output |
+| 5 | Long cable through passive hub | Pouring breaks and phantom bugs | Pay directly to the computer with a short cable |
+| 6 | A question without a minimal example | No one will reproduce the bug and help One file, start beacon, three facts |
 
 ## Official sources
 
@@ -267,10 +267,10 @@ H[Hot LDO or rebuts] --> LOAD{What is powered by the board?}LOAD -->|Motors/Rela
 
 ## See also- [[Home | Home]]
 
-- [[09-Firmware/01-IDE-CLI | environment and CLI]]
-- [[09-Firmware/02-Bootloader-AVRDUDE | bootloader and avrdude]]
-- [[17-Lab/01-Priladi | measuring devices]]
-- [[99-Additions/02-Cheklisti-Datasheet | lists and datasheets]]
+- [[EN/09-Firmware/01-IDE-CLI.en| environment and CLI]]
+- [[EN/09-Firmware/02-Bootloader-AVRDUDE.en| bootloader and avrdude]]
+- [[EN/17-Lab/01-Instruments.en| measuring devices]]
+- [[EN/99-Additions/02-Cheklisti-Datasheet.en| lists and datasheets]]
 
 ## Common issues
 

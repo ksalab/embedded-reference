@@ -68,7 +68,7 @@ Do not use GPIO6-GPIO11 (SPI Flash); GPIO34-39 are input-only with no pull-up/pu
 | 3V3 output for sensors | 3V3 pin | Up to about 400 mA total, then it heats up |
 
 > [!warning] AMS1117 heats up
-> At (5V-3.3V)x400 mA = about 0.7 W the SOT-223 package without heatsink warms to 70-90 C. This is normal, but at 500 mA and more add a heatsink or a separate buck, see [[13-Power-Modules/04-LDO-Buck-XL4015-Protect | XL4015/Protection]].
+> At (5V-3.3V)x400 mA = about 0.7 W the SOT-223 package without heatsink warms to 70-90 C. This is normal, but at 500 mA and more add a heatsink or a separate buck, see [[EN/13-Power-Modules/04-LDO-Buck-XL4015-Protect.en| XL4015/Protection]].
 
 ## USB-UART features
 
@@ -78,7 +78,7 @@ Do not use GPIO6-GPIO11 (SPI Flash); GPIO34-39 are input-only with no pull-up/pu
 | NodeMCU-32S clone | CH340G | WCH CH341SER | No crystal on CH340C, cheaper, 460800 more reliable |
 | MH-ET LIVE | CH340C | WCH CH341SER | Same, often better silkscreen |
 
-How to tell apart: CP2102 is a QFN-28 package with a 12 MHz crystal nearby; CH340G is SOP-16 with crystal; CH340C is SOP-16 without crystal. Fakes labeled CP2102 with a CH340 inside are fixed with the WCH driver and 115200 speed. More details - [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART]].
+How to tell apart: CP2102 is a QFN-28 package with a 12 MHz crystal nearby; CH340G is SOP-16 with crystal; CH340C is SOP-16 without crystal. Fakes labeled CP2102 with a CH340 inside are fixed with the WCH driver and 115200 speed. More details - [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART]].
 
 ## BOOT/EN buttons
 
@@ -133,7 +133,7 @@ MicroPython: flashes normally over USB-UART, see [[09-Firmware/03-MicroPython.en
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![[assets/img/devboard-doit-v1.png|600]]
+> [!example] Photo/schematic:![[assets/img/devboard-doit-v1.png|600]]
 
 ```text
 [USB 5V / Зарядка 5V 2A] ──► Micro-USB ──► AMS1117-3.3 ──► 3.3V (ESP32 + піни 3V3)
@@ -171,7 +171,7 @@ flowchart TB
 - [[00-Start/04-Dev-Boards.en | DevKit boards]]
 - [[00-Start/03-Chip-Comparison.en | Chip comparison]]
 - [[00-Start/05-Environment-Choice.en | Environment choice]]
-- [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART and Auto-Reset]]
+- [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART and Auto-Reset]]
 - [[02-Power-Supply/01-Power-Rails.en | Power rails]]
 - [[03-GPIO/02-Strapping-Pins.en | Strapping pins]]
 - [[06-Analog/01-ADC.en | ADC]]

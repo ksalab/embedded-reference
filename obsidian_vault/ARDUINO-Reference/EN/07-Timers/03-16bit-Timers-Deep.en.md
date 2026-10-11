@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Timer1: TCCR1A/B, OCR1A/B, ICR1, divider and interrupts.*
 
 > [!tip] What this note is
-> Deep dive after the overview [[07-Timers/01-Timeri-millis|Timers]]: registers, mode tables, and why `analogWrite` can break `millis()`. Platform - ATmega328P (Uno/Nano). Basic PWM: [[EN/03-GPIO/02-PWM-analogWrite.en|PWM]].
+> Deep dive after the overview [[EN/07-Timers/01-Timers-millis.en|Timers]]: registers, mode tables, and why `analogWrite` can break `millis()`. Platform - ATmega328P (Uno/Nano). Basic PWM: [[EN/03-GPIO/02-PWM-analogWrite.en|PWM]].
 
 Timer 1 working chain:
 
@@ -138,10 +138,10 @@ Edge logic: count two event types (rising / falling edge), the pin state reads t
 
 ## 9. Neighbour notes
 
-- [[07-Timers/01-Timeri-millis|Timers]] - millis, timed walks.
+- [[EN/07-Timers/01-Timers-millis.en|Timers]] - millis, timed walks.
 - [[EN/03-GPIO/02-PWM-analogWrite.en|PWM]] - analog output, pin map.
 - [[EN/03-GPIO/03-Interrupts.en|Interrupts]] - attachInterrupt, EXTI.
-- [[10-Sensors/08-Encoder|Encoder]] - quadrature on ICNT1.
+- [[EN/10-Sensors/08-Encoder.en|Encoder]] - quadrature on ICNT1.
 
 ## 9.1 Checklist before touching timers
 

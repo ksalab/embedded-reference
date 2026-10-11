@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Rare trio: QMC5883L gives heading, APDS-9960 reads gestures, DS3231 keeps time on a battery.*
 
 > [!tip] What this note is
-> Sensors with a long search: a digital compass for a robot and a drone, contactless gestures for a panel, accurate time for a logger. Plus fusion with gyroscope/accelerometer into 9-DOF. Background: [[EN/10-Sensors/03-MPU6050-IMU.en|gyroscope and accelerometer]], [[12-Comm-Modules/03-GPS-GSM|GPS modules]], [[EN/10-Sensors/11-Encoder.en|encoders]].
+> Sensors with a long search: a digital compass for a robot and a drone, contactless gestures for a panel, accurate time for a logger. Plus fusion with gyroscope/accelerometer into 9-DOF. Background: [[EN/10-Sensors/03-MPU6050-IMU.en|gyroscope and accelerometer]], [[EN/12-Comm-Modules/03-GPS-GSM.en|GPS modules]], [[EN/10-Sensors/11-Encoder.en|encoders]].
 
 ## 1. Goal
 
@@ -105,7 +105,7 @@ DS3231 keeps time in BCD - unpack high/low nibbles. Alarm1 alarm - to the second
 - the accelerometer gives roll/pitch in statics, the gyroscope gives fast turns, the magnetometer gives absolute course;
 - complementary filter: angle = 0.98 x (angle plus gyro x dt) plus 0.02 x accel;
 - GPS gives coordinates and speed, PPS gives the exact second for RTC trim;
-- for a drone this fusion lives in [[16-Projects/06-Drone-FC|flight controller]];
+- for a drone this fusion lives in [[EN/16-Projects/06-Drone-FC.en|flight controller]];
 - logging: DS3231 time plus coordinates plus course - a full track with no phone.
 
 ## 7. Compass Calibration
@@ -144,10 +144,10 @@ DS3231 keeps time in BCD - unpack high/low nibbles. Alarm1 alarm - to the second
 ## 9. Related Notes
 
 - [[EN/10-Sensors/03-MPU6050-IMU.en|gyroscope and accelerometer]] - the second half of 9-DOF.
-- [[12-Comm-Modules/03-GPS-GSM|GPS modules]] - coordinates and PPS.
+- [[EN/12-Comm-Modules/03-GPS-GSM.en|GPS modules]] - coordinates and PPS.
 - [[EN/10-Sensors/08-Light-BH1750-TSL2591.en|light sensors]] - the ALS part of APDS.
 - [[EN/07-Timers/02-LPTIM-RTC-WDT.en|LPTIM, RTC, WDT]] - built-in RTC against DS3231.
-- [[16-Projects/06-Drone-FC|flight controller]] - where the whole fusion lives.
+- [[EN/16-Projects/06-Drone-FC.en|flight controller]] - where the whole fusion lives.
 
 ## Official sources
 

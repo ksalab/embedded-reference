@@ -4,6 +4,7 @@ title: ADXL345, LSM6DSx, ICM-20948, BNO08x - IMU 6/9-DOF, акселеромет
 tags: [esp32, sensor, imu, adxl345, lsm6ds3, lsm6dsox, icm-20948, bno085, bno08x, accelerometer, gyroscope, magnetometer, i2c, spi, uart]
 category: Sensori
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # ADXL345, LSM6DSx, ICM-20948, BNO08x - IMU 6/9-DOF

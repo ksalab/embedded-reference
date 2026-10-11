@@ -1,9 +1,11 @@
 ---
+lang: en
 title: ESP32 Ethernet глибоко - W5500, PoE and провідний шлюз
 description: Будує провідний вузол on ESP32 - W5500 per SPI, PoE-живлення, Ethernet+WiFi резервування and MQTT-шлюз with кодом.; shows schematics, code and tables.
 tags: [esp32, ethernet, w5500, poe, spi, gateway, mqtt, wired]
 category: Moduli-zvyazku
 date: 2026-10-06
+original: 12-Moduli-zvyazku/31-Ethernet-PoE-Deep.md
 ---
 
 # ESP32 Ethernet глибоко - W5500, PoE and провідний шлюз
@@ -12,7 +14,7 @@ date: 2026-10-06
 *Fig. Провідний вузол: W5500 per SPI дає TCP/IP, PoE-спліттер - вати, WiFi лишається резервом.*
 
 > [!tip] that this for нота
-> Коли радіо not варіант: цех, підвал, серверна. Апаратний TCP/IP in W5500 розвантажує кристал, PoE прибирає БЖ. База: [[04-Interfaces/02-SPI|bus SPI]], [[12-Comm-Modules/07-SIM7600-W5500-MCP2515|модулі SIM/W5500]].
+> Коли радіо not варіант: цех, підвал, серверна. Апаратний TCP/IP in W5500 розвантажує кристал, PoE прибирає БЖ. База: [[EN/04-Interfaces/02-SPI.en|bus SPI]], [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|модулі SIM/W5500]].
 
 ## 1. Мета
 
@@ -63,7 +65,7 @@ W5500 тримає 8 сокетів апаратно: TCP/IP not їсть CPU. S
 
 - спліттер 5V 2A: стандартний 802.3af вхід, USB-C/гребінка вихід;
 - гальванічна розв'язка всередині - земля мережі not йде in плату;
-- бюджет: плата + датчики + запас 30 %;
+- бюджет: плата + датчики + запас 30%;
 - грозозахист on вуличних прольотах;
 - тестер PoE показує клас пристрою до вмикання.
 
@@ -159,11 +161,11 @@ WIZNET5K-драйвер є in прошивках with мережевою під�
 
 ## 10. Суміжні ноти
 
-- [[12-Comm-Modules/07-SIM7600-W5500-MCP2515|модулі SIM/W5500]] - огляд модуля.
-- [[04-Interfaces/02-SPI|bus SPI]] - швидкості and CS.
-- [[15-Protocols/01-MQTT|протокол MQTT]] - телеметрія.
-- [[02-Power-Supply/02-LDO-DC-DC|живлення]] - стабільні 3.3V.
-- [[Home|головна карта]] - повна навігація.
+- [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|модулі SIM/W5500]] - огляд модуля.
+- [[EN/04-Interfaces/02-SPI.en|bus SPI]] - швидкості and CS.
+- [[EN/15-Protocols/01-MQTT.en|протокол MQTT]] - телеметрія.
+- [[EN/02-Power-Supply/02-LDO-DC-DC.en|живлення]] - стабільні 3.3V.
+- [[Home.en|головна карта]] - повна навігація.
 
 ## Official sources
 

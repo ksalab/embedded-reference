@@ -152,5 +152,5 @@ flowchart TB
 ## See also
 
 - [[Home.en]]
-- [[00-Start/03-Porivnyannya-chipiv| Chip comparison]]
-- [[00-Start/05-Vibir-seredovischa| Environment choice]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]
+- [[EN/00-Start/05-Environment-Choice.en| Environment choice]]

@@ -246,7 +246,7 @@ flowchart TB
 ## See also
 
 - [[Home.en]]
-- [[00-Start/01-Yak-koristuvatis-dovidnikom| reference guide]]
-- [[00-Start/02-Glosariy| glossary of terms]]
-- [[00-Start/03-Porivnyannya-plat| board comparison]]
-- [[00-Start/04-Devkit-plati| board overview]]
+- [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]]
+- [[EN/00-Start/02-Glossary.en| glossary of terms]]
+- [[EN/00-Start/03-Board-Comparison.en| board comparison]]
+- [[EN/00-Start/04-Dev-Boards.en| board overview]]

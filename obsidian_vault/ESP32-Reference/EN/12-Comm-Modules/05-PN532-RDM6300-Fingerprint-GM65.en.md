@@ -5,6 +5,7 @@ title: PN532 NFC, RDM6300 125кГц, Fingerprint R307, GM65 сканер
 description: PN532 NFC / RDM6300 125 кГц / Fingerprint R307 / GM65 сканер - PN532 NFC (I2C / SPI / UART); Легенда пінів модуля PN532; Схема підключення (I2C-режим - рекомендований); shows schematics, code and tables.
 tags: [esp32, nfc, pn532, rfid, rdm6300, fingerprint, as608, r307, gm65, barcode, uart, i2c, spi]
 date: 2026-10-08
+original: 12-Moduli-zvyazku/05-PN532-RDM6300-Fingerprint-GM65.md
 ---
 
 # PN532 NFC / RDM6300 125 кГц / Fingerprint R307 / GM65 сканер
@@ -21,11 +22,11 @@ date: 2026-10-08
 | R307 / AS608 | Оптичний сенсор 500 dpi | UART 57600 (завод.) / можна 9600-115200 | 3.3-6V (всередині LDO 3.3V) | Палець on склі | Зберігання до 1000 шаблонів, порівняння 1:N on модулі |
 | GM65 | CMOS 640×480 + червона підсвітка | UART 9600 / USB-HID (перемикається) | 5V (піки струму підсвітки ~200 мА) | 5-30 см from коду | EAN-13, Code128, QR, DataMatrix; режим тригера / автосканування |
 
-Links to busми: I2C [[04-Interfaces/03-I2C|I2C]], SPI [[04-Interfaces/02-SPI|SPI]], UART [[04-Interfaces/01-UART|UART]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]], базовий RFID [[EN/12-Comm-Modules/01-RC522-RFID.en]], start [[EN/Home.en]].
+Links to buses: I2C [[EN/04-Interfaces/03-I2C.en|I2C]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], UART [[EN/04-Interfaces/01-UART.en|UART]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], базовий RFID [[EN/12-Comm-Modules/01-RC522-RFID.en]], start [[EN/Home.en]].
 
 ## Purpose
 
-PN532 NFC / RDM6300 125 кГц / Fingerprint R307 / GM65 сканер - PN532 NFC (I2C / SPI / UART); Легенда пінів модуля PN532; Схема підключення (I2C-режим - рекомендований). Links to busми: I2C [[04-Interfaces/03-I2C|I2C]], SPI [[04-Interfaces/02-SPI|SPI]], UART [[04-Interfaces/01-UART|UART]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]], базовий RFID 12-Comm-Modules/01-RC522-RFID, start Home. 1. PN532 NFC (I2C / SPI / UART).
+PN532 NFC / RDM6300 125 кГц / Fingerprint R307 / GM65 сканер - PN532 NFC (I2C / SPI / UART); Легенда пінів модуля PN532; Схема підключення (I2C-режим - рекомендований). Links to buses: I2C [[EN/04-Interfaces/03-I2C.en|I2C]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], UART [[EN/04-Interfaces/01-UART.en|UART]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], базовий RFID 12-Comm-Modules/01-RC522-RFID, start Home. 1. PN532 NFC (I2C / SPI / UART).
 
 ## 1. PN532 NFC (I2C / SPI / UART)
 
@@ -46,9 +47,9 @@ PN532 NFC / RDM6300 125 кГц / Fingerprint R307 / GM65 сканер - PN532 NF
 
 | Пін | Тип | Куди | Примітка |
 | --- | --- | --- | --- |
-| VCC | Живлення вхід | 3V3 ESP32 | Тільки 3.3V for голої плати; сині плати Elechouse мають LDO and терплять 5V, але логіка все одно 3.3V - див. [[02-Power-Supply/01-Lancjugi-zhivlennya]] |
+| VCC | Живлення вхід | 3V3 ESP32 | Тільки 3.3V for голої плати; сині плати Elechouse мають LDO and терплять 5V, але логіка все одно 3.3V - див. [[EN/02-Power-Supply/01-Power-Rails.en]] |
 | GND | Земля | GND | Спільна земля, короткий провід |
-| SDA / SCL (I2C) | Двонапрямлені OD | GPIO21 (SDA), GPIO22 (SCL) | I2C-адреса 0x24 (7-біт); потрібні pull-up 4.7к до 3.3V, див. [[04-Interfaces/03-I2C | I2C]] |
+| SDA / SCL (I2C) | Двонапрямлені OD | GPIO21 (SDA), GPIO22 (SCL) | I2C-адреса 0x24 (7-біт); потрібні pull-up 4.7к до 3.3V, див. [[EN/04-Interfaces/03-I2C.en| I2C]] |
 | SCK / MISO / MOSI / SS (SPI) | SPI | GPIO18/19/23, SS GPIO5 | Режим SPI вимагає SEL0=L, SEL1=H; швидкість до 5 МГц |
 | TX / RX (HSU-UART) | UART | GPIO16 (RX2) ← TX, GPIO17 (TX2) → RX перехресно | Швидкість 115200 for замовчуванням; режим SEL0=L, SEL1=L |
 | IRQ | Вихід, active low | GPIO4 (будь-which) | Переривання «картка in полі»; in I2C-режимі опитується бібліотекою |
@@ -112,9 +113,9 @@ graph LR
 
 | Пін | Тип | Куди | Примітка |
 | --- | --- | --- | --- |
-| VCC (+5V) | Живлення вхід | 5V (VIN/VU DevKit або окремий БЖ 5V) | Строго 5V ±5%! from 3.3V not startує / рве пакети; струм ~50 мА |
+| VCC (+5V) | Живлення вхід | 5V (VIN/VU DevKit або окремий БЖ 5V) | Строго 5V ±5%! from 3.3V not стартує / рве пакети; струм ~50 мА |
 | GND | Земля | GND | Спільна with ESP32 |
-| TX (TXD, пін 1 on гребінці) | Вихід UART 5V-рівень | GPIO16 (RX2) via дільник 1к/2к | Швидкість 9600 8N1; рівень 5V - ESP32 терпить короткочасно, але правильно - дільник або транзистор; див. [[04-Interfaces/01-UART | UART]] |
+| TX (TXD, пін 1 on гребінці) | Вихід UART 5V-рівень | GPIO16 (RX2) via дільник 1к/2к | Швидкість 9600 8N1; рівень 5V - ESP32 терпить короткочасно, але правильно - дільник або транзистор; див. [[EN/04-Interfaces/01-UART.en| UART]] |
 | ANT1 / ANT2 | Аналогові до котушки | Штатна квадратна антена with комплекту | without антени дальність 0! not класти антену on метал; металеві двері - виносити антену назовні |
 | LED | Вихід індикації | not підключати / світлодіод | Блимає at читанні |
 
@@ -373,11 +374,11 @@ while True:
 
 ## See also
 
-- [[04-Interfaces/01-UART|UART]] - налаштування UART2, перехрестя TX/RX
-- [[04-Interfaces/02-SPI|SPI]] - PN532 in режимі SPI
-- [[04-Interfaces/03-I2C|I2C]] - pull-up, адреса 0x24, сканування шини
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]] - живлення 3.3V/5V, LDO, електроліти
+- [[EN/04-Interfaces/01-UART.en|UART]] - налаштування UART2, перехрестя TX/RX
+- [[EN/04-Interfaces/02-SPI.en|SPI]] - PN532 in режимі SPI
+- [[EN/04-Interfaces/03-I2C.en|I2C]] - pull-up, адреса 0x24, сканування шини
+- [[EN/02-Power-Supply/01-Power-Rails.en]] - живлення 3.3V/5V, LDO, електроліти
 - [[EN/12-Comm-Modules/01-RC522-RFID.en]] - базовий RFID RC522 (порівняти with PN532/RDM6300)
 - [[EN/12-Comm-Modules/02-NRF24-LoRa.en]] - радіомодулі (альтернатива ідентифікації per радіо)
-- [[03-GPIO/01-GPIO-oglyad]] - IRQ/TOUCH/TRIG how входи пробудження
-- [[EN/Home.en]] - startова сторінка довідника
+- [[EN/03-GPIO/01-GPIO-Overview.en]] - IRQ/TOUCH/TRIG how входи пробудження
+- [[EN/Home.en]] - стартова сторінка довідника

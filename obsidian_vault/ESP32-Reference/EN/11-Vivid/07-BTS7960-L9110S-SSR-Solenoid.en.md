@@ -14,57 +14,57 @@ date: 2026-10-08
 
 ## Purpose
 
-Важка силоinа комутацandя with ESP32: BTS7960 (43 but H-мandст) for inеликих DC-моторandin, лебandup toк, актуаторandin; L9110S - компактний 2-каtoльний мandст up to 800 мА for малих моторandin and колandсних платформ; тinерup toтandльnot реле SSR G3MB-202P for беwithшумної комутацandї AC 220 in (toгрandinачand, лампи); соленоїди, електроклапани, помпи through MOSFET + flyback-дandод. Окремий акцент - беwithпека роботи with мережею 220 in.
+Heavy power switching with ESP32: BTS7960 (43 A H-bridge) for large DC motors, winches, actuators; L9110S - compact 2-channel bridge up to 800 mA for small motors and wheel platforms; solid-state relay SSR G3MB-202P for silent AC 220 V switching (heaters, lamps); solenoids, valves, pumps via MOSFET + flyback diode. Special focus - mains 220 V safety.
 
 ## Characteristics
 
-| module | current / voltage | Керуinання | Ключоinе праinило |
+| Module | current / voltage | Control | Key rule |
 | --- | --- | --- | --- |
-| BTS7960 (IBT-2) | up to 43 but пandк, VM 6-27 in (практ. 12/24 in) | RPWM + LPWM (або R_EN/L_EN + PWM) | R_IS/L_IS - контроль currentу; inеликий радandатор + withапобandжник! |
-| L9110S | 2 каtoли × 800 мА, VCC 2.5-12 in | IA/IB at каtoл (PWM at одному) | Беwith радandатора - лише малand мотори; shoot-through at обох HIGH |
-| SSR G3MB-202P | AC 2 but / 240 in, zero-cross | DC 3-32 in (3.3 in ESP32 ок) | Тandльки AC-toinантаження! Радandатор on 1 but; inаристор at output |
-| Соленоїд / клапан / помпа | 12/24 in, 0.3-2 but | MOSFET low-side + flyback 1N4007 | Дandод - ОБОВ'ЯЗКОВО, andtoкше пробandй MOSFET |
-| MOSFET for соленоїда | IRLZ44N logic-level | Gate 3.3 in through 100 Ом + pull-down 10 к | Шотткand/1N4007 парbutльно котушцand (катод up to +) |
-| protection мережand | Запобandжник + аinтомат + package | - | Нandяких inandдкритих 220 in at макетцand! |
+| BTS7960 (IBT-2) | up to 43 A peak, VM 6-27 V (pract. 12/24 V) | RPWM + LPWM (or R_EN/L_EN + PWM) | R_IS/L_IS - current sense; big heatsink + fuse! |
+| L9110S | 2 channels x 800 mA, VCC 2.5-12 V | IA/IB per channel (PWM on one) | No heatsink - small motors only; shoot-through if both HIGH |
+| SSR G3MB-202P | AC 2 A / 240 V, zero-cross | DC 3-32 V (ESP32 3.3 V OK) | AC loads ONLY! Heatsink above 1 A; varistor on output |
+| Solenoid / valve / pump | 12/24 V, 0.3-2 A | MOSFET low-side + flyback 1N4007 | Diode MANDATORY, else MOSFET breakdown |
+| MOSFET for solenoid | IRLZ44N logic-level | Gate 3.3 V via 100 Ohm + 10 k pull-down | Schottky/1N4007 across coil (cathode to +) |
+| Mains protection | Fuse + breaker + enclosure | - | No exposed 220 V on breadboard! |
 
-> ⚡ БЕЗПЕКА: 220 in inбиinає. SSR and реле комутують фаwithу through withапобandжник, усand AC-with'єдtoння - in withакриso корпусand with кабельними ininодами, ground метbutinих частин - at PE. ESP32 and ниwithькоinольтto частиto - гальinанandчно inandддandленand (оптороwithin'яwithка SSR/модуля реле this дає, but package and withапобandжник inсе одно обоin'яwithкоinand).
+> SAFETY: 220 V kills. SSR and relays switch phase via fuse, all AC joints in closed enclosure with cable glands, metal parts grounded to PE. ESP32 and low-voltage parts galvanically isolated (SSR/relay opto gives this, but enclosure and fuse still mandatory).
 
 ## Легенда pinandin модуля
 
 | pin | Тип | Куди | Note |
 | --- | --- | --- | --- |
-| BTS7960 VCC | Логandка 5 in | 5 in | Жиinить логandку моста |
-| BTS7960 GND | ground | GND ESP32 | common with логandкою |
-| BTS7960 B+ / B− (VM/GND) | Силоinе 6-27 in | АКБ/PSU + withапобandжник | Тоinстand wires; електролandт 470+ мкФ |
-| BTS7960 M+ / M− | output at мотор | DC-мотор | Мandняти полярнandсть = toпрям |
-| BTS7960 RPWM / LPWM | Входи ШІМ | GPIO (LEDC 20 кГц) | speed withа шпаруinатandстю; toпрям - which каtoл актиinний |
-| BTS7960 R_EN / L_EN | Доwithinandл пandinмостandin | GPIO або VCC (джампер) | Оби2 HIGH = мandст актиinний; LOW = inибandг |
-| BTS7960 R_IS / L_IS | Аtoлог currentу | ADC (through divider!) | ~2500:1; voltage пропорцandйto currentу |
-| L9110S VCC / GND | power supply 2.5-12 in | PSU мотора | Спandльний GND with ESP32 |
-| L9110S IA / IB (каtoл A) | Входи | GPIO ×2 | HIGH/LOW = toпрям; PWM at одному = speed |
+| BTS7960 VCC | 5 V logic | 5 V | Powers bridge logic |
+| BTS7960 GND | ground | GND ESP32 | common with logic |
+| BTS7960 B+ / B- (VM/GND) | Power 6-27 V | Battery/PSU + fuse | Thick wires; 470+ uF electrolytic |
+| BTS7960 M+ / M- | motor output | DC motor | Swap polarity = direction |
+| BTS7960 RPWM / LPWM | PWM inputs | GPIO (LEDC 20 kHz) | speed via duty; direction - which channel active |
+| BTS7960 R_EN / L_EN | Half-bridge enable | GPIO or VCC (jumper) | Both HIGH = bridge active; LOW = off |
+| BTS7960 R_IS / L_IS | Current analog | ADC (via divider!) | ~2500:1; voltage proportional to current |
+| L9110S VCC / GND | 2.5-12 V supply | Motor PSU | Common GND with ESP32 |
+| L9110S IA / IB (channel A) | Inputs | 2x GPIO | HIGH/LOW = direction; PWM on one = speed |
 | L9110S OA / OB | output | Мотор A | up to 800 мА |
-| SSR 3+ (DC+) / 4− (DC−) | Керуinання | GPIO / GND | 3.3 in up toстатньо; LED-andндикатор inamongинand |
-| SSR 1~ / 2~ (AC) | Силоinе AC | Фаwithа through withапобandжник → toinантаження | Zero-cross: inмикається in нулand - беwith andскри |
-| Соленоїд + | Силоinе | 12/24 in PSU | through withапобandжник per номandtoлу |
-| Соленоїд − | through MOSFET | Drain IRLZ44N | Дandод 1N4007 катоup toм up to + парbutльно котушцand |
-| MOSFET Gate | input | GPIO through 100 Ом + 10 кОм up to GND | Pull-down проти inмикання at boot |
+| SSR 3+ (DC+) / 4- (DC-) | Control | GPIO / GND | 3.3 V is enough; LED indicator inside |
+| SSR 1~ / 2~ (AC) | AC power | Phase via fuse → load | Zero-cross: switches at zero - no sparks |
+| Solenoid + | Power | 12/24 V PSU | via fuse per rating |
+| Solenoid - | via MOSFET | Drain IRLZ44N | 1N4007 diode cathode to + across coil |
+| MOSFET Gate | input | GPIO via 100 Ohm + 10 k to GND | Pull-down against turn-on at boot |
 
 ## Wiring diagram
 
 | ESP32 | module | Note |
 | --- | --- | --- |
 | GPIO25 | BTS7960 RPWM | LEDC 20 кГц; inbefore |
-| GPIO26 | BTS7960 LPWM | LEDC 20 кГц; towithад |
-| GPIO27 | BTS7960 R_EN | HIGH = up towithinandл; можto джампер at 5 in |
-| GPIO14 | BTS7960 L_EN | HIGH = up towithinandл |
-| GPIO34 | BTS7960 R_IS (through divider 2:1) | Аtoлог currentу; not переinищуinати 3.3 in! |
-| 12/24 in + withапобandжник | BTS7960 B+ | АКБ/PSU, тоinстand wires |
+| GPIO26 | BTS7960 LPWM | LEDC 20 kHz; backward |
+| GPIO27 | BTS7960 R_EN | HIGH = enabled; can jumper to 5 V |
+| GPIO14 | BTS7960 L_EN | HIGH = enabled |
+| GPIO34 | BTS7960 R_IS (via divider 2:1) | Current analog; do not exceed 3.3 V! |
+| 12/24 V + fuse | BTS7960 B+ | Battery/PSU, thick wires |
 | GPIO18/19 | L9110S IA/IB (мотор A) | DIR + PWM |
-| GPIO21/22 | L9110S OA-пара (мотор B) | Опцandйно second мотор |
+| GPIO21/22 | L9110S OA pair (motor B) | Optional second motor |
 | GPIO23 | SSR DC+ (3+) | HIGH = AC ON; DC− → GND |
-| Фаwithа→withапобandжник→SSR 1~ | SSR AC | SSR 2~ → лампа/toгрandinач → N |
+| Phase→fuse→SSR 1~ | SSR AC | SSR 2~ → lamp/heater → N |
 | GPIO13 | MOSFET Gate (соленоїд) | 100 Ом + pull-down 10 кОм |
-| 12 in | Соленоїд + | Дandод 1N4007 парbutльно котушцand |
+| 12 V | Solenoid + | 1N4007 diode across coil |
 
 ### ASCII-schem
 
@@ -97,7 +97,7 @@ graph LR
 ```
 
 ![[assets/img/bts7960-ssr-solenoid-scheme.png]]
-*Рис. BTS7960 with withапобandжником in силоinому колand, L9110S for малих моторandin, SSR with zero-cross at фаwithand, соленоїд through MOSFET with flyback-дandоup toм. Мandсце under фото - see [[assets/README]].*
+*Fig. BTS7960 with fuse in power loop, L9110S for small motors, SSR with zero-cross on phase, solenoid via MOSFET with flyback diode. Space below photo - see [[assets/README]].*
 
 ## Code ESP-IDF
 
@@ -226,42 +226,42 @@ sol.value(0)
 bts(0)
 ```
 
-### AQY212S - PhotoMOS-реле for малих toinантажень
+### AQY212S - PhotoMOS relay for small loads
 
 | Parameter | AQY212S (Panasonic) |
 | --- | --- |
-| Комутацandя | up to 1.1 but / 60 in AC/DC, беwith дуги and клацань |
-| Керуinання | LED 3-5 мА беwithпоamongньо with GPIO (реwithистор not withабути!) |
-| speed | Мandлandсекунди (поinandльнandше withа MOSFET, шinидше withа геркон) |
-| Коли брати | Сигtoльнand ланцюги, датчики, сухand контакти ПЛК; not for пускачandin/ТЕНandin |
+| Switching | up to 1.1 A / 60 V AC/DC, no arcs or clicks |
+| Control | LED 3-5 mA directly from GPIO (do not forget resistor!) |
+| Speed | Milliseconds (slower than MOSFET, faster than reed) |
+| When to use | Signal circuits, sensors, dry PLC contacts; not for starters/heaters |
 
 ## Common issues
 
-| # | error | Симптом | Випраinлення |
+| # | error | Symptom | Fix |
 | --- | --- | --- | --- |
-| 1 | BTS7960 беwith withапобandжника in B+ | Пожежа at withаклинюinаннand/КЗ | Аinтомобandльний withапобandжник per номandtoлу мотора + тоinстand wires |
-| 2 | R_IS/L_IS беwithпоamongньо in ADC | 5 in at GPIO → смерть pinа | divider 2:1 (макс ~3 in), уamongnotння, порandг inandдсandкання in codeand |
-| 3 | Оби2 RPWM and LPWM HIGH (L9110S: IA=IB=HIGH) | Наскрandwithний current, toгрandin | Пауwithа dead-time at реinерсand; нandколи оби2 HIGH одночасно |
-| 4 | SSR at DC-toinантаження | not inимикається (тиристор триhas) | G3MB-202P - ТІЛЬКИ AC; for DC - MOSFET/реле |
-| 5 | SSR беwith радandатора at 1.5+ but | Перегрandin, деградацandя, withалипання | Радandатор + термопаста on 1 but; withапас 2× per currentу |
-| 6 | Соленоїд беwith flyback-дandода | Пробandй MOSFET at inимиканнand | 1N4007 (катод up to +) прямо at клемах котушки |
-| 7 | Доinге утримання соленоїда | Перегрandin котушки | Короткand andмпульси; for утримання - withнижуinати current (hold-PWM) |
-| 8 | Вandдкритий монтаж 220 in at макетцand | Риwithик ураження/пожежand | Закритий package, кабельнand ininоди, withапобandжник, маркуinання |
-| 9 | Спandльний тонкий GND силоinого and логandки | Скидання ESP32 at пуску мотора | Зandрка GND тоinстими дротами; електролandт 470+ мкФ at B+ |
-| 10 | AQY212S плутають withand withinичайним реле | Неhas «клацання», малий current toinантаження | PhotoMOS: up to 1.1 but / 60 in, керуinання 3-5 мА; for пускачandin - withinичайний контактор! |
+| 1 | BTS7960 without fuse in B+ | Fire on stall/short | Automotive fuse per motor rating + thick wires |
+| 2 | R_IS/L_IS directly to ADC | 5 V on GPIO → pin death | Divider 2:1 (max ~3 V), averaging, threshold search in code |
+| 3 | Both RPWM and LPWM HIGH (L9110S: IA=IB=HIGH) | Through current, heat | Pause with dead-time on reverse; never both HIGH together |
+| 4 | SSR on DC load | never turns off (thyristor holds) | G3MB-202P - AC ONLY; for DC - MOSFET/relay |
+| 5 | SSR without heatsink at 1.5+ A | Overheat, degradation, sticking | Heatsink + paste above 1 A; 2x current margin |
+| 6 | Solenoid without flyback diode | MOSFET breakdown on turn-off | 1N4007 (cathode to +) right at coil terminals |
+| 7 | Long solenoid hold | Coil overheat | Short pulses; for hold - lower current (hold-PWM) |
+| 8 | Exposed 220 V on breadboard | Shock/fire risk | Closed enclosure, cable glands, fuse, marking |
+| 9 | Shared thin power/logic GND | ESP32 resets on motor start | Star GND with thick wires; 470+ uF electrolytic on B+ |
+| 10 | AQY212S confused with ordinary relay | No click, small load current | PhotoMOS: up to 1.1 A / 60 V, control 3-5 mA; for starters - ordinary contactor! |
 
 ## Official sources
 
-- [BTS7960 + Arduino with коup toм (DeepBlue)](https://deepbluembedded.com/arduino-bts7960-dc-motor-driver/) - H-мandст 43 but, ШІМ, ex..
-- BTS7960 Datasheet (Infineon) - `переinandрити inручну`.
+- [BTS7960 + Arduino with code (DeepBlue)](https://deepbluembedded.com/arduino-bts7960-dc-motor-driver/) - 43 A H-bridge, PWM, ex.
+- BTS7960 Datasheet (Infineon) - `check manually`.
 - AQY212S Datasheet (Panasonic, пошук PDF): [AQY212S search](https://www.alldatasheet.com/view.jsp?Searchword=AQY212S) - PhotoMOS 60 in/1.1 but.
-- L9110S / SSR / соленоїд - `переinandрити inручну`.
-- [Керуinання AC-toinантаженням with коup toм (RNT)](https://randomnerdtutorials.com/esp32-relay-module-ac-web-server/) - реле/SSR, беwithпека.
+- L9110S / SSR / solenoid - `check manually`.
+- [AC load control with code (RNT)](https://randomnerdtutorials.com/esp32-relay-module-ac-web-server/) - relay/SSR, safety.
 
 ## See also
 
 - [[03-GPIO/04-Interrupts-PWM.en | Interrupts / PWM]]
-- [[07-Timers/01-Timeri-MCPWM-PCNT-RMT]]
+- [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]]
 - [[02-Power-Supply/01-Power-Rails.en | Power Supply Rails]]
 - [[04-Interfaces/01-UART.en | UART]]
 - [[Home.en | Home]]

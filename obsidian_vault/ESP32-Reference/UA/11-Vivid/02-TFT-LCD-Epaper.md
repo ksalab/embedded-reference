@@ -4,6 +4,7 @@ title: TFT ST7789 / ILI9341, LCD1602+I2C, E-paper - дисплеї
 tags: [esp32, display, tft, st7789, ili9341, lcd1602, epaper, spi]
 category: Vivid
 date-created: 2026-09-27
+date: 2026-09-27
 ---
 
 # TFT ST7789 / ILI9341, LCD1602+I2C, E-paper - дисплеї

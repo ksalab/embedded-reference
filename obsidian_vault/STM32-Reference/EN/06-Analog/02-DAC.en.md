@@ -241,7 +241,7 @@ flowchart TB
     Alt -- Precise and stable --> Ext[External chip on bus]
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -252,7 +252,7 @@ flowchart TB
 | 5 | No filter on fast wave | Steps and ringing on edges | Resistor with capacitor near pin, cutoff between wave and steps |
 | 6 | Sound attempt over filtered modulation | Quantization noise and small range | Take a chip with converter or an external bus chip |
 
-## Official Sources
+## Official sources
 
 - [STM32 DAC application guide (ST)](https://www.st.com/resource/en/application_note/an3126-audio-and-waveform-generation-using-the-dac-in-stm32-microcontrollers--stmicroelectronics.pdf) - wave generation, triggers, timer link.
 - [DAC description in STM32G4 reference guide (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32g474re.html) - buffer, calibration, internal links.
@@ -262,8 +262,8 @@ flowchart TB
 
 - [[Home.en]]
 - [[EN/01-Hardware/02-F3-F4.en|analog F3 and F4]]
-- [[09-Firmware/01-CubeIDE-CubeMX|CubeMX setup]]
-- [[09-Firmware/02-HAL-LL|HAL and LL layers]]
+- [[EN/09-Firmware/01-CubeIDE-CubeMX.en|CubeMX setup]]
+- [[EN/09-Firmware/02-HAL-LL.en|HAL and LL layers]]
 - [[EN/04-Interfaces/03-I2C.en|I2C bus]]
 - [[EN/06-Analog/01-ADC.en|measurement over ADC]]
 - [[EN/06-Analog/03-COMP-OPAMP.en|comparators and op-amps]]

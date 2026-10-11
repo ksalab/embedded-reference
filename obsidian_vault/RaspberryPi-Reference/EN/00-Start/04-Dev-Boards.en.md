@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Mandatory minimum: board + official PSU + A2 SD + cooling; then - camera, display, HAT.*
 
 > [!tip] What this note is
-> Purchase checklist: what is mandatory, what is advised, what to skip. Half of "dead" Pi boards - savings on PSU and SD card. After purchase - [[00-Start/05-Vibir-seredovischa|environment]] and flashing. Boards in detail: Pi 5 flagship.
+> Purchase checklist: what is mandatory, what is advised, what to skip. Half of "dead" Pi boards - savings on PSU and SD card. After purchase - [[EN/00-Start/05-Environment-Choice.en|environment]] and flashing. Boards in detail: Pi 5 flagship.
 
 ## 1. Goal
 
@@ -140,7 +140,7 @@ Next level after the analyzer:
 
 ## 9. Related notes
 
-- [[00-Start/03-Porivnyannya-plate|board comparison]] - board choice.
+- [[EN/00-Start/03-Board-Comparison.en|board comparison]] - board choice.
 - [[EN/14-Devboards/01-Pi5-Flagman.en|Pi 5 flagship]] - board in detail.
 - [[EN/02-Power-Supply/01-USB-C-PD.en|USB-C power]] - power demands.
 - [[EN/08-Memory/01-SD-eMMC-NVMe.en|memory media]] - SD and NVMe.

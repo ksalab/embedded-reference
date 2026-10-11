@@ -151,5 +151,5 @@ jobs:
 ## See also
 
 - [[Home.en]]
-- [[00-Start/03-Porivnyannya-chipiv| Chip comparison]]
-- [[00-Start/04-Devkit-plati| DevKit boards]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]
+- [[EN/00-Start/04-Dev-Boards.en| DevKit boards]]

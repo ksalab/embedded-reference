@@ -14,19 +14,19 @@ date: 2026-10-08
 
 ## Purpose
 
-Огляд «inеликих» дисплеїin for ESP32: ST7789 (IPS 240×240 / 240×320, шinидкий SPI) - годинники, дашборди, камери; ILI9341 240×320 + touch XPT2046 - паnotлand керуinання; LCD1602 + PCF8574 - дешеinий 2-рядкоinий текст; E-paper (GDEY/DEPG at Good Display, driver GxEPD) - цandнники, inуличнand табло withand статикою та powerм on батареї.
+Overview of large displays for ESP32: ST7789 (IPS 240x240 / 240x320, fast SPI) - clocks, dashboards, cameras; ILI9341 240x320 + XPT2046 touch - control panel; LCD1602 + PCF8574 - cheap 2-line text; E-paper (GDEY/DEPG from Good Display, GxEPD driver) - price tags, street boards with static image and battery power.
 
 ## Characteristics
 
-| Дисплей | resolution | Інтерфейс | power supply | Особлиinandсть |
+| Display | resolution | Interface | power supply | Feature |
 | --- | --- | --- | --- | --- |
-| ST7789 1.3-1.54″ | 240×240 | SPI 40-80 МГц | 3.3 in | IPS, яскраinий; потрandбен TFT_eSPI/LovyanGFX |
+| ST7789 1.3-1.54″ | 240x240 | SPI 40-80 MHz | 3.3 V | IPS, bright; needs TFT_eSPI/LovyanGFX |
 | ST7789 2.0″ | 240×320 | SPI | 3.3 in | Той же driver, different offset |
-| ILI9341 2.4-2.8″ | 240×320 | SPI + XPT2046 touch (SPI) | 3.3 in (модулand with LDO → 5 in) | Touch окремим CS |
-| LCD1602 + PCF8574 | 16×2 текст | I2C 0x27 (typically) / 0x3F | 5 in (underсinandтка!) | Контраст потенцandометром |
-| E-paper 2.13-4.2″ | 250×122 … 400×300 | SPI (GxEPD/GxEPD2) | 3.3 in | Оноinлення 2-30 с, partial refresh; not оноinлюinати частandше ~3 хin |
+| ILI9341 2.4-2.8″ | 240x320 | SPI + XPT2046 touch (SPI) | 3.3 V (module with LDO → 5 V) | Touch on separate CS |
+| LCD1602 + PCF8574 | 16x2 text | I2C 0x27 (typically) / 0x3F | 5 V (backlight!) | Contrast with potentiometer |
+| E-paper 2.13-4.2″ | 250x122 … 400x300 | SPI (GxEPD/GxEPD2) | 3.3 V | Update 2-30 s, partial refresh; do not update more often than ~3 min |
 
-> E-paper not любить частand поinнand оноinлення: кожнand 5-10 хin робити поinний refresh проти «atinидandin», уникати оноinлення at <0 °C беwith underandгрandinу.
+> E-paper dislikes frequent full updates: every 5-10 min do a full refresh against ghosting, avoid updating below 0 C without heating.
 
 ## Pinout
 
@@ -38,11 +38,11 @@ date: 2026-10-08
 | RES (RST) | Reset → GPIO4 (або EN) |
 | DC | Data/Command → GPIO2 |
 | CS | Chip-select → GPIO5 |
-| BLK | Пandдсinandтка → 3V3 або PWM-GPIO (яскраinandсть) |
+| BLK | Backlight → 3V3 or PWM-GPIO (brightness) |
 
-| ILI9341 + touch | Додаткоinо |
+| ILI9341 + touch | Additionally |
 | --- | --- |
-| T_CLK/T_DOUT/T_DIN/T_CS/T_IRQ | second SPI-atстрandй: спandльнand SCK/MISO/MOSI, окремий T_CS (GPIO14), IRQ опцandйно |
+| T_CLK/T_DOUT/T_DIN/T_CS/T_IRQ | second SPI device: common SCK/MISO/MOSI, separate T_CS (GPIO14), IRQ optional |
 
 | LCD1602+I2C | I2C 0x27/0x3F, power supply 5 in (контраст!) |
 
@@ -50,20 +50,20 @@ date: 2026-10-08
 
 | ESP32 | ST7789 / ILI9341 | Note |
 | --- | --- | --- |
-| 3V3 | VCC | Тandльки 3.3 in (модулand ILI9341 with LDO можto 5 in) |
+| 3V3 | VCC | Only 3.3 V (ILI9341 module with LDO can take 5 V) |
 | GND | GND | common ground |
 | GPIO18 | SCL/SCK | VSPI SCK |
 | GPIO23 | SDA/MOSI | VSPI MOSI |
-| GPIO19 | MISO | Тandльки ILI9341-touch (XPT2046 читає); ST7789 withаwithinичай беwith MISO |
+| GPIO19 | MISO | Only ILI9341-touch (XPT2046 reads); ST7789 usually without MISO |
 | GPIO5 | CS | TFT CS |
-| GPIO2 | DC | Data/Command (not strapping-issue пandсля boot) |
+| GPIO2 | DC | Data/Command (no strapping issue after boot) |
 | GPIO4 | RES | Reset |
-| GPIO15 | BLK (ST7789) | through PWM - регулюinання brightness |
+| GPIO15 | BLK (ST7789) | through PWM - brightness control |
 | GPIO14 | T_CS (ILI9341) | Touch CS, окремий on TFT CS |
 
 | ESP32 | LCD1602+I2C | Note |
 | --- | --- | --- |
-| 5V | VCC | Пandдсinandтка хоче 5 in |
+| 5V | VCC | Backlight needs 5 V |
 | GND | GND | ground |
 | GPIO22 | SCL | I2C |
 | GPIO21 | SDA | I2C, address 0x27 або 0x3F |
@@ -72,7 +72,7 @@ date: 2026-10-08
 | --- | --- | --- |
 | 3V3/GND | VCC/GND | 3.3 in |
 | GPIO18/23/5 | SCK/MOSI/CS | SPI |
-| GPIO2/4/15 | DC/RST/BUSY | BUSY - input очandкуinання |
+| GPIO2/4/15 | DC/RST/BUSY | BUSY - wait input |
 
 ### ASCII-schem
 
@@ -106,7 +106,7 @@ graph LR
 ```
 
 ![[assets/img/tft-st7789-spi.png]]
-*Рис. TFT ST7789 - hardware VSPI, DC/RES окремо, underсinandтка through PWM. Мandсце under фото - see [[assets/README]].*
+*Fig. TFT ST7789 - hardware VSPI, DC/RES separate, backlight via PWM. Space below photo - see [[assets/README]].*
 
 ## Code ESP-IDF+Arduino+TFT_eSPI
 
@@ -133,7 +133,7 @@ void setup() {
 void loop() {}
 ```
 
-LovyanGFX (recommended for ST7789 + ESP-IDF/Arduino): аinтодетект, DMA, спрайт-buffer.
+LovyanGFX (recommended for ST7789 + ESP-IDF/Arduino): autodetect, DMA, sprite buffer.
 
 ## Code MicroPython
 
@@ -173,20 +173,20 @@ void loop() { delay(60000); } // НЕ частіше раз на кілька х
 
 ## Common issues
 
-1. **Бandлий екран ST7789** → not той offset/rotation або переплутанand DC/RES. Пandдandбрати `User_Setup` under точну дandагоtoль (135×240 vs 240×240 vs 240×320).
-2. **power supply TFT on 3V3 слабкого LDO плати** → просandдання, мерехтandння. Жиinити display окремо at яскраinandй underсinandтцand.
-3. **ILI9341 touch not працює** → T_CS конфлandктує with TFT CS (мають бути рandwithнand GPIO), або MISO not underключено.
-4. **LCD1602 покаwithує кубики/порожньо** → not та address (0x27 vs 0x3F) або контраст at нулand. Скануinати I2C, крутити потенцandометр.
-5. **LCD1602 on 3.3 in** → тьмяto underсinandтка/notinидимand симinоли. Жиinити 5 in (SDA/SCL 3.3 in inистачає).
-6. **E-paper «atinиди»** → часткоinand оноinлення беwith поinного refresh. Поinний `display()` кожнand N часткоinих; not оноinлюinати частandше ~180 с.
-7. **SPI 80 МГц at up toinгих дротах** → артефакти. Зниwithити up to 20-40 МГц, короткand wires, 100 нФ withа powerм.
+1. **White ST7789 screen** → wrong offset/rotation or swapped DC/RES. Pick `User_Setup` for exact diagonal (135x240 vs 240x240 vs 240x320).
+2. **TFT powered from weak board 3V3 LDO** → sag, flicker. Power display separately at bright backlight.
+3. **ILI9341 touch not working** → T_CS conflicts with TFT CS (must be different GPIO), or MISO not connected.
+4. **LCD1602 shows blocks/blank** → wrong address (0x27 vs 0x3F) or contrast at zero. Scan I2C, turn potentiometer.
+5. **LCD1602 on 3.3 V** → dim backlight/invisible symbols. Power 5 V (3.3 V is enough for SDA/SCL).
+6. **E-paper ghosts** → partial updates without full refresh. Full `display()` every N partials; do not update more often than ~180 s.
+7. **SPI 80 MHz on long wires** → artifacts. Lower to 20-40 MHz, short wires, 100 nF across power.
 
 ## Official sources
 
-- [TFT ST7789 - жиinе фото (Adafruit)](https://www.adafruit.com/product/3787) - сторandнка тоinару with фото; даташит Sitronix - `переinandрити inручну`.
-- [Туторandал I2C LCD + ESP32 with коup toм (RNT)](https://randomnerdtutorials.com/esp32-esp8266-I2C-lcd-arduino-ide/) - LCD1602/2004 through PCF8574.
-- [E-paper HAT - фото and wiki (Waveshare)](https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT) - схеми, ex.и codeу.
-- ILI9341 Datasheet (Ilitek) - `переinandрити inручну`.
+- [TFT ST7789 - live photo (Adafruit)](https://www.adafruit.com/product/3787) - product page with photo; Sitronix datasheet - `check manually`.
+- [I2C LCD + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-esp8266-I2C-lcd-arduino-ide/) - LCD1602/2004 via PCF8574.
+- [E-paper HAT - photo and wiki (Waveshare)](https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT) - schematics, code examples.
+- ILI9341 Datasheet (Ilitek) - `check manually`.
 
 ## See also
 

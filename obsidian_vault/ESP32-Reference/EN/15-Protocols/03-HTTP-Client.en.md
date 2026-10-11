@@ -30,9 +30,9 @@ When to use WebSocket / SSE:
 
 - живий дашборд: AsyncWebServer + SSE штовхає дані in браузер;
 - команди with браузера without перезавантаження сторінки;
-- повний дуплекс - WebSocket-client до свого serverа.
+- full duplex - WebSocket client to its own server.
 
-When NOT to use: десятки вузлів with частими messageми - дешевше MQTT, див. [[15-Protocols/01-MQTT.en | MQTT]].
+When NOT to use: dozens of nodes with frequent messages - MQTT is cheaper, see [[15-Protocols/01-MQTT.en | MQTT]].
 
 ## Parameters
 
@@ -43,7 +43,7 @@ When NOT to use: десятки вузлів with частими messageми - �
 | Arduino-client | `HTTPClient` (обгортка над WiFiClient) | простий, синхронний |
 | Arduino-server | ESPAsyncWebServer + SSE | неблокуючий, події in браузер |
 | MP-client | `urequests` (GET/POST JSON) | відповідь закривати! |
-| MP-server | picoweb / micropython-async вебserver | тільки прості сторінки |
+| MP-server | picoweb / micropython-async webserver | simple pages only |
 | WebSocket IDF | `esp_websocket_client` | окремий компонент реєстру |
 | WebSocket Arduino | WebSocketsClient (Links2004) | текст/бінарні кадри |
 | HTTPS | CA-bundle або один CA PEM | час via NTP обов'язково |
@@ -95,10 +95,10 @@ GET  /api/v1/config?id=esp32-01 → 200 {"period":60,"relay":"auto"}
 
 ## HTTPS with CA-бандлом
 
-Варіанти перевірки serverа (from безпечного до тестового):
+Server verification options (from secure to test):
 
 1. CA-bundle Mozilla in прошивці (IDF: `crt_bundle_attach`, Arduino: вшитий PEM) - продакшен.
-2. Один кореневий CA свого serverа - свій VPS with Let's Encrypt.
+2. One root CA for your own server - your VPS with Let's Encrypt.
 3. Fingerprint SHA-1/SHA-256 - крихко (ламається at перевипуску), тільки тимчасово.
 4. `setInsecure()` - тільки стенд in локалці, ніколи in прод.
 
@@ -106,10 +106,10 @@ without синхронізованого часу (NTP) check сертифіка
 
 ## WebSocket-дуплекс and AsyncWebServer + SSE
 
-- SSE (`/events`): server штовхає телеметрію in браузер, переconnection автоматичне. Дешево, вистачає for дашборда.
+- SSE (`/events`): server pushes telemetry to browser, auto reconnect. Cheap, enough for a dashboard.
 - WebSocket (`/ws`): дуплекс - слайдер/button in браузері керує ESP32 without перезавантаження.
-- on IDF - компонент `esp_websocket_client` for clientа; server - `esp_http_server` with WS-хендлером.
-- on Arduino - WebSocketsClient for clientа, ESPAsyncWebServer for serverа+S biomarkerSSE.
+- on IDF - `esp_websocket_client` component for the client; server - `esp_http_server` with WS handler.
+- on Arduino - WebSocketsClient for the client, ESPAsyncWebServer for the server with SSE.
 - not тримати одночасно WS-server on 4+ clients and HTTPS-client on C3 without PSRAM - not вистачить heap.
 
 ## Code ESP-IDF (esp_http_client + WebSocket)
@@ -261,7 +261,7 @@ while True:
 | Обірваний великий body | весь JSON in RAM | chunked-читання порціями / фільтр ArduinoJson |
 | SSE not доходять | проксі буферизує потік | `Cache-Control: no-cache`, direct IP |
 | WS рветься for NAT | idle > 60 с | ping/pong кожні 25 с, `setReconnectInterval` |
-| 4 WS-clientи + HTTPS = крах | heap скінчився (~40 КБ/TLS) | ліміт clients, PSRAM, закривати сесії |
+| 4 WS clients + HTTPS = crash | heap exhausted (~40 KB/TLS) | limit clients, PSRAM, close sessions |
 
 ## Official sources
 
@@ -273,10 +273,10 @@ while True:
 ## See also
 
 - [[Home.en | Home]]
-- [[05-Radio/01-WiFi-STA-AP.en | WiFi STA/AP]] - трансport for HTTP/WS
+- [[05-Radio/01-WiFi-STA-AP.en | WiFi STA/AP]] - transport for HTTP/WS
 - [[08-Memory/03-OTA.en | OTA]] - оновлення прошивкою with URL
 - [[08-Memory/01-Partitions-NVS.en | NVS]] - URL бекенда and період опитування
-- [[99-Additions/02-Troubleshooting-FAQ | FAQ]] - WDT, ENOMEM, heap
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] - WDT, ENOMEM, heap
 - [[15-Protocols/01-MQTT.en | MQTT]] - легка альтернатива for телеметрії
 - [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS/NTP/TLS]] - час and сертифікати for HTTPS
 - [[15-Protocols/04-Provisioning.en | Provisioning]] - первинне configuration

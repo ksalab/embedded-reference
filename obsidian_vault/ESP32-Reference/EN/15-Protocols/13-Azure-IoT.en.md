@@ -16,7 +16,7 @@ date: 2026-10-08
 
 Azure IoT Hub - MQTT-broker Microsoft with authorization for SAS-токенами (HMAC from device key, час життя - години!) або X.509. Плюс DPS (автопідключення пристроїв), Device Twins (двійники) and Direct Methods (виклик функцій with хмари). ESP32 - via Azure SDK for Embedded C.
 
-База: старт - [[Home]], MQTT - [[15-Protocols/01-MQTT|MQTT]], TLS - [[15-Protocols/03-mDNS-NTP-TLS]], AWS-близнюк - [[15-Protocols/12-AWS-IoT]], OTA - [[08-Memory/03-OTA|OTA]].
+База: старт - [[Home.en]], MQTT - [[EN/15-Protocols/01-MQTT.en|MQTT]], TLS - [[EN/15-Protocols/03-mDNS-NTP-TLS.en]], AWS-близнюк - [[EN/15-Protocols/12-AWS-IoT.en]], OTA - [[EN/08-Memory/03-OTA.en|OTA]].
 
 > [!warning] SAS-токен протухає!
 > on відміну from AWS-сертифіката (безстроковий), SAS-токен живе години-добу (поле `se=` - expiry epoch). Прошивка МУСИТЬ перегенеровувати токен and перепідключатись ДО expiry, інакше парк мовчки відвалюється опівночі. Час (NTP!) - критичний двічі: for TLS and for `se`.
@@ -147,13 +147,13 @@ flowchart TB
 
 ## Див. також
 
-- [[Home|Головна]]
-- [[15-Protocols/01-MQTT|MQTT]]
-- [[15-Protocols/03-mDNS-NTP-TLS|TLS/NTP]]
-- [[15-Protocols/12-AWS-IoT]]
-- [[15-Protocols/05-Cloud-Pipeline|Cloud-Pipeline]]
-- [[08-Memory/03-OTA|OTA]]
-- [[08-Memory/01-Partitions-NVS|NVS]]
+- [[Home.en|Головна]]
+- [[EN/15-Protocols/01-MQTT.en|MQTT]]
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|TLS/NTP]]
+- [[EN/15-Protocols/12-AWS-IoT.en]]
+- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud-Pipeline]]
+- [[EN/08-Memory/03-OTA.en|OTA]]
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]]
 
 
 ## Common issues

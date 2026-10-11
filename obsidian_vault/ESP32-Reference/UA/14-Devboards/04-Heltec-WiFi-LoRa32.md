@@ -4,6 +4,7 @@ title: Heltec WiFi LoRa 32 - OLED 0.96, LoRa, живлення від батар
 tags: [esp32, devboards, heltec, lora, oled, wifi-kit-32, battery]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Heltec WiFi LoRa 32
@@ -139,7 +140,7 @@ Meshtastic: ціль `heltec-v3`, шити через flasher.meshtastic.org. ES
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![[assets/img/devboard-heltec-lora32.png|600]]
+> [!example] Фото/схема:![[assets/img/devboard-heltec-lora32.png|600]]
 
 ```text
 [USB-C/Micro 5V] ──► зарядка ──► LiPo 3.7V (JST/SH1.25) ─┐

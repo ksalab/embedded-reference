@@ -6,6 +6,7 @@ category: Moduli
 lang: en
 date-created: 2026-09-30
 date: 2026-10-08
+original: 12-Moduli-zvyazku/26-SIM-Power.md
 ---
 
 # SIM-карти та живлення стільникових модулів - холдери, eSIM, TX-бурсти, суперкап
@@ -14,7 +15,7 @@ date: 2026-10-08
 
 half «мертвих» GSM-проєктів - this not прошивка, but дві залізні теми: SIM-карта (формат, PIN, холдер, детект) and живлення (піки 2-3A in TX-бурсті, які not тримає жоден LDO DevKit-плати). Нота збирає обидві in одному місці how фундамент під практику.
 
-База: перший GSM - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]], 4G - [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], Cat-1 - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]], NB-IoT - [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en]], UART - [[04-Interfaces/01-UART|UART]], живлення - [[02-Power-Supply/01-Lancjugi-zhivlennya]], protection - [[13-Power-Modules/04-LDO-Buck-XL4015-Protect]], start - [[EN/Home.en]].
+База: перший GSM - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]], 4G - [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], Cat-1 - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]], NB-IoT - [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en]], UART - [[EN/04-Interfaces/01-UART.en|UART]], живлення - [[EN/02-Power-Supply/01-Power-Rails.en]], protection - [[EN/13-Power-Modules/04-LDO-Buck-XL4015-Protect.en]], start - [[EN/Home.en]].
 
 > [!danger] Два вбивці стільникових модулів
 >
@@ -177,7 +178,7 @@ GSM - TDMA: передавач вмикається слотом 577 мкс with
 | --- | --- | --- | --- | --- |
 | LM2596 (module) | до 3A | Дешевий, всюди є, гвинтовий trim | 150 кГц - велика котушка, гріється without радіатора | Стіл, перші прототипи |
 | MP1584 (module/чіп) | до 3A | 1.5 МГц - компактний, холодніший | Trim дрібний, крутити обережно | Виріб середній |
-| SY8113 / TPS5632xx (своя плата) | 3A+ | Сучасні, малий dropout обв'язки | Тільки своя розводка | Серія, див. [[17-Lab/04-PCB-Design]] |
+| SY8113 / TPS5632xx (своя плата) | 3A+ | Сучасні, малий dropout обв'язки | Тільки своя розводка | Серія, див. [[EN/17-Lab/04-PCB-Design.en]] |
 | 2×18650 → buck | 3A+ | Автономність | BMS + заряд обов'язкові | Поле without мережі 220V |
 
 ### Еталонна обв'язка VBAT (збирати буквально!)
@@ -230,7 +231,7 @@ buck 4.0V ──►|діод Шотткі|──┬──► VBAT модуля
 
 ## 7. Вимірювання піків осцилографом
 
-without цього - гадання. Процедура with [[17-Lab/01-Instruments|Прилади]] стосовно до модема:
+without цього - гадання. Процедура with [[EN/17-Lab/01-Instruments.en|Прилади]] стосовно до модема:
 
 1. Шунт 0.05 Ом (2W!) in розрив VBAT + диференційний пробник, або кліщі improvized - НІ, тільки шунт.
 2. Тригер - per GPIO-маркеру ESP32 перед `AT+HTTPACTION`.
@@ -380,6 +381,16 @@ print(atq("AT+CREG?"))   # 0,1 або 0,5
 | 11 | APN with великої літери | Мережа відхиляє PDP-контекст | Буквально with таблиці 6.2 ноти 03 (`kyivstar`, `internet`) |
 | 12 | Вимір піків кліщами/on око | not видно 577 мкс слотів | Шунт 0.05 Ом + скоп with тригером, розділ 7 |
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Reboots at CREG attach | 2 A TX burst sags 3V3 DevKit rail | Dedicated 4.0 V buck plus 1000 uF, measure with shunt and scope |
+| Blue SIM800 board dead | 5 V applied to 4 V-only RF board | Feed 4.0 V only; red EVB alone has its own regulator |
+| SIM PIN loop after reboot | PIN enabled on IoT card | Disable once with AT+CLCK SC,0 during commissioning |
+| SIM not inserted errors | Long SIM_DATA near VBAT, no ESD guard | Route under 30 mm, TVS at holder, no power neighbours |
+| Supercap trips protection | Inrush without charge resistor | 10 Ohm 1 W in series, verify charge curve |
+| Peaks invisible on meter | 577 us slots need scope, not DMM | 0.05 Ohm shunt plus triggered scope capture |
 ## Official sources
 
 - [SIM800 Hardware Design V1.09 (SIMCom)](https://www.simcom.com/product/SIM800.html) - VBAT 3.4-4.4V, піки 2A, SIM-інтерфейс, ESD.
@@ -389,15 +400,15 @@ print(atq("AT+CREG?"))   # 0,1 або 0,5
 
 ## See also
 
-- [[Home|Головна]]
-- [[12-Comm-Modules/03-SIM800L-GPS|SIM800L + GPS]]
-- [[12-Comm-Modules/07-SIM7600-W5500-MCP2515|SIM7600E 4G]]
-- [[12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa|SIM7080/A7670]]
-- [[12-Comm-Modules/18-Cellular-LoRa-2|Cat-1 + LoRa-2]]
-- [[12-Comm-Modules/17-GNSS-RTK|GNSS-RTK]]
-- [[16-Projects/02-GPS-Tracker|GPS-трекер]]
-- [[02-Power-Supply/01-Lancjugi-zhivlennya|Ланцюги живлення]]
-- [[13-Power-Modules/04-LDO-Buck-XL4015-Protect|LDO/buck/protection]]
-- [[13-Power-Modules/01-Buck-Boost-Solar|Buck/Boost/Solar]]
-- [[17-Lab/01-Instruments|Прилади]]
-- [[17-Lab/04-PCB-Design|PCB-Design]]
+- [[Home.en|Головна]]
+- [[EN/12-Comm-Modules/03-SIM800L-GPS.en|SIM800L + GPS]]
+- [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|SIM7600E 4G]]
+- [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en|SIM7080/A7670]]
+- [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1 + LoRa-2]]
+- [[EN/12-Comm-Modules/17-GNSS-RTK.en|GNSS-RTK]]
+- [[EN/16-Projects/02-GPS-Tracker.en|GPS-трекер]]
+- [[EN/02-Power-Supply/01-Power-Rails.en|Ланцюги живлення]]
+- [[EN/13-Power-Modules/04-LDO-Buck-XL4015-Protect.en|LDO/buck/protection]]
+- [[EN/13-Power-Modules/01-Buck-Boost-Solar.en|Buck/Boost/Solar]]
+- [[EN/17-Lab/01-Instruments.en|Прилади]]
+- [[EN/17-Lab/04-PCB-Design.en|PCB-Design]]

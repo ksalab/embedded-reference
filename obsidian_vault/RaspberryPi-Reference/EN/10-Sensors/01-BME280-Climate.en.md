@@ -30,7 +30,7 @@ Launch a climate node in one evening:
 | Parameter | Range | Accuracy |
 | --- | --- | --- |
 | Temperature | -40...+85 °C | ±1 °C |
-| Humidity | 0-100 % | ±3 % |
+| Humidity | 0-100% | ±3% |
 | Pressure | 300-1100 hPa | ±1 hPa |
 | Power supply | 1.8-3.6V (modules - 5V with LDO) | - |
 
@@ -130,7 +130,7 @@ We compute altitude relative to `sea_level_pressure`: update QNH from the weathe
 | Wrong address | SDO jumper | LOW=0x76, HIGH=0x77, compare with code |
 | Temperature +2 °C | self-heating + frequent polling | forced mode, once a minute |
 | Pressure "wrong" | QNH not updated | update sea_level_pressure |
-| Humidity 100 % all the time | condensate in the housing | ventilation, silica gel |
+| Humidity 100% all the time | condensate in the housing | ventilation, silica gel |
 | Works, then hangs | long I2C wires | shorter than 30 cm or lower speed |
 
 ## 9. BME280 quick cheat sheet
@@ -145,8 +145,8 @@ We compute altitude relative to `sea_level_pressure`: update QNH from the weathe
 
 - [[EN/04-Interfaces/01-I2C-SPI-UART.en|I2C/SPI/UART buses]] - bus in detail.
 - [[EN/03-GPIO/01-Header-Gpiozero.en|header and gpiozero]] - pins.
-- [[16-Projects/01-Meteostantsiya|ready weather station]] - full project.
-- [[15-Protocols/01-MQTT|telemetry over MQTT]] - protocol and broker.
+- [[EN/16-Projects/01-Weather-Station.en|ready weather station]] - full project.
+- [[EN/15-Protocols/01-MQTT.en|telemetry over MQTT]] - protocol and broker.
 - [[Home.en|main map]] - full navigation.
 
 ## Official sources

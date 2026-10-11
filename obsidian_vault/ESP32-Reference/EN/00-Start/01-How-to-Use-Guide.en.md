@@ -24,7 +24,7 @@ date: 2026-10-08
 > [!tip] 30-second finder
 > Any answer can be found in 30 seconds: `Ctrl+P` for files, `Ctrl+Shift+F` for text, click a `#esp32/*` tag or hop from [[Home.en | Home map]].
 
-The reference follows the MOC principle: [[Home.en | Home map]] links everything. Deep theory lives in the [[00-Start/02-Glosariy| Glossary]], hardware choice in [[00-Start/03-Porivnyannya-chipiv| Chip comparison]] and [[00-Start/04-Devkit-plati| DevKit boards]], SDK choice in [[00-Start/05-Vibir-seredovischa| Environment choice]], new sensors follow the [[_templates/Component-Template.en | Component template]].
+The reference follows the MOC principle: [[Home.en | Home map]] links everything. Deep theory lives in the [[EN/00-Start/02-Glossary.en| Glossary]], hardware choice in [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]] and [[EN/00-Start/04-Dev-Boards.en| DevKit boards]], SDK choice in [[EN/00-Start/05-Environment-Choice.en| Environment choice]], new sensors follow the [[_templates/Component-Template.en | Component template]].
 
 > [!warning] Core power setup
 > The whole reference assumes ESP32 logic is **3.3V**. Examples from 5V Arduino boards (Uno/Nano) do not transfer literally: dividers and level-shifters are mandatory. Feeding 5V into any GPIO causes irreversible damage.
@@ -33,7 +33,7 @@ The reference follows the MOC principle: [[Home.en | Home map]] links everything
 
 | Folder | Contents | Example |
 | --- | --- | --- |
-| `00-Start/` | Entry, glossary, choice | This note, [[00-Start/02-Glosariy| Glossary]], [[00-Start/03-Porivnyannya-chipiv| Chips]] |
+| `00-Start/` | Entry, glossary, choice | This note, [[EN/00-Start/02-Glossary.en| Glossary]], [[EN/00-Start/03-Chip-Comparison.en| Chips]] |
 | `01-Hardware/` | Chips and differences | [[01-Hardware/04-ESP32-C3-C6-H2.en | C3/C6/H2 chips]], [[01-Hardware/10-ESP32-C5-C61.en | C5/C61]] |
 | `02-Power-Supply/` | Power, batteries | [[02-Power-Supply/04-Akumulyatori-TP4056.en | Batteries]], [[02-Power-Supply/03-Spozhivannya.en | Power consumption]] |
 | `03-GPIO/` | Pins, strapping | [[03-GPIO/01-GPIO-oglyad.en | GPIO overview]], [[03-GPIO/02-Strapping-pini.en | Strapping]] |
@@ -99,15 +99,15 @@ Obsidian search:
 
 | Level | Labels | Example |
 | --- | --- | --- |
-| 🟢 Beginner | `#esp32/beginner` | Blinking an LED, [[00-Start/04-Devkit-plati| connecting a DevKit over USB]] |
-| 🟡 Intermediate | - | I2C sensor, [[00-Start/05-Vibir-seredovischa| PlatformIO]], Wi-Fi STA |
+| 🟢 Beginner | `#esp32/beginner` | Blinking an LED, [[EN/00-Start/04-Dev-Boards.en| connecting a DevKit over USB]] |
+| 🟡 Intermediate | - | I2C sensor, [[EN/00-Start/05-Environment-Choice.en| PlatformIO]], Wi-Fi STA |
 | 🔴 Advanced | `#esp32/advanced` | OTA, ULP, TWAI, eFuse |
 
 > [!tip] Suggested path
 >
-> 1. [[00-Start/02-Glosariy| Glossary]] - 10 min on terms. 2. [[00-Start/03-Porivnyannya-chipiv| Chip comparison]] - picking silicon. 3. [[00-Start/04-Devkit-plati| DevKit boards]] - which board to buy. 4. [[00-Start/05-Vibir-seredovischa| Environment choice]] - ESP-IDF or Arduino. 5. [[Home.en | Home map]] - back to the map.
+> 1. [[EN/00-Start/02-Glossary.en| Glossary]] - 10 min on terms. 2. [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]] - picking silicon. 3. [[EN/00-Start/04-Dev-Boards.en| DevKit boards]] - which board to buy. 4. [[EN/00-Start/05-Environment-Choice.en| Environment choice]] - ESP-IDF or Arduino. 5. [[Home.en | Home map]] - back to the map.
 >
-> [!example] Photo/schematic: ![[assets/img/placeholder.png]]
+> [!example] Photo/schematic:![[assets/img/placeholder.png]]
 > Reference wiring for all guide examples:
 
 | ESP32 DevKit | Module / PC | Note |
@@ -120,8 +120,8 @@ Obsidian search:
 ## See also
 
 - [[Home.en | Home map]]
-- [[00-Start/02-Glosariy| Glossary]]
-- [[00-Start/03-Porivnyannya-chipiv| Chip comparison]]
-- [[00-Start/04-Devkit-plati| DevKit boards]]
-- [[00-Start/05-Vibir-seredovischa| Environment choice]]
+- [[EN/00-Start/02-Glossary.en| Glossary]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]
+- [[EN/00-Start/04-Dev-Boards.en| DevKit boards]]
+- [[EN/00-Start/05-Environment-Choice.en| Environment choice]]
 - [[_templates/Component-Template.en | Component template]]

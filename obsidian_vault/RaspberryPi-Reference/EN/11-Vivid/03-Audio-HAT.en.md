@@ -142,7 +142,7 @@ Snapcast: server on Pi 4/5 (`snapserver`), clients on Zero 2 W (`snapclient`) - 
 - night mode: software volume limiter;
 - silence test: ear to speaker with no signal.
 - L/R cables not next to power ones.
-- start volume - 50 %, not 100 %.
+- start volume - 50%, not 100%.
 - second room - second Snapcast client.
 - backup copy of asound.state after setup.
 

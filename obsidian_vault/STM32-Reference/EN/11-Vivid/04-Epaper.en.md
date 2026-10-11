@@ -79,7 +79,7 @@ flowchart TB
 | Driver power supply | Switch off with a switch if the display never sleeps on its own |
 | Battery for years | A frame once an hour is a tag beacon |
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -108,7 +108,7 @@ flowchart TB
 | Locked connector | Works loose from vibration |
 | Display on a gasket | Glass cracks from screws |
 
-## Official Sources
+## Official sources
 
 - [E-paper driver guides (Waveshare)](https://www.waveshare.com/wiki/Main_Page) - sequences, LUT, examples.
 - [SSD1675 datasheet (Solomon)](https://www.solomon-systech.com/en/product/ssd1675a/) - commands, timings.

@@ -98,7 +98,7 @@ void setup() {
 | Register | Address | What it gives |
 | --- | --- | --- |
 | VCELL | 0x02 | Cell voltage, 78.125 uV/LSB |
-| SOC | 0x04 | Percentages, 1/256 %/LSB |
+| SOC | 0x04 | Percentages, 1/256%/LSB |
 | VERSION | 0x08 | Chip version (link check!) |
 | CONFIG | 0x0C | ALRT threshold (bits 0-4: 1%/LSB below 32%) |
 | STATUS | 0x1A | ALRT trip flag |

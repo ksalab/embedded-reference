@@ -110,7 +110,7 @@ Wire layout:
 
 | Rule | Explanation |
 | --- | --- |
-| Names | 4 digits + .mp3: 0001.mp3 to 0255.mp3 |
+| Names | 4 digits +.mp3: 0001.mp3 to 0255.mp3 |
 | Format | FAT32, 8.3 filenames, not folder names |
 | Size | Up to 32 GB, but small cards faster to scan |
 | Folder | Flat in root, no subdirectories |

@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Hardware PWM lives on fixed pins, interrupts fire on edges; the rest is software emulation with jitter.*
 
 > [!tip] What this note is
-> Second GPIO level: smooth control and event reaction without loop polling. Base: [[EN/03-GPIO/01-Header-Gpiozero.en|pin header and gpiozero]], next - buses: [[04-Interfaces/01-I2C-SPI-UART|I2C/SPI/UART buses]] - queue 2 note.
+> Second GPIO level: smooth control and event reaction without loop polling. Base: [[EN/03-GPIO/01-Header-Gpiozero.en|pin header and gpiozero]], next - buses: [[EN/04-Interfaces/01-I2C-SPI-UART.en|I2C/SPI/UART buses]] - queue 2 note.
 
 ## 1. Goal
 
@@ -138,7 +138,7 @@ For music/servo without trembling - only hardware PWM or PCA9685.
 - [[EN/03-GPIO/01-Header-Gpiozero.en|pin header and gpiozero]] - first pins.
 - [[EN/03-GPIO/03-HAT-EEPROM.en|HAT and EEPROM]] - expansion boards.
 - External ADCs for analog sensors - queue 3 note.
-- [[09-Firmware/03-OS-Nalashtuvannya|OS setup]] - groups and rights.
+- [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - groups and rights.
 - [[Home.en|main map]] - full navigation.
 
 ## 9.1 Choice: gpiozero or lgpio

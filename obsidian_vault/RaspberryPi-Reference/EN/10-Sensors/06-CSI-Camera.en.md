@@ -151,7 +151,7 @@ Timelapse 144 frames every 10 min - a day. Stitch: `ffmpeg -framerate 24 -i fram
 - [[EN/08-Memory/01-SD-eMMC-NVMe.en|storage media]] - where to write video.
 - [[EN/04-Interfaces/01-I2C-SPI-UART.en|I2C/SPI/UART buses]] - focus control of old modules.
 - [[EN/11-Vivid/01-DSI-HDMI-Displays.en|image output to displays]] - screens.
-- [[15-Protocols/01-MQTT|MQTT notifications]] - broker and topics.
+- [[EN/15-Protocols/01-MQTT.en|MQTT notifications]] - broker and topics.
 - [[Home.en|main map]] - full navigation.
 
 ## Official sources

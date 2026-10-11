@@ -134,7 +134,7 @@ ADS1115 gain: 2/3 (±6.144V), 1 (±4.096V), 2 (±2.048V), 4/8/16 - for the signa
 
 - [[EN/01-Hardware/03-RP2040-RP2350.en|RP2040 and RP2350]] - Pico built-in ADC.
 - [[EN/04-Interfaces/01-I2C-SPI-UART.en|I2C/SPI/UART buses]] - buses in detail.
-- [[10-Sensors/04-INA219-Strum|INA219 current]] - ready measurement on the bus.
+- [[EN/10-Sensors/04-INA219-Current.en|INA219 current]] - ready measurement on the bus.
 - [[EN/02-Power-Supply/01-USB-C-PD.en|USB-C power supply]] - reference stability.
 - [[Home.en|main map]] - full navigation.
 

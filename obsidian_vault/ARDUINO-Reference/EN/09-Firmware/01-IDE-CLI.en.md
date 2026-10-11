@@ -321,7 +321,7 @@ flowchart TB
     Verbose --> Done
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -333,7 +333,7 @@ flowchart TB
 | 6 | Build without verbose output | Issue cause unknown | Enable verbose output and read the first issue |
 | 7 | Power-only cable | Port never appears, board never flashes | Take a data-lines cable and check the port list |
 
-## Official Sources
+## Official sources
 
 - [Arduino IDE documentation](https://docs.arduino.cc/software/ide/) - editor installation, board and port choice, monitor, plotter.
 - [Arduino CLI documentation](https://docs.arduino.cc/arduino-cli/) - compile, upload, library, and monitor commands, board description.

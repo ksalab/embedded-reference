@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Weather station: ESP32 + BME280/SHT40, solar TP4056 + 18650 power supply, MQTT uplink.*
 
 > [!tip] What we are building
-> Autonomous outdoor weather station: wakes every 10 min, reads temperature/humidity/pressure, publishes JSON over MQTT, then sleeps. Power supply is a solar panel + TP4056 + 18650. Base: [[05-Radio/01-WiFi-STA-AP.en | WiFi]], [[15-Protocols/01-MQTT.en | MQTT]], [[07-Timers/03-Sleep-ULP.en | Sleep]], [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]], [[10-Sensors/07-AHT10-AHT20-SHT40 | AHT/SHT40]].
+> Autonomous outdoor weather station: wakes every 10 min, reads temperature/humidity/pressure, publishes JSON over MQTT, then sleeps. Power supply is a solar panel + TP4056 + 18650. Base: [[05-Radio/01-WiFi-STA-AP.en | WiFi]], [[15-Protocols/01-MQTT.en | MQTT]], [[07-Timers/03-Sleep-ULP.en | Sleep]], [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]], [[EN/10-Sensors/07-AHT10-AHT20-SHT40.en| AHT/SHT40]].
 
 ## 1. Goal
 
@@ -30,7 +30,7 @@ Usage scenarios:
 Result requirements:
 
 - runtime without sun - minimum 7 days;
-- temperature error ±0.5 °C, humidity ±3 %RH;
+- temperature error ±0.5 °C, humidity ±3%RH;
 - one MQTT topic, one JSON - no format zoo;
 - IP65 enclosure: rain and dust are not dangerous, condensation is drained.
 
@@ -44,7 +44,7 @@ Result requirements:
 | Enclosure | IP65, cable glands | hose spray test |
 
 > [!warning] Two sensors - why?
-> BME280 gives pressure (weather forecast by trend), SHT40 gives more accurate humidity with heater against condensation. If budget is one - choose SHT40. See [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]] and [[10-Sensors/07-AHT10-AHT20-SHT40 | SHT40]].
+> BME280 gives pressure (weather forecast by trend), SHT40 gives more accurate humidity with heater against condensation. If budget is one - choose SHT40. See [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]] and [[EN/10-Sensors/07-AHT10-AHT20-SHT40.en| SHT40]].
 
 ## 2. BOM - components
 
@@ -52,15 +52,15 @@ Result requirements:
 | --- | --- | --- |
 | ESP32 DevKit (WROOM-32) | [[00-Start/04-Devkit-plati.en | DevKit]] | $6 |
 | BME280 module (I2C, 3.3V) | [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]] | $3 |
-| SHT40 module (I2C 0x44) | [[10-Sensors/07-AHT10-AHT20-SHT40 | SHT40]] | $5 |
-| TP4056 with DW01 protection | [[13-Power-Modules/03-TP4056-IP5306-BMS-UPS | Charge/BMS]] | $1 |
-| 18650 3000 mAh (protected) | [[02-Power-Supply/04-Akumulyatori-TP4056 | Batteries]] | $5 |
-| Solar panel 5V 1A (5W) | [[13-Power-Modules/01-Buck-Boost-Solar | Buck/Solar]] | $8 |
-| MT3608 boost 18650→5V (optional) | [[13-Power-Modules/01-Buck-Boost-Solar | Buck/Solar]] | $1 |
-| IP65 enclosure 150×110×70 + cable glands | [[99-Additions/03-Cheklisti-montazhu | Assembly checklists]] | $7 |
+| SHT40 module (I2C 0x44) | [[EN/10-Sensors/07-AHT10-AHT20-SHT40.en| SHT40]] | $5 |
+| TP4056 with DW01 protection | [[EN/13-Power-Modules/03-TP4056-IP5306-BMS-UPS.en| Charge/BMS]] | $1 |
+| 18650 3000 mAh (protected) | [[EN/02-Power-Supply/04-Batteries-TP4056.en| Batteries]] | $5 |
+| Solar panel 5V 1A (5W) | [[EN/13-Power-Modules/01-Buck-Boost-Solar.en| Buck/Solar]] | $8 |
+| MT3608 boost 18650→5V (optional) | [[EN/13-Power-Modules/01-Buck-Boost-Solar.en| Buck/Solar]] | $1 |
+| IP65 enclosure 150×110×70 + cable glands | [[EN/99-Additions/03-Cheklisti-montazhu.en| Assembly checklists]] | $7 |
 | Radiation shield-louver (tray) | [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]] | $2 |
 | Battery divider 100k/100k + 100 nF | [[06-Analog/01-ADC.en | ADC]] | $0.5 |
-| USB-UART cable DATA | [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART]] | $2 |
+| USB-UART cable DATA | [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART]] | $2 |
 
 Total: ~$40 without delivery.
 
@@ -118,7 +118,7 @@ Loop logic:
 
 ## 4. Power and calculation
 
-Energy balance (see [[02-Power-Supply/03-Spozhivannya | Consumption]]):
+Energy balance (see [[EN/02-Power-Supply/03-Power-Consumption.en| Consumption]]):
 
 - sleep: 50 µA × 600 s ≈ 0.008 mAh per cycle;
 - active: 100 mA × 15 s ≈ 0.42 mAh per cycle;
@@ -127,16 +127,16 @@ Energy balance (see [[02-Power-Supply/03-Spozhivannya | Consumption]]):
 
 Power wiring rules:
 
-- TP4056 PROG at 1A for daytime charging, see [[13-Power-Modules/03-TP4056-IP5306-BMS-UPS | Charge]];
+- TP4056 PROG at 1A for daytime charging, see [[EN/13-Power-Modules/03-TP4056-IP5306-BMS-UPS.en| Charge]];
 - Schottky diode SS14 between panel and TP4056;
 - battery divider 100k+100k on GPIO34, cap 100 nF (see [[06-Analog/01-ADC.en | ADC]]);
 - thick short battery wires, 470 µF cap on 5V against WiFi TX dips.
 
 ## 5. Firmware step by step
 
-Step 0 - environment: Arduino + PubSubClient (see [[09-Firmware/02-Arduino-PlatformIO | Arduino]]).
+Step 0 - environment: Arduino + PubSubClient (see [[EN/09-Firmware/02-Arduino-PlatformIO.en| Arduino]]).
 
-Step 1 - I2C scanner: make sure 0x76 and 0x44 are visible (see [[04-Interfaces/03-I2C | I2C]]).
+Step 1 - I2C scanner: make sure 0x76 and 0x44 are visible (see [[EN/04-Interfaces/03-I2C.en| I2C]]).
 
 Step 2 - read sensors separately (Adafruit_BME280 + Adafruit_SHT4x).
 
@@ -202,9 +202,9 @@ void setup() {
 void loop() {}
 ```
 
-Step 6 - ESP-IDF variant: same steps through esp-mqtt + `esp_sleep` (see [[09-Firmware/01-ESP-IDF-setup | IDF]]).
+Step 6 - ESP-IDF variant: same steps through esp-mqtt + `esp_sleep` (see [[EN/09-Firmware/01-ESP-IDF-Setup.en| IDF]]).
 
-Step 7 - MicroPython variant: `umqtt.robust` + `machine.deepsleep(600000)` (see [[09-Firmware/03-MicroPython | MicroPython]]).
+Step 7 - MicroPython variant: `umqtt.robust` + `machine.deepsleep(600000)` (see [[EN/09-Firmware/03-MicroPython.en| MicroPython]]).
 
 JSON example for Node-RED (see [[15-Protocols/05-Cloud-Pipeline.en | Cloud]]):
 
@@ -217,19 +217,19 @@ JSON example for Node-RED (see [[15-Protocols/05-Cloud-Pipeline.en | Cloud]]):
 - ESP32 board at top of enclosure, battery at bottom (heat flows up, not over sensor);
 - sensors in separate louvered shield at bottom, NOT in a sealed compartment (condensation!);
 - PG7 cable glands on panel and antenna, silica gel packet inside;
-- SHT40 heater: turn on 1 s before reading when RH > 95% (see [[10-Sensors/07-AHT10-AHT20-SHT40 | SHT40]]);
-- pre-deployment checklist: [[99-Additions/03-Cheklisti-montazhu | Assembly checklists]].
+- SHT40 heater: turn on 1 s before reading when RH > 95% (see [[EN/10-Sensors/07-AHT10-AHT20-SHT40.en| SHT40]]);
+- pre-deployment checklist: [[EN/99-Additions/03-Cheklisti-montazhu.en| Assembly checklists]].
 
 ## 7. Troubleshooting
 
 | Symptom | Where to look |
 | --- | --- |
-| Brownout at publish | 470 µF cap, short USB, see FAQ #1 [[99-Additions/02-Troubleshooting-FAQ | FAQ]] |
-| BME280 not visible | SDO→GND=0x76, scanner, FAQ #37 [[99-Additions/02-Troubleshooting-FAQ | FAQ]] |
-| MQTT breaks | keepalive 30 s, buffer 1024, FAQ #15 [[99-Additions/02-Troubleshooting-FAQ | FAQ]] |
-| Sleep eats milliamps | desolder LED, GPIO hold, FAQ #56 [[99-Additions/02-Troubleshooting-FAQ | FAQ]] |
-| Retain storm | retain only on status, FAQ #23 [[99-Additions/02-Troubleshooting-FAQ | FAQ]] |
-| Time/graphs 1970 | SNTP before publish, FAQ #65 [[99-Additions/02-Troubleshooting-FAQ | FAQ]] |
+| Brownout at publish | 470 µF cap, short USB, see FAQ #1 [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] |
+| BME280 not visible | SDO→GND=0x76, scanner, FAQ #37 [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] |
+| MQTT breaks | keepalive 30 s, buffer 1024, FAQ #15 [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] |
+| Sleep eats milliamps | desolder LED, GPIO hold, FAQ #56 [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] |
+| Retain storm | retain only on status, FAQ #23 [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] |
+| Time/graphs 1970 | SNTP before publish, FAQ #65 [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] |
 
 ## Official sources
 
@@ -241,11 +241,11 @@ JSON example for Node-RED (see [[15-Protocols/05-Cloud-Pipeline.en | Cloud]]):
 
 - [[EN/Home.en]]
 - [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]]
-- [[10-Sensors/07-AHT10-AHT20-SHT40 | SHT40]]
+- [[EN/10-Sensors/07-AHT10-AHT20-SHT40.en| SHT40]]
 - [[15-Protocols/01-MQTT.en | MQTT]]
 - [[15-Protocols/05-Cloud-Pipeline.en | Cloud-Pipeline]]
 - [[07-Timers/03-Sleep-ULP.en | Sleep]]
-- [[02-Power-Supply/04-Akumulyatori-TP4056 | Batteries]]
+- [[EN/02-Power-Supply/04-Batteries-TP4056.en| Batteries]]
 - [[99-Additions/02-Troubleshooting-FAQ.en | FAQ]]
 - [[16-Projects/02-GPS-Tracker.en | GPS Tracker]]
 - [[16-Projects/04-Energy-Monitor.en | Energy Monitor]]

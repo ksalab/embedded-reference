@@ -40,7 +40,7 @@ Final - key documents of the ecosystem: what to download and put next to the wor
 | 8 | The quiescent current corresponds to the norm | The USB tester shows tens of milliamps |
 | 9 | The reset button works | Pressing restarts the flashing from the beginning |
 | 10 | The port monitor shows the text | The speeds match, there is no garbage |```text
-Protocol for the first launch (fill in by hand):Date ............ Fee ............ Revision ....Cable: [ ] data is Port: ................5V = ...... 3V3 = ...... Quiescent current = ......Blink: [ ] yes Reset: [ ] yes Monitor: [ ] clearSignature ............ Next step ............```
+Protocol for the first launch (fill in by hand):Date............ Fee............ Revision....Cable: [ ] data is Port:................5V =...... 3V3 =...... Quiescent current =......Blink: [ ] yes Reset: [ ] yes Monitor: [ ] clearSignature............ Next step............```
 Items go from cheap to expensive: visual inspection, then cable, then power, then code.
 Not a single point is missed: they are crossed out only after the actual check, and not from memory.
 Failure at an item stops the list: do not go further until the item turns green.
@@ -137,7 +137,7 @@ The readings of the ADC on the known divider are checked with a multimeter: the 
 
 ## 7. Mermaid: from a question to a document```mermaid
 flowchart TB
-S[Need number or fact] --> Q{What are you looking for}Q -->|Leg or function| Pin[Board Pin Map]Q -->|Power or limit| El [Electricity section in the datasheet]Q -->|Node diagram| Sch[Official fee scheme]Q -->|Crystal Bug| Err[Manufacturer's Errata]Q -->|Code example| Lib[Library repository and examples]Pin --> V[Bill revision of payment and document]    El --> V
+S[Need number or fact] --> Q{What are you looking for}Q -->|Leg or function| Pin[Board Pin Map]Q -->|Power or limit| El [Electricity section in the datasheet]Q -->|Node diagram| Sch[Official fee scheme]Q -->|Crystal Bug| Err[Manufacturer's Errata]Q -->|Code example| Lib[Library repository and examples]Pin --> V[Bill revision of payment and document] El --> V
     Sch --> V
     Err --> V
     Lib --> V
@@ -160,10 +160,10 @@ V --> OK[Save PDF locally with version in name]```
 - [Arduino UNO R3 - schematic and board files](https://docs.arduino.cc/hardware/uno-rev3/) - sample circuit, solution and power supply.
 
 ## See also- [[Home | Home]]
-- [[00-Start/01-Yak-koristuvatis-dovidnikom | reference guide]]
-- [[01-Hardware/01-AVR-Uno | classic AVR]]
-- [[17-Lab/02-Maketka-PCB | layout and board]]
-- [[99-Additions/01-Troubleshooting-FAQ | answers to questions]]
+- [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]]
+- [[EN/01-Hardware/01-AVR-Uno.en| classic AVR]]
+- [[EN/17-Lab/02-Breadboard-PCB.en| layout and board]]
+- [[EN/99-Additions/01-Troubleshooting-FAQ.en| answers to questions]]
 
 
 ## Common issues

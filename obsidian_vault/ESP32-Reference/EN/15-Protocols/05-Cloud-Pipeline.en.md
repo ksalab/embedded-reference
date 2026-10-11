@@ -13,13 +13,13 @@ date: 2026-10-08
 # Cloud-пайплайн: ESP32 → MQTT → Node-RED → InfluxDB → Grafana
 
 > [!warning] without NTP-часу on вузлі InfluxDB запише точки with міткою 1970 - графіки «порожні»!
-> NTP-синк до першої публікації обов'язковий, див. [[15-Protocols/03-mDNS-NTP-TLS]].
+> NTP-синк до першої публікації обов'язковий, див. [[EN/15-Protocols/03-mDNS-NTP-TLS.en]].
 
-База: MQTT [[15-Protocols/01-MQTT|MQTT]], час [[15-Protocols/03-mDNS-NTP-TLS]], сон [[07-Timers/03-Sleep-ULP]], WiFi [[05-Radio/01-WiFi-STA-AP]], старт [[Home]].
+База: MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], час [[EN/15-Protocols/03-mDNS-NTP-TLS.en]], сон [[EN/07-Timers/03-Sleep-ULP.en]], WiFi [[EN/05-Radio/01-WiFi-STA-AP.en]], старт [[Home.en]].
 
 ## Призначення
 
-Наскрізний example прикладного IoT: вузол ESP32 with DHT22/BME280 шле телеметрію per MQTT, Mosquitto приймає, Node-RED нормалізує, InfluxDB зберігає часові ряди, Grafana малює дашборд. Кожну ланку можна замінити, контракт між ними - JSON and MQTT-топіки with розділу [[15-Protocols/01-MQTT|MQTT]].
+Наскрізний example прикладного IoT: вузол ESP32 with DHT22/BME280 шле телеметрію per MQTT, Mosquitto приймає, Node-RED нормалізує, InfluxDB зберігає часові ряди, Grafana малює дашборд. Кожну ланку можна замінити, контракт між ними - JSON and MQTT-топіки with розділу [[EN/15-Protocols/01-MQTT.en|MQTT]].
 
 Коли брати такий стек:
 
@@ -35,7 +35,7 @@ date: 2026-10-08
 | --- | --- | --- |
 | Вузол | ESP32 + DHT22/BME280, період 60 с | deep-sleep між вимірами |
 | Транспорт | MQTT QoS 0, топік `device/<id>/sensors` | without retain on потоці! |
-| broker | Mosquitto 2.x on RPi/VPS | 1883 локально, див. [[15-Protocols/01-MQTT | MQTT]] |
+| broker | Mosquitto 2.x on RPi/VPS | 1883 локально, див. [[EN/15-Protocols/01-MQTT.en| MQTT]] |
 | Потік | Node-RED: mqtt-in → function → influxdb-out | JSON потоку нижче |
 | Сховище | InfluxDB 2.x bucket `iot`, measurement `climate` | retention 365 днів |
 | Дашборд | Grafana: Flux/SQL-запит, панель Time series | алерт in Telegram |
@@ -84,7 +84,7 @@ graph LR
 
 ## Ланка 1: вузол (коротко, деталі - 01-MQTT)
 
-Вузол робить мінімум: прокинувся → виміряв → підключився → опублікував → заснув. Повний MQTT-code with реконектом - in [[15-Protocols/01-MQTT|MQTT]], тут лише каркас трьох стеків (нижче). Формат корисного навантаження фіксований:
+Вузол робить мінімум: прокинувся → виміряв → підключився → опублікував → заснув. Повний MQTT-code with реконектом - in [[EN/15-Protocols/01-MQTT.en|MQTT]], тут лише каркас трьох стеків (нижче). Формат корисного навантаження фіксований:
 
 ```json
 {"id": "esp32-01", "t": 24.5, "h": 55.1, "vbat": 4.02, "rssi": -67}
@@ -94,7 +94,7 @@ graph LR
 
 ## Ланка 2: Mosquitto
 
-broker with розділу [[15-Protocols/01-MQTT|MQTT]]: користувач on вузол, ACL `device/<id>/#`, користувач `nodered` with `device/#` on читання. Жодної логіки in брокері - він тільки шина.
+broker with розділу [[EN/15-Protocols/01-MQTT.en|MQTT]]: користувач on вузол, ACL `device/<id>/#`, користувач `nodered` with `device/#` on читання. Жодної логіки in брокері - він тільки шина.
 
 ## Ланка 3: Node-RED flow (JSON потоку)
 
@@ -253,15 +253,15 @@ machine.deepsleep(60_000)
 
 ## Див. також
 
-- [[Home]]
-- [[05-Radio/01-WiFi-STA-AP|WiFi STA/AP]] - транспорт вузла
-- [[08-Memory/03-OTA|OTA]] - оновлення вузлів пайплайна
-- [[08-Memory/01-Partitions-NVS|NVS]] - офлайн-буфер, ID вузла
-- [[99-Additions/02-Troubleshooting-FAQ|FAQ]] - діагностика ланок
-- [[15-Protocols/01-MQTT|MQTT]] - повний code вузла with реконектом
-- [[15-Protocols/02-HTTP-WebSocket|HTTP/WebSocket]] - REST-альтернатива вузлу
-- [[15-Protocols/03-mDNS-NTP-TLS|mDNS/NTP/TLS]] - час for InfluxDB
-- [[15-Protocols/04-Provisioning|Provisioning]] - entry WiFi on вузлах
+- [[Home.en]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - транспорт вузла
+- [[EN/08-Memory/03-OTA.en|OTA]] - оновлення вузлів пайплайна
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - офлайн-буфер, ID вузла
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - діагностика ланок
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - повний code вузла with реконектом
+- [[EN/15-Protocols/03-HTTP-Client.en|HTTP/WebSocket]] - REST-альтернатива вузлу
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS/NTP/TLS]] - час for InfluxDB
+- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - entry WiFi on вузлах
 
 ## Common issues
 

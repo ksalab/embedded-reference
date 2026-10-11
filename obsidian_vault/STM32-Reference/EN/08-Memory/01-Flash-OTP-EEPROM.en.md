@@ -172,7 +172,7 @@ EE_ReadVariable(VIRT_ADDR, &value); // читання змінної
 
 - [[Home.en]]
 - [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en|power supply rails]]
-- [[15-Protocols/02-DFU-Bootloader|firmware update]]
-- [[15-Protocols/03-Bezpeka|product protection]]
+- [[EN/15-Protocols/02-DFU-Bootloader.en|firmware update]]
+- [[EN/15-Protocols/03-Security.en|product protection]]
 - [[EN/08-Memory/02-Zovnishni-Loadery.en|external loaders]]
 - [[EN/08-Memory/03-Filesystem-LittleFS.en|filesystems]]

@@ -12,19 +12,19 @@ date: 2026-10-08
 # Project 5 - TinyML Deep Practice: Voice Commands + Smile → ESP32-C3/S3 + TFLite-Micro
 
 > [!tip] What we are building
-> Small int8 neural networks on ESP32: voice command "go / stop" on ESP32-C3 + INMP441; smile / no-smile on ESP32-S3 + OV2640 + PSRAM; quantization int8 vs int16 notes; inference < 100 ms; memory budget shown. Base: [[10-Sensors/02-DS18B20 | Sensors]], [[09-Firmware/01-ESP-IDF-setup | IDF]].
+> Small int8 neural networks on ESP32: voice command "go / stop" on ESP32-C3 + INMP441; smile / no-smile on ESP32-S3 + OV2640 + PSRAM; quantization int8 vs int16 notes; inference < 100 ms; memory budget shown. Base: [[EN/10-Sensors/02-DS18B20.en| Sensors]], [[EN/09-Firmware/01-ESP-IDF-Setup.en| IDF]].
 
 ## 1. Goal and what we build
 
 | Target | Chip | Model | Accuracy | Inference budget |
 | --- | --- | --- | --- |
-| Voice commands "go / stop" | ESP32-C3, 160 MHz | ~150 KB int8, 10 labels | ≥90 % in quiet room | < 30 ms per frame, 15 ms window |
-| Smile / no-smile | ESP32-S3, 240 MHz + PSRAM | ~350 KB int8, 96×96 | ≥85 % in light 300-1500 lux | < 100 ms per frame |
+| Voice commands "go / stop" | ESP32-C3, 160 MHz | ~150 KB int8, 10 labels | ≥90% in quiet room | < 30 ms per frame, 15 ms window |
+| Smile / no-smile | ESP32-S3, 240 MHz + PSRAM | ~350 KB int8, 96×96 | ≥85% in light 300-1500 lux | < 100 ms per frame |
 
 Requirements:
 
 - TFLite-Micro (TensorFlow Lite Micro) with `micro_speech` or custom CNN;
-- quantization int8 with calibration (100-300 samples); accuracy drop ≤3 %;
+- quantization int8 with calibration (100-300 samples); accuracy drop ≤3%;
 - memory: weights in DROM (flash), tensors in SRAM, arena 16-32 KB;
 - audio: INMP441 I2S 16 kHz; camera: OV2640 FIFO via SPI/I2C; no USB stream.
 
@@ -92,7 +92,7 @@ Code: `esp_camera` + `TensorFlowLite` with `MicroInterpreter`; arena 32 KB in PS
 | --- | --- | --- |
 | Model size | ×2 | 1× |
 | Speed on P6 | 1× | 1.5-2× |
-| Accuracy | higher | −0.5…−3 % with proper calibration |
+| Accuracy | higher | −0.5…−3% with proper calibration |
 
 Calibration: 100-300 representative samples; `tf.lite.TFLiteConverter` with `representative_dataset`; avoid overfit to training light.
 
@@ -102,7 +102,7 @@ Calibration: 100-300 representative samples; `tf.lite.TFLiteConverter` with `rep
 | --- | --- |
 | Inference > 100 ms | arena too small, PSRAM not used, reduce model | 
 | Audio not captured | I2S WS/BCLK swapped, 3.3 V missing cap | 
-| Accuracy < 85 % | calibration samples too few, light variance | 
+| Accuracy < 85% | calibration samples too few, light variance | 
 | Camera black frame | SPI CS wrong, FIFO not flushed | 
 | Flash full (4 MB) | model > 200 KB; use ESP32-S3 8 MB | 
 
@@ -132,13 +132,30 @@ Calibration: 100-300 representative samples; `tf.lite.TFLiteConverter` with `rep
 - [INMP441 - datasheet](https://invensense.tdk.com/en/products/video/part-number/INMP441/) - I2S mic, 3.3 V.
 - [OV2640 - Omnivision](https://www.ovt.com/sensor/OV2640) - 1/4" CMOS, FIFO.
 
+![[assets/img/placeholder.png|600]]
+*Fig. 1. TinyML pipeline: INMP441/OV2640 capture, int8 inference on C3/S3, relay or MQTT action.*
+
+### ML pipeline
+
+```mermaid
+flowchart LR
+    MIC["INMP441 I2S<br/>CAM OV2640"]
+    PRE["Preprocess<br/>MFCC 96x96"]
+    MOD["int8 model<br/>150-350 KB"]
+    INF["Inference<br/>under 100 ms"]
+    ACT["Action<br/>relay MQTT"]
+    MIC --> PRE
+    PRE --> MOD
+    MOD --> INF
+    INF --> ACT
+```
 ## See also
 
 - [[EN/Home.en]]
 - [[09-Firmware/01-ESP-IDF-setup.en | IDF]]
 - [[16-Projects/01-Weather-Station.en | Weather Station]]
 - [[16-Projects/02-GPS-Tracker.en | GPS Tracker]]
-- [[09-Firmware/03-MicroPython | MicroPython]]
+- [[EN/09-Firmware/03-MicroPython.en| MicroPython]]
 
 ## Appendix: Sample JSON output
 

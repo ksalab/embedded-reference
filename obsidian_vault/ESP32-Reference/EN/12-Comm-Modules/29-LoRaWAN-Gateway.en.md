@@ -6,6 +6,7 @@ category: Moduli
 lang: en
 date-created: 2026-09-30
 date: 2026-10-08
+original: 12-Moduli-zvyazku/29-LoRaWAN-Gateway.md
 ---
 
 # LoRaWAN-шлюз: single-channel пастка, SX1302, ChirpStack, TTN
@@ -14,7 +15,7 @@ date: 2026-10-08
 
 Вузли LoRa говорять - хтось має слухати. Варіанти: одноканальний «шлюз» on ESP32 ($15, але профанація), повноцінний 8-канальний on SX1302 ($80+, справжній), або чужий TTN/ChirpStack. Нота - щоб not купити not те.
 
-База: start - [[EN/Home.en]], LoRa-база - [[12-Comm-Modules/02-NRF24-LoRa|LoRa]], Cat-1 - [[12-Comm-Modules/18-Cellular-LoRa-2|Cat-1]] (backhaul!), MQTT-SN - [[15-Protocols/14-MQTT-SN]].
+База: start - [[EN/Home.en]], LoRa-база - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]], Cat-1 - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1]] (backhaul!), MQTT-SN - [[EN/15-Protocols/14-MQTT-SN.en]].
 
 > [!danger] Single-channel «шлюз» - not шлюз!
 > Одноканальний приймач (ESP32+SX1276) чує 1 комбінацію (частота+SF) with ~50 можливих and not шле downlink вчасно. Вузли поруч «працюють», решта - ні, diagnostics - пекло. for 1-2 датчиків поруч - ок; називати this LoRaWAN-мережею - ні.
@@ -146,9 +147,9 @@ Backhaul різний: один Ethernet, другий Cat-1 (різні опе�
 
 ## See also
 
-- [[Home|Головна]]
-- [[12-Comm-Modules/02-NRF24-LoRa|NRF24/LoRa]]
-- [[12-Comm-Modules/18-Cellular-LoRa-2|Cat-1/LoRa-2]]
-- [[12-Comm-Modules/27-LPWAN-Alt|LPWAN-альтернативи]]
-- [[15-Protocols/14-MQTT-SN|MQTT-SN]]
-- [[12-Comm-Modules/07-SIM7600-W5500-MCP2515|W5500]]
+- [[Home.en|Головна]]
+- [[EN/12-Comm-Modules/02-NRF24-LoRa.en|NRF24/LoRa]]
+- [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1/LoRa-2]]
+- [[EN/12-Comm-Modules/27-LPWAN-Alt.en|LPWAN-альтернативи]]
+- [[EN/15-Protocols/14-MQTT-SN.en|MQTT-SN]]
+- [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|W5500]]

@@ -87,7 +87,7 @@ flowchart TB
 | Storage | Factors in node EEPROM |
 | Capacitive | More precise, but dearer and harder |
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -116,7 +116,7 @@ flowchart TB
 | In QSPI | Large backgrounds, no XIP needed |
 | On SD card | Changes with no reflash |
 
-## Official Sources
+## Official sources
 
 - [LVGL Documentation (LVGL)](https://docs.lvgl.io/master/) - widgets, buffers, porting.
 - [SquareLine docs](https://docs.squareline.io/docs/squareline) - visual screen builder.

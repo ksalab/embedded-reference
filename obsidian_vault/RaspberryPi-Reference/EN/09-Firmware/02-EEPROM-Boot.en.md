@@ -130,7 +130,7 @@ Monitor-free brick diagnostics start with UART: the screen is silent while the c
 - [[EN/09-Firmware/01-Imager-Headless.en|Imager flashing]] - images on media.
 - [[EN/08-Memory/01-SD-eMMC-NVMe.en|storage media]] - SD/USB/NVMe in detail.
 - [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - system after boot.
-- [[14-Devboards/05-CM4-CM5|CM modules]] - eMMC and rpiboot.
+- [[EN/14-Devboards/05-CM4-CM5.en|CM modules]] - eMMC and rpiboot.
 - [[EN/02-Power-Supply/01-USB-C-PD.en|USB-C power supply]] - stability at boot.
 
 ## 8.1 Boot cheat sheet

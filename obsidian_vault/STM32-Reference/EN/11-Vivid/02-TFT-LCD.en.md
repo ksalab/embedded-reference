@@ -211,7 +211,7 @@ flowchart TB
     Mem -->|No| FsmcPar
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -222,7 +222,7 @@ flowchart TB
 | 5 | Matrix reads with no delays | Wrong status and lock-up | Read pauses per controller manual |
 | 6 | Long wires at high clock | Clock distortion and broken pixels | Short wires and lower speed |
 
-## Official Sources
+## Official sources
 
 - [ILI9341 datasheet (Ilitek)](https://www.adafruit.com/datasheets/ILI9341.pdf) - commands, windows, color depth and reset.
 - [STM32 LTDC application note (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32f429.html) - layers, sync and external memory.

@@ -203,27 +203,27 @@ flowchart TB
   Крок: зняти перемички дебагера на цій платі!
 ```
 
-## typical errors
+## Common issues
 
-| # | error | Чому погано | how правильно |
-| --- | --- | --- | --- |
-| 1 | Два джерела живлення разом | Зустрічні стабілізатори гріються | Одне source and правильні перемички |
-| 2 | Стара прошивка дебагера | Обриви and невідомий пристрій | Оновити утилітою перед роботою |
-| 3 | Щит with 5 in логікою | Перевантаження входів | Дільники або перетворювачі рівнів |
-| 4 | Вимір струму без розриву | Амперметр паралельно дає коротке | Тільки in розрив знятої перемички |
-| 5 | Плутанина номерів гребінок | Дзеркальні назви сигналів | Звіряти схему саме своєї ревізії |
-| 6 | Консоль not бачить порт | Забутий міст дебагера | verify порт після підключення кабеля |
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Two power sources together | Opposing regulators heat up | One source and correct jumpers |
+| Old debugger firmware | Breaks and unknown device | Update with the utility before work |
+| Shield with 5 V logic | Input overload | Dividers or level shifters |
+| Current measurement without a break | Ammeter in parallel gives a short | Only in the break of the removed jumper |
+| Confusing the header numbers | Mirrored signal names | Check the schematic of your own revision |
+| Console does not see the port | Forgotten debugger bridge | Check the port after cable connection |
 
-## official джерела
+## Official sources
 
-- [Керівництво плат середнього формату (ST)](https://www.st.com/resource/en/user_manual/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf) - перемички, живлення and дебагер.
-- [Керівництво малих плат (ST)](https://www.st.com/resource/en/user_manual/um1956-stm32-nucleo32-boards-based-on-32pin-stm32-mcus-stmicroelectronics.pdf) - компактний формат and межі.
-- [Оновлення прошивки дебагера (ST)](https://www.st.com/en/development-tools/stsw-link007.html) - утиліта оновлення and драйвери.
+- [Mid-format board manual (ST)](https://www.st.com/resource/en/user_manual/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf) - jumpers, power and debugger.
+- [Small board manual (ST)](https://www.st.com/resource/en/user_manual/um1956-stm32-nucleo32-boards-based-on-32pin-stm32-mcus-stmicroelectronics.pdf) - compact format and limits.
+- [Debugger firmware update (ST)](https://www.st.com/en/development-tools/stsw-link007.html) - update utility and drivers.
 
-## Див. також
+## See also
 
-- [[Home]]
-- [[00-Start/04-Devkit-plati|огляд плат]]
-- [[09-Firmware/01-CubeIDE-CubeMX|налаштування CubeMX]]
-- [[09-Firmware/03-ST-Link-Proshivka|прошивка via ST-Link]]
-- [[14-Devboards/01-Blue-Pill|плата Blue Pill]]
+- [[Home.en]]
+- [[EN/00-Start/04-Dev-Boards.en|огляд плат]]
+- [[EN/09-Firmware/01-CubeIDE-CubeMX.en|налаштування CubeMX]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|прошивка via ST-Link]]
+- [[EN/14-Devboards/01-Blue-Pill.en|плата Blue Pill]]

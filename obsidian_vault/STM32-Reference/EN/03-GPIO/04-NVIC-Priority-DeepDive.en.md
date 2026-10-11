@@ -155,5 +155,5 @@ __enable_irq();
 - [[Home.en]]
 - [[03-GPIO/03-EXTI-NVIC.en | External interrupts]]
 - [[03-GPIO/01-GPIO-rezhimi.en | Pin modes]]
-- [[07-Timers/01-GPTIM-ADTIM | Timers and PWM]]
-- [[09-Firmware/02-HAL-LL | Code layers]]
+- [[EN/07-Timers/01-GPTIM-ADTIM.en| Timers and PWM]]
+- [[EN/09-Firmware/02-HAL-LL.en| Code layers]]

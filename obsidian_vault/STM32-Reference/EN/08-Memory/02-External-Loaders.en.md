@@ -172,4 +172,4 @@ flowchart TB
 - [[EN/08-Memory/01-Flash-OTP-EEPROM.en|internal memory]]
 - [[EN/04-Interfaces/06-SDMMC-QUADSPI.en|cards and outer flash]]
 - [[EN/09-Firmware/03-ST-Link-Proshivka.en|flashing via ST-Link]]
-- [[15-Protocols/02-DFU-Bootloader|firmware update]]
+- [[EN/15-Protocols/02-DFU-Bootloader.en|firmware update]]

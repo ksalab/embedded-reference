@@ -42,7 +42,7 @@ A comparison with the classic IDE shows gains in version control and automation.
 
 ## 3. Project Structure
 
-The project folder holds at least three items: platformio.ini with the platform and board description; a src folder with an .ino or .cpp file; a lib folder for local libraries. Flashing needs no extra files if the sketch stands alone.
+The project folder holds at least three items: platformio.ini with the platform and board description; a src folder with an.ino or.cpp file; a lib folder for local libraries. Flashing needs no extra files if the sketch stands alone.
 
 ```text
 my_project/
@@ -53,7 +53,7 @@ my_project/
     MyLib/
 ```
 
-Code may use the .ino or .cpp extension. With .ino, PlatformIO adds prototypes automatically like the classic editor. With .cpp, functions must be declared before use. For simplicity this note takes .ino with an extended sketch.
+Code may use the.ino or.cpp extension. With.ino, PlatformIO adds prototypes automatically like the classic editor. With.cpp, functions must be declared before use. For simplicity this note takes.ino with an extended sketch.
 
 ## 4. Ini Settings
 
@@ -73,7 +73,7 @@ The framework = arduino parameter enables Arduino API compatibility. The monitor
 
 ## 5. Arduino Sketch
 
-The sketch uses the standard setup and loop template with Serial output and LED control. The code suits both classic Arduino and PlatformIO unchanged when .ino is used. With .cpp, add #include <Arduino.h>.
+The sketch uses the standard setup and loop template with Serial output and LED control. The code suits both classic Arduino and PlatformIO unchanged when.ino is used. With.cpp, add #include <Arduino.h>.
 
 ```cpp
 #include <Arduino.h>
@@ -129,7 +129,7 @@ flowchart LR
 
 The path starts at the ini and runs through the build to the flash. On an issue the path returns to the source: ini for the board description, src for code, lib_deps for libraries.
 
-## 8. Common Issues
+## 8. Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -137,13 +137,13 @@ The path starts at the ini and runs through the build to the flash. On an issue 
 | 2 | framework skipped | Arduino API never links and functions stay missing | Add framework = arduino |
 | 3 | lib_deps with no version | Another computer gets another library version | Pin @version in the ini |
 | 4 | Port busy with the monitor | Flash cannot open the port for writing | Close the monitor before upload |
-| 5 | src with no .ino or .cpp | PlatformIO finds no entry point | Place the file in the src folder |
+| 5 | src with no.ino or.cpp | PlatformIO finds no entry point | Place the file in the src folder |
 | 6 | upload_port missing | Flash does not know where to send the file | Set the port or leave it automatic |
 | 7 | Monitor speed mismatch | Garbage in the monitor instead of data | Set monitor_speed as in Serial.begin |
 
 A compile issue usually points at the first red-text line in the pio run output. If the issue sits in a library, check lib_deps. If the board stays silent after flashing, check the data-lines cable.
 
-## 9. Official Sources
+## 9. Official sources
 
 - [PlatformIO quickstart](https://docs.platformio.org/en/latest/core/quickstart.html) - project creation and first build.
 - [PlatformIO installation](https://docs.platformio.org/en/latest/installation.html) - CLI and extension installation.

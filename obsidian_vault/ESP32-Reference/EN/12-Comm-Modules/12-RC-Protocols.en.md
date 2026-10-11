@@ -5,6 +5,8 @@ tags: [esp32, rc, sbus, crsf, elrs, ibus, mavlink, dshot, telemetry, uart, fails
 category: Moduli
 lang: en
 date-created: 2026-09-28
+date: 2026-10-10
+original: 12-Moduli-zvyazku/12-RC-Protocols.md
 ---
 
 # RC-протоколи - SBUS / CRSF-ELRS / IBUS / MAVLink / DShot
@@ -33,7 +35,7 @@ ESP32 часто працює другим бортовим контролеро
 
 > DShot - not UART-протокол: this синхронна цифрова послідовність with власним таймінгом
 > (біт = 1.67 мкс at DShot600). on ESP32 генерується via RMT або MCPWM,
-> див. [[07-Timers/01-Timeri-MCPWM-PCNT-RMT]].
+> див. [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]].
 
 ## SBUS - інвертований UART 100к 8E2
 
@@ -83,7 +85,7 @@ ESP32-UART for замовчуванням чекає non-inverted idle-HIGH, but
 - **Живлення 5 in:** приймач живиться from 5 in шини (BEC регулятора або USB-5V).
   Логічний рівень SBUS - 3.3 in толерантний до входу ESP32, дільник not потрібен.
 - **Один провід каналів:** усі 16 каналів мультиплексовані in одному кадрі -
-  саме therefore SBUS вигідніший for 16 PWM-дротів, див. [[11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209]].
+  саме therefore SBUS вигідніший for 16 PWM-дротів, див. [[EN/11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209.en]].
 - **S.Port окремо:** телеметрійний порт приймача - півдуплекс with polling-ом,
   описаний in розділі S.Port/F.Port нижче.
 
@@ -118,7 +120,7 @@ ELRS-додатково: MAVLink-телеметрія поверх того ж �
 Пояснення:
 
 - **Перехрест:** TX приймача → RX ESP32, RX приймача → TX ESP32 (how звичайний UART,
-  див. [[04-Interfaces/01-UART|UART]]). Обидва напрямки працюють одночасно - півдуплекс not потрібен.
+  див. [[EN/04-Interfaces/01-UART.en|UART]]). Обидва напрямки працюють одночасно - півдуплекс not потрібен.
 - **without інверсії:** CRSF - пряма логіка, інверсні прапорці ВИМКНУТИ.
 - **Швидкість 420000:** нестандартний бод - ESP32 (апаратний UART) тримає його точно;
   програмний Serial - ні, тільки `HardwareSerial`.
@@ -165,7 +167,7 @@ ESP32-роль: міст UART→WiFi (MAVLink with польотника in UDP �
   (beacon, реверс 3D, налаштування).
 - **CRC on кожен кадр:** пошкоджений кадр відкидається замість смикання мотором.
 - **Bidirectional DShot:** телеметрія with ESC (eRPM, errors) тією ж лінією in вікні
-  після кадру - потрібен вхід захоплення (PCNT/RMT), див. [[07-Timers/01-Timeri-MCPWM-PCNT-RMT]].
+  після кадру - потрібен вхід захоплення (PCNT/RMT), див. [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]].
 - **Чому not PWM on ESP32:** LEDC-PWM має джитер APB-клоку and роздільність, прив'язану
   до частоти; DShot via RMT дає біт-точний таймінг without участі CPU.
 
@@ -440,8 +442,17 @@ while True:
 9. **Ігнорування біта failsafe SBUS** → коптер летить on останніх каналах at втраті
    лінка. Біт `0x08` = глушити/саджати негайно.
 10. **Спільний UART for SBUS and логів** → `Serial` (USB) тримати for дебага, RC -
-    строго on UART1/UART2, див. [[04-Interfaces/01-UART|UART]].
+    строго on UART1/UART2, див. [[EN/04-Interfaces/01-UART.en|UART]].
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| SBUS garbage or silence | Missing inversion, 8N1 instead of 8E2 at 100k | Enable inverse mask or one transistor stage, set 100k 8E2 |
+| CRSF link but no telemetry | Wrong 420k baud or TX/RX swapped | Set 420k baud both sides, cross TX to RX, check ELRS version |
+| IBUS reads zeros | FlySky needs plain 115200 without inversion | Use non-inverted UART at 115200, bind receiver first |
+| Motors spin at boot | No failsafe set, DShot armed by noise | Set failsafe hold/off, calibrate endpoints, arm switch only |
+| ESC beeps, no spin | PWM protocol on DShot-only ESC or vice versa | Match protocol to ESC type, check 3.3V signal level shift |
 ## Official sources
 
 - [MAVLink Developer Guide](https://mavlink.io/en/) - формат кадрів v1/v2, HEARTBEAT, GPS_RAW, extra-CRC.
@@ -455,12 +466,12 @@ while True:
 ## See also
 
 - [[EN/Home.en]]
-- [[04-Interfaces/01-UART|UART]]
-- [[07-Timers/01-Timeri-MCPWM-PCNT-RMT]]
-- [[11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209]]
+- [[EN/04-Interfaces/01-UART.en|UART]]
+- [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]]
+- [[EN/11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209.en]]
 - [[EN/12-Comm-Modules/13-Camera-Streaming.en]]
-- [[11-Vivid/12-LVGL-SquareLine]]
+- [[EN/11-Vivid/12-LVGL-SquareLine.en]]
 - [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]]
-- [[05-Radio/01-WiFi-STA-AP]]
-- [[99-Additions/01-Pinout-tablici]]
-- [[99-Additions/02-Troubleshooting-FAQ]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en]]
+- [[EN/99-Additions/01-Pinout-tablici.en]]
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en]]

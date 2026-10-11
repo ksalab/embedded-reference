@@ -161,4 +161,4 @@ static sensor_t env = {
 - [[09-Firmware/02-HAL-LL.en | Code layers]]
 - [[09-Firmware/01-CubeIDE-CubeMX.en | Build setup]]
 - [[04-Interfaces/03-I2C.en | Exchange bus]]
-- [[10-Sensors/02-BME280-SHT3x | Driver example]]
+- [[EN/10-Sensors/02-BME280-SHT3x.en| Driver example]]

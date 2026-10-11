@@ -200,5 +200,5 @@ The chain reads top to bottom without breaks. Code rests on a library, the libra
 ## See also
 
 - [[Home.en]]
-- [[00-Start/01-Yak-koristuvatis-dovidnikom| reference guide]]
-- [[00-Start/03-Porivnyannya-plat| board comparison]]
+- [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]]
+- [[EN/00-Start/03-Board-Comparison.en| board comparison]]

@@ -187,5 +187,5 @@ The pins branch leads to the giant without doubt when signals are many. The netw
 ## See also
 
 - [[Home.en]]
-- [[00-Start/01-Yak-koristuvatis-dovidnikom| reference guide]]
-- [[00-Start/02-Glosariy| glossary of terms]]
+- [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]]
+- [[EN/00-Start/02-Glossary.en| glossary of terms]]

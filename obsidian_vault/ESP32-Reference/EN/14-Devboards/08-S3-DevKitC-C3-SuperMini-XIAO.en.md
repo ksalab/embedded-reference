@@ -62,15 +62,15 @@ XIAO (Seeed standard): D0-D10 to GPIO1-10 (C3) / GPIO1-9,43,44 (S3), SDA/SCL, SC
 | Deep-sleep | About 10 uA (S3, USB off) | C3 about 15 uA, XIAO C3 about 44 uA (charging IC eats!) |
 
 > [!warning] SuperMini + raw LiPo means fire/dead board
-> On C3 SuperMini the BAT pads are a 3.7-5V INPUT with no protection and no charging! LiPo is allowed there, but charge only with an external TP4056, see [[13-Power-Modules/03-TP4056-IP5306-BMS-UPS | Charging/BMS]]. XIAO has built-in charging - safe there.
+> On C3 SuperMini the BAT pads are a 3.7-5V INPUT with no protection and no charging! LiPo is allowed there, but charge only with an external TP4056, see [[EN/13-Power-Modules/03-TP4056-IP5306-BMS-UPS.en| Charging/BMS]]. XIAO has built-in charging - safe there.
 
 ## USB-UART features
 
-S3-DevKitC-1 has BOTH: CP2102N (UART port, SiLabs driver) + native S3 USB (second connector). Flash via either; native needs BOOT on first flash. C3 SuperMini / XIAO - native USB-CDC only: no driver needed, but a data cable and the right sequence are: hold BOOT, plug USB, release, then flash. Native speed is full, baud is not critical. If the port vanishes after sleep - press Reset. Details - [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART]].
+S3-DevKitC-1 has BOTH: CP2102N (UART port, SiLabs driver) + native S3 USB (second connector). Flash via either; native needs BOOT on first flash. C3 SuperMini / XIAO - native USB-CDC only: no driver needed, but a data cable and the right sequence are: hold BOOT, plug USB, release, then flash. Native speed is full, baud is not critical. If the port vanishes after sleep - press Reset. Details - [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART]].
 
 ## Buttons
 
-S3-DevKitC-1: big BOOT + RESET - convenient. SuperMini: microscopic, need tweezers/fingernail; hold BOOT at power-on for download. XIAO: small but reachable; double-click Reset on some firmware means UF2 bootloader (drag the .uf2 file!). RGB/user/charging LEDs show the mode.
+S3-DevKitC-1: big BOOT + RESET - convenient. SuperMini: microscopic, need tweezers/fingernail; hold BOOT at power-on for download. XIAO: small but reachable; double-click Reset on some firmware means UF2 bootloader (drag the.uf2 file!). RGB/user/charging LEDs show the mode.
 
 ## What it fits
 
@@ -128,7 +128,7 @@ First native-USB flash: hold BOOT, connect USB, flash, Reset. ESP-IDF: `esp32s3`
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![[assets/img/devboard-s3-c3-xiao.png|600]]
+> [!example] Photo/schematic:![[assets/img/devboard-s3-c3-xiao.png|600]]
 
 ```text
 S3-DevKitC-1: [USB-C UART-порт] ─► CP2102N ─► прошивка. [USB-C native] ─► S3-USB.
@@ -171,7 +171,7 @@ flowchart TB
 - [[04-Interfaces/06-USB-OTG-JTAG.en | USB/JTAG]]
 - [[09-Firmware/05-JTAG-Debug.en | JTAG]]
 - [[12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en | RS485/CAN/Camera]]
-- [[13-Power-Modules/03-TP4056-IP5306-BMS-UPS | Charging/BMS]]
+- [[EN/13-Power-Modules/03-TP4056-IP5306-BMS-UPS.en| Charging/BMS]]
 - [[07-Timers/03-Sleep-ULP.en | Sleep/ULP]]
 - [[09-Firmware/02-Arduino-PlatformIO.en | Arduino/PlatformIO]]
 - [[99-Additions/02-Troubleshooting-FAQ.en | FAQ]]

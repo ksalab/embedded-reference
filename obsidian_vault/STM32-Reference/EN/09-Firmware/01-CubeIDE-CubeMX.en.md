@@ -1,6 +1,6 @@
 ---
 title: STM32CubeIDE and CubeMX - Project from Scratch
-description: Explains STM32CubeIDE project creation: .ioc config, code generation, USER CODE sections, build and debug; shows schematics, code and tables.
+description: Explains STM32CubeIDE project creation:.ioc config, code generation, USER CODE sections, build and debug; shows schematics, code and tables.
 tags: [stm32, firmware, cubeide, cubemx, ide, debug]
 category: Proshivka
 lang: en
@@ -12,7 +12,7 @@ date: 2026-10-09
 # STM32CubeIDE and CubeMX - Project from Scratch
 
 ![[assets/img/stm32-cubeide-project-scheme.png|600]]
-*Fig. Chain: .ioc to generation to USER CODE to build to debug.*
+*Fig. Chain:.ioc to generation to USER CODE to build to debug.*
 
 > [!tip] Purpose of this note
 > Take you from empty CubeIDE to a blinking LED with an understanding of what CubeMX generated and where to write your code.
@@ -78,14 +78,14 @@ STM32CubeIDE --launcher.suppressErrors -nosplash \
 | 2 | Default clocking | Half speed or dead USB | Set the clock tree on purpose |
 | 3 | Missing `HAL_Init` or SystemClock_Config | Peripherals stay silent | Order: HAL to clock to peripherals |
 | 4 | -O0 optimization in release | Slow and fat | Release: -O2 or -Os plus timing check |
-| 5 | Two `.ioc` files per project | Generation conflict | One .ioc is the source of truth |
+| 5 | Two `.ioc` files per project | Generation conflict | One.ioc is the source of truth |
 
 ## Official sources
 
 - [STM32CubeIDE User Guide (ST)](https://www.st.com/en/development-tools/stm32cubeide.html) - install, debug.
 - [STM32CubeMX User Manual UM1718 (ST)](https://www.st.com/en/development-tools/stm32cubemx.html) - configurator.
 
-## .ioc tabs in detail: where to click what
+##.ioc tabs in detail: where to click what
 
 | Tab | What is set | Trap |
 | --- | --- | --- |
@@ -162,10 +162,10 @@ int main(void)
 
 | Topic | Practice |
 | --- | --- |
-| Commit .ioc | Yes! It is the generation source |
-| Commit generated code | Yes for small teams; ignore Debug/ and .metadata/ |
+| Commit.ioc | Yes! It is the generation source |
+| Commit generated code | Yes for small teams; ignore Debug/ and.metadata/ |
 | CubeMX update | Backup before migrate; HAL versions break API across majors |
-| Two developers plus one .ioc | Edit in turns; manual .ioc merge hurts, avoid parallel edits |
+| Two developers plus one.ioc | Edit in turns; manual.ioc merge hurts, avoid parallel edits |
 
 ## See also
 

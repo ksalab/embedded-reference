@@ -153,4 +153,4 @@ else if (co2 < 1100) fan = MIN;
 - [[EN/10-Sensors/02-BME280-SHT3x.en|climate over I2C]]
 - [[EN/10-Sensors/06-Pressure-BMP390-MS5611.en|pressure and altitude]]
 - [[EN/04-Interfaces/01-UART.en|serial port]]
-- [[16-Projects/01-Meteostantsiya|weather node]]
+- [[EN/16-Projects/01-Weather-Station.en|weather node]]

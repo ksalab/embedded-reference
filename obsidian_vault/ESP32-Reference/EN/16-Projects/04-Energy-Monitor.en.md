@@ -50,12 +50,12 @@ Requirements:
 | --- | --- | --- |
 | ESP32 DevKit (WROOM-32) | [[00-Start/04-Devkit-plati.en | DevKit]] | $6 |
 | PZEM-004T v3 + CT 100A | [[10-Sensors/15-ACS712-ZMPT101B-PZEM-AS5600-FSR.en | Current]] | $12 |
-| 5V 1A isolated PSU (Hi-Link) | [[02-Power-Supply/02-LDO-DC-DC | LDO]] | $5 |
+| 5V 1A isolated PSU (Hi-Link) | [[EN/02-Power-Supply/02-LDO-DC-DC.en| LDO]] | $5 |
 | Fuse 1A + DIN holder | [[13-Power-Modules/04-LDO-Buck-XL4015-Protect.en | Protection]] | $2 |
 | Varistor 275V AC | [[13-Power-Modules/04-LDO-Buck-XL4015-Protect.en | Protection]] | $0.5 |
-| DIN box 4TE + blanks | [[99-Additions/03-Cheklisti-montazhu | Assembly checklists]] | $6 |
+| DIN box 4TE + blanks | [[EN/99-Additions/03-Cheklisti-montazhu.en| Assembly checklists]] | $6 |
 | PZEM-TX divider 1k/2k (5V→3.3V) | [[13-Power-Modules/02-Level-Shifters.en | Level-shifters]] | $0.3 |
-| DS18B20 on panel (temperature) | [[10-Sensors/02-DS18B20 | DS18B20]] | $2 |
+| DS18B20 on panel (temperature) | [[EN/10-Sensors/02-DS18B20.en| DS18B20]] | $2 |
 
 Total: ~$34.
 
@@ -111,7 +111,7 @@ Logic:
 
 ## 5. Firmware step by step
 
-Step 1 - PZEM init: `Serial2.begin(9600, SERIAL_8N1, 16, 17)`; send `0x01 0x03 ...`; parse response.
+Step 1 - PZEM init: `Serial2.begin(9600, SERIAL_8N1, 16, 17)`; send `0x01 0x03...`; parse response.
 
 Step 2 - Buffer: `Preferences` / `LittleFS`; 50 JSON lines; timestamp; flush if count > 45.
 
@@ -150,7 +150,7 @@ void loop() {
 | ESP32 reboot at publish | separate 5V 1A PSU + 470 µF, FAQ #1 [[99-Additions/02-Troubleshooting-FAQ.en | FAQ]] |
 | Gaps in Grafana | offline buffer + NTP stamps, FAQ #65 [[99-Additions/02-Troubleshooting-FAQ.en | FAQ]] |
 | PF jumps 0.5→1.0 | impulse PSU without PFC - normal; average 6 points |
-| Panel heating | DS18B20 alert, terminal tightening yearly, see [[10-Sensors/02-DS18B20 | DS18B20]] |
+| Panel heating | DS18B20 alert, terminal tightening yearly, see [[EN/10-Sensors/02-DS18B20.en| DS18B20]] |
 
 ## Official sources
 
@@ -164,6 +164,6 @@ void loop() {
 - [[10-Sensors/15-ACS712-ZMPT101B-PZEM-AS5600-FSR.en | Current]]
 - [[15-Protocols/01-MQTT.en | MQTT]]
 - [[13-Power-Modules/02-Level-Shifters.en | Level-shifters]]
-- [[10-Sensors/02-DS18B20 | DS18B20]]
+- [[EN/10-Sensors/02-DS18B20.en| DS18B20]]
 - [[16-Projects/01-Weather-Station.en | Weather Station]]
 - [[16-Projects/03-Access-Control.en | Access Control]]

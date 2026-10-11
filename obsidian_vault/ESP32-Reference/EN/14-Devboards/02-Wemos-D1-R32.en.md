@@ -15,7 +15,7 @@ date: 2026-10-09
 > The only ESP32 board in the Arduino UNO form factor: fits UNO cases and accepts some 5V shields. But "accepts" does not mean "safe": GPIO pins are still 3.3V. Board overview - [[00-Start/04-Dev-Boards.en | DevKit boards]], signal levels - [[03-GPIO/03-Pull-Ups-Levels.en | 3.3V/5V levels]].
 >
 > [!warning] 5V shields - caution!
-> Feeding 5V power to a shield is allowed, but 5V signal lines into ESP32 GPIO are **forbidden**. Check every shield pin before powering on. Level shifting - [[13-Power-Modules/02-Level-Shifters | Level-shifters]].
+> Feeding 5V power to a shield is allowed, but 5V signal lines into ESP32 GPIO are **forbidden**. Check every shield pin before powering on. Level shifting - [[EN/13-Power-Modules/02-Level-Shifters.en| Level-shifters]].
 
 ## Purpose
 
@@ -122,7 +122,7 @@ Blink example: the built-in LED on D13 (GPIO18 on some revisions) may be missing
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![[assets/img/devboard-wemos-d1r32.png|600]]
+> [!example] Photo/schematic:![[assets/img/devboard-wemos-d1r32.png|600]]
 
 ```text
 [DC 7.5V (краще) / USB 5V] ──► стаб. 5V ──► AMS1117 ──► 3.3V (ESP32)
@@ -161,7 +161,7 @@ flowchart TB
 - [[00-Start/04-Dev-Boards.en | DevKit boards]]
 - [[14-Devboards/01-DOIT-DevKitV1-NodeMCU32S.en | DOIT DevKitV1]]
 - [[03-GPIO/03-Pull-Ups-Levels.en | 3.3V/5V levels]]
-- [[13-Power-Modules/02-Level-Shifters | Level-shifters]]
+- [[EN/13-Power-Modules/02-Level-Shifters.en| Level-shifters]]
 - [[06-Analog/01-ADC.en | ADC]]
 - [[04-Interfaces/03-I2C.en | I2C]]
 - [[04-Interfaces/02-SPI.en | SPI]]

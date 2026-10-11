@@ -15,7 +15,7 @@ date: 2026-10-08
 *Рис. Matter-вузол: 802.15.4-радіо C6/H2, Thread-мережа, border router in IP, комісія via BLE.*
 
 > [!tip] that this for нота
-> Глибина поверх оглядової Matter-ноти: тут Fabric, кластери and code, but not маркетинг. Потрібні C6 або H2 (є 802.15.4). База: [[01-Hardware/04-ESP32-C3-C6-H2|чипи C3/C6/H2]], [[15-Protocols/09-Matter-Thread-Zigbee|Matter оглядово]].
+> Глибина поверх оглядової Matter-ноти: тут Fabric, кластери and code, but not маркетинг. Потрібні C6 або H2 (є 802.15.4). База: [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|чипи C3/C6/H2]], [[EN/15-Protocols/09-Matter-Thread-Zigbee.en|Matter оглядово]].
 
 ## 1. Мета
 
@@ -148,7 +148,7 @@ while True:
 
 | Симптом | Причина | Лікування |
 | --- | --- | --- |
-| Комісія падає on 90 % | BLE розрив / далеко | телефон поруч, without металу між |
+| Комісія падає on 90% | BLE розрив / далеко | телефон поруч, without металу між |
 | Вузол not in Thread | немає лідера/border router | підняти BR першим |
 | Працює, після ребута - ні | стерто NVS with ключами | not прати flash цілком, тільки app |
 | Дві лампи плутаються | однакові discriminator | унікальний дискримінатор on вузол |
@@ -165,11 +165,11 @@ while True:
 
 ## 11. Суміжні ноти
 
-- [[15-Protocols/09-Matter-Thread-Zigbee|Matter оглядово]] - стартова картина.
-- [[01-Hardware/04-ESP32-C3-C6-H2|чипи C3/C6/H2]] - радіо 802.15.4.
-- [[15-Protocols/01-MQTT|протокол MQTT]] - альтернативний транспорт.
-- [[14-Devboards/13-ESP32C6-Boards|плати C6]] - залізо вузла.
-- [[Home|головна карта]] - повна навігація.
+- [[EN/15-Protocols/09-Matter-Thread-Zigbee.en|Matter оглядово]] - стартова картина.
+- [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|чипи C3/C6/H2]] - радіо 802.15.4.
+- [[EN/15-Protocols/01-MQTT.en|протокол MQTT]] - альтернативний транспорт.
+- [[EN/14-Devboards/13-ESP32C6-Boards.en|плати C6]] - залізо вузла.
+- [[Home.en|головна карта]] - повна навігація.
 
 ## official джерела
 

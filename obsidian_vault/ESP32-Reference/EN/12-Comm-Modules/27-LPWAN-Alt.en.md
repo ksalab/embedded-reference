@@ -6,6 +6,7 @@ category: Moduli
 lang: en
 date-created: 2026-09-30
 date: 2026-10-08
+original: 12-Moduli-zvyazku/27-LPWAN-Alt.md
 ---
 
 # LPWAN-альтернативи LoRa: Sigfox, Weightless, MIOTY, Wize
@@ -14,7 +15,7 @@ date: 2026-10-08
 
 LoRa перемогла, але not скрізь and not назавжди: Sigfox (0G-оператор), Weightless (відкритий стандарт), MIOTY (TSMA for цехів), Wize (169 МГц, лічильники). Нота - чесне порівняння, щоб вибрати свідомо, but not for звичкою.
 
-База: start - [[EN/Home.en]], LoRa-база - [[12-Comm-Modules/02-NRF24-LoRa|LoRa]], Cat-1 - [[12-Comm-Modules/18-Cellular-LoRa-2|Cat-1]], NB-IoT - [[12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa|NB-IoT]].
+База: start - [[EN/Home.en]], LoRa-база - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]], Cat-1 - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1]], NB-IoT - [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en|NB-IoT]].
 
 ![[assets/img/lpwan-alt-compare-scheme.png|600]]
 *Fig. LPWAN-карта: LoRa (своя мережа), Sigfox (0G-оператор), NB-IoT (стільниковий), MIOTY/Wize (ніші).*
@@ -108,7 +109,7 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 | Мережа | Місто | Поле/траса | Коментар |
 | --- | --- | --- | --- |
 | LoRa своя | Свій шлюз - своє покриття | Щогла 15 м ≈ 20 км | Контроль in своїх руках |
-| NB-IoT | Оператори трійки (перевіряти карту!) | Вздовж трас - так, глуbus - ні | eSIM/M2M-тариф окремо! |
+| NB-IoT | Big-three operators (check coverage map!) | Along highways - yes, remote areas - no | eSIM/M2M tariff separately! |
 | Sigfox | Колишні зони (стискаються!) | Рідко | Перед проєктом - тестовий девайс on місцевості |
 | Wize/MIOTY | Точково (проєкти) | Ні | Тільки під конкретний тендер |
 
@@ -151,10 +152,19 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 | 0G | Мережа оператора without роумінгу даних (Sigfox-модель) |
 | Duty cycle | Ліміт ефіру 1% (EU868!) - стосується ВСІХ технологій |
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Sigfox payload rejected | Over 12 bytes uplink or downlink limit hit | Pack to 12 B, respect 140 messages per day cap |
+| No coverage at site | 0G operator absent in region | Check coverage map before hardware, keep LoRa fallback |
+| Weightless gateway too costly | Gateway price kills small pilots | Start with LoRa gateway, migrate if scale demands |
+| MIOTY telegram loss | Wrong sub-GHz profile or antenna | Verify 868 MHz profile, matched antenna, TSMA timing |
+| Wize range too short | 169 MHz needs long whip, wrong matching | Use quarter-wave whip, check matching network |
 ## See also
 
-- [[Home|Головна]]
-- [[12-Comm-Modules/02-NRF24-LoRa|NRF24/LoRa]]
-- [[12-Comm-Modules/18-Cellular-LoRa-2|Cat-1/LoRa-2]]
-- [[12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa|NB-IoT]]
-- [[12-Comm-Modules/29-LoRaWAN-Gateway|LoRaWAN-шлюз]]
+- [[Home.en|Головна]]
+- [[EN/12-Comm-Modules/02-NRF24-LoRa.en|NRF24/LoRa]]
+- [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1/LoRa-2]]
+- [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en|NB-IoT]]
+- [[EN/12-Comm-Modules/29-LoRaWAN-Gateway.en|LoRaWAN-шлюз]]

@@ -28,10 +28,10 @@ Measure current and power with a sketch and no lab:
 
 | Sensor | Range | Precision | Interface |
 | --- | --- | --- | --- |
-| INA219 | 0-26V, 0.1 ohm shunt | 1 %, 12 bit | I2C 0x40-0x4F |
-| ACS712-05 | ±5 A | ~1.5 % | analog, 185 mV/A |
-| ACS712-20 | ±20 A | ~1.5 % | analog, 100 mV/A |
-| ACS712-30 | ±30 A | ~1.5 % | analog, 66 mV/A |
+| INA219 | 0-26V, 0.1 ohm shunt | 1%, 12 bit | I2C 0x40-0x4F |
+| ACS712-05 | ±5 A | ~1.5% | analog, 185 mV/A |
+| ACS712-20 | ±20 A | ~1.5% | analog, 100 mV/A |
+| ACS712-30 | ±30 A | ~1.5% | analog, 66 mV/A |
 
 ## 2. Architecture
 
@@ -141,8 +141,8 @@ Factor 66.0 - 30 A version; 5 A - 185.0, 20 A - 100.0. `ina_amps` returns amps a
 | Step | Action | Pass bar |
 | --- | --- | --- |
 | 1 | ACS zero with no load | store `acs_zero` |
-| 2 | 60W lamp as a ~0.27 A reference | scale matches ±5 % |
-| 3 | INA219 vs multimeter on the shunt | ±1 % |
+| 2 | 60W lamp as a ~0.27 A reference | scale matches ±5% |
+| 3 | INA219 vs multimeter on the shunt | ±1% |
 | 4 | Sign check | battery discharge - minus |
 
 ## 7. Safety
@@ -169,7 +169,7 @@ Factor 66.0 - 30 A version; 5 A - 185.0, 20 A - 100.0. `ina_amps` returns amps a
 - [[EN/06-Analog/01-ADC.en|analog inputs]] - reference voltage, bit depth.
 - [[EN/04-Interfaces/03-I2C-Wire.en|I2C Wire bus]] - addresses, scanner.
 - [[EN/08-Memory/01-Memory-EEPROM.en|EEPROM memory]] - counter backup.
-- [[16-Projects/04-Loger-SD|SD logger]] - where to write watts.
+- [[EN/16-Proekti/04-SD-Logger.en|SD logger]] - where to write watts.
 
 ## Official sources
 

@@ -106,7 +106,7 @@ MicroPython: stock builds are not signed for Secure Boot - for a protected fleet
 | Burned `SECURE_BOOT_EN` without saving `signing.pem` | No new firmware ever starts - the device is frozen |
 | `FLASH_CRYPT_CNT` in Release + lost key | Data cannot be decrypted, only module replacement |
 | `DIS_DOWNLOAD_MODE` | No UART flashing, OTA only |
-| `DIS_USB_JTAG` + Secure Boot | No [[09-Firmware/05-JTAG-Debug | JTAG debugging]] |
+| `DIS_USB_JTAG` + Secure Boot | No [[EN/09-Firmware/05-JTAG-Debug.en| JTAG debugging]] |
 | eFuse read lock (`RD_DIS`) | Even you cannot read the keys |
 
 > [!warning]
@@ -120,7 +120,7 @@ MicroPython: stock builds are not signed for Secure Boot - for a protected fleet
 | Commercial product with [[08-Memory/03-OTA.en | OTA]] | Yes | Yes |
 | Device with personal data / API keys in [[08-Memory/01-Partitions-NVS.en | NVS]] | Yes | Yes (encrypt NVS) |
 | Mass fleet in public places | Yes (V2, ECDSA) | Yes (Release) |
-| Active development + [[09-Firmware/05-JTAG-Debug | JTAG]] | No (blocks debugging) | Development or off |
+| Active development + [[EN/09-Firmware/05-JTAG-Debug.en| JTAG]] | No (blocks debugging) | Development or off |
 
 Release checklist:
 
@@ -164,6 +164,6 @@ flowchart TB
 - [[EN/08-Memory/01-Partitions-NVS.en]]
 - [[08-Memory/02-Filesystem.en | Filesystems]]
 - [[08-Memory/03-OTA.en | OTA]]
-- [[09-Firmware/01-ESP-IDF-setup]]
-- [[09-Firmware/04-Esptool-Flash]]
-- [[09-Firmware/05-JTAG-Debug]]
+- [[EN/09-Firmware/01-ESP-IDF-Setup.en]]
+- [[EN/09-Firmware/04-Esptool-Flash.en]]
+- [[EN/09-Firmware/05-JTAG-Debug.en]]

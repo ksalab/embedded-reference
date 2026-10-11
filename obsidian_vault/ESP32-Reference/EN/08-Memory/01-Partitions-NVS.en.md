@@ -195,7 +195,7 @@ flowchart LR
 | 1 | CSV changed without erase | Old table at 0x8000 | Full erase + flash |
 | 2 | NVS as an every-cycle counter | Worn out in months | RTC memory / write less often |
 | 3 | No otadata | OTA impossible | Two app slots + otadata |
-| 4 | App size bigger than the slot | Truncated firmware | Count for the .bin + margin |
+| 4 | App size bigger than the slot | Truncated firmware | Count for the.bin + margin |
 
 ## Official sources
 
@@ -209,6 +209,6 @@ flowchart LR
 - [[08-Memory/02-Filesystem.en | Filesystems]]
 - [[08-Memory/03-OTA.en | OTA]]
 - [[EN/08-Memory/04-Secure-Boot-Encrypt.en]]
-- [[09-Firmware/01-ESP-IDF-setup]]
-- [[09-Firmware/02-Arduino-PlatformIO]]
-- [[09-Firmware/04-Esptool-Flash]]
+- [[EN/09-Firmware/01-ESP-IDF-Setup.en]]
+- [[EN/09-Firmware/02-Arduino-PlatformIO.en]]
+- [[EN/09-Firmware/04-Esptool-Flash.en]]

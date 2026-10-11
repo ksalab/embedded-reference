@@ -41,8 +41,8 @@ MQTT is mail for sensors: a node publishes to a topic, whoever wants subscribes.
 | Rule | Example |
 | --- | --- |
 | Tree per object | shop1/line2/temperature |
-| Status apart | .../status: online and offline |
-| Commands down | .../cmd with confirmation |
+| Status apart |.../status: online and offline |
+| Commands down |.../cmd with confirmation |
 | No spaces or Cyrillic | ASCII only! |
 
 ## LWT: a will on disconnect
@@ -187,6 +187,6 @@ for (;;) {
 
 - [[Home.en]]
 - [[15-Protocols/01-Modbus.en | Industrial protocol]]
-- [[12-Comm-Modules/03-GPS-GSM | Satellites and cellular]]
-- [[12-Comm-Modules/02-RS485-CAN-Ethernet | Wired networks]]
-- [[16-Projects/04-Modbus-Gateway | Data gateway]]
+- [[EN/12-Comm-Modules/03-GPS-GSM.en| Satellites and cellular]]
+- [[EN/12-Comm-Modules/02-RS485-CAN-Ethernet.en| Wired networks]]
+- [[EN/16-Projects/04-Modbus-Gateway.en| Data gateway]]

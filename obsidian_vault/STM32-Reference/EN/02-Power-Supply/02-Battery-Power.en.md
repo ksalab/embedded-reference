@@ -25,7 +25,7 @@ The note collects practice: comparing chemistries from coin lithium to lithium w
 
 A calculation of the average current budget and its conversion into years of work from a common coin cell is shown separately. The example adapts easily to your wakeup period and packet.
 
-Board mains power and decoupling are described in [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Board power supply chains]], and low-consumption modes in [[07-Timers/03-Sleep-Stop-Standby | Sleep modes]].
+Board mains power and decoupling are described in [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Board power supply chains]], and low-consumption modes in [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]].
 
 ## 2. Battery chemistries for STM32 nodes
 
@@ -127,7 +127,7 @@ Selection guide by input:
 
 Radio peak current is budgeted separately from average. The converter must hold a 100 mA burst with no sag below the reset threshold. A 100 uF - 470 uF buffer capacitor near the radio module smooths the edge.
 
-Bus voltage measurement details via the built-in channel are described in [[06-Analog/01-ADC | ADC measurements]].
+Bus voltage measurement details via the built-in channel are described in [[EN/06-Analog/01-ADC.en| ADC measurements]].
 
 ## 6. Charge accounting: voltmeter vs fuel-gauge chip
 
@@ -307,7 +307,7 @@ Panel power is calculated for winter sun, not summer. If the node draws 5 mAh pe
 - [[Home.en]]
 - [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Board power supply chains]]
 - [[01-Hardware/05-L0-L4-U5.en | Low-power chips]]
-- [[06-Analog/01-ADC | ADC measurements]]
-- [[07-Timers/03-Sleep-Stop-Standby | Sleep modes]]
+- [[EN/06-Analog/01-ADC.en| ADC measurements]]
+- [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]]
 - [[01-Hardware/04-H5-H7.en | H5 and H7 flagships]]
-- [[09-Firmware/03-ST-Link-Proshivka | ST-Link flashing]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en| ST-Link flashing]]

@@ -124,7 +124,7 @@ A volume with `-v` lives on the host and survives container removal.
 | `no space left on device` | SD full / large volumes | `docker system prune -a`, move volumes to NVMe |
 | `Permission denied` on volume | container UID differs from host | `--user $(id -u):$(id -g)` or `chmod 777` for test |
 | Container dead after reboot | no `restart: unless-stopped` / systemd | add policy in compose or unit |
-| `manifest for ... not found` | image for arm/v7 instead of arm64 | `docker pull --platform linux/arm/v7` or use `arm32v7` |
+| `manifest for... not found` | image for arm/v7 instead of arm64 | `docker pull --platform linux/arm/v7` or use `arm32v7` |
 | GPIO not visible from container | `/dev/gpiochip0` not passed | `--device /dev/gpiochip0 --device /dev/gpiochip1` |
 | `error during connect` Docker after update | old docker-ce version | `apt upgrade docker-ce` from Docker repo, not Debian |
 

@@ -63,7 +63,7 @@ C6-DevKitC-1: виведено GPIO 0-23 (крім зайнятих SPI-flash: 2
 
 ## Кнопки
 
-DevKitC: великі BOOT+RESET. Beetle/XIAO: малі, доступні. SuperMini C6: мікроскопічні (пінцет!). Подвійний клік Reset на XIAO = UF2 (перетягнути .uf2). RGB на GPIO8 - індикатор режимів після boot.
+DevKitC: великі BOOT+RESET. Beetle/XIAO: малі, доступні. SuperMini C6: мікроскопічні (пінцет!). Подвійний клік Reset на XIAO = UF2 (перетягнути.uf2). RGB на GPIO8 - індикатор режимів після boot.
 
 ## Для чого підходить
 

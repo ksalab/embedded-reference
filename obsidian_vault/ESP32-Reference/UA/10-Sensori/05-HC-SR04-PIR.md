@@ -4,6 +4,7 @@ title: HC-SR04 (ультразвук) та PIR HC-SR501 (рух)
 tags: [esp32, sensor, hc-sr04, ultrasonic, pir, hc-sr501, motion, distance]
 category: Sensori
 date-created: 2026-09-27
+date: 2026-09-27
 ---
 
 # HC-SR04 (ультразвук) та PIR HC-SR501 (рух)
@@ -221,8 +222,6 @@ while True:
 - [[04-Shini/03-I2C|I2C]]
 - [[04-Shini/02-SPI|SPI]]
 - [[04-L298N-TB6612-A4988-Buzzer]]
-
-```text
 
 ## Код ESP-IDF (PIR wake-up)
 

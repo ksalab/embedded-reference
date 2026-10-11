@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. One radio - three roles: router client, access point, BLE beacon; the antenna decides half of it.*
 
 > [!tip] What this note is
-> WiFi and BT are already on the board: no dongles needed for 90 % of tasks. Modes, speeds, coexistence and antennas. Node network: [[EN/09-Firmware/03-OS-Setup.en|OS setup]], cloud: queue protocols 4.
+> WiFi and BT are already on the board: no dongles needed for 90% of tasks. Modes, speeds, coexistence and antennas. Node network: [[EN/09-Firmware/03-OS-Setup.en|OS setup]], cloud: queue protocols 4.
 
 ## 1. Goal
 
@@ -134,8 +134,8 @@ Signal in nmcli percent is rough, but enough for orientation. Exact dBm - `iw de
 ## 10. Related notes
 
 - [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - system network.
-- [[12-Comm-Modules/02-GPS-LoRa-HAT|long-range LoRa radio]] - kilometers of link.
-- [[11-Vivid/03-Audio-HAT|audio and HAT]] - BT audio.
+- [[EN/12-Comm-Modules/02-GPS-LoRa-HAT.en|long-range LoRa radio]] - kilometers of link.
+- [[EN/11-Vivid/03-Audio-HAT.en|audio and HAT]] - BT audio.
 - [[EN/02-Power-Supply/01-USB-C-PD.en|USB-C power supply]] - radio eats first.
 - [[Home.en|main map]] - full navigation.
 

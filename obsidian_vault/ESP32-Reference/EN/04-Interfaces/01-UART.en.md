@@ -28,7 +28,7 @@ UART on ESP32 - 3 ports - default pins; connection table; code - U2 loopback. ES
 | --- | --- | --- | --- |
 | U0 | GPIO3 | GPIO1 | USB console, flashing |
 | U1 | GPIO9 | GPIO10 | **flash!** - remap, e.g. 16/17 or 12/13 |
-| U2 | GPIO16 | GPIO17 | free, take it for [[12-Comm-Modules/03-SIM800L-GPS | GPS]] / [[04-Interfaces/05-CAN-TWAI-RS485.en | RS485]] |
+| U2 | GPIO16 | GPIO17 | free, take it for [[EN/12-Comm-Modules/03-SIM800L-GPS.en| GPS]] / [[04-Interfaces/05-CAN-TWAI-RS485.en | RS485]] |
 
 ## Connection table
 
@@ -128,7 +128,7 @@ Each ESP32 UART has a **128-byte hardware FIFO** for RX and TX plus a separate s
 | HW RX FIFO | 128 bytes | `uart_set_rx_full_thr()` / `rxfifo_full_thrhd` |
 | HW TX FIFO | 128 bytes | `txfifo_empty_thrhd` |
 | RX timeout | ~10 symbol times of silence | `rx_timeout_thrhd` - packet boundary (Modbus!) |
-| SW ring (IDF) | 256-1024 by default | `uart_driver_install(u, rx_size, tx_size, ...)` |
+| SW ring (IDF) | 256-1024 by default | `uart_driver_install(u, rx_size, tx_size,...)` |
 | Arduino SW buffer | 256 bytes | `Serial.setRxBufferSize(n)` before `begin()` |
 
 Practice:
@@ -224,7 +224,7 @@ void baud_test(long baud) {
 ```
 
 > [!warning] APB vs REF_TICK
-> With dynamic frequency scaling (DFS / light-sleep) APB drifts, so baud drifts. For a stable UART: either `UART_SCLK_REF_TICK` (1 MHz, exact but max ~1 Mbps), or forbid DFS via `esp_pm_lock`. A GPS tracker that "drifts" after falling asleep is exactly this case. See [[07-Timers/03-Sleep-ULP | Sleep and ULP]].
+> With dynamic frequency scaling (DFS / light-sleep) APB drifts, so baud drifts. For a stable UART: either `UART_SCLK_REF_TICK` (1 MHz, exact but max ~1 Mbps), or forbid DFS via `esp_pm_lock`. A GPS tracker that "drifts" after falling asleep is exactly this case. See [[EN/07-Timers/03-Sleep-ULP.en| Sleep and ULP]].
 
 ## 9-bit multiprocessor mode - in detail
 
@@ -522,6 +522,6 @@ flowchart TB
 - [[EN/01-Hardware/01-ESP32-Classic.en]]
 - [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]]
 - [[03-GPIO/03-Pull-Ups-Levels.en | 5V to 3.3V levels]]
-- [[12-Comm-Modules/03-SIM800L-GPS | GPS modules]]
+- [[EN/12-Comm-Modules/03-SIM800L-GPS.en| GPS modules]]
 - [[EN/04-Interfaces/06-USB-OTG-JTAG.en]]
 - [[03-GPIO/01-GPIO-Overview.en | GPIO overview]]

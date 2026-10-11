@@ -15,9 +15,9 @@ date-created: 2026-09-29
 > This note is the second part of NFC / biometrics (continuation of [[EN/12-Comm-Modules/01-RC522-RFID.en]], [[EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en]] and [[EN/12-Comm-Modules/15-RFID-Advanced.en]]): powerful NFC frontends **PN5180 / ST25R3911 / TRF7970A** with DPC and comparison with RC522, secured cards **DESFire** (AES, file system, balance reading), mass tags **NTAG21x** (password, lock bits), fingerprint scanners **GT-521F32** and 2D scanners **DE2120 / YHD-M200**, plus a summary table "reader -> task".
 
 ![[assets/img/nfc-biometry-2-scheme.png|600]]
-*Fig. ESP32 with a powerful NFC frontend (SPI) reads DESFire / NTAG; fingerprint scanner and 2D scanner hang on UART — all three provide an "ID" for access control.*
+*Fig. ESP32 with a powerful NFC frontend (SPI) reads DESFire / NTAG; fingerprint scanner and 2D scanner hang on UART - all three provide an "ID" for access control.*
 
-Links to [[EN/Home.en]], [[EN/12-Comm-Modules/01-RC522-RFID.en]], [[EN/12-Comm-Modules/15-RFID-Advanced.en]], [[EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en]], [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]], [[EN/12-Comm-Modules/19-Wired-2.en]], [[04-Interfaces/02-SPI|SPI]], [[04-Interfaces/01-UART|UART]], [[02-Power-Supply/01-Lancjugi-zhivlennya]].
+Links to [[EN/Home.en]], [[EN/12-Comm-Modules/01-RC522-RFID.en]], [[EN/12-Comm-Modules/15-RFID-Advanced.en]], [[EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en]], [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]], [[EN/12-Comm-Modules/19-Wired-2.en]], [[EN/04-Interfaces/02-SPI.en|SPI]], [[EN/04-Interfaces/01-UART.en|UART]], [[EN/02-Power-Supply/01-Power-Rails.en]].
 
 Characteristics (comparison table):
 
@@ -34,7 +34,7 @@ Characteristics (comparison table):
 
 ## Purpose
 
-NFC-Biometry-2 - strong frontends, DESFire, NTAG21x, fingerprints and scanners - strong NFC frontends: PN5180 / ST25R3911 / TRF7970A; 1. Comparison with RC522; 2. DPC - why this is the key word of the note. NFC-Biometry-2 - strong frontends, DESFire, NTAG21x, fingerprints and scanners. Links to Home, EN/12-Comm-Modules/01-RC522-RFID.en, EN/12-Comm-Modules/15-RFID-Advanced.en, EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en, EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en, EN/12-Comm-Modules/19-Wired-2.en, [[04-Interfaces/02-SPI|SPI]], [[04-Interfaces/01-UART|UART]], [[02-Power-Supply/01-Lancjugi-zhivlennya]].
+NFC-Biometry-2 - strong frontends, DESFire, NTAG21x, fingerprints and scanners - strong NFC frontends: PN5180 / ST25R3911 / TRF7970A; 1. Comparison with RC522; 2. DPC - why this is the key word of the note. NFC-Biometry-2 - strong frontends, DESFire, NTAG21x, fingerprints and scanners. Links to Home, EN/12-Comm-Modules/01-RC522-RFID.en, EN/12-Comm-Modules/15-RFID-Advanced.en, EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en, EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en, EN/12-Comm-Modules/19-Wired-2.en, [[EN/04-Interfaces/02-SPI.en|SPI]], [[EN/04-Interfaces/01-UART.en|UART]], [[EN/02-Power-Supply/01-Power-Rails.en]].
 
 ## 1. Strong NFC Frontends: PN5180 / ST25R3911 / TRF7970A
 
@@ -55,15 +55,15 @@ RC522 (MFRC522) is a 14443A-only chip from the 2000s with fixed power and sensit
 
 ### 1.2. DPC - Why This Is the Key Word of the Note
 
-**DPC (Dynamic Power Control)** in PN5180: the frontend firmware measures antenna detuning in real time (card in field / metal nearby changes impedance) and adjusts output power and waveform (AWC) so the field stays within EMVCo tolerances. Without DPC: card on a metal turnstile "sometimes reads, sometimes not". With DPC: stable transactions on a detuned antenna. For ESP32 this means: heavy RF work is done by PN5180 itself; the host only sends commands over SPI — no real-time from our side.
+**DPC (Dynamic Power Control)** in PN5180: the frontend firmware measures antenna detuning in real time (card in field / metal nearby changes impedance) and adjusts output power and waveform (AWC) so the field stays within EMVCo tolerances. Without DPC: card on a metal turnstile "sometimes reads, sometimes not". With DPC: stable transactions on a detuned antenna. For ESP32 this means: heavy RF work is done by PN5180 itself; the host only sends commands over SPI - no real-time from our side.
 
-ST25R3911B hits the other side: **automatic antenna calibration** (capacitive DACs for tuning), amplitude / phase measurement, ultra-low-power card-detection mode (negligibly small current in sleep — ideal for a battery reader that wakes on a card).
+ST25R3911B hits the other side: **automatic antenna calibration** (capacitive DACs for tuning), amplitude / phase measurement, ultra-low-power card-detection mode (negligibly small current in sleep - ideal for a battery reader that wakes on a card).
 
 TRF7970A is the most universal for development: direct modes (raw subcarrier), built-in codecs for all protocols, RSSI from two receivers (no "dead zones"), I/O voltage 1.8 - 5.5V (friendly with any ESP32 without level shifters), detailed TI appnotes including a DESFire-AES example.
 
 ### 1.3. Connecting the Frontend to ESP32 (SPI)
 
-All three are SPI-slave + IRQ (DIO). Mapping on VSPI classic: SCK = GPIO18, MISO = GPIO19, MOSI = GPIO23, NSS = GPIO5, IRQ = GPIO21, RST = GPIO22. PN5180 additionally has a **BUSY** line (module busy — do not send SPI!). Frontend power is a separate 3.3V branch with ferrite + 10 µF + 100 nF near the chip: TX current spikes bring down the shared bus and cause "phantom" SPI errors.
+All three are SPI-slave + IRQ (DIO). Mapping on VSPI classic: SCK = GPIO18, MISO = GPIO19, MOSI = GPIO23, NSS = GPIO5, IRQ = GPIO21, RST = GPIO22. PN5180 additionally has a **BUSY** line (module busy - do not send SPI!). Frontend power is a separate 3.3V branch with ferrite + 10 µF + 100 nF near the chip: TX current spikes bring down the shared bus and cause "phantom" SPI errors.
 
 > [!warning] Antenna Is Half the Device
 > Frontend without a matched 13.56 MHz antenna = expensive RC522. Follow manufacturer guides (PN5180 Antenna Design Guide, TRF79xxA Antenna Guide): target impedance, Q-factor, distance to metal >= 5 mm or ferrite shield. Check with VNA or at least range measurement with a reference card.
@@ -84,14 +84,14 @@ ESP32 GPIO5 ──► VEN (HIGH = working, LOW = power-down)
 ESP32 GPIO4 ◄── IRQ (card in field!)
 ```
 
-> PN7150 vs PN532: PN532 is cheaper for UID / NDEF reading; PN7150 — when card emulation or a stable NCI driver is needed (Linux example `nfcpy` ports almost 1-to-1).
+> PN7150 vs PN532: PN532 is cheaper for UID / NDEF reading; PN7150 - when card emulation or a stable NCI driver is needed (Linux example `nfcpy` ports almost 1-to-1).
 
 ![[assets/img/pn7150-i2c-scheme.png|500]]
 *Fig. PN7150: I2C with pull-up, VEN for power on, IRQ for card detection.*
 
 ## 2. DESFire - AES, Files, Balance Reading
 
-**Mifare DESFire** (EV2 / EV3) is no longer "memory blocks" but a **file OS on the card**: Applications (AID 3 bytes) → Files (File ID) → AES-128 / DES / 3DES keys at each level (Master Key of card, Master Key of application, read / write file keys). Without key authentication the data is not given — cloning without a key is impossible (unlike Classic / Ultralight without a password).
+**Mifare DESFire** (EV2 / EV3) is no longer "memory blocks" but a **file OS on the card**: Applications (AID 3 bytes) → Files (File ID) → AES-128 / DES / 3DES keys at each level (Master Key of card, Master Key of application, read / write file keys). Without key authentication the data is not given - cloning without a key is impossible (unlike Classic / Ultralight without a password).
 
 ### 2.1. File Types
 
@@ -117,7 +117,7 @@ ESP32 GPIO4 ◄── IRQ (card in field!)
 ```
 
 > [!warning] Keys Do Not Live in ESP32 in Open Form
-> Master keys from the issuer — only in SAM module / secure storage. In ESP32 — only **diversified** keys (K = AES_MK(UID)), unique per card: compromise of one device does not collapse the whole system. For production — see [[EN/16-Projects/03-Access-Control.en]].
+> Master keys from the issuer - only in SAM module / secure storage. In ESP32 - only **diversified** keys (K = AES_MK(UID)), unique per card: compromise of one device does not collapse the whole system. For production - see [[EN/16-Projects/03-Access-Control.en]].
 
 ### 2.3. DESFire vs NTAG vs Classic - When What
 
@@ -197,7 +197,7 @@ static uint16_t fps_sum(const uint8_t *b, int n) {
 }
 ```
 
-> [!warning] 3.3V TTL — Not 5V RS-232
+> [!warning] 3.3V TTL - Not 5V RS-232
 > GT-521F32 uses 3.3V logic levels. If powering from 5V, use a voltage divider on ESP32 RX, or a level shifter module. UART 9600 is fixed; do not change baud without factory reset.
 
 ### 4.2. Identification Flow (1:N)
@@ -234,7 +234,7 @@ void loop() {
 ```
 
 > [!tip] USB-HID Is Easier for No-Code Projects
-> If the ESP32 board has USB-OTG (e.g. ESP32-S2 / S3 / C3 with USB), connect scanner via USB and use `USBHost` or `tusb` library — scanner appears as keyboard, no UART wiring needed. For UART mode: check scanner manual for factory reset to 9600 if it came with different settings.
+> If the ESP32 board has USB-OTG (e.g. ESP32-S2 / S3 / C3 with USB), connect scanner via USB and use `USBHost` or `tusb` library - scanner appears as keyboard, no UART wiring needed. For UART mode: check scanner manual for factory reset to 9600 if it came with different settings.
 
 ## 6. Integration Diagram (ESP32 + All Modules)
 
@@ -360,6 +360,22 @@ def read_ntag_pages(ntag, start=4, end=39):
 | Ticket / warehouse QR scan | DE2120 / YHD-M200 | 2D, 5-30 cm range | 5V USB-HID or UART |
 | Remote access / logging | ESP32 + Cellular / LoRa | Send ID + event to cloud | Use [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]] for module choice |
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| RC522 range only 1 cm on metal | Small antenna, no DPC, detuned by metal | Upgrade to PN5180 or ST25R3911B with tuned antenna and shield |
+| PN5180 reads unstable | DPC off or antenna mismatch | Enable DPC, match antenna network, verify 13.56 MHz resonance |
+| DESFire auth fails | Keys not diversified, wrong AID or key number | Diversify per card, confirm AID selection before authenticate |
+| NTAG bricks after write | Lock bits or password set permanently | Test on spare tag, set password before locking, keep pack safe |
+| Fingerprint enroll fails | Dry finger, low power, dirty sensor window | Clean window, power 3.3V stable, enroll same finger twice |
+| Barcode scanner silent | USB-HID vs UART mode mismatch | Set correct output mode, 5V supply for laser engine models |
+
+## Official sources
+
+- [PN5180 product page (NXP)](https://www.nxp.com) - frontend with DPC; search PN5180 on the site. - `check manually`.
+- [ST25R3911B product page (ST)](https://www.st.com) - low-power frontend data; search ST25R3911B on the site. - `check manually`.
+- [ESP32 SPI master (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/spi_master.html) - frontend wiring reference.
 ## References
 
 - [[EN/12-Comm-Modules/01-RC522-RFID.en]] - RC522 base comparison
@@ -367,7 +383,7 @@ def read_ntag_pages(ntag, start=4, end=39):
 - [[EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en]] - PN532 + fingerprint + barcode basics
 - [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]] - Camera / Ethernet for remote access
 - [[EN/12-Comm-Modules/19-Wired-2.en]] - Wired interfaces (SPI / UART / I2C mapping)
-- [[04-Interfaces/02-SPI|SPI]] - SPI interface details
-- [[04-Interfaces/01-UART|UART]] - UART interface details
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]] - Power supply branches
+- [[EN/04-Interfaces/02-SPI.en|SPI]] - SPI interface details
+- [[EN/04-Interfaces/01-UART.en|UART]] - UART interface details
+- [[EN/02-Power-Supply/01-Power-Rails.en]] - Power supply branches
 - [[EN/16-Projects/03-Access-Control.en]] - Access control project with DESFire + SAM

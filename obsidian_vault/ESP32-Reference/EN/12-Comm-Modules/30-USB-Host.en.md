@@ -1,9 +1,11 @@
 ---
+lang: en
 title: ESP32 how USB-хост - флешки, HID and CDC via TinyUSB
 description: Перетворює ESP32-S3/P4 on USB-хост - читає флешки, клавіатури and модеми via TinyUSB with робочими прикладами IDF.; shows schematics, code and tables.
 tags: [esp32, usb-host, tinyusb, hid, msc, cdc, s3, p4, otg]
 category: Moduli-zvyazku
 date: 2026-10-06
+original: 12-Moduli-zvyazku/30-USB-Host.md
 ---
 
 # ESP32 how USB-хост - флешки, HID and CDC via TinyUSB
@@ -12,7 +14,7 @@ date: 2026-10-06
 *Fig. S3/P4 in ролі хоста: опитує флешку, клавіатуру and модем - живлення 5V on VBUS обов'язкове.*
 
 > [!tip] that this for нота
-> Зворотний бік USB: ESP32 not пристрій for ПК, but хост for периферії - логер on флешку without SD-слота, штрих-code сканером, модем per CDC. Працює on S3 (OTG FS) and P4 (OTG HS). База: [[04-Interfaces/06-USB-OTG-JTAG|USB-OTG and JTAG]], [[04-Interfaces/07-SD-SDIO|карти SD]], [[09-Firmware/01-ESP-IDF-setup|налаштування ESP-IDF]].
+> Зворотний бік USB: ESP32 not пристрій for ПК, but хост for периферії - логер on флешку without SD-слота, штрих-code сканером, модем per CDC. Працює on S3 (OTG FS) and P4 (OTG HS). База: [[EN/04-Interfaces/06-USB-OTG-JTAG.en|USB-OTG and JTAG]], [[EN/04-Interfaces/07-SD-SDIO.en|карти SD]], [[EN/09-Firmware/01-ESP-IDF-Setup.en|налаштування ESP-IDF]].
 
 ## 1. Мета
 
@@ -125,7 +127,7 @@ void app_main(void) {
 - example `usb/host/cdc_acm`: VCP how файл - читаємо/пишемо;
 - 4G-модеми in CDC-режимі - AT-команди and PPP далі;
 - кілька інтерфейсів - відкриваємо кожен окремо;
-- [[12-Comm-Modules/03-SIM800L-GPS|модеми SIM800L]] - AT-частина та сама.
+- [[EN/12-Comm-Modules/03-SIM800L-GPS.en|модеми SIM800L]] - AT-частина та сама.
 
 ## 8. typical errors
 
@@ -140,11 +142,11 @@ void app_main(void) {
 
 ## 9. Суміжні ноти
 
-- [[04-Interfaces/06-USB-OTG-JTAG|USB-OTG and JTAG]] - залізна сторона USB.
-- [[04-Interfaces/07-SD-SDIO|карти SD]] - альтернатива флешці.
-- [[12-Comm-Modules/03-SIM800L-GPS|модеми SIM800L]] - AT поверх CDC.
-- [[09-Firmware/05-JTAG-Debug|налагодження JTAG]] - той же роз'єм, інша роль.
-- [[14-Devboards/16-P4-DevKit|плата P4]] - OTG HS on борту.
+- [[EN/04-Interfaces/06-USB-OTG-JTAG.en|USB-OTG and JTAG]] - залізна сторона USB.
+- [[EN/04-Interfaces/07-SD-SDIO.en|карти SD]] - альтернатива флешці.
+- [[EN/12-Comm-Modules/03-SIM800L-GPS.en|модеми SIM800L]] - AT поверх CDC.
+- [[EN/09-Firmware/05-JTAG-Debug.en|налагодження JTAG]] - той же роз'єм, інша роль.
+- [[EN/14-Devboards/16-P4-DevKit.en|плата P4]] - OTG HS on борту.
 
 ## Official sources
 

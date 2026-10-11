@@ -199,7 +199,7 @@ PAwR (Periodic Advertising with Responses, BT 5.4) - зірка для **еле�
 
 ## LE Audio - LC3, BIS/Auracast, BAP/CAP/HAP/TMAP
 
-LE Audio - звук поверх BLE-isochronous каналів: новий кодек **LC3** (краще за SBC у 2 рази за бітріंतु), unicast (CIS - навушники) і broadcast (BIS - Auracast на необмежену кількість слухачів).
+LE Audio - звук поверх BLE-isochronous каналів: новий кодек **LC3** (краще за SBC у 2 рази за бітрейту), unicast (CIS - навушники) і broadcast (BIS - Auracast на необмежену кількість слухачів).
 
 | Блок | Що це | Приклад |
 | --- | --- | --- |
@@ -374,4 +374,4 @@ while True:
 - [[05-Radio/06-BLE-Gateway-Tracker|BLE-шлюз і трекер]] - RSSI-дистанція, ESPresense/Bermuda на практиці
 - [[15-Protokoli/01-MQTT|MQTT]] - транспорт для шлюзів і координаторів
 - [[15-Protokoli/05-Cloud-Pipeline]] - куди складати RSSI/кути/телеметрію
-- [[07-Timeri-Son/03-Sleep-ULP|Sleep / ULP]] - маяки на батареї: adv-інтервал, Coded-ціна струму
+- [[07-Timeri-Son/03-Sleep-ULP|Sleep / ULP]] - маяки на батареї: adv-інтервал, Coded-пін струму

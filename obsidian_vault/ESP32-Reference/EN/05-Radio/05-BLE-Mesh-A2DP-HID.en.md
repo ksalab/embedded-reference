@@ -248,6 +248,6 @@ void app_main(void)
 - [[EN/05-Radio/02-BLE-Bluetooth.en|BLE/Bluetooth]] - GATT, NimBLE, beacon, bonding
 - [[EN/04-Interfaces/04-I2S.en|I2S]] - A2DP stream output to DAC
 - [[EN/11-Vivid/13-Audio-Codecs.en|Audio codecs]] - ES8388/PCM5102A for an A2DP speaker
-- [[15-Protocols/09-Matter-Thread-Zigbee|Matter/Thread/Zigbee]] - mesh of another family (802.15.4)
+- [[EN/15-Protocols/09-Matter-Thread-Zigbee.en|Matter/Thread/Zigbee]] - mesh of another family (802.15.4)
 - [[EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|DFPlayer/MAX98357A]] - I2S amplifier for a sink
 - [[EN/01-Hardware/01-ESP32-Classic.en]] - the only chip with A2DP/HFP

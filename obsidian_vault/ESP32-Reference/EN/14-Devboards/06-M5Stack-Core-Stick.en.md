@@ -78,7 +78,7 @@ M5StickC Plus: Grove port G32/G33 + pins G0/G25/G26/G36 (G36/G25 share the port 
 
 ## USB-UART features
 
-Basic: CP2104 (old) / CH9102 (new). Core2: CP2104. StickC Plus: FTDI (built-in). M5 upload speed is specific: 1500000 / 750000 / 500000 / 250000 / 115200 (other speeds glitch!). Auto-reset present. Drivers: CP210x - SiLabs, CH9102 - WCH, FTDI - FTDIChip. Details - [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART]].
+Basic: CP2104 (old) / CH9102 (new). Core2: CP2104. StickC Plus: FTDI (built-in). M5 upload speed is specific: 1500000 / 750000 / 500000 / 250000 / 115200 (other speeds glitch!). Auto-reset present. Drivers: CP210x - SiLabs, CH9102 - WCH, FTDI - FTDIChip. Details - [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART]].
 
 ## Buttons
 
@@ -147,7 +147,7 @@ ESP-IDF: supported via M5Unified. MicroPython: UIFlow is MicroPython with a wrap
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![[assets/img/devboard-m5stack.png|600]]
+> [!example] Photo/schematic:![[assets/img/devboard-m5stack.png|600]]
 
 ```text
 [USB-C 5V] ──► PMU (IP5306/AXP192) ──► заряд батареї + 5V/3.3V шини

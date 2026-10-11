@@ -4,6 +4,7 @@ title: DS3231 RTC, енкодер KY-040, клавіатура 4x4, джойст
 tags: [esp32, sensor, ds3231, rtc, encoder, ky-040, keypad, joystick, ky-023, hmi, i2c]
 category: Sensori
 date-created: 2026-09-27
+date: 2026-09-27
 ---
 
 # DS3231 RTC, енкодер KY-040, клавіатура 4x4, джойстик KY-023

@@ -4,6 +4,7 @@ title: M5Stack Core і M5StickC - модульна екосистема з ди�
 tags: [esp32, devboards, m5stack, core, stickc, grove, uiflow, display]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # M5Stack Core / Stick
@@ -144,7 +145,7 @@ ESP-IDF: підтримується через M5Unified. MicroPython: UIFlow - 
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![[assets/img/devboard-m5stack.png|600]]
+> [!example] Фото/схема:![[assets/img/devboard-m5stack.png|600]]
 
 ```text
 [USB-C 5V] ──► PMU (IP5306/AXP192) ──► заряд батареї + 5V/3.3V шини

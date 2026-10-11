@@ -1,5 +1,6 @@
 ---
 title: Як користуватись довідником ESP32-Reference
+description: Пояснює, як користуватись довідником ESP32-Reference: швидкий пошук за 30 секунд, теги, карта Home та читацькі маршрути.
 tags:
 
   - esp32
@@ -12,6 +13,7 @@ aliases:
   - Як користуватись довідником
 
 type: guide
+date: 2026-10-08
 ---
 
 # Як користуватись довідником
@@ -104,7 +106,7 @@ EN version: `00-Start/01-How-to-Use-Guide.en.md`
 >
 > 1. [[00-Start/02-Glosariy|Глосарій]] - 10 хв на терміни. 2. [[00-Start/03-Porivnyannya-chipiv|Порівняння чипів]] - вибір кристала. 3. [[00-Start/04-Devkit-plati|DevKit плати]] - яку плату купити. 4. [[00-Start/05-Vibir-seredovischa|Вибір середовища]] - ESP-IDF чи Arduino. 5. [[Home|Home]] - повернутись до карти.
 >
-> [!example] Фото/схема: ![[assets/img/placeholder.png]]
+> [!example] Фото/схема:![[assets/img/placeholder.png]]
 > Еталонне підключення для всіх прикладів довідника:
 
 | ESP32 DevKit | Модуль / ПК | Примітка |

@@ -53,11 +53,11 @@ Requirements:
 | ESP32 DevKit (WROOM-32) | [[00-Start/04-Devkit-plati.en | DevKit]] | $6 |
 | NEO-M8N module with antenna | [[12-Comm-Modules/03-SIM800L-GPS.en | SIM800L/GPS]] | $10 |
 | A7670E/SA 4G module + LTE antenna | [[12-Comm-Modules/07-SIM7600-W5500-MCP2515.en | 4G]] | $25 |
-| LiPo 2000 mAh + TP4056 (protected) | [[02-Power-Supply/04-Akumulyatori-TP4056 | Batteries]] | $8 |
-| Buck LM2596 → 3.8V for A7670 | [[13-Power-Modules/01-Buck-Boost-Solar | Buck/Solar]] | $2 |
+| LiPo 2000 mAh + TP4056 (protected) | [[EN/02-Power-Supply/04-Batteries-TP4056.en| Batteries]] | $8 |
+| Buck LM2596 → 3.8V for A7670 | [[EN/13-Power-Modules/01-Buck-Boost-Solar.en| Buck/Solar]] | $2 |
 | MPU6050 (wake by motion) | [[10-Sensors/04-MPU6050.en | MPU6050]] | $2 |
 | SIM card IoT/M2M | [[12-Comm-Modules/07-SIM7600-W5500-MCP2515.en | 4G]] | $3 |
-| Enclosure IP54 + antenna gland | [[99-Additions/03-Cheklisti-montazhu | Assembly checklists]] | $5 |
+| Enclosure IP54 + antenna gland | [[EN/99-Additions/03-Cheklisti-montazhu.en| Assembly checklists]] | $5 |
 | VBAT divider 100k/100k | [[06-Analog/01-ADC.en | ADC]] | $0.5 |
 
 Total: ~$58 without delivery.
@@ -189,7 +189,7 @@ void loop() {}
 
 | Element | Solution |
 | --- | --- |
-| Box | IP65 100×70×45 with gasket, see [[17-Lab/03-Enclosure-Cert-Factory]] |
+| Box | IP65 100×70×45 with gasket, see [[EN/17-Lab/03-Enclosure-Cert-Factory.en]] |
 | Antennas outside | SMA feedthroughs in wall + rubber grommets; GPS washer on car roof with magnet |
 | Ventilation | Gore membrane M12 (condensation kills faster than rain) |
 | Mounting | DIN/magnets/straps - NOT hot glue (melts in summer) |

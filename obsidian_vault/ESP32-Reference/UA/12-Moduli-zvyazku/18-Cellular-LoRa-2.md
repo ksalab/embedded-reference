@@ -4,6 +4,7 @@ title: Cellular Cat-1 та LoRa-2 - EC200U, Air724, RAK3172, SX1280, LR1121, MQT
 tags: [esp32, cellular, cat-1, ec200u, air724, m5311, ml302, bc25, rak3172, e78, sx1280, lr1121, lora, mqtt, at]
 category: Moduli
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Cellular Cat-1 та LoRa-2 - EC200U / Air724 / RAK3172 / SX1280 / LR1121

@@ -1,5 +1,6 @@
 ---
 title: Порівняння чипів ESP32 - Classic/S2/S3/C3/C6/H2/P4/C5
+description: Порівнює чипи ESP32 Classic, S2, S3, C3, C6, H2, P4 і C5: вибір кристала під датчик, камеру, Zigbee або батарею.
 tags:
 
   - esp32
@@ -14,6 +15,7 @@ aliases:
   - ESP32 vs S2 vs S3 vs C3 vs C6 vs H2
 
 type: reference
+date: 2026-10-08
 ---
 
 # Порівняння чипів ESP32
@@ -75,7 +77,7 @@ EN version: `00-Start/03-Chip-Comparison.en.md`
 
 Деталі - [[00-Start/05-Vibir-seredovischa|Вибір середовища]].
 
-> [!example] Фото/схема: ![[assets/img/placeholder.png]]
+> [!example] Фото/схема:![[assets/img/placeholder.png]]
 > Порівняльний стенд: три DevKit на одному столі:
 
 | ESP32 DevKit | USB | Примітка |

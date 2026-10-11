@@ -4,6 +4,7 @@ title: BTS7960, L9110S, SSR, соленоїд - силові ключі та б�
 tags: [esp32, vivid, bts7960, h-bridge, l9110s, ssr, relay, solenoid, mosfet, motor, safety]
 category: Vivid
 date-created: 2026-09-27
+date: 2026-09-27
 ---
 
 # BTS7960, L9110S, SSR, соленоїд - силові ключі та безпека

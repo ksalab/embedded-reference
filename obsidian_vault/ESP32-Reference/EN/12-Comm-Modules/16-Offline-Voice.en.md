@@ -6,6 +6,7 @@ category: Moduli
 lang: en
 date-created: 2026-09-29
 date: 2026-09-29
+original: 12-Moduli-zvyazku/16-Offline-Voice.md
 ---
 
 # Офлайн-голос on ESP32 - LD3320, SU-61T/SU-20T, CI-03T/CI-40T/UNI3588/SYN7318
@@ -13,7 +14,7 @@ date: 2026-09-29
 > [!info] Призначення
 > Нотатка про голосові модулі, that розпізнають команди **without інтернету and without нейромережі on самому ESP32**: **LD3320** (розпізнавання without навчання, SPI, фіксований список ключових слів), **SU-61T / SU-20T** (дешеві UART/GPIO-тригери with PWM-виходами), **CI-03T / CI-40T / UNI3588 / SYN7318** (розумні UART-модулі with протоколом кадрів, that самі керують реле via команди). Спільне: ESP32 тут - лише виконавець (читає UART/SPI/GPIO and клацає реле), but «вуха» - окремий чип. for нейромережевого голосу on самому ESP32 див. [[EN/12-Comm-Modules/11-TinyML-Voice.en]].
 
-Огляд шин: [[04-Interfaces/01-UART|UART]], звук [[04-Interfaces/04-I2S|I2S]], радар/голос [[EN/12-Comm-Modules/08-LD2410-UWB-IR-Voice.en]], повний хмарно-локальний assistant [[15-Protocols/10-Voice-Assistant]], start [[EN/Home.en]].
+Огляд шин: [[EN/04-Interfaces/01-UART.en|UART]], звук [[EN/04-Interfaces/04-I2S.en|I2S]], радар/голос [[EN/12-Comm-Modules/08-LD2410-UWB-IR-Voice.en]], повний хмарно-локальний assistant [[EN/15-Protocols/10-Voice-Assistant.en]], start [[EN/Home.en]].
 
 ## Purpose
 
@@ -36,7 +37,7 @@ date: 2026-09-29
 
 Коли not брати:
 
-- потрібне вільне мовлення («постав таймер on вечерю») - this [[15-Protocols/10-Voice-Assistant]] (Assist + Whisper);
+- потрібне вільне мовлення («постав таймер on вечерю») - this [[EN/15-Protocols/10-Voice-Assistant.en]] (Assist + Whisper);
 - потрібна українська with коробки - in цих модулів її або немає, або треба шити свій словник (див. розділ 5);
 - потрібна реакція on конкретний голос (speaker ID) - жоден with модулів диктора not розрізняє.
 
@@ -112,7 +113,7 @@ IDX  Ключове слово (як шити в регістри)   Дія в �
 | MISO (SO) | Вихід SPI | GPIO19 | Читання статусу/індексу; рівень 3.3V with плати - безпечно |
 | CS (NSS) | Вхід SPI | GPIO5 | Chip select, active low |
 | IRQ | Вихід, active low | GPIO4 (переривання!) | LOW = слово розпізнано; підтяжка 10к до 3.3V якщо плата without неї |
-| RST | Вхід, active low | GPIO15 | Reset: LOW 10 мс at startі, потім HIGH |
+| RST | Input, active low | GPIO15 | Reset: LOW 10 ms at startup, then HIGH |
 | MIC+ / MIC− | Аналог вхід | Штатний електрет плати | **not подовжувати!** module ставити ближче до користувача |
 | SPK | Вихід аудіо | NC / динамік 8 Ом (опційно) | Звуковий відгук «підтверджено» without ESP32 |
 
@@ -222,11 +223,11 @@ module → ESP32:  FC 01 03 F9        (виконав)
 | 0x05 | da kai feng shan / fan on | Вентилятор реле (GPIO26) | SU-61T/SYN7318/UNI3588 |
 | 0x06 | яскравіше (liang yi dian / brighter) | PWM +10% (LEDC) | CI-40T/SU-61T |
 | 0x07 | тьмяніше (an yi dian / dimmer) | PWM −10% (LEDC) | CI-40T/SU-61T |
-| 0x08 | bao jing / alarm | Сирена + MQTT (див. [[15-Protocols/01-MQTT | MQTT]]) | SYN7318/UNI3588 |
+| 0x08 | bao jing / alarm | Сирена + MQTT (див. [[EN/15-Protocols/01-MQTT.en| MQTT]]) | SYN7318/UNI3588 |
 
 ## 4. Шум and мікрофон: чому INMP441 згадується in ноті про модулі
 
-Voice module має свій мікрофон - але ESP32-сторона часто теж слухає (підтвердження команди, гучність кімнати, запис логу). Правило: **цифровий I2S-мікрофон INMP441 замість аналогового MAX9814/електрета in АЦП** - WiFi-наводки 100 Гц вбивають аналог, but I2S дає чисті 16 кГц/24 біт. Детально bus - [[04-Interfaces/04-I2S|I2S]], нейромережевий стек - [[EN/12-Comm-Modules/11-TinyML-Voice.en]].
+Voice module має свій мікрофон - але ESP32-сторона часто теж слухає (підтвердження команди, гучність кімнати, запис логу). Правило: **цифровий I2S-мікрофон INMP441 замість аналогового MAX9814/електрета in АЦП** - WiFi-наводки 100 Гц вбивають аналог, but I2S дає чисті 16 кГц/24 біт. Детально bus - [[EN/04-Interfaces/04-I2S.en|I2S]], нейромережевий стек - [[EN/12-Comm-Modules/11-TinyML-Voice.en]].
 
 Практика боротьби with шумом for офлайн-модулів:
 
@@ -258,7 +259,7 @@ Voice module має свій мікрофон - але ESP32-сторона ча
 | GPIO17 (TX2) | RX | - | - | 3.3V достатньо for входу 5V-модуля |
 | GPIO4 | B1 (імпульс команди) | IRQ (переривання) | - | Один або другий - not обидва on пін! |
 | GPIO18/23/19/5 | - | SCK/MOSI/MISO/CS | - | SPI <10 см |
-| GPIO15 | - | RST | - | LOW 10 мс at startі |
+| GPIO15 | - | RST | - | LOW 10 ms at startup |
 | GPIO21/19/32 | - | - | WS/SCK/SD | I2S; SCK можна спільний for частотою |
 | GPIO27 | Реле (via транзистор!) | Реле (via транзистор!) | - | Пін модуля/module реле: струм котушки not with GPIO |
 
@@ -591,7 +592,7 @@ while True:
     time.sleep_ms(5)
 ```
 
-Детальніше про середовища: [[00-Start/05-Vibir-seredovischa|Вибір середовища]].
+Детальніше про середовища: [[EN/00-Start/05-Environment-Choice.en|Вибір середовища]].
 
 ## typical errors
 
@@ -628,10 +629,10 @@ while True:
 ## See also
 
 - [[EN/Home.en]]
-- [[04-Interfaces/01-UART|UART]] - швидкості, парсери кадрів, дільники рівнів
-- [[04-Interfaces/04-I2S|I2S]] - INMP441, чистий цифровий звук замість АЦП
-- [[12-Comm-Modules/11-TinyML-Voice|TinyML/Голос]] - ESP-SR, WakeNet «Hi ESP», нейромережі on S3
-- [[12-Comm-Modules/08-LD2410-UWB-IR-Voice|Радар/UWB/IR/SU-03T]] - SU-03T how попередник SU-61T, присутність per радару
-- [[15-Protocols/10-Voice-Assistant|Voice-Assistant]] - повний конвеєр Assist: коли офлайн-словника вже мало
-- [[15-Protocols/01-MQTT|MQTT]] - відправка розпізнаних команд in будинок
-- [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004|Звук/HMI]] - DFPlayer-відгук on команду
+- [[EN/04-Interfaces/01-UART.en|UART]] - швидкості, парсери кадрів, дільники рівнів
+- [[EN/04-Interfaces/04-I2S.en|I2S]] - INMP441, чистий цифровий звук замість АЦП
+- [[EN/12-Comm-Modules/11-TinyML-Voice.en|TinyML/Голос]] - ESP-SR, WakeNet «Hi ESP», нейромережі on S3
+- [[EN/12-Comm-Modules/08-LD2410-UWB-IR-Voice.en|Радар/UWB/IR/SU-03T]] - SU-03T how попередник SU-61T, присутність per радару
+- [[EN/15-Protocols/10-Voice-Assistant.en|Voice-Assistant]] - повний конвеєр Assist: коли офлайн-словника вже мало
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - відправка розпізнаних команд in будинок
+- [[EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|Звук/HMI]] - DFPlayer-відгук on команду

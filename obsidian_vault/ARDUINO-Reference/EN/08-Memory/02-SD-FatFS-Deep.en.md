@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Card as a disk: logs append, pages read, power never breaks mid-write.*
 
 > [!tip] What this note is
-> SD-topic depth: not "write a string", but logs for years, web face from the card, rotation and survival. Base: [[08-Memory/01-Pamyat-EEPROM|EEPROM memory]], [[12-Comm-Modules/06-Ethernet-W5500-Deep|Ethernet shield]].
+> SD-topic depth: not "write a string", but logs for years, web face from the card, rotation and survival. Base: [[EN/08-Memory/01-Memory-EEPROM.en|EEPROM memory]], [[EN/12-Comm-Modules/06-Ethernet-W5500-Deep.en|Ethernet shield]].
 
 ## 1. Goal
 
@@ -181,9 +181,9 @@ The `sdcard` module - in firmwares with SD support or as a separate file. Short 
 
 ## 10. Neighbour notes
 
-- [[08-Memory/01-Pamyat-EEPROM|EEPROM memory]] - small data with no card.
-- [[12-Comm-Modules/06-Ethernet-W5500-Deep|Ethernet shield]] - web from the card.
-- [[16-Projects/04-Loger-SD|SD logger]] - ready project.
+- [[EN/08-Memory/01-Memory-EEPROM.en|EEPROM memory]] - small data with no card.
+- [[EN/12-Comm-Modules/06-Ethernet-W5500-Deep.en|Ethernet shield]] - web from the card.
+- [[EN/16-Proekti/04-SD-Logger.en|SD logger]] - ready project.
 - [[EN/04-Interfaces/02-SPI.en|SPI bus]] - card transport.
 - [[Home.en|main map]] - full navigation.
 

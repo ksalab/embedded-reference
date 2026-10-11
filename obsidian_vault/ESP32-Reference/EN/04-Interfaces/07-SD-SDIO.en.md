@@ -88,7 +88,7 @@ print(os.listdir("/sd"))
 ```
 
 > [!info] FAT vs LittleFS
-> SD is FAT only (PC compatibility). Internal flash is [[08-Memory/02-Filesystem | LittleFS]] (resistant to supply failures).
+> SD is FAT only (PC compatibility). Internal flash is [[EN/08-Memory/02-Filesystem.en| LittleFS]] (resistant to supply failures).
 
 ## Speeds in a table - SPI vs SDMMC in detail
 
@@ -183,7 +183,7 @@ void rotateIfBig(const char *path) {
 }
 ```
 
-Internal flash for frequent small writes is [[08-Memory/02-Filesystem | LittleFS]] (journaled, resistant to supply breaks), SD is for large arrays.
+Internal flash for frequent small writes is [[EN/08-Memory/02-Filesystem.en| LittleFS]] (journaled, resistant to supply breaks), SD is for large arrays.
 
 ## Fake SD cards (h2testw!)
 
@@ -315,7 +315,7 @@ Hardware-level protection:
 | `format_if_mount_failed = false` | code | do not wipe data on one glitch |
 
 > [!danger] Cheap cards lie about flush
-> A no-name card controller confirms `fsync` without finishing data to NAND (cache with no capacitor). The only protection is Endurance cards + double-write + supercap. For critical uses - internal [[08-Memory/02-Filesystem | LittleFS]] as the primary store, SD as the copy.
+> A no-name card controller confirms `fsync` without finishing data to NAND (cache with no capacitor). The only protection is Endurance cards + double-write + supercap. For critical uses - internal [[EN/08-Memory/02-Filesystem.en| LittleFS]] as the primary store, SD as the copy.
 
 ## Wear-leveling algorithms - how not to kill a card in a month
 
@@ -393,7 +393,7 @@ void sd_bench(const char *p = "/bench.bin") {
 | Packed full (>95%) | fast death (no blocks for remap) | keep 10-20% free, monitor via `statvfs` |
 
 > [!tip] Free-space monitoring in code
-> Once a day check `esp_vfs_fat_info()` / `statvfs("/sdcard")`: free under 15% means rotate old files + raise telemetry alarm. A full card in the field = a stopped logger + broken-FAT risk. See [[08-Memory/02-Filesystem | LittleFS]] for internal reserve.
+> Once a day check `esp_vfs_fat_info()` / `statvfs("/sdcard")`: free under 15% means rotate old files + raise telemetry alarm. A full card in the field = a stopped logger + broken-FAT risk. See [[EN/08-Memory/02-Filesystem.en| LittleFS]] for internal reserve.
 
 ## Official sources
 
@@ -431,7 +431,7 @@ flowchart TB
 - [[EN/Home.en]]
 - [[EN/01-Hardware/01-ESP32-Classic.en]]
 - [[04-Interfaces/02-SPI.en | SPI]]
-- [[08-Memory/02-Filesystem | LittleFS]]
-- [[08-Memory/01-Partitions-NVS | Flash layout]]
+- [[EN/08-Memory/02-Filesystem.en| LittleFS]]
+- [[EN/08-Memory/01-Partitions-NVS.en| Flash layout]]
 - [[02-Power-Supply/01-Power-Rails.en | Power supply]]
-- [[08-Memory/02-Filesystem | Data logging]]
+- [[EN/08-Memory/02-Filesystem.en| Data logging]]

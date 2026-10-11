@@ -75,7 +75,7 @@ SparkFun Thing: almost all GPIO routed with number labels (0/2/4/5/12-19/21-23/2
 
 ## USB-UART features
 
-Feather HUZZAH32 - CP2104 (SiLabs, stable, 921600 baud). Thing - FTDI FT231X (FTDI drivers, also stable). Both with auto-reset: flashing with one Upload button. On Thing the "0" (BOOT) button is rarely needed - only if auto-reset fails. Monitor at 115200. Bridge details - [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART]].
+Feather HUZZAH32 - CP2104 (SiLabs, stable, 921600 baud). Thing - FTDI FT231X (FTDI drivers, also stable). Both with auto-reset: flashing with one Upload button. On Thing the "0" (BOOT) button is rarely needed - only if auto-reset fails. Monitor at 115200. Bridge details - [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART]].
 
 ## Buttons
 
@@ -137,11 +137,11 @@ ESP-IDF: `esp32` targets. CircuitPython on Feather HUZZAH32 is supported by Adaf
 | Button on 34-39 "floats" | No internal pull-ups | External 10k to 3.3V |
 | Qwiic sensor invisible | Long cable / two same addresses | Shorter cable, change address by jumper |
 | `Failed to connect` | Charge-only cable | Data cable + CP2104/FTDI driver |
-| 5V sensor burned an input | 5V on GPIO | Only via [[13-Power-Modules/02-Level-Shifters | level-shifter]] |
+| 5V sensor burned an input | 5V on GPIO | Only via [[EN/13-Power-Modules/02-Level-Shifters.en| level-shifter]] |
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![[assets/img/devboard-feather-huzzah32.png|600]]
+> [!example] Photo/schematic:![[assets/img/devboard-feather-huzzah32.png|600]]
 
 ```text
 [USB 5V] ─┬─► 5V шина ──► AP2112 ──► 3.3V (плата + Wings/Qwiic ≤400 мА)
@@ -183,7 +183,7 @@ flowchart TB
 - [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]]
 - [[10-Sensors/10-VL53L0X-TCS34725-TSL2561.en | ToF/Color]]
 - [[EN/11-Vivid/01-OLED-SSD1306.en]]
-- [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART]]
+- [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART]]
 - [[09-Firmware/02-Arduino-PlatformIO.en | Arduino/PlatformIO]]
 - [[07-Timers/03-Sleep-ULP.en | Sleep/ULP]]
 - [[99-Additions/02-Troubleshooting-FAQ.en | FAQ]]

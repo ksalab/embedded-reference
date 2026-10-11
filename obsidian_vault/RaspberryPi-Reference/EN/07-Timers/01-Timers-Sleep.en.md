@@ -144,8 +144,8 @@ Warning: an open `/dev/watchdog` without pings means reboot after timeout. Close
 
 - [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - services and cron.
 - [[EN/02-Power-Supply/03-UPS-18650.en|UPS backup]] - power supply for sleep.
-- [[10-Sensors/05-GPS-NEO|GPS modules]] - precise time with PPS.
-- [[14-Devboards/03-Pico-W-Family|Pico family]] - microcontroller sleep.
+- [[EN/10-Sensors/05-GPS-NEO.en|GPS modules]] - precise time with PPS.
+- [[EN/14-Devboards/03-Pico-W-Family.en|Pico family]] - microcontroller sleep.
 - [[Home.en|main map]] - full navigation.
 
 ## Official sources

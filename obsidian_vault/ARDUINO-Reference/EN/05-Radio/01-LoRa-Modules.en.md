@@ -239,8 +239,8 @@ The diagram reads top down. First power and antenna, then identical settings, th
 ## See also
 
 - [[Home.en]]
-- [[12-Comm-Modules/01-NRF24|radio module]]
-- [[05-Radio/02-GSM-SIM800|cell link]]
+- [[EN/12-Comm-Modules/01-NRF24.en|radio module]]
+- [[EN/05-Radio/02-GSM-SIM800.en|cell link]]
 - [[EN/02-Power-Supply/02-Battery-Power.en|autonomous power]]
 - [[EN/04-Interfaces/01-UART.en|serial port]]
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]

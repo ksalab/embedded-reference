@@ -37,7 +37,7 @@ WDT - watchdog timers - Comparison; Typical panic causes; Connection table (pani
 | Log | Cause | Fix |
 | --- | --- | --- |
 | `Task watchdog got triggered. The following tasks did not reset the watchdog in time: loopTask` | `delay(10000)` / `while(1)` with no yield | split into chunks + `vTaskDelay` / `yield()` |
-| `Guru Meditation ... LoadProhibited` after WDT | task stack overflow | enlarge stack in `xTaskCreate` |
+| `Guru Meditation... LoadProhibited` after WDT | task stack overflow | enlarge stack in `xTaskCreate` |
 | reboot every ~9 s in deep-sleep | RTC WDT + long hold | shorten RTC operations |
 
 ## Connection table (panic indication)
@@ -248,9 +248,9 @@ Log diagnostics:
 
 | Log | Which WDT | What to do |
 | --- | --- | --- |
-| `Guru Meditation ... Interrupt wdt timeout on CPU0` + backtrace in ISR/`spi_device_transmit` | IWDT | move heavy work out of ISR into a task (queue!), shorten the critical section |
-| `Task watchdog got triggered ... IDLE0 ... Tasks currently running: main` | TWDT, IDLE0 starvation | `main` spins with no yield - add `vTaskDelay(1)` |
-| `... IDLE1 ... CPU 1: wifi` | TWDT, IDLE1 starvation | WiFi-task priority choked IDLE - lower the priority or add pauses |
+| `Guru Meditation... Interrupt wdt timeout on CPU0` + backtrace in ISR/`spi_device_transmit` | IWDT | move heavy work out of ISR into a task (queue!), shorten the critical section |
+| `Task watchdog got triggered... IDLE0... Tasks currently running: main` | TWDT, IDLE0 starvation | `main` spins with no yield - add `vTaskDelay(1)` |
+| `... IDLE1... CPU 1: wifi` | TWDT, IDLE1 starvation | WiFi-task priority choked IDLE - lower the priority or add pauses |
 | `... loopTask` | TWDT, loop hung | look for a blocking `while`/`delay` in `loop()` |
 | Both in turn | cascade: first TWDT brakes, then ISR cannot keep up | fix the root cause (TWDT), IWDT will fade on its own |
 
@@ -478,6 +478,10 @@ flowchart TB
 
 - MAX6369 Datasheet (Analog Devices, PDF search): [MAX6369 search](https://www.alldatasheet.com/view.jsp?Searchword=MAX6369) - WDT with 1 ms-60 s window.
 
+## Official sources
+
+- [ESP32 Watchdog Timers (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/wdts.html) - task WDT, interrupt WDT and RTC WDT API.
+- [ESP32 Datasheet (Espressif)](https://www.espressif.com/sites/default/files/esp32-datasheet-en.pdf) - MWDT, RWDT and brownout electrical data.
 ## See also
 
 - [[EN/Home.en]]

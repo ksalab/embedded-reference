@@ -113,7 +113,7 @@ The MSC host driver (Bulk-Only Transport) + FATFS: the flash drive mounts as a d
 Practice rules:
 
 - File system is FAT32 (the host cannot do exFAT); long names - yes, Cyrillic - depends on the encoding luck.
-- Mount/unmount the flash drive explicitly; yanking it mid-write means broken FAT (see [[08-Memory/02-Filesystem | File systems]]).
+- Mount/unmount the flash drive explicitly; yanking it mid-write means broken FAT (see [[EN/08-Memory/02-Filesystem.en| File systems]]).
 - Supply: a flash drive eats 100-200 mA in peaks, writing is the most. A weak LDO means write issues.
 - For a logger it is better to write to SD (see [[EN/04-Interfaces/07-SD-SDIO.en]]), a USB flash drive is for taking dumps and configs.
 
@@ -136,7 +136,7 @@ Full parsing of custom HID descriptors (game pads, barcode scanners with vendor 
 The CDC-ACM host sees Arduino (USB-serial), 4G modems, USB GPS receivers as a virtual COM port: open, set baud, send AT commands.
 
 - Arduino as USB-device + ESP32-S3 as host = a UART-data bridge between two boards with no RX/TX wires.
-- Modems (SIM7600 over USB): the AT commands are the same as over UART (see [[12-Comm-Modules/07-SIM7600-W5500-MCP2515 | SIM7600 modems]]), but check VID/PID and the need for a specific driver (some are not clean CDC).
+- Modems (SIM7600 over USB): the AT commands are the same as over UART (see [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en| SIM7600 modems]]), but check VID/PID and the need for a specific driver (some are not clean CDC).
 - After `AT+CFUN` and connect, traffic goes via PPP/tty - heavy for RAM without PSRAM, plan a buffer.
 
 ## UAC microphone: overview
@@ -150,7 +150,7 @@ UAC (audio class, isochronous transfers) is supported as host, but it is a hard 
 
 ## USB-Serial-JTAG: built-in debug
 
-On S3/C3 a separate hardware block (not OTG!): one USB cable gives a CDC console + JTAG with no adapters. Enabled by console choice in `menuconfig`, debug is `openocd -f board/esp32s3-builtin.cfg`. Full procedure - [[09-Firmware/05-JTAG-Debug | JTAG debugging]]. Remember: after Secure Boot JTAG closes forever (see [[08-Memory/04-Secure-Boot-Encrypt | Secure Boot]]).
+On S3/C3 a separate hardware block (not OTG!): one USB cable gives a CDC console + JTAG with no adapters. Enabled by console choice in `menuconfig`, debug is `openocd -f board/esp32s3-builtin.cfg`. Full procedure - [[EN/09-Firmware/05-JTAG-Debug.en| JTAG debugging]]. Remember: after Secure Boot JTAG closes forever (see [[EN/08-Memory/04-Secure-Boot-Encrypt.en| Secure Boot]]).
 
 ## VBUS 5V/500mA supply + OTG cable
 
@@ -272,7 +272,7 @@ void loop() {
 - [[EN/Home.en]]
 - [[EN/01-Hardware/01-ESP32-Classic.en]]
 - [[04-Interfaces/01-UART.en | UART]]
-- [[09-Firmware/04-Esptool-Flash | Boot and flashing]]
+- [[EN/09-Firmware/04-Esptool-Flash.en| Boot and flashing]]
 - [[03-GPIO/02-Strapping-Pins.en | Strapping pins]]
 - [[04-Interfaces/06-USB-OTG-JTAG.en | USB-UART bridges]]
-- [[09-Firmware/05-JTAG-Debug | Debugging]]
+- [[EN/09-Firmware/05-JTAG-Debug.en| Debugging]]

@@ -142,7 +142,7 @@ Meshtastic: `heltec-v3` target, flash via flasher.meshtastic.org. ESP-IDF: V2 - 
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![[assets/img/devboard-heltec-lora32.png|600]]
+> [!example] Photo/schematic:![[assets/img/devboard-heltec-lora32.png|600]]
 
 ```text
 [USB-C/Micro 5V] ──► зарядка ──► LiPo 3.7V (JST/SH1.25) ─┐

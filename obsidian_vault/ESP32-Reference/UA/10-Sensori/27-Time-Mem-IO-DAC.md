@@ -4,6 +4,7 @@ title: PCF8523 RV-3028 DS1307 24Cxx FRAM AW9523 PCA9555 TCA8418 TM1650 CH455 TCA
 tags: [esp32, sensor, rtc, pcf8523, ds1307, eeprom, fram, gpio-expander, aw9523, tca9548, dac, mcp4725, ads1256, tmp117, i2c, spi]
 category: Sensori
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Час / Пам'ять / IO-розширення / ЦАП / Точні виміри

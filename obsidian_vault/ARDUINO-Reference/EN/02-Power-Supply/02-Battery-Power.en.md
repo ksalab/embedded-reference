@@ -25,7 +25,7 @@ The main idea is simple: autonomy is not the cell capacity, it is the product of
 
 After reading, the reader can tell a 9V block for a day from a lithium pack for a month, understands DW01 protection, and can add a solar panel with headroom.
 
-The link to mains power is direct: USB and VIN are described in [[EN/02-Power-Supply/01-VIN-Power-Supply.en|VIN power supply]], the board itself is described in [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]], and sleep and supervision are described in [[07-Timers/02-Son-WDT|sleep and watchdog]].
+The link to mains power is direct: USB and VIN are described in [[EN/02-Power-Supply/01-VIN-Power-Supply.en|VIN power supply]], the board itself is described in [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]], and sleep and supervision are described in [[EN/07-Timers/02-Sleep-WDT.en|sleep and watchdog]].
 
 ## 2. 9V block: why it lives a day or two
 
@@ -149,7 +149,7 @@ A classic board with a USB bridge never gives microamps: the bridge eats milliam
 
 So for months of autonomy take a board without a bridge, or move the bridge out of the node after debugging.
 
-The detailed sleep and supervision map lives in [[07-Timers/02-Son-WDT|sleep and watchdog]]: watchdog periods and restart on hangs are there.
+The detailed sleep and supervision map lives in [[EN/07-Timers/02-Sleep-WDT.en|sleep and watchdog]]: watchdog periods and restart on hangs are there.
 
 ```cpp
 // Сон між вимірами: прокинутись по сторожу, виміряти, заснути
@@ -396,4 +396,4 @@ The third trip is already the field: with a spare cell and a way to pull logs wi
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
 - [[EN/00-Start/04-Dev-Boards.en|board overview]]
 - [[EN/02-Power-Supply/01-VIN-Power-Supply.en|VIN power supply]]
-- [[07-Timers/02-Son-WDT|sleep and watchdog]]
+- [[EN/07-Timers/02-Sleep-WDT.en|sleep and watchdog]]

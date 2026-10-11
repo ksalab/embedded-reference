@@ -141,8 +141,8 @@ Extra:
 
 ## 8. Related notes
 
-- [[09-Firmware/01-IDE-CLI | IDE/CLI]] - pick the Leonardo/Pro Micro board.
-- [[09-Firmware/02-Bootloader-AVRDUDE | Bootloader]] - AVRDUDE versus DFU.
+- [[EN/09-Firmware/01-IDE-CLI.en| IDE/CLI]] - pick the Leonardo/Pro Micro board.
+- [[EN/09-Firmware/02-Bootloader-AVRDUDE.en| Bootloader]] - AVRDUDE versus DFU.
 - [[04-Interfaces/01-UART.en | UART]] - CP2102/CH340 on Uno.
 - [[01-Hardware/02-Nano-Mega.en | Nano/Mega]] - boards with an external USB-UART.
 

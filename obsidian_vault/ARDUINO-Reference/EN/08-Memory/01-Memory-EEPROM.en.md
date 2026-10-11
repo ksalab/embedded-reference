@@ -221,8 +221,8 @@ The diagram reads top down. First gauge, then fast wins through F and types, the
 ## See also
 
 - [[Home.en]]
-- [[05-Radio/01-LoRa-moduli|long-range radio]]
-- [[13-Power-Modules/02-Level-Shift-TP4056|levels and charge]]
+- [[EN/05-Radio/01-LoRa-Modules.en|long-range radio]]
+- [[EN/13-Power-Modules/02-Level-Shift-TP4056.en|levels and charge]]
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
 - [[EN/04-Interfaces/01-UART.en|serial port]]
-- [[13-Power-Modules/01-Buck-peretvoryuvach|pulse power supply]]
+- [[EN/13-Power-Modules/01-Buck-Converter.en|pulse power supply]]

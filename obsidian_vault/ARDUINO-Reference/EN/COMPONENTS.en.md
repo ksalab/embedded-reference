@@ -1,0 +1,12 @@
+---
+title: COMPONENTS.en EN
+description: Vault meta-document EN translation; shows links and structure.
+lang: en
+original: COMPONENTS.en.md
+date-created: 2026-10-08
+date: 2026-10-10
+---
+
+# COMPONENTS.en EN
+
+See vault EN/UA folders and notes.

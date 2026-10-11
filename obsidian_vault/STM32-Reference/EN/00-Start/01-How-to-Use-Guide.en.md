@@ -25,8 +25,8 @@ The base is built as a MOC (Map of Content): [[Home.en]] is the entry, 18 sectio
 
 | Task | Path |
 | --- | --- |
-| First Blink | [[00-Start/04-Devkit-plati| DevKit boards]] → [[00-Start/05-Vibir-seredovischa| Environment choice]] |
-| Pick a chip | [[00-Start/03-Porivnyannya-chipiv| Chip comparison]] |
+| First Blink | [[EN/00-Start/04-Dev-Boards.en| DevKit boards]] → [[EN/00-Start/05-Environment-Choice.en| Environment choice]] |
+| Pick a chip | [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]] |
 | Sensor over I2C | Section 10 (queue 4) → a specific sensor |
 | Board does not work | FAQ + logic + ST-Link debug (queues 1, 5) |
 
@@ -148,4 +148,4 @@ Found an issue - record it: file, line, what is wrong, what you checked (board, 
 ## See also
 
 - [[Home.en]]
-- [[00-Start/03-Porivnyannya-chipiv| Chip comparison]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]

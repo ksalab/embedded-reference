@@ -4,6 +4,7 @@ description: Wired-2 - Modbus TCP (шлюз RTU↔TCP), alt-PHY, ENC28J60, CAN-�
 tags: [esp32, modbus-tcp, modbus-gateway, dp83848, ksz8081, enc28j60, ethernet, spi-ethernet, can, canable, slcan, iso1050, pcan, wireshark, socketcan]
 category: Moduli
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Wired-2 - Modbus TCP (шлюз RTU↔TCP), alt-PHY, ENC28J60, CAN-інструменти

@@ -4,6 +4,7 @@ title: MQ-2, MQ-7, MQ-135, полум'я KY-026, звук KY-038, дощ - га�
 tags: [esp32, sensor, mq2, mq7, mq135, flame, ky-026, sound, ky-038, rain, gas, adc]
 category: Sensori
 date-created: 2026-09-27
+date: 2026-09-27
 ---
 
 # MQ-2, MQ-7, MQ-135, полум'я KY-026, звук KY-038, дощ

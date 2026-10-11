@@ -31,7 +31,7 @@ Build node energy accounting:
 | Bus | I2C, addresses 0x40-0x4F |
 | Bus voltage | 0-26V |
 | Shunt | 0.1 Ohm by default |
-| Accuracy | ~1 % after calibration |
+| Accuracy | ~1% after calibration |
 | Alert | pin to GPIO (interrupt) |
 
 ## 2. Measurement architecture
@@ -109,7 +109,7 @@ We append the file with `flush()` - on a blackout we lose seconds, not a day. Al
 
 ## 7. Errors and how to suppress them
 
-- shunt resistance drifts with temperature - take 1 % with low TCR;
+- shunt resistance drifts with temperature - take 1% with low TCR;
 - shunt self-heating at high current - power margin ×2;
 - drop on the shunt lowers load voltage - compute it;
 - zero calibration with the load off;

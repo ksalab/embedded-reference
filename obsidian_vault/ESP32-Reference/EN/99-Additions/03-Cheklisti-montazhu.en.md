@@ -13,7 +13,7 @@ date: 2026-10-08
 
 ![[assets/img/placeholder.png]]
 
-Process: start [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], power [[02-Power-Supply/01-Lancjugi-zhivlennya]] + [[13-Power-Modules/01-Buck-Boost-Solar]], levels [[13-Power-Modules/02-Level-Shifters]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], datasheets [[EN/99-Additions/04-Datasheet-Links.en]].
+Process: start [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], power [[EN/02-Power-Supply/01-Power-Rails.en]] + [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]], levels [[EN/13-Power-Modules/02-Level-Shifters.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], datasheets [[EN/99-Additions/04-Datasheet-Links.en]].
 
 ## 1. First DevKit Launch (5 min)
 
@@ -33,7 +33,7 @@ Process: start [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], po
 - [ ] Connectors: pin headers first, then wires; colors: red VCC, black GND, yellow/green signal
 - [ ] I2C length <30 cm, SPI <20 cm, UART <100 cm (or twisted pair)
 - [ ] I2C pull-up 4.7k, SPI CS 10k to 3.3V, EN 10k+10µF, BOOT 10k to 3.3V
-- [ ] TVS + fuse on external lines (see [[13-Power-Modules/02-Level-Shifters]])
+- [ ] TVS + fuse on external lines (see [[EN/13-Power-Modules/02-Level-Shifters.en]])
 
 ## 3. Power (before first power-on!)
 
@@ -45,7 +45,7 @@ Process: start [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], po
 | Idle current | USB tester without WiFi | 40-80 mA classic, 20-40 mA S3/C3 |
 | WiFi TX current | network scan | peak 350-500 mA, dip <0.15V |
 
-- [ ] Buck set WITHOUT ESP32, sealed with lacquer (see [[13-Power-Modules/01-Buck-Boost-Solar]])
+- [ ] Buck set WITHOUT ESP32, sealed with lacquer (see [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]])
 - [ ] SIM800L: 4.0V + 1000 µF, NRF24: 3.3V + 10 µF, camera: +100 µF
 - [ ] RC522/LoRa only 3.3V, SIM800L only 4V - check twice!
 
@@ -78,8 +78,8 @@ Process: start [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], po
 - [ ] Partition with OTA, firmware version in EEPROM/NVS, logging in Serial + file
 - [ ] WDT enabled, brownout 2.7V, code survives reboot (state in RTC/NVS)
 - [ ] Case: ventilation, antenna outside, wires secured, moisture protection if needed
-- [ ] Documentation: schematic, pinout sheet, WiFi password, where .bin firmware is stored
-- [ ] Spare ESP32 module + flashed .bin on flash drive next to product
+- [ ] Documentation: schematic, pinout sheet, WiFi password, where.bin firmware is stored
+- [ ] Spare ESP32 module + flashed.bin on flash drive next to product
 
 ## 8. Batch Check (batch 10+ pcs, before shipping!)
 
@@ -99,10 +99,10 @@ Process: start [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], po
 - [[EN/99-Additions/01-Pinout-tablici.en]]
 - [[EN/99-Additions/02-Troubleshooting-FAQ.en]]
 - [[EN/99-Additions/04-Datasheet-Links.en]]
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]]
-- [[13-Power-Modules/01-Buck-Boost-Solar]]
-- [[07-Timers/03-Sleep-ULP]]
+- [[EN/02-Power-Supply/01-Power-Rails.en]]
+- [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]]
+- [[EN/07-Timers/03-Sleep-ULP.en]]
 
 ![[assets/img/placeholder.png]]
 
-> UA original twin: [[99-Additions/03-Cheklisti-montazhu.md | UA]]
+> UA original twin: [[EN/99-Additions/03-Cheklisti-montazhu.en| UA]]

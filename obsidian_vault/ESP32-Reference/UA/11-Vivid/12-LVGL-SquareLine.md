@@ -4,6 +4,7 @@ title: LVGL v8-v9 + SquareLine Studio - GUI-дашборди на TFT
 tags: [esp32, lvgl, squareline, eez, gui, tft, xpt2046, dashboard, display]
 category: Vivid
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # LVGL v8/v9 + SquareLine Studio - GUI-дашборди

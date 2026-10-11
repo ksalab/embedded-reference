@@ -150,7 +150,7 @@ ESPresense is ESP32 node firmware: it scans BLE, computes distance from RSSI, pu
 | ESPresense setting | Default | What to tune |
 | --- | --- | --- |
 | `max_distance` | 16.0 m | 8-12 m for an apartment, otherwise catches neighbours |
-| `absorption` (factor n) | 2.7 | 2.0 (open space) ... 3.5 (concrete walls) |
+| `absorption` (factor n) | 2.7 | 2.0 (open space)... 3.5 (concrete walls) |
 | `ref_rssi` / `tx_ref_rssi` | -65 / -59 | calibrate with a phone at 1 m (see below) |
 | `rx_adj_rssi` | 0 (S3 bare - 20) | correction for the weak antenna of a specific board |
 | `skip_ms` / `skip_distance` | 5000 ms / 0.5 m | cut MQTT noise: do not send if it did not move |
@@ -498,6 +498,6 @@ Check: `mosquitto_sub -v -t "home/ble/#"` → bring the thermometer to the node 
 - [[EN/05-Radio/02-BLE-Bluetooth.en|BLE/Bluetooth]] - GATT, NimBLE, beacon, MTU
 - [[EN/05-Radio/05-BLE-Mesh-A2DP-HID.en|BLE Mesh / A2DP / HID]] - neighbouring BLE roles
 - [[EN/05-Radio/07-BLE5-LongRange-Audio.en|BLE5 LongRange + Audio]] - Coded PHY for distant beacons
-- [[15-Protocols/01-MQTT|MQTT]] - broker, retain, LWT, QoS
-- [[15-Protocols/05-Cloud-Pipeline]] - Node-RED, clouds, telemetry pipeline
-- [[07-Timers/03-Sleep-ULP|Sleep / ULP]] - battery beacons, deep-sleep, sleep current
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - broker, retain, LWT, QoS
+- [[EN/15-Protocols/05-Cloud-Pipeline.en]] - Node-RED, clouds, telemetry pipeline
+- [[EN/07-Timers/03-Sleep-ULP.en|Sleep / ULP]] - battery beacons, deep-sleep, sleep current

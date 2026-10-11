@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. SIM800C on a separate 4V supply: UART commands, GPRS session to the internet, SMS as a backup channel.*
 
 > [!tip] What this note is
-> Depth over the GSM overview note: here 2A-peak supply, HTTP stack with AT commands and SMS control. Module overview: [[05-Radio/02-GSM-SIM800|GSM module overview]], bus: [[EN/04-Interfaces/01-UART.en|UART bus]].
+> Depth over the GSM overview note: here 2A-peak supply, HTTP stack with AT commands and SMS control. Module overview: [[EN/05-Radio/02-GSM-SIM800.en|GSM module overview]], bus: [[EN/04-Interfaces/01-UART.en|UART bus]].
 
 ## 1. Goal
 
@@ -215,9 +215,9 @@ The same AT dialog, a different host: the code ports between Arduino and MicroPy
 
 ## 10. Neighbour notes
 
-- [[05-Radio/02-GSM-SIM800|GSM module overview]] - starter note.
+- [[EN/05-Radio/02-GSM-SIM800.en|GSM module overview]] - starter note.
 - [[EN/04-Interfaces/01-UART.en|UART bus]] - software port.
-- [[15-Protocols/03-HTTP-Web|HTTP client]] - web side.
+- [[EN/15-Protocols/03-HTTP-Web.en|HTTP client]] - web side.
 - [[EN/02-Power-Supply/01-VIN-Power-Supply.en|VIN power supply]] - buck for the module.
 - [[Home.en|main map]] - full navigation.
 

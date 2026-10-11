@@ -220,12 +220,10 @@ while True:
 
 - [[03-GPIO/01-GPIO-Overview.en | GPIO overview]]
 - [[03-GPIO/04-Interrupts-PWM.en | Interrupts and PWM]]
-- [[06-Analog/01-ADC | ADC]]
+- [[EN/06-Analog/01-ADC.en| ADC]]
 - [[04-Interfaces/03-I2C.en | I2C]]
 - [[04-Interfaces/02-SPI.en | SPI]]
-- [[11-Vivid/04-L298N-TB6612-A4988-Buzzer | Motors / Buzzer]]
-
-```text
+- [[EN/11-Vivid/04-L298N-TB6612-A4988-Buzzer.en| Motors / Buzzer]]
 
 ## ESP-IDF code (PIR wake-up)
 

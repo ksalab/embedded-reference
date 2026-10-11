@@ -13,9 +13,9 @@ date: 2026-10-08
 # Matter, Thread and Zigbee on ESP32 - esp-matter, OpenThread, esp-zigbee-SDK
 
 > [!warning] Matter/Thread/Zigbee потребують радіо 802.15.4 - this C6/H2, but not C3!
-> ESP32-C3 not має 802.15.4 and not підтримує ані Thread, ані Zigbee. for Matter-over-WiFi підійде будь-which ESP32 with WiFi, але for Matter-over-Thread або Zigbee беріть C6/H2. Див. [[01-Hardware/04-ESP32-C3-C6-H2|C3/C6/H2]].
+> ESP32-C3 not має 802.15.4 and not підтримує ані Thread, ані Zigbee. for Matter-over-WiFi підійде будь-which ESP32 with WiFi, але for Matter-over-Thread або Zigbee беріть C6/H2. Див. [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|C3/C6/H2]].
 
-Огляд радіо: [[05-Radio/02-BLE-Bluetooth|BLE]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya|живлення]], старт [[Home]].
+Огляд радіо: [[EN/05-Radio/02-BLE-Bluetooth.en|BLE]], живлення [[EN/02-Power-Supply/01-Power-Rails.en|живлення]], старт [[Home.en]].
 
 ## Призначення
 
@@ -30,7 +30,7 @@ date: 2026-10-08
 - лампа/розетка in Apple/Google Home without власної хмари - Matter-over-WiFi on будь-якому ESP32;
 - батарейний датчик with роками роботи and mesh - Matter-over-Thread on C6/H2;
 - велика наявна Zigbee-мережа (десятки пристроїв Aqara/IKEA) - Zigbee-координатор/кінцевий on C6/H2;
-- один сенсор до телефону поруч - звичайний BLE, див. [[05-Radio/02-BLE-Bluetooth]].
+- один сенсор до телефону поруч - звичайний BLE, див. [[EN/05-Radio/02-BLE-Bluetooth.en]].
 
 ## that обрати - Matter vs Zigbee vs BLE vs WiFi
 
@@ -39,14 +39,14 @@ date: 2026-10-08
 | Чіпи ESP | будь-which with WiFi | C6/H2 (+Border Router) | C6/H2 | всі | будь-which with WiFi |
 | Транспорт | IP/WiFi | 802.15.4 mesh + IP | 802.15.4 mesh, not IP | BLE-with'єднання | IP/WiFi |
 | Екосистеми | Apple/Google/Alexa одночасно | ті ж | ZHA/Zigbee2MQTT, хаби | телефон/додаток | своя хмара, Node-RED |
-| Комісіонування | BLE + QR/code | BLE + QR/code | pairing (permit join) | connect | provisioning, див. [[15-Protocols/04-Provisioning | Provisioning]] |
+| Комісіонування | BLE + QR/code | BLE + QR/code | pairing (permit join) | connect | provisioning, див. [[EN/15-Protocols/04-Provisioning.en| Provisioning]] |
 | Живлення батарей | погане (WiFi) | відмінне (SED сплять роками) | відмінне | добре | погане without deep-sleep |
 | Дальність/топологія | зірка до роутера | mesh, саморемонт | mesh, саморемонт | точка-точка ~10-50 м | зірка до роутера |
 | Сертифікація | потрібна for логотипа | потрібна for логотипа | потрібна for логотипа | not потрібна | not потрібна |
 | Складність коду | висока (esp-matter) | найвища (matter+thread) | середня (esp-zigbee-SDK) | низька | низька |
 | Коли | розетка in HomeKit | датчик on батареї in HomeKit | наявний Zigbee-дім | пульт/маяк поруч | свій дашборд/MQTT |
 
-Правило: **немає екосистем Apple/Google - not платіть ціну Matter**. for свого дому достатньо Zigbee або MQTT, див. [[15-Protocols/01-MQTT|MQTT]].
+Правило: **немає екосистем Apple/Google - not платіть ціну Matter**. for свого дому достатньо Zigbee або MQTT, див. [[EN/15-Protocols/01-MQTT.en|MQTT]].
 
 ## Вимоги до чіпів and пам'яті
 
@@ -60,7 +60,7 @@ date: 2026-10-08
 | ESP32-C2 | так | ні | обмежено (мало RAM) | ні | - |
 | ESP32-P4 | ні (треба зовнішнє радіо) | ні | how хост per Ethernet | how хост + C6/H2-радіо per UART/SPI | хост Border Router |
 
-Пам'ять: esp-matter тягне ~1 МБ flash (сертифікати DAC, кластери, BLE-комісіонування) - закладайте flash from 4 МБ and партиції під factory + OTA, див. [[08-Memory/01-Partitions-NVS|Partitions]]. Thread-вузол on H2 живе in ~320 КБ flash. Деталі заліза: [[01-Hardware/04-ESP32-C3-C6-H2|C3/C6/H2]], [[01-Hardware/09-ESP32-C2-P4|C2/P4]].
+Пам'ять: esp-matter тягне ~1 МБ flash (сертифікати DAC, кластери, BLE-комісіонування) - закладайте flash from 4 МБ and партиції під factory + OTA, див. [[EN/08-Memory/01-Partitions-NVS.en|Partitions]]. Thread-вузол on H2 живе in ~320 КБ flash. Деталі заліза: [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|C3/C6/H2]], [[EN/01-Hardware/09-ESP32-C2-P4.en|C2/P4]].
 
 ![[assets/img/matter-thread-zigbee-scheme.png|600]]
 *Рис. Matter поверх WiFi and Thread: комісіонування BLE+QR, fabric кількох екосистем, Border Router між Thread-mesh and домашнім LAN.*
@@ -133,7 +133,7 @@ graph LR
 
 **Fabric and multi-admin.** Fabric - домен безпеки (один дім = одна fabric; пристрій може бути in кількох - multi-admin: Apple + Google одночасно). Кожна fabric має свій NOC and своїх адмінів. Видалення fabric = «прибрати with дому» without скидання інших.
 
-**Matter OTA.** Прошивка тягнеться via BDX-протокол from OTA-провайдера (хаб/телефон), образ перевіряється for VID/PID/версією. Закладайте два OTA-слоти, див. [[08-Memory/03-OTA|OTA]].
+**Matter OTA.** Прошивка тягнеться via BDX-протокол from OTA-провайдера (хаб/телефон), образ перевіряється for VID/PID/версією. Закладайте два OTA-слоти, див. [[EN/08-Memory/03-OTA.en|OTA]].
 
 Приклади esp-matter: `examples/light` (on-off + level), `examples/light_switch` (клієнт), `examples/thermostat`. Збірка - тільки ESP-IDF (esp-matter how компонент, CMake).
 
@@ -253,13 +253,13 @@ void app_main(void)
 
 **Arduino:** офіційної Arduino-обгортки esp-matter/esp-zigbee-SDK немає - ці стеки збираються тільки під ESP-IDF (CMake, партиції, NVS-фабричні дані). Практика: Matter/Zigbee-вузол пишіть on ESP-IDF, but Arduino-логіку тримайте on другому контролері або спілкуйтесь via UART/MQTT-міст. not намагайтесь «залити Matter скетчем» - this глухий кут.
 
-**MicroPython:** підтримки Matter/Thread/Zigbee in MicroPython немає (немає 802.15.4-драйвера and місця під сертифікати). Практика: MicroPython-вузол говорить with шлюзом per MQTT/UART (див. [[15-Protocols/01-MQTT|MQTT]]), but Matter/Zigbee-частину тримає окремий C6/H2 on ESP-IDF.
+**MicroPython:** підтримки Matter/Thread/Zigbee in MicroPython немає (немає 802.15.4-драйвера and місця під сертифікати). Практика: MicroPython-вузол говорить with шлюзом per MQTT/UART (див. [[EN/15-Protocols/01-MQTT.en|MQTT]]), but Matter/Zigbee-частину тримає окремий C6/H2 on ESP-IDF.
 
 ## typical errors
 
 | Симптом | Причина | Рішення |
 | --- | --- | --- |
-| Thread/Zigbee not збирається on C3 | немає радіо 802.15.4 on C3 | перейти on C6/H2, див. [[01-Hardware/04-ESP32-C3-C6-H2 | C3/C6/H2]] |
+| Thread/Zigbee not збирається on C3 | немає радіо 802.15.4 on C3 | перейти on C6/H2, див. [[EN/01-Hardware/04-ESP32-C3-C6-H2.en| C3/C6/H2]] |
 | Телефон not бачить QR / комісіонування висить | BLE зайнято іншим стеком; фабричні дані стерті | чистий example `light`, verify лог QR; not стирати NVS після комісіонування |
 | Пристрій in fabric, але «not відповідає» | немає маршруту: Thread without Border Router; WiFi in іншому VLAN | підняти OTBR; тримати IoT and телефон in одному L2 |
 | Після `erase_flash` пристрій «привид» in Home | fabric-дані лишились in хабі | видалити вузол with усіх fabric (усіх екосистем) до reflashing |
@@ -277,16 +277,16 @@ void app_main(void)
 
 ## Див. також
 
-- [[Home]]
-- [[05-Radio/02-BLE-Bluetooth|BLE/Bluetooth]] - BLE-комісіонування Matter, GATT-база
-- [[05-Radio/05-BLE-Mesh-A2DP-HID|BLE Mesh / A2DP / HID]] - інший BLE-стек Espressif, A2DP тільки on Classic
-- [[01-Hardware/04-ESP32-C3-C6-H2|ESP32-C3/C6/H2]] - which радіо де є
-- [[01-Hardware/09-ESP32-C2-P4|ESP32-C2/P4]] - P4 how хост Border Router
-- [[11-Vivid/13-Audio-Codecs|Аудіо-кодеки]] - I2S-звук for голосових Matter-пристроїв
-- [[15-Protocols/01-MQTT|MQTT]] - міст Zigbee2MQTT → хмара
-- [[15-Protocols/04-Provisioning|Provisioning]] - entry WiFi without reflashing
-- [[08-Memory/03-OTA|OTA]] - слоти під Matter OTA
-- [[08-Memory/01-Partitions-NVS|NVS]] - fabric-дані живуть in NVS
+- [[Home.en]]
+- [[EN/05-Radio/02-BLE-Bluetooth.en|BLE/Bluetooth]] - BLE-комісіонування Matter, GATT-база
+- [[EN/05-Radio/05-BLE-Mesh-A2DP-HID.en|BLE Mesh / A2DP / HID]] - інший BLE-стек Espressif, A2DP тільки on Classic
+- [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|ESP32-C3/C6/H2]] - which радіо де є
+- [[EN/01-Hardware/09-ESP32-C2-P4.en|ESP32-C2/P4]] - P4 how хост Border Router
+- [[EN/11-Vivid/13-Audio-Codecs.en|Аудіо-кодеки]] - I2S-звук for голосових Matter-пристроїв
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - міст Zigbee2MQTT → хмара
+- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - entry WiFi without reflashing
+- [[EN/08-Memory/03-OTA.en|OTA]] - слоти під Matter OTA
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - fabric-дані живуть in NVS
 
 
 ## Common issues

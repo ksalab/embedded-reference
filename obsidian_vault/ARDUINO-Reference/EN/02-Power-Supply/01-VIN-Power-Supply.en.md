@@ -371,4 +371,4 @@ The third power-on is already in the enclosure: verify heat after ten minutes of
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
 - [[EN/00-Start/04-Dev-Boards.en|board overview]]
 - [[EN/02-Power-Supply/02-Battery-Power.en|battery autonomy]]
-- [[07-Timers/02-Son-WDT|sleep and watchdog]]
+- [[EN/07-Timers/02-Sleep-WDT.en|sleep and watchdog]]

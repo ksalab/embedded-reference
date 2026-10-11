@@ -24,7 +24,7 @@ date: 2026-10-08
 # ESP32 chip comparison
 
 > [!tip] Quick pick
-> Universal - **ESP32-Classic** or **S3**. Cheap Wi-Fi sensor - **C3**. Camera/ML/USB - **S3**. Zigbee/Thread - **C6/H2**. Look terms up in the [[00-Start/02-Glosariy| Glossary]], boards in [[00-Start/04-Devkit-plati| DevKit boards]], SDK in [[00-Start/05-Vibir-seredovischa| Environment choice]]. Reference structure - [[00-Start/01-Yak-koristuvatis-dovidnikom| How to use it]], map - [[Home.en | Home map]].
+> Universal - **ESP32-Classic** or **S3**. Cheap Wi-Fi sensor - **C3**. Camera/ML/USB - **S3**. Zigbee/Thread - **C6/H2**. Look terms up in the [[EN/00-Start/02-Glossary.en| Glossary]], boards in [[EN/00-Start/04-Dev-Boards.en| DevKit boards]], SDK in [[EN/00-Start/05-Environment-Choice.en| Environment choice]]. Reference structure - [[EN/00-Start/01-How-to-Use-Guide.en| How to use it]], map - [[Home.en | Home map]].
 >
 > [!warning] All chips are 3.3V!
 > No ESP32 (Classic/S2/S3/C3/C6/H2) has 5V-tolerant GPIO. They differ only in pin count and peripherals, but the setup is one: HIGH = 3.3V max. 5V sensors only via [[_templates/Component-Template.en | template level matching]].
@@ -59,10 +59,10 @@ date: 2026-10-08
 | OV2640 camera, TinyML, LCD | S3 (DevKitC-1) | Octal PSRAM, AI vector instructions, USB |
 | Cheap Wi-Fi/MQTT sensor | C3 SuperMini | $2-3, BLE 5, low draw |
 | Matter / Thread / Zigbee | C6 or H2 | 802.15.4, Wi-Fi 6 (C6) |
-| Battery sensor for years | C3 / H2 + deep-sleep | 5 µA sleep, see [[00-Start/04-Devkit-plati| DevKit power]] |
+| Battery sensor for years | C3 / H2 + deep-sleep | 5 µA sleep, see [[EN/00-Start/04-Dev-Boards.en| DevKit power]] |
 
 > [!tip] PSRAM
-> For cameras (OV2640 2 MP) and LVGL displays take a **WROVER** or an **S3 with 8 MB Octal PSRAM**. Without PSRAM a JPEG frame will not fit in SRAM. Power details - [[00-Start/04-Devkit-plati| DevKit boards]].
+> For cameras (OV2640 2 MP) and LVGL displays take a **WROVER** or an **S3 with 8 MB Octal PSRAM**. Without PSRAM a JPEG frame will not fit in SRAM. Power details - [[EN/00-Start/04-Dev-Boards.en| DevKit boards]].
 >
 > [!warning] ADC2 + Wi-Fi
 > On Classic/S3 the ADC2 channel clashes with the Wi-Fi driver. For analog readings with Wi-Fi on, use ADC1 only. This is a common cause of jumping readings.
@@ -76,9 +76,9 @@ date: 2026-10-08
 | MicroPython | Yes | S2/S3 partly | C3 yes, C6/H2 experimental |
 | PlatformIO | Yes | Yes | Yes |
 
-Details - [[00-Start/05-Vibir-seredovischa| Environment choice]].
+Details - [[EN/00-Start/05-Environment-Choice.en| Environment choice]].
 
-> [!example] Photo/schematic: ![[assets/img/placeholder.png]]
+> [!example] Photo/schematic:![[assets/img/placeholder.png]]
 > Comparison bench: three DevKits on one desk:
 
 | ESP32 DevKit | USB | Note |
@@ -183,7 +183,7 @@ Details - [[00-Start/05-Vibir-seredovischa| Environment choice]].
 | MicroPython | Experiment (no stable build) | Experiment | Experiment | Yes (compact build) |
 | PlatformIO | Via pioarduino/community | Same path | Yes | Yes |
 
-Details - [[00-Start/05-Vibir-seredovischa| Environment choice]],
+Details - [[EN/00-Start/05-Environment-Choice.en| Environment choice]],
 IDF setup - [[09-Firmware/01-ESP-IDF-setup.en | ESP-IDF setup]],
 Arduino/PIO - [[09-Firmware/02-Arduino-PlatformIO.en | Arduino/PlatformIO]],
 full notes - [[EN/01-Hardware/10-ESP32-C5-C61.en]] and [[EN/01-Hardware/09-ESP32-C2-P4.en]].
@@ -191,10 +191,10 @@ full notes - [[EN/01-Hardware/10-ESP32-C5-C61.en]] and [[EN/01-Hardware/09-ESP32
 ## See also
 
 - [[Home.en | Home map]]
-- [[00-Start/01-Yak-koristuvatis-dovidnikom| How to use it]]
-- [[00-Start/02-Glosariy| Glossary]]
-- [[00-Start/04-Devkit-plati| DevKit boards]]
-- [[00-Start/05-Vibir-seredovischa| Environment choice]]
+- [[EN/00-Start/01-How-to-Use-Guide.en| How to use it]]
+- [[EN/00-Start/02-Glossary.en| Glossary]]
+- [[EN/00-Start/04-Dev-Boards.en| DevKit boards]]
+- [[EN/00-Start/05-Environment-Choice.en| Environment choice]]
 - [[01-Hardware/10-ESP32-C5-C61.en | C5/C61]]
 - [[01-Hardware/09-ESP32-C2-P4.en | C2/P4]]
 - [[01-Hardware/04-ESP32-C3-C6-H2.en | C3/C6/H2]]

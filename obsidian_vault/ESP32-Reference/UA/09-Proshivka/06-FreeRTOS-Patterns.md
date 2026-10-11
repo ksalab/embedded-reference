@@ -4,6 +4,7 @@ title: FreeRTOS патерни на ESP32
 tags: [esp32, freertos, tasks, queue, mutex, watchdog, isr, smp, mqtt]
 category: Proshivka
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # FreeRTOS патерни на ESP32
@@ -29,7 +30,7 @@ FreeRTOS в ESP-IDF - це SMP-ядро (два ядра на ESP32/S3), пов�
 | Стек задачі | Вказується в **байтах** (не словах!) | Сенсори 2048-3072, мережа 4096-8192 |
 
 > [!WARNING]
-> IDLE-задача годує Task Watchdog і чистить пам'ять видалених задач. Задача з пріоритетом вище, що ніколи не блокується, заморить IDLE - отримаєте `Task watchdog got triggered ... IDLE0`.
+> IDLE-задача годує Task Watchdog і чистить пам'ять видалених задач. Задача з пріоритетом вище, що ніколи не блокується, заморить IDLE - отримаєте `Task watchdog got triggered... IDLE0`.
 
 Код ESP-IDF - створення задач з піном і без:
 
@@ -268,7 +269,7 @@ void heavy_task(void *arg) {
 ```
 
 > [!TIP]
-> Лог `Task watchdog got triggered ... Tasks currently running: main` = задача `main`/`loop` крутиться без `delay`. Деталі - [[07-Timeri-Son/02-WDT|WDT]].
+> Лог `Task watchdog got triggered... Tasks currently running: main` = задача `main`/`loop` крутиться без `delay`. Деталі - [[07-Timeri-Son/02-WDT|WDT]].
 
 ## 7. Tickless idle + light sleep: спати між тіками
 
@@ -467,7 +468,7 @@ async def conn():
 
 | Симптом | Причина | Рішення |
 | --- | --- | --- |
-| `Task watchdog got triggered ... IDLE0` | Цикл без `vTaskDelay` / блокування | Додати `vTaskDelay` або блокуючий `xQueueReceive` |
+| `Task watchdog got triggered... IDLE0` | Цикл без `vTaskDelay` / блокування | Додати `vTaskDelay` або блокуючий `xQueueReceive` |
 | `Stack overflow in task sensor` | Малий стек, великий буфер на стеку | Збільшити стек, `uxTaskGetStackHighWaterMark()`, винести буфер у static/heap |
 | `Interrupt wdt timeout on CPU0` | Довга критична секція / ISR | Скоротити ISR, винести роботу в задачу |
 | Guru Meditation `LoadProhibited` в черзі | Вказівник на локальний стек через notification | Копіювати дані в чергу, не вказівник |

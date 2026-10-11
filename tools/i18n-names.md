@@ -287,3 +287,12 @@ ARDUINO-Reference/99-Dodatki/03-Diagnostic-Map.md -> 03-Diagnostic-Map.en.md
 RaspberryPi-Reference/99-Dodatki/01-Troubleshooting-FAQ.md -> 01-Troubleshooting-FAQ.en.md
 RaspberryPi-Reference/99-Dodatki/02-Datasheet-Links.md -> 02-Datasheet-Links.en.md
 RaspberryPi-Reference/99-Dodatki/03-Diagnostic-Map.md -> 03-Diagnostic-Map.en.md
+# Wave: RaspberryPi 12/13/14/15/16/17 (2026-10-10)
+RaspberryPi-Reference/12-Moduli-zvyazku/01-Sense-HAT.md -> 01-Sense-HAT.en.md
+RaspberryPi-Reference/12-Moduli-zvyazku/03-CAN-RS485-HAT.md -> 03-CAN-RS485-HAT.en.md
+RaspberryPi-Reference/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-DC-DC.md -> 01-Buck-Boost-DC-DC.en.md
+RaspberryPi-Reference/13-Moduli-zhivlennya-rivniv/02-Level-Shift-3V3.md -> 02-Level-Shift-3V3.en.md
+RaspberryPi-Reference/14-Devboards/06-400-500.md -> 06-400-500.en.md
+RaspberryPi-Reference/15-Protokoli/02-HTTP-Webhook.md -> 02-HTTP-Webhook.en.md
+RaspberryPi-Reference/16-Proekti/03-Robot-Vizok.md -> 03-Robot-Cart.en.md
+RaspberryPi-Reference/17-Lab/02-Plata-PCB-HAT.md -> 02-PCB-HAT-Board.en.md

@@ -17,7 +17,7 @@ date: 2026-10-08
 
 ![[assets/img/esp32-c3-supermini-pinout.png|600]]
 
-GPIO base: [[03-GPIO/01-GPIO-oglyad]], buses [[04-Interfaces/02-SPI|SPI]] [[04-Interfaces/03-I2C|I2C]] [[04-Interfaces/01-UART|UART]], sleep [[07-Timers/03-Sleep-ULP]], analog [[06-Analog/01-ADC|ADC]], start [[EN/Home.en]], repair [[EN/99-Additions/02-Troubleshooting-FAQ.en]].
+GPIO base: [[EN/03-GPIO/01-GPIO-Overview.en]], buses [[EN/04-Interfaces/02-SPI.en|SPI]] [[EN/04-Interfaces/03-I2C.en|I2C]] [[EN/04-Interfaces/01-UART.en|UART]], sleep [[EN/07-Timers/03-Sleep-ULP.en]], analog [[EN/06-Analog/01-ADC.en|ADC]], start [[EN/Home.en]], repair [[EN/99-Additions/02-Troubleshooting-FAQ.en]].
 
 ## 1. ESP32 DevKit V1 (classic D0WD, 30 pins)
 
@@ -52,7 +52,7 @@ GPIO base: [[03-GPIO/01-GPIO-oglyad]], buses [[04-Interfaces/02-SPI|SPI]] [[04-I
 | 6-11 | - | - | SPI-flash | - | - | - | DO NOT USE! flash |
 
 *UART/I2C/SPI can be mapped to almost any GPIO via matrix; listed are typical.
-ADC2 conflicts with WiFi - with WiFi on, ADC2 unavailable! Analog only via ADC1. See [[06-Analog/01-ADC|ADC]].
+ADC2 conflicts with WiFi - with WiFi on, ADC2 unavailable! Analog only via ADC1. See [[EN/06-Analog/01-ADC.en|ADC]].
 
 ## 2. ESP32-S3 DevKitC-1 (44 pins, USB-OTG, PSRAM optional)
 
@@ -72,7 +72,7 @@ ADC2 conflicts with WiFi - with WiFi on, ADC2 unavailable! Analog only via ADC1.
 | 46 | - | - | - | - | - | STRAP | pull-down for normal boot |
 | 47-48 | - | - | - | - | - | - | RGB LED (48), 47 = PSRAM safe |
 
-S3 native USB (GPIO19/20) allows USB-CDC + JTAG without bridge. OV2640 camera only with PSRAM board (S3R8/R16). See [[12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera]].
+S3 native USB (GPIO19/20) allows USB-CDC + JTAG without bridge. OV2640 camera only with PSRAM board (S3R8/R16). See [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]].
 
 ## 3. ESP32-C3 SuperMini (RISC-V, 22 pins)
 
@@ -103,18 +103,18 @@ C3: one ADC (ADC1, 6 channels), no DAC, no touch, WiFi 4 + BLE5. Small SuperMini
 | H2-DevKitM-1 | native | GPIO8/9/25 free! | WiFi NONE; brick → GPIO25+BOOT |
 | C3-DevKitC-02 | bridge + native | GPIO2/8/9 free! | Classic C3 full-size |
 
-Details: [[14-Devboards/13-ESP32C6-Boards|C6 boards]], [[14-Devboards/14-ESP32H2-Boards|H2 boards]].
+Details: [[EN/14-Devboards/13-ESP32C6-Boards.en|C6 boards]], [[EN/14-Devboards/14-ESP32H2-Boards.en|H2 boards]].
 
 ## See Also
 
 - [[EN/Home.en]]
-- [[03-GPIO/01-GPIO-oglyad]]
-- [[04-Interfaces/02-SPI|SPI]]
-- [[04-Interfaces/03-I2C|I2C]]
-- [[04-Interfaces/01-UART|UART]]
-- [[06-Analog/01-ADC|ADC]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/04-Interfaces/02-SPI.en|SPI]]
+- [[EN/04-Interfaces/03-I2C.en|I2C]]
+- [[EN/04-Interfaces/01-UART.en|UART]]
+- [[EN/06-Analog/01-ADC.en|ADC]]
 - [[EN/99-Additions/02-Troubleshooting-FAQ.en]]
 
 ![[assets/img/placeholder.png]]
 
-> UA original twin: [[99-Additions/01-Pinout-tablici.md | UA]]
+> UA original twin: [[EN/99-Additions/01-Pinout-tablici.en| UA]]

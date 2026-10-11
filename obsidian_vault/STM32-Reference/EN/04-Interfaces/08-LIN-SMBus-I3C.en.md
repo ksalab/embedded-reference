@@ -90,7 +90,7 @@ flowchart TB
 | I3C | 2 | Up to MHz | One | Fast sensors |
 | CAN | 2 diff. | Up to 8 Mbit | All equal | Car power, industry |
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Fix |
 | --- | --- | --- | --- |
@@ -102,7 +102,7 @@ flowchart TB
 | 6 | Alert wired nowhere | Polling in a loop | Route to EXTI! |
 | 7 | One bus for all | Speed conflict | Fast and slow apart |
 
-## Official Sources
+## Official sources
 
 - [LIN standards (LIN Consortium)](https://lin-cia.org/standards/) - frames, break, timings.
 - [SMBus Specification (SBS Forum)](https://smbus.org/specs/) - timeouts, PEC, alert.

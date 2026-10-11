@@ -213,6 +213,6 @@ When silent, walk the list: GPIO and module clocking on, MODER equals 10, AF num
 - [[03-GPIO/01-GPIO-rezhimi.en | GPIO modes]]
 - [[03-GPIO/03-EXTI-NVIC.en | EXTI interrupts]]
 - [[01-Hardware/01-F0-F1-Classic.en | F0/F1 classics]]
-- [[09-Firmware/01-CubeIDE-CubeMX | CubeMX setup]]
-- [[09-Firmware/02-HAL-LL | HAL and LL layers]]
+- [[EN/09-Firmware/01-CubeIDE-CubeMX.en| CubeMX setup]]
+- [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
 - [[00-Start/03-Porivnyannya-chipiv.en | Chip comparison]]

@@ -147,7 +147,7 @@ ESP-IDF: `esp-idf/examples/peripherals/camera` example. MicroPython with camera 
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![[assets/img/devboard-esp32cam.png|600]]
+> [!example] Photo/schematic:![[assets/img/devboard-esp32cam.png|600]]
 
 ```text
 [БЖ 5V 2A] ──► пін 5V + GND плати (+ 470–1000 мкФ між 5V і GND!)
@@ -186,7 +186,7 @@ flowchart TB
 - [[12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en | RS485/CAN/Camera]]
 - [[04-Interfaces/07-SD-SDIO.en | SD/SDIO]]
 - [[04-Interfaces/01-UART.en | UART]]
-- [[13-Power-Modules/05-USB-UART-AutoReset | USB-UART]]
+- [[EN/13-Power-Modules/05-USB-UART-AutoReset.en| USB-UART]]
 - [[02-Power-Supply/01-Power-Rails.en | Power rails]]
 - [[09-Firmware/02-Arduino-PlatformIO.en | Arduino/PlatformIO]]
 - [[09-Firmware/04-Esptool-Flash.en | Esptool]]

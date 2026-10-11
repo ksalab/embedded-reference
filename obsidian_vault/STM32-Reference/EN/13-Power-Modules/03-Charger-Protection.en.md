@@ -102,7 +102,7 @@ flowchart TB
 | Charge from USB | USB -> TP4056 -> cell -> node |
 | Load split | Radio and digital separate branches |
 
-## Common errors
+## Common issues
 
 | # | Error | Why bad | How right |
 | --- | --- | --- | --- |

@@ -349,7 +349,7 @@ flowchart TB
     DMA -->|No| POLL[Polling in a loop]
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Fix |
 | --- | --- | --- | --- |
@@ -361,7 +361,7 @@ flowchart TB
 | 6 | Full speed at once on a cable | Ringing breaks strobing | Start at 500 kHz and climb step by step |
 | 7 | Two NSS active at once | MISO conflict, output overheating | Hold every NSS high except one |
 
-## Official Sources
+## Official sources
 
 - [SPI manual in RM0008 for STM32F1 (ST)](https://www.st.com/resource/en/reference_manual/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf) - modes, divider, TXE and RXNE flags.
 - [AN5546 SPI displays on STM32 (ST)](https://www.st.com/resource/en/application_note/an5546-spi-display-on-stm32-mcus-stmicroelectronics.pdf) - graphics controller practice over SPI.
@@ -372,7 +372,7 @@ flowchart TB
 - [[Home.en]]
 - [[04-Interfaces/01-UART.en | UART serial port]]
 - [[04-Interfaces/03-I2C.en | I2C bus]]
-- [[09-Firmware/01-CubeIDE-CubeMX | CubeMX setup]]
-- [[09-Firmware/02-HAL-LL | HAL and LL layers]]
+- [[EN/09-Firmware/01-CubeIDE-CubeMX.en| CubeMX setup]]
+- [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
 - [[03-GPIO/01-GPIO-rezhimi.en | GPIO modes]]
 - [[03-GPIO/02-AF-maping.en | Alternate function mapping]]

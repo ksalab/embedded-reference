@@ -12,14 +12,14 @@ date-created: 2026-09-29
 # RFID Advanced - Mifare Classic Deep, LF Rewritable, HID, UHF, Wiegand/OSDP, Upgrade Readers
 
 > [!warning] Law and Ethics
-> All information about keys, Crypto-1, nested attacks, T5577 cloning — **only for your own cards / key fobs and your own systems**. Do not use for third-party access control or payment cards.
+> All information about keys, Crypto-1, nested attacks, T5577 cloning - **only for your own cards / key fobs and your own systems**. Do not use for third-party access control or payment cards.
 
 This note is an in-depth continuation of [[EN/12-Comm-Modules/01-RC522-RFID.en]] and [[EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en]] and [[EN/12-Comm-Modules/20-NFC-Biometry-2.en]]: Mifare Classic deep (geometry, keys, nested attack, Clone / RLF / darkside), anticollision / cascade, Ultralight / NTAG vs DESFire vs FeliCa, rewritable LF 125 kHz (T5577 / EM4305 vs EM4100), HID Prox / Indala, animal FDX-B / HDX (134 kHz), UHF EPC Gen2 (R2000 / YRM100), Wiegand deep / OSDP, upgrade readers (PN5180 / ST25R3911 / TRF7970A / CLRC663), ESP32 connection, code examples, common errors, references.
 
 ![[assets/img/rfid-advanced-mifare-scheme.png|600]]
 *Fig. Mifare Classic memory map: sectors -> blocks -> sector trailer (KeyA / AccessBits / KeyB), value blocks, linked sectors, Anti-collision / cascade flow.*
 
-Links to [[EN/Home.en]], [[EN/12-Comm-Modules/01-RC522-RFID.en]], [[EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en]], [[03-Projects/01-Smart-Home]], [[EN/12-Comm-Modules/20-NFC-Biometry-2.en]], [[04-Interfaces/02-SPI|SPI]], [[04-Interfaces/01-UART|UART]], [[02-Power-Supply/01-Lancjugi-zhivlennya]].
+Links to [[EN/Home.en]], [[EN/12-Comm-Modules/01-RC522-RFID.en]], [[EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en]], [[EN/16-Projects/03-Access-Control.en | Access Control]], [[EN/12-Comm-Modules/20-NFC-Biometry-2.en]], [[EN/04-Interfaces/02-SPI.en|SPI]], [[EN/04-Interfaces/01-UART.en|UART]], [[EN/02-Power-Supply/01-Power-Rails.en]].
 
 ## Purpose
 
@@ -66,7 +66,7 @@ Sector trailer (block 3 of each sector for 1K; block 15 / 31 / 47 / ... for 4K):
 Access bits determine: read Key A (always needed for selection), write Key A, read / write data, read / write Key B, transport config. The 3-byte access structure is: C1-x / C2-x / C3-x per segment (data / trailer / key), giving 8 conditions per block.
 
 > [!warning] Default Keys Are Public
-> Key A = FF FF FF FF FF FF, Key B = FF FF FF FF FF FF on factory cards. Change immediately after first read. Never leave Key B as data if access bits allow public access — attackers can rewrite sector trailers.
+> Key A = FF FF FF FF FF FF, Key B = FF FF FF FF FF FF on factory cards. Change immediately after first read. Never leave Key B as data if access bits allow public access - attackers can rewrite sector trailers.
 
 ### 1.3. Value Blocks (Value / Backup / Nested)
 
@@ -291,23 +291,47 @@ def parse_wiegand():
 
 ## 12. Official Sources
 
-- Mifare Classic datasheet (NXP) — geometry, keys, access bits
-- DESFire EV2/EV3 datasheet — AES, file system, key diversification
-- PN5180 / ST25R3911 / TRF7970A / CLRC663 datasheets — frontend, antenna design
-- ISO/IEC 14443-2 / -3 / -4 — types A / B / FeliCa / anticollision
-- ISO/IEC 15693 — vicinity cards (NTAG, DESFire)
-- ISO/IEC 18000-63 — UHF EPC Gen2
-- OSDP IEC 60839-11-5 / SIA OSDP spec — secure RS-485
-- HID Prox / Indala datasheets — 125 kHz access
-- T5577 / EM4305 datasheets — LF rewritable
-- FDX-B / HDX ISO 11784 / 11785 — animal identification
+- Mifare Classic datasheet (NXP) - geometry, keys, access bits
+- DESFire EV2/EV3 datasheet - AES, file system, key diversification
+- PN5180 / ST25R3911 / TRF7970A / CLRC663 datasheets - frontend, antenna design
+- ISO/IEC 14443-2 / -3 / -4 - types A / B / FeliCa / anticollision
+- ISO/IEC 15693 - vicinity cards (NTAG, DESFire)
+- ISO/IEC 18000-63 - UHF EPC Gen2
+- OSDP IEC 60839-11-5 / SIA OSDP spec - secure RS-485
+- HID Prox / Indala datasheets - 125 kHz access
+- T5577 / EM4305 datasheets - LF rewritable
+- FDX-B / HDX ISO 11784 / 11785 - animal identification
 
+### Reader chain
+
+```mermaid
+flowchart LR
+    ESP["ESP32<br/>SPI UART"]
+    FE["Frontend<br/>PN5180 ST25R3911"]
+    ANT["Antenna<br/>13.56 MHz tuned"]
+    TAG["Card or tag<br/>MIFARE NTAG"]
+    SAM["SAM or keys<br/>AES diversify"]
+    ESP --> FE
+    FE --> ANT
+    ANT --> TAG
+    ESP --> SAM
+```
+
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| No card detected near metal | Antenna detuned by metal, wrong frequency match | Retune with VNA, add ferrite shield behind antenna |
+| SPI phantom reads | Shared noisy 3V3 rail, long wires | Separate LDO, ferrite plus 10 uF and 100 nF at chip |
+| Nested attack succeeds | Default keys, same key every sector | Rotate unique keys per card, migrate to DESFire AES |
+| Clone works on reader | UID-only check, T5577 rewritable | Authenticate with AES, monitor duplicates, use DESFire |
+| UHF range too short | Tag orientation, water, metal, low EIRP | Directional antenna above door, check regional EIRP limit |
 ## 13. See Also
 
 - [[EN/12-Comm-Modules/01-RC522-RFID.en]] - RC522 basics
 - [[EN/12-Comm-Modules/20-NFC-Biometry-2.en]] - PN5180 / ST25R3911 / TRF7970A / DESFire / NTAG / fingerprint
 - [[EN/12-Comm-Modules/05-PN532-RDM6300-Fingerprint-GM65.en]] - PN532 + fingerprint basics
 - [[EN/16-Projects/03-Access-Control.en]] - Access control with DESFire + SAM
-- [[04-Interfaces/02-SPI|SPI]] - SPI details
-- [[04-Interfaces/01-UART|UART]] - UART details
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]] - Power branches
+- [[EN/04-Interfaces/02-SPI.en|SPI]] - SPI details
+- [[EN/04-Interfaces/01-UART.en|UART]] - UART details
+- [[EN/02-Power-Supply/01-Power-Rails.en]] - Power branches

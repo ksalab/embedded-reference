@@ -21,7 +21,7 @@ Yes, but without reverse polarity protection and with a quality source. USB-C is
 
 ## Loading
 
-**ACT flashes 4 times - what is this?**No `start.elf` - broken image or map. Reflash Code table - [[09-Firmware/02-EEPROM-Boot | loading EEPROM]].**Not booting from USB/NVMe?**
+**ACT flashes 4 times - what is this?**No `start.elf` - broken image or map. Reflash Code table - [[EN/09-Firmware/02-EEPROM-Boot.en| loading EEPROM]].**Not booting from USB/NVMe?**
 Order in EEPROM (`BOOT_ORDER`), fresh bootloader firmware, `dtparam=pciex1` for NVMe.
 
 **Forgot your password/don't have SSH?**
@@ -29,10 +29,10 @@ Flash from Imager with a new user, data from the backup. Or monitor+keyboard loc
 
 ## GPIO and iron
 
-**Burned the pin with 5 volts - what to do?** Nothing, the pin is dead. Move to a free GPIO and install a level converter. Details: [[03-GPIO/01-Header-Gpiozero | comb and gpiozero]].**I2C not seeing sensor?**`i2cdetect -y 1`, check SDA/SCL places, braces, SDO address. Details: [[04-Interfaces/01-I2C-SPI-UART.en | tires]].**HAT not detected?**Either it is a shield without EEPROM (manual dtoverlay) or ID pin conflict. Details: [[03-GPIO/03-HAT-EEPROM | HAT and EEPROM]].
+**Burned the pin with 5 volts - what to do?** Nothing, the pin is dead. Move to a free GPIO and install a level converter. Details: [[EN/03-GPIO/01-Header-Gpiozero.en| comb and gpiozero]].**I2C not seeing sensor?**`i2cdetect -y 1`, check SDA/SCL places, braces, SDO address. Details: [[04-Interfaces/01-I2C-SPI-UART.en | tires]].**HAT not detected?**Either it is a shield without EEPROM (manual dtoverlay) or ID pin conflict. Details: [[EN/03-GPIO/03-HAT-EEPROM.en| HAT and EEPROM]].
 ## Network
 
-**WiFi not seeing 5GHz?**The country is not displayed. `raspi-config` → WiFi-country. Details: [[05-Radio/01-WiFi-BT-Bort | onboard radio]].**Network drops every hour?**
+**WiFi not seeing 5GHz?**The country is not displayed. `raspi-config` → WiFi-country. Details: [[EN/05-Radio/01-WiFi-BT-Onboard.en| onboard radio]].**Network drops every hour?**
 WiFi power management. Disable PM, add a watchdog script.
 
 **How to enter from outside without a white IP?**
@@ -43,8 +43,8 @@ Tailscale or WireGuard. Port forwarding is a last resort with fail2ban.
 **`pip install` refuses?**Bookworm protects system Python (PEP 668). Work at venv. Details: [[09-Firmware/03-OS-Setup.en | OS settings]].**Service does not start after reboot?**
 `enable` was forgotten or the paths are relative. `systemctl status`, absolute paths, `journalctl -u`.
 
-**Old code from raspistill not working?**Stack removed. Rewrite on Picamera2. Details: [[10-Sensors/06-Kamera-CSI | CSI camera]].
-## Where to search next- Base map: [[Home | main map]].- Diagnosis by symptoms: [[99-Additions/03-Diagnostic-Map | diagnostic card]] - queue note 4.- Datasheets: [[99-Additions/02-Datasheet-Links | links to datasheets]].
+**Old code from raspistill not working?**Stack removed. Rewrite on Picamera2. Details: [[EN/10-Sensors/06-CSI-Camera.en| CSI camera]].
+## Where to search next- Base map: [[Home | main map]].- Diagnosis by symptoms: [[EN/99-Additions/03-Diagnostic-Map.en| diagnostic card]] - queue note 4.- Datasheets: [[EN/99-Additions/02-Datasheet-Links.en| links to datasheets]].
 
 ## Common issues
 

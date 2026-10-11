@@ -149,4 +149,4 @@ flowchart TB
 - [[EN/10-Sensors/07-CO2-SCD40-MH-Z19.en|accurate carbon dioxide gas]]
 - [[EN/06-Analog/01-ADC.en|signal measurement]]
 - [[EN/02-Power-Supply/01-Power-Supply-Rails.en|power supply rails]]
-- [[16-Projects/01-Meteostantsiya|weather node]]
+- [[EN/16-Projects/01-Weather-Station.en|weather node]]

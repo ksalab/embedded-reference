@@ -4,6 +4,7 @@ title: WT32-ETH01 і Olimex ESP32-EVB/GATEWAY - Ethernet + WiFi плати
 tags: [esp32, devboards, wt32-eth01, olimex, evb, gateway, ethernet, lan8720, poe]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # WT32-ETH01 / Olimex
@@ -131,7 +132,7 @@ ESP-IDF: компонент `esp_eth` + `esp_netif`, приклад `ethernet/ba
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![[assets/img/devboard-wt32-eth01.png|600]]
+> [!example] Фото/схема:![[assets/img/devboard-wt32-eth01.png|600]]
 
 ```text
 WT32-ETH01: [FTDI 3.3V] ─TX─► GPIO3 / ─RX─◄ GPIO1 / GND──►GND

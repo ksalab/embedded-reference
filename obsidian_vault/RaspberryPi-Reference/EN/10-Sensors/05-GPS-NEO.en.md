@@ -160,7 +160,7 @@ Haversine computes the distance between points. Filter: ignore jumps above 200 k
 
 - [[EN/04-Interfaces/01-I2C-SPI-UART.en|I2C/SPI/UART buses]] - UART in detail.
 - [[EN/10-Sensors/02-MPU6050-Motion.en|MPU6050 motion]] - heading with no satellites.
-- [[16-Projects/02-GPS-Treker|ready GPS tracker]] - full project.
+- [[EN/16-Projects/02-GPS-Tracker.en|ready GPS tracker]] - full project.
 - [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - chrony and time.
 - [[Home.en|main map]] - full navigation.
 

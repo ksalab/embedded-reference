@@ -63,7 +63,7 @@ TPS25750 negotiates on its own (resistor/EEPROM config), STM32 only reads status
 
 - profile picked with pins/resistors (datasheet table);
 - EEPROM option - for series with identical demands;
-- ask the minimum that covers peak + 30 %;
+- ask the minimum that covers peak + 30%;
 - 5V fallback - if the charger is not PD (plain port);
 - contract LED - visible proof of agreement.
 
@@ -146,13 +146,13 @@ VBUS divider 4:1 - 20V fits into the 3.3V ADC. Contract check before relay turn-
 | Always 5V though 15V asked | charger not PD / cable without CC | PD charger + full cable |
 | Reset at contract moment | load enabled too early | VBUS switch after contract |
 | Works every other time | CC contact dirty | connector cleaning, another cable |
-| Buck heats | efficiency at current limit | 30 % margin, heatsink |
+| Buck heats | efficiency at current limit | 30% margin, heatsink |
 | Status lies | GPIO pull | explicit pull-down, filter |
 | 20V on the board | config mistake | verify profile before turn-on! |
 
 ## 9. PD cheat sheet
 
-- profile = peak + 30 %;
+- profile = peak + 30%;
 - load after contract;
 - TVS + fuse on VBUS;
 - 5V fallback always planned;
@@ -162,8 +162,8 @@ VBUS divider 4:1 - 20V fits into the 3.3V ADC. Contract check before relay turn-
 
 - [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Power supply chains]] - power base.
 - [[02-Power-Supply/03-Power-Design.en | Power supply calculation]] - currents and heat.
-- [[13-Power-Modules/01-Buck-Boost | Buck/Boost modules]] - converters.
-- [[06-Analog/01-ADC | Analog ADC]] - VBUS measurement.
+- [[EN/13-Power-Modules/01-Buck-Boost.en| Buck/Boost modules]] - converters.
+- [[EN/06-Analog/01-ADC.en| Analog ADC]] - VBUS measurement.
 - [[Home.en | Main map]] - full navigation.
 
 ## Official sources

@@ -258,7 +258,7 @@ flowchart TB
 
 Feed the transceiver from five volts with a separate ceramic capacitor near the package. Join controller and transceiver ground with a short trace with no splits. Route CANH and CANL as an equal-length pair, away from switching converters. Ground the cable shield at one point to avoid a loop.
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Fix |
 | --- | --- | --- | --- |
@@ -270,7 +270,7 @@ Feed the transceiver from five volts with a separate ceramic capacitor near the 
 | 6 | Direct join with no transceiver | Different levels and spikes kill pins | Always a transceiver between controller and line |
 | 7 | Shared crystal with no recount | Bus speed drifts after clock tree change | Recount timing after every clock tree change |
 
-## Official Sources
+## Official sources
 
 - [FDCAN description STM32G4 (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32g4-series.html) - controller, modes, examples.
 - [AN5348 FDCAN configuration (ST)](https://www.st.com/resource/en/application_note/an5348-fdcan-configuration-stmicroelectronics.pdf) - bit timing and filters.
@@ -280,8 +280,8 @@ Feed the transceiver from five volts with a separate ceramic capacitor near the 
 
 - [[Home.en]]
 - [[01-Hardware/03-G0-G4.en | Modern G0 and G4]]
-- [[09-Firmware/01-CubeIDE-CubeMX | CubeMX setup]]
-- [[09-Firmware/02-HAL-LL | HAL and LL layers]]
+- [[EN/09-Firmware/01-CubeIDE-CubeMX.en| CubeMX setup]]
+- [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
 - [[03-GPIO/01-GPIO-rezhimi.en | GPIO modes]]
 - [[04-Interfaces/05-USB.en | USB port]]
 - [[04-Interfaces/06-SDMMC-QUADSPI.en | Cards and external flash]]

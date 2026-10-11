@@ -4,6 +4,7 @@ title: E-Ink / E-Paper - контролери, розміри, partial refresh, 
 tags: [esp32, eink, epaper, gxepd2, ssd1680, ssd1675, il0373, uc8151, uc8176, waveshare, despi, spi, deep-sleep]
 category: Vivid
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # E-Ink / E-Paper - контролери, розміри, оновлення, живлення

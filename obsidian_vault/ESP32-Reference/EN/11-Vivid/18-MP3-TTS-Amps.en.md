@@ -100,7 +100,7 @@ Serial.write(0xB8); Serial.write(0xEF);
 ## SD card and FAT32 for MP3 modules
 
 - Format microSD as FAT32 (not exFAT); cluster size 4096-8192.
-- File names: 3-digit number with leading zeros (`001.mp3` ... `999.mp3`).
+- File names: 3-digit number with leading zeros (`001.mp3`... `999.mp3`).
 - Bitrate: 128-320 kbps MP3; 44.1 kHz; stereo/mono both work.
 - BY8301 / DY-SV5W may support USB flash instead of SD.
 - Do not use long file names or folders; put in root.
@@ -210,6 +210,24 @@ void readSpectrum() {
 - [MSGEQ7 datasheet](https://www.sparkfun.com/products/110) - spectrum analyzer timing.
 - [PT2399 datasheet](https://www.datasheetarchive.com) - analog delay specs.
 
+![[assets/img/placeholder.png|600]]
+*Fig. 1. MP3/TTS amplifier chain: ESP32 UART control, MP3 module SD playback, amplifier to speaker, mic preamp return.*
+
+### Sound chain
+
+```mermaid
+flowchart LR
+    ESP["ESP32<br/>UART control"]
+    MP3["MP3 module<br/>JQ6500 KT403A<br/>SD FAT32"]
+    TTS["TTS module<br/>SYN6288<br/>UART text"]
+    AMP["Amplifier<br/>PAM8403 TPA3116"]
+    SPK["Speaker<br/>4-8 Ohm"]
+    ESP --> MP3
+    ESP --> TTS
+    MP3 --> AMP
+    TTS --> AMP
+    AMP --> SPK
+```
 ## See also
 
 - [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|DFPlayer / MAX98357A]] - simpler MP3 + amp.

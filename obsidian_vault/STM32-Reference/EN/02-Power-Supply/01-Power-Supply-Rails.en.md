@@ -102,7 +102,7 @@ Modern chips have a programmable choice of core power source: linear regulator, 
 
 The choice is set by joining power pins and configuration bits. A wrong combination leaves the chip unable to start or overheating. Before routing, check the power chapter of the datasheet of the specific part.
 
-For low-consumption families the mode choice affects sleep current. For details see [[01-Hardware/05-L0-L4-U5.en | Low-power chips]] and [[07-Timers/03-Sleep-Stop-Standby | Sleep modes]].
+For low-consumption families the mode choice affects sleep current. For details see [[01-Hardware/05-L0-L4-U5.en | Low-power chips]] and [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]].
 
 The SMPS converter needs an external inductor of the stated value and filter capacitors. The inductor goes close to the chip, the current loop is kept minimal. No sensitive analog traces are routed under the inductor.
 
@@ -145,9 +145,9 @@ PVD and BOR thresholds are matched to each other. The PVD threshold goes above t
 
 Test points for measuring buses with a multimeter and oscilloscope are planned on the board. A reverse-polarity protection diode and a surge suppressor go next to the power connector.
 
-Bus monitoring via ADC is described in [[06-Analog/01-ADC | ADC measurements]]. It also shows how to measure the internal reference voltage and recalculate the supply level with no external divider.
+Bus monitoring via ADC is described in [[EN/06-Analog/01-ADC.en| ADC measurements]]. It also shows how to measure the internal reference voltage and recalculate the supply level with no external divider.
 
-Board firmware after assembly is flashed via the debug interface, details at [[09-Firmware/03-ST-Link-Proshivka | ST-Link flashing]].
+Board firmware after assembly is flashed via the debug interface, details at [[EN/09-Firmware/03-ST-Link-Flashing.en| ST-Link flashing]].
 
 ## 8. Analog ground and single-point joining
 
@@ -270,7 +270,7 @@ The PVD interrupt gets high priority to make it before the reset circuit fires. 
 | Heating | Touch with a finger or a thermal camera after ten minutes of work |
 | BOR reset | Lower power smoothly with a lab PSU, record the threshold |
 
-If the board draws many times the calculated current, look for a pin in short circuit, an unterminated input floating in the air, or an unprogrammed port in a level fight. For sleep and wakeup details see [[07-Timers/03-Sleep-Stop-Standby | Sleep modes]].
+If the board draws many times the calculated current, look for a pin in short circuit, an unterminated input floating in the air, or an unprogrammed port in a level fight. For sleep and wakeup details see [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]].
 
 The battery continuation of the topic with chemistries and charging is given in [[02-Power-Supply/02-Batareyne-zhivlennya.en | Node battery power]].
 
@@ -299,6 +299,6 @@ The battery continuation of the topic with chemistries and charging is given in 
 - [[02-Power-Supply/02-Batareyne-zhivlennya.en | Node battery power]]
 - [[01-Hardware/04-H5-H7.en | H5 and H7 flagships]]
 - [[01-Hardware/05-L0-L4-U5.en | Low-power chips]]
-- [[06-Analog/01-ADC | ADC measurements]]
-- [[07-Timers/03-Sleep-Stop-Standby | Sleep modes]]
-- [[09-Firmware/03-ST-Link-Proshivka | ST-Link flashing]]
+- [[EN/06-Analog/01-ADC.en| ADC measurements]]
+- [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en| ST-Link flashing]]

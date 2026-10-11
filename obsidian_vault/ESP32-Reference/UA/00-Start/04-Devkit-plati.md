@@ -1,5 +1,6 @@
 ---
 title: DevKit плати ESP32 - вибір та живлення
+description: Допомагає вибрати DevKit плату ESP32 та її живлення: DOIT V1, S3-DevKitC, C3 SuperMini; показує схеми підключення.
 tags:
 
   - esp32
@@ -15,6 +16,7 @@ aliases:
   - 04-Devkit-plati
 
 type: guide
+date: 2026-10-08
 ---
 
 # DevKit плати - вибір та живлення
@@ -77,7 +79,7 @@ EN version: `00-Start/04-Dev-Boards.en.md`
 
 ## Типові схеми живлення
 
-> [!example] Фото/схема: ![[assets/img/devkit-boards-compare.png|600]]
+> [!example] Фото/схема:![[assets/img/devkit-boards-compare.png|600]]
 > Еталон: живлення DevKit від USB + зовнішній датчик 5V:
 
 | ESP32 DevKit | Зовнішній модуль | Примітка |

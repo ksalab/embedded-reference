@@ -151,4 +151,4 @@ server.on("/metrics", []() {
 - [[15-Protocols/05-Cloud-Pipeline.en | Cloud-Pipeline]]
 - [[15-Protocols/12-AWS-IoT.en | 12-AWS-IoT]]
 - [[15-Protocols/13-Azure-IoT.en | 13-Azure-IoT]]
-- [[12-Comm-Modules/13-Camera-Streaming | Камера-стримінг]]
+- [[EN/12-Comm-Modules/13-Camera-Streaming.en| Камера-стримінг]]

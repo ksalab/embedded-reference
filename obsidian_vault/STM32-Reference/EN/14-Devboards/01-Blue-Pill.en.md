@@ -196,24 +196,24 @@ flowchart TB
 | Точний годинник | No 32 kHz crystal | Плата with годинниковим кварцом |
 | Налагодження with коробки | Треба зовнішній програматор | Плата with вбудованим дебагером |
 
-## typical errors
+## Common issues
 
-| # | error | Чому погано | how правильно |
-| --- | --- | --- | --- |
-| 1 | Прошивка via роз'єм живлення | Там немає ліній даних | Налагоджувач або послідовний порт |
-| 2 | Перемичка лишилась in одиниці | Плата завжди in завантажувачі | Повернути in нуль and скинути |
-| 3 | Живлення радіо від плати | Просідання and перезапуски | Окреме source зі спільною землею |
-| 4 | Довіра маркуванню пам'яті | Клон with іншим обсягом | check утилітою перед проєктом |
-| 5 | 5 V on нетолерантний вхід | Пробій піна | table толерантності in паспорті |
-| 6 | LED шукають одиницею | Він активним нулем | Нуль запалює, одиниця гасить |
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Flashing via the power connector fails | No data lines on that connector | Use a debugger or the serial port |
+| Board always enters the bootloader | Jumper left at one | Return it to zero and reset |
+| Powering a radio from the board | Sagging and restarts | Separate supply with common ground |
+| Trusting the memory marking | Clone with different size | Check with the utility before the project |
+| 5 V on a non-tolerant input | Pin breakdown | Tolerance table in the datasheet |
+| LED searched with a one | It is active low | Zero lights it, one turns it off |
 
-## official джерела
+## Official sources
 
-- [Controller середньої щільності (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32f103c8.html) - паспорт, пам'ять and піни.
-- [Заводський завантажувач for кожного чипа (ST)](https://www.st.com/resource/en/application_note/an2606-stm32-microcontroller-system-memory-boot-mode-stmicroelectronics.pdf) - режими and порти прошивки.
-- [Утиліти програматора with відкритим кодом (GitHub)](https://github.com/stlink-org/stlink) - check обсягу and заливка.
+- [Medium-density controller (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32f103c8.html) - datasheet, memory and pins.
+- [Factory bootloader for each chip (ST)](https://www.st.com/resource/en/application_note/an2606-stm32-microcontroller-system-memory-boot-mode-stmicroelectronics.pdf) - modes and flashing ports.
+- [Open-source programmer utilities (GitHub)](https://github.com/stlink-org/stlink) - size check and flashing.
 
-## Див. також
+## See also
 
 - [[Home.en]]
 - [[01-Hardware/01-F0-F1-Classic.en | F0/F1 classic]]

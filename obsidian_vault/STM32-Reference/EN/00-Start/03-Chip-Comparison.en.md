@@ -151,5 +151,5 @@ Check: `st-info --probe` (chip ID + flash size), then a CubeMX blink, then a tes
 ## See also
 
 - [[Home.en]]
-- [[00-Start/04-Devkit-plati| DevKit boards]]
-- [[00-Start/05-Vibir-seredovischa| Environment choice]]
+- [[EN/00-Start/04-Dev-Boards.en| DevKit boards]]
+- [[EN/00-Start/05-Environment-Choice.en| Environment choice]]

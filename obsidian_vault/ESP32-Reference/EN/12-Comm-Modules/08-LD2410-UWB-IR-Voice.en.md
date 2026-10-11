@@ -5,6 +5,7 @@ title: LD2410 радар, DWM1000 UWB, VS1838 IR, SU-03T голос
 description: LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування - LD2410 mmWave-радар присутності (UART + OUT); Легенда пінів модуля LD2410; ASCII-схема; shows schematics, code and tables.
 tags: [esp32, ld2410, mmwave, radar, uwb, dwm1000, ir, vs1838, rmt, voice, su-03t]
 date: 2026-10-08
+original: 12-Moduli-zvyazku/08-LD2410-UWB-IR-Voice.md
 ---
 
 # LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування
@@ -21,11 +22,11 @@ date: 2026-10-08
 | VS1838B | ІЧ-фотоприймач 38 кГц | Цифровий OUT | 3.3V (або 5V with дільником OUT) | 5-10 м (with пультом) | Демодулятор всередині; ESP32 RMT декодує NEC/RC5 |
 | SU-03T | Voice AI (NPU офлайн) | UART 115200 + GPIO-виходи | 5V | Мікрофон 3-5 м | Прошивка команд via WiseLight; відповідь синтезом/пінами |
 
-Навігація: UART [[04-Interfaces/01-UART|UART]], SPI [[04-Interfaces/02-SPI|SPI]], I2C [[04-Interfaces/03-I2C|I2C]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]], радіомодулі [[EN/12-Comm-Modules/02-NRF24-LoRa.en]], start [[EN/Home.en]].
+Навігація: UART [[EN/04-Interfaces/01-UART.en|UART]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], I2C [[EN/04-Interfaces/03-I2C.en|I2C]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], радіомодулі [[EN/12-Comm-Modules/02-NRF24-LoRa.en]], start [[EN/Home.en]].
 
 ## Purpose
 
-LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування - LD2410 mmWave-радар присутності (UART + OUT); Легенда пінів модуля LD2410; ASCII-схема. LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування. Навігація: UART [[04-Interfaces/01-UART|UART]], SPI [[04-Interfaces/02-SPI|SPI]], I2C [[04-Interfaces/03-I2C|I2C]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]], радіомодулі 12-Comm-Modules/02-NRF24-LoRa, start Home.
+LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування - LD2410 mmWave-радар присутності (UART + OUT); Легенда пінів модуля LD2410; ASCII-схема. LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування. Навігація: UART [[EN/04-Interfaces/01-UART.en|UART]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], I2C [[EN/04-Interfaces/03-I2C.en|I2C]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], радіомодулі 12-Comm-Modules/02-NRF24-LoRa, start Home.
 
 ## 1. LD2410 mmWave-радар присутності (UART + OUT)
 
@@ -89,7 +90,7 @@ UWB-module Decawave DW1000: вимірює **час прольоту** раді�
 | MOSI | Вхід SPI | GPIO23 | VSPI MOSI |
 | MISO | Вихід SPI | GPIO19 | VSPI MISO |
 | CS | Вхід SPI | GPIO5 | Chip select |
-| RST (RSTn) | Вхід, active low | GPIO15 | Апаратний reset: LOW 10 мс at startі |
+| RST (RSTn) | Вхід, active low | GPIO15 | Апаратний reset: LOW 10 мс at старті |
 | IRQ | Вихід | GPIO4 | Переривання RX/TX done - обов'язково for TWR-таймінгів |
 | WAKEUP | Вхід | NC / 3V3 | for сну; in базовому прикладі NC |
 | ANT | Вбудована антена | Вільний простір! | not закривати металом/рукою; орієнтація модулів однакова; відстань from ESP32-антени ≥5 см |
@@ -376,10 +377,10 @@ ESP32 GPIO4 ◄── OUT LD2410C/LD2420 (HIGH=присутність, як PIR)
 
 ## See also
 
-- [[04-Interfaces/01-UART|UART]] - UART2 for LD2410/SU-03T, швидкості 256000/115200
-- [[04-Interfaces/02-SPI|SPI]] - VSPI for DWM1000, вимоги до довжини
-- [[04-Interfaces/03-I2C|I2C]] - шини датчиків (резервні інтерфейси)
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]] - LDO, ферити, електроліти for радіо
+- [[EN/04-Interfaces/01-UART.en|UART]] - UART2 for LD2410/SU-03T, швидкості 256000/115200
+- [[EN/04-Interfaces/02-SPI.en|SPI]] - VSPI for DWM1000, вимоги до довжини
+- [[EN/04-Interfaces/03-I2C.en|I2C]] - шини датчиків (резервні інтерфейси)
+- [[EN/02-Power-Supply/01-Power-Rails.en]] - LDO, ферити, електроліти for радіо
 - [[EN/12-Comm-Modules/01-RC522-RFID.en]] - антенні практики (метал, орієнтація)
 - [[EN/12-Comm-Modules/02-NRF24-LoRa.en]] - радіодальність, порівняння with UWB
-- [[EN/Home.en]] - startова сторінка довідника
+- [[EN/Home.en]] - стартова сторінка довідника

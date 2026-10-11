@@ -1,10 +1,12 @@
 ---
-description: Ця нота - міст from «лабораторних» кнопок ([[10-Sensors/34-Buttons-Switches-Pots]]) до цехових дискретних входів: безконтактні датчики наближення (proximity), які самі живляться from 12/24 in...; shows schematics, code and tables.
+description: Ця нота - міст from «лабораторних» кнопок ([[EN/10-Sensors/34-Buttons-Switches-Pots.en]]) до цехових дискретних входів: безконтактні датчики наближення (proximity), які самі живляться from 12/24 in...; shows schematics, code and tables.
 title: Промислові дискретні входи ESP32 - індуктивні LJ12A3, ємнісні LJC, фотоелектричні E18-D80NK, through-beam, retroreflective, щілинні TCST2103, NPN/PNP sinking-sourcing, опторозв'язка PC817 for 12-24V, сухий контакт, ізольовані 8ch
 tags: [esp32, proximity, inductive, capacitive, photoelectric, npn, pnp, optocoupler, pc817, industrial, dry-contact, isolated-input]
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/14-Proximity-Inputs.md
 ---
 
 # Промислові дискретні входи: індуктивні LJ12A3, ємнісні, фотоелектричні E18-D80NK, NPN/PNP, PC817 for 12/24 in, сухий контакт, ізольовані 8ch
@@ -13,14 +15,14 @@ date-created: 2026-09-29
 *Fig. 1. Промислові входи ESP32: індуктивний LJ12A3 per металу, дифузний E18-D80NK, вилочний TCST2103, NPN/PNP via PC817 with 24 in on 3.3 in GPIO.*
 
 > [!danger] 12/24 in - not in GPIO!
-> Індуктивні/ємнісні/фотоелектричні датчики живляться from **6-36 in** and видають стільки ж on виході. Пряме підключення вб'є ESP32. Правило: **дільник for лабораторії, оптопара PC817 for цеху**. Див. [[13-Power-Modules/02-Level-Shifters|Level-shifters]] та [[12-Comm-Modules/10-Industrial|Industrial fieldbus]].
+> Індуктивні/ємнісні/фотоелектричні датчики живляться from **6-36 in** and видають стільки ж on виході. Пряме підключення вб'є ESP32. Правило: **дільник for лабораторії, оптопара PC817 for цеху**. Див. [[EN/13-Power-Modules/02-Level-Shifters.en|Level-shifters]] та [[EN/12-Comm-Modules/10-Industrial.en|Industrial fieldbus]].
 >
 > [!tip] Де this живе
 > Кінцевик осі ЧПК (LJ12A3 бачить гайку каретки), контроль наявності деталі (ємнісний LJC бачить пластик/рідину), лічильник пляшок on конвеєрі (E18-D80NK), енкодер принтера/лічильник обертів (TCST2103), кнопки пульта 24 in in шафі керування (PC817), «сухий контакт» реле/геркона, 8-канальна ізольована плата входів ПЛК-стилю.
 
 ## Purpose
 
-Ця нота - міст from «лабораторних» кнопок ([[10-Sensors/34-Buttons-Switches-Pots]]) до цехових дискретних входів: безконтактні датчики наближення (proximity), які самі живляться from 12/24 in and самі перемикають вихід, та способи безпечно завести їх in 3.3 in GPIO ESP32. on відміну from сухої кнопки (пасивний контакт), proximity-датчик - **активний 3-дротовий пристрій**: коричневий `BN = +V`, синій `BU = GND`, чорний `BK = вихід`.
+Ця нота - міст from «лабораторних» кнопок ([[EN/10-Sensors/34-Buttons-Switches-Pots.en]]) до цехових дискретних входів: безконтактні датчики наближення (proximity), які самі живляться from 12/24 in and самі перемикають вихід, та способи безпечно завести їх in 3.3 in GPIO ESP32. on відміну from сухої кнопки (пасивний контакт), proximity-датчик - **активний 3-дротовий пристрій**: коричневий `BN = +V`, синій `BU = GND`, чорний `BK = вихід`.
 
 that покрито: індуктивні LJ12A3 (метал, 4 мм!), ємнісні LJC18 (метал/пластик/рідина), фотоелектричні дифузні E18-D80NK with підстроюванням дистанції, through-beam (випромінювач + приймач) та retroreflective (датчик + катафот) оглядово, щілинні/вилочні TCST2103 (енкодери принтера, лічильники обертів!), NPN vs PNP виходи + sinking/sourcing with обома схемами, дільник напруги vs опторозв'язка PC817 for 12/24 in with розрахунком резистора світлодіода, поняття «сухий контакт», оглядові ізольовані 8-канальні плати входів ПЛК-стилю.
 
@@ -436,8 +438,8 @@ while True:
 
 ## See also
 
-- [[Home|Головна карта довідника]]
-- [[03-GPIO/03-Pidtyaguvannya-rivni|Підтяжки та рівні 3.3V/5V]]
-- [[13-Power-Modules/02-Level-Shifters|Level-shifters та опторозв'язка]]
-- [[12-Comm-Modules/10-Industrial|Industrial fieldbus: CAN/DMX/4-20мА/TRIAC]]
-- [[10-Sensors/34-Buttons-Switches-Pots|Кнопки, тумблери, E-Stop, потенціометри]]
+- [[Home.en|Головна карта довідника]]
+- [[EN/03-GPIO/03-Pull-Ups-Levels.en|Підтяжки та рівні 3.3V/5V]]
+- [[EN/13-Power-Modules/02-Level-Shifters.en|Level-shifters та опторозв'язка]]
+- [[EN/12-Comm-Modules/10-Industrial.en|Industrial fieldbus: CAN/DMX/4-20мА/TRIAC]]
+- [[EN/10-Sensors/34-Buttons-Switches-Pots.en|Кнопки, тумблери, E-Stop, потенціометри]]

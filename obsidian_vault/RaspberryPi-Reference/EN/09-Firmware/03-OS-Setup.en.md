@@ -109,7 +109,7 @@ journalctl -u climate.service -f
 | --- | --- | --- |
 | Temperature | `vcgencmd measure_temp` | > 75 C - act |
 | Throttling | `vcgencmd get_throttled` | not 0x0 - power/heat |
-| Disk | `df -h` | > 85 % - clean |
+| Disk | `df -h` | > 85% - clean |
 | Memory | `free -h` | swap grows - add RAM/zram |
 | Services | `systemctl --failed` | empty |
 
@@ -138,7 +138,7 @@ journalctl -u climate.service -f
 - [[EN/09-Firmware/01-Imager-Headless.en|Imager flashing]] - clean install.
 - [[EN/09-Firmware/02-EEPROM-Boot.en|EEPROM boot]] - boot order.
 - [[EN/03-GPIO/01-Header-Gpiozero.en|header and gpiozero]] - first code on the system.
-- [[15-Protocols/01-MQTT|MQTT protocol]] - telemetry service.
+- [[EN/15-Protocols/01-MQTT.en|MQTT protocol]] - telemetry service.
 - [[EN/08-Memory/01-SD-eMMC-NVMe.en|storage media]] - protect the SD.
 
 ## 10. OS cheat sheet

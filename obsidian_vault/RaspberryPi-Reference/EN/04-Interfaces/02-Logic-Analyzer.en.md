@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Analyzer listens to the bus in parallel: clone ground to board ground, channels to signals, decoder shows bytes.*
 
 > [!tip] What this note is
-> Tool number 1 when "the bus stays silent": we see who is guilty - software, address, levels or wires. A 10-dollar clone plus PulseView covers 95 % of tasks. Base: [[04-Interfaces/01-I2C-SPI-UART.en | I2C/SPI/UART buses]], [[03-GPIO/01-Header-Gpiozero.en | header and gpiozero]].
+> Tool number 1 when "the bus stays silent": we see who is guilty - software, address, levels or wires. A 10-dollar clone plus PulseView covers 95% of tasks. Base: [[04-Interfaces/01-I2C-SPI-UART.en | I2C/SPI/UART buses]], [[03-GPIO/01-Header-Gpiozero.en | header and gpiozero]].
 
 ## 1. Goal
 
@@ -151,7 +151,7 @@ Self-check before the analyzer: half the problems are inattention, not hardware.
 - [[04-Interfaces/01-I2C-SPI-UART.en | I2C/SPI/UART buses]] - what we listen to.
 - [[03-GPIO/01-Header-Gpiozero.en | header and gpiozero]] - where to clip.
 - [[02-Power-Supply/01-USB-C-PD.en | USB-C power]] - when power is guilty.
-- [[17-Lab/01-Priladi | instrument room]] - full lab bench.
+- [[EN/17-Lab/01-Instruments.en| instrument room]] - full lab bench.
 - [[Home.en | main map]] - full navigation.
 
 ## Official sources

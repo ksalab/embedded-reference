@@ -15,7 +15,7 @@ date: 2026-10-08
 > [!warning] Відкритий портал provisioning without password and таймауту - дірка: будь-хто поруч перехопить пристрій!
 > Пароль on SoftAP, таймаут порталу 3-5 хв, після успіху - гасити AP and чистити NVS at потребі.
 
-База WiFi: [[05-Radio/01-WiFi-STA-AP]], зберігання облікових [[08-Memory/01-Partitions-NVS]], далі MQTT [[15-Protocols/01-MQTT|MQTT]], старт [[Home]].
+База WiFi: [[EN/05-Radio/01-WiFi-STA-AP.en]], зберігання облікових [[EN/08-Memory/01-Partitions-NVS.en]], далі MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], старт [[Home.en]].
 
 ## Призначення
 
@@ -235,15 +235,15 @@ except OSError:
 
 ## Див. також
 
-- [[Home]]
-- [[05-Radio/01-WiFi-STA-AP|WiFi STA/AP]] - режими, that перемикає provisioning
-- [[08-Memory/03-OTA|OTA]] - оновлення вже provisioned-пристроїв
-- [[08-Memory/01-Partitions-NVS|NVS]] - де лежать облікові, стирання
-- [[99-Additions/02-Troubleshooting-FAQ|FAQ]] - портал not стартує, цикли
-- [[15-Protocols/01-MQTT|MQTT]] - наступний крок після WiFi
-- [[15-Protocols/02-HTTP-WebSocket|HTTP/WebSocket]] - наступний крок після WiFi
-- [[15-Protocols/03-mDNS-NTP-TLS|mDNS/NTP/TLS]] - знахідка пристрою після provision
-- [[15-Protocols/05-Cloud-Pipeline|Cloud-Pipeline]] - куди течуть дані
+- [[Home.en]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - режими, that перемикає provisioning
+- [[EN/08-Memory/03-OTA.en|OTA]] - оновлення вже provisioned-пристроїв
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - де лежать облікові, стирання
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - портал not стартує, цикли
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - наступний крок після WiFi
+- [[EN/15-Protocols/03-HTTP-Client.en|HTTP/WebSocket]] - наступний крок після WiFi
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS/NTP/TLS]] - знахідка пристрою після provision
+- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud-Pipeline]] - куди течуть дані
 
 ## Common issues
 

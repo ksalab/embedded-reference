@@ -226,4 +226,4 @@ flowchart TB
 - [[Home.en]]
 - [[EN/04-Interfaces/01-UART.en|serial port]]
 - [[EN/15-Protocols/02-MQTT-ESP.en|cloud through ESP]]
-- [[16-Projects/02-Rozumniy-dim|home automation]]
+- [[EN/16-Proekti/02-Smart-Home.en|home automation]]

@@ -201,5 +201,5 @@ Before handing over a batch, run three checks from the vault root. First style, 
 ## See also
 
 - [[Home.en]]
-- [[00-Start/02-Glosariy| glossary of terms]]
-- [[00-Start/03-Porivnyannya-plat| board comparison]]
+- [[EN/00-Start/02-Glossary.en| glossary of terms]]
+- [[EN/00-Start/03-Board-Comparison.en| board comparison]]

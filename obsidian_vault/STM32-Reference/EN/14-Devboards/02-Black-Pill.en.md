@@ -213,27 +213,27 @@ flowchart TB
 | Обриви on швидкості | Довгий кабель | Короткий якісний кабель |
 | Скидання at передачі | Слабке живлення | Живити від блока, not від хаба |
 
-## typical errors
+## Common issues
 
-| # | error | Чому погано | how правильно |
-| --- | --- | --- | --- |
-| 1 | Очікування драйвера вручну | Сучасні системи бачать порт самі | verify диспетчер пристроїв після прошивки |
-| 2 | Блокуюча відправка у перериванні | Зависання стеку пристрою | Відправка тільки with основного циклу |
-| 3 | Довгий кабель for живлення and даних | Просідання and обриви | Короткий кабель and окреме живлення for навантаження |
-| 4 | Плутанина варіантів контролера | Різний обсяг пам'яті | Читати маркування and конфігуратор |
-| 5 | Ігнор тактування 48 МГц | Ядро живе, порт мовчить | Спочатку дерево частот, потім стек |
-| 6 | Кнопка режиму без скидання | Завантажувач not стартує | Тримати кнопку and тиснути скидання |
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Waiting for a manual driver | Modern systems see the port themselves | Check the device manager after flashing |
+| Blocking send in the interrupt | Device stack hang | Send only from the main loop |
+| Long cable for power and data | Sagging and breaks | Short cable and separate supply for the load |
+| Confusing the controller variants | Different memory size | Read the marking and the configurator |
+| Ignoring the 48 MHz clock | Core alive, port silent | Clock tree first, then the stack |
+| Mode button without reset | Bootloader does not start | Hold the button and press reset |
 
-## official джерела
+## Official sources
 
-- [Контролер F401CC with комою (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32f401cc.html) - частоти, пам'ять and порт.
-- [Контролер F411CE with запасом (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32f411ce.html) - відмінності старшого варіанта.
-- [Нота про порт пристрою повної швидкості (ST)](https://www.st.com/resource/en/application_note/an4879-usb-hardware-and-pcb-guidelines-using-stm32-mcus-stmicroelectronics.pdf) - плата and узгодження ліній.
+- [F401CC controller with FPU (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32f401cc.html) - frequencies, memory and port.
+- [F411CE controller with reserve (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32f411ce.html) - differences of the senior variant.
+- [Full-speed device port note (ST)](https://www.st.com/resource/en/application_note/an4879-usb-hardware-and-pcb-guidelines-using-stm32-mcus-stmicroelectronics.pdf) - board and line matching.
 
-## Див. також
+## See also
 
-- [[Home]]
-- [[14-Devboards/01-Blue-Pill|плата Blue Pill]]
-- [[09-Firmware/03-ST-Link-Proshivka|прошивка via ST-Link]]
-- [[04-Interfaces/01-UART|послідовний порт UART]]
-- [[00-Start/04-Devkit-plati|огляд плат]]
+- [[Home.en]]
+- [[EN/14-Devboards/01-Blue-Pill.en|плата Blue Pill]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|прошивка via ST-Link]]
+- [[EN/04-Interfaces/01-UART.en|послідовний порт UART]]
+- [[EN/00-Start/04-Dev-Boards.en|огляд плат]]

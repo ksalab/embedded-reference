@@ -35,7 +35,8 @@ SKIP = {
     "CHANGELOG.md", "TODO.md", "TODO-UNIFY.md", "Home.md",
     "Component-Template.md", "README.md", "COMPONENTS.md",
 }
-SKIP_DIRS = {"_templates", "99-Dodatki", "00-Start"}
+SKIP_DIRS = {"_templates", "99-Dodatki", "99-Additions", "00-Start"}
+LANG_DIRS = {"EN", "UA"}
 
 CHECKS = ("frontmatter", "image", "mermaid", "errors", "sources", "length")
 
@@ -85,6 +86,7 @@ def check_file(p: pathlib.Path) -> list[str]:
     if not m:
         return ["no-frontmatter"]
     fm = m.group(1)
+    body_start = m.end()
     for field in ("title:", "description:", "tags:", "category:", "date"):
         if field == "date":
             if not re.search(r"^date", fm, re.M):
@@ -131,7 +133,7 @@ def check_file(p: pathlib.Path) -> list[str]:
         bad.append("thin")
     # 7. title vs H1: спільний токен 3+
     tm = re.search(r"^title:\s*(.+)$", fm, re.M)
-    h1 = re.search(r"^# (.+)$", text[m.end():], re.M)
+    h1 = re.search(r"^# (.+)$", text[body_start:], re.M)
     if tm and h1:
         toks = lambda s: {w for w in re.findall(r"[A-Za-zА-Яа-яІіЇїЄєҐґ0-9]+", s.lower()) if len(w) >= 3}
         if not (toks(tm.group(1)) & toks(h1.group(1))):
@@ -150,7 +152,7 @@ def check_file(p: pathlib.Path) -> list[str]:
             bad.append("bad-alias")
             break
     # 8-9. скрипти — тільки поза кодом!
-    prose = strip_code(text[m.end():])
+    prose = strip_code(text[body_start:])
     if CJK.search(prose):
         bad.append("bad-script")
     words = re.findall(r"[A-Za-zА-Яа-яІіЇїЄєҐґ0-9][A-Za-zА-Яа-яІіЇїЄєҐґ0-9\-/]*", prose)
@@ -167,7 +169,10 @@ def main() -> int:
     for p in sorted(files):
         rel = str(p.relative_to(VAULT))
         base_name = p.name[:-len(".en.md")] + ".md" if p.name.endswith(".en.md") else p.name
-        if base_name in SKIP or p.name in SKIP or rel.split("/")[0] in SKIP_DIRS:
+        parts = rel.split("/")
+        if base_name in SKIP or p.name in SKIP or parts[0] in SKIP_DIRS or (
+            len(parts) > 1 and parts[0] in LANG_DIRS and parts[1] in SKIP_DIRS
+        ):
             continue
         bad = check_file(p)
         if bad:
@@ -177,7 +182,10 @@ def main() -> int:
             print(f"{rel}: {', '.join(bad)}")
     def _counted(p):
         base_name = p.name[:-len(".en.md")] + ".md" if p.name.endswith(".en.md") else p.name
-        return base_name not in SKIP and p.name not in SKIP and str(p.relative_to(VAULT)).split("/")[0] not in SKIP_DIRS
+        parts = str(p.relative_to(VAULT)).split("/")
+        return base_name not in SKIP and p.name not in SKIP and parts[0] not in SKIP_DIRS and not (
+            len(parts) > 1 and parts[0] in LANG_DIRS and parts[1] in SKIP_DIRS
+        )
     checked = len([p for p in files if _counted(p)])
     print(f"checked={checked} violations={total_viol} {by_check}")
     return 1 if total_viol else 0

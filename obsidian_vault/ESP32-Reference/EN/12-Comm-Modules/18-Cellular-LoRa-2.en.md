@@ -18,7 +18,7 @@ Long-range communication for ESP32 where there is no WiFi: LTE Cat-1 / Cat-1bis 
 ![[assets/img/cellular-lora-2-scheme.png|600]]
 *Fig. ESP32 with LTE Cat-1 (EC200U / Air724) for MQTT to cloud, and LoRa (RAK3172 / E78 / SX1280) for local mesh / long-range without internet; both share UART / SPI / power branches.*
 
-Links to [[EN/Home.en]], [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en]], [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]] (self), [[04-Interfaces/01-UART|UART]], [[02-Power-Supply/01-Lancjugi-zhivlennya]].
+Links to [[EN/Home.en]], [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en]], [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]] (self), [[EN/04-Interfaces/01-UART.en|UART]], [[EN/02-Power-Supply/01-Power-Rails.en]].
 
 ## Characteristics (Comparison Table)
 
@@ -109,7 +109,7 @@ GND Common: All modules share GND; use star topology from ESP32 GND pin
 ```
 
 > [!warning] LTE Peak Current
-> During network registration / TCP connection / MQTT publish, EC200U / Air724 can draw 2-3 A peak for 100-500 ms. Use a 3.3V LDO with 3 A capability or a dedicated battery / 5V adapter with strong LDO. Do not run from ESP32 3.3V rail alone; ESP32 can supply ~500 mA max (Wi-Fi active) — far below LTE peak.
+> During network registration / TCP connection / MQTT publish, EC200U / Air724 can draw 2-3 A peak for 100-500 ms. Use a 3.3V LDO with 3 A capability or a dedicated battery / 5V adapter with strong LDO. Do not run from ESP32 3.3V rail alone; ESP32 can supply ~500 mA max (Wi-Fi active) - far below LTE peak.
 
 ```text
 3.3V Main (ESP32): ESP32 + LoRa logic / UART
@@ -143,6 +143,21 @@ GND Common: All modules share GND; star topology
 > [!tip] Start with a Single Module
 > For first project: choose one technology (LTE or LoRa) based on coverage and budget. Add the second only when needed. Mixing both on one ESP32 is possible but requires separate UART / SPI and careful power planning.
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Module reboots on MQTT publish | 2-3 A LTE peak collapses supply | 3 A buck or battery feed, thick VBAT wires, 1000 uF bulk |
+| PDP context rejected | Wrong APN or SIM without data plan | Set operator APN exactly, verify SIM balance and LTE coverage |
+| LoRa packets lost one way | Frequency or SF mismatch between nodes | Lock 868/915 MHz region, same SF and sync word both sides |
+| RAK3172 joins never | Wrong keys or sub-band for region | Verify DevEUI AppKey, set correct sub-band, check gateway logs |
+| LTE plus LoRa unstable together | Shared rail plus two UARTs fighting | Separate supplies, one radio at a time during bring-up |
+
+## Official sources
+
+- [EC200U series (Quectel)](https://www.quectel.com/product/lte-ec200u-series) - Cat-1bis power and AT guidance.
+- [LoRaWAN Specification 1.0.3 (LoRa Alliance)](https://lora-alliance.org/resource_hub/lorawan-specification-v1-0-3/) - join and MAC rules.
+- [MQTT Specification (OASIS)](https://mqtt.org/mqtt-specification/) - publish QoS used by cloud links.
 ## References
 
 - EC200U / Air724UG / M5311 / ML302 datasheets

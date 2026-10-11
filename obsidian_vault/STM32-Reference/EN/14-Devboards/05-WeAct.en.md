@@ -86,17 +86,17 @@ flowchart TB
 | Кварц | Нормальний | Буває перемарковано |
 | Ціна | Трохи дорожче | Дешевше |
 
-## typical errors
+## Common issues
 
-| # | error | Чому погано | how правильно |
-| --- | --- | --- | --- |
-| 1 | Ревізію not подивились | Піни not зійшлись | Читати шовкографію! |
-| 2 | Старий example | Інша розводка | example під свою ревізію |
-| 3 | DFU без BOOT0 | Порта немає | Кнопка at підключенні |
-| 4 | Живлення моторів with плати | LDO вмирає | Окремий БЖ! |
-| 5 | Дешевий кабель USB-C | Тільки живлення | Кабель with даними |
-| 6 | NRST not виведено in коді | Немає скидання | Кнопка on платі є |
-| 7 | Клон замість WeAct | Сюрпризи with кварцом | Перевіряти st-info |
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Revision not checked | Pins do not match | Read the silkscreen! |
+| Old example | Different routing | Example for your own revision |
+| DFU without BOOT0 | No port | Button at connection time |
+| Powering motors from the board | LDO dies | Separate PSU! |
+| Cheap USB-C cable | Power only | Cable with data lines |
+| NRST not wired in code | No reset | Button on the board exists |
+| Clone instead of WeAct | Surprises with the crystal | Check with st-info |
 
 ## Зберігання and ESD: дрібниці with ціною
 
@@ -106,10 +106,10 @@ flowchart TB
 | not класти on метал | Коротке знизу |
 | USB-C гніздо берегти | Механічно найслабше місце |
 
-## official джерела
+## Official sources
 
-- [WeAct GitHub (WeAct Studio)](https://github.com/WeActStudio) - приклади, схеми, прошивки.
-- [MiniF4 product page (WeAct)](https://github.com/WeActStudio/MiniF4-STM32F4x1) - розводка and демо.
+- [WeAct GitHub (WeAct Studio)](https://github.com/WeActStudio) - examples, schematics, firmware.
+- [MiniF4 product page (WeAct)](https://github.com/WeActStudio/MiniF4-STM32F4x1) - routing and demo.
 
 ## Mini Debugger: прошивка голих плат
 
@@ -145,11 +145,11 @@ flowchart TB
 | Своя плата потім | WeAct how референс розводки |
 | Вимір струму | Тільки Nucleo with IDD! |
 
-## Див. також
+## See also
 
-- [[Home]]
-- [[14-Devboards/02-Black-Pill|плата Black Pill]]
-- [[14-Devboards/01-Blue-Pill|плата Blue Pill]]
-- [[14-Devboards/03-Nucleo|плати Nucleo]]
-- [[04-Interfaces/05-USB|порт USB]]
-- [[09-Firmware/03-ST-Link-Proshivka|прошивка via ST-Link]]
+- [[Home.en]]
+- [[EN/14-Devboards/02-Black-Pill.en|плата Black Pill]]
+- [[EN/14-Devboards/01-Blue-Pill.en|плата Blue Pill]]
+- [[EN/14-Devboards/03-Nucleo.en|плати Nucleo]]
+- [[EN/04-Interfaces/05-USB.en|порт USB]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|прошивка via ST-Link]]

@@ -4,6 +4,7 @@ title: Motion Control на ESP32 - FluidNC, grbl_ESP32, Klipper, micro-ROS, ESP-
 tags: [esp32, motion, fluidnc, grbl-esp32, klipper, micro-ros, esp-drone, cnc, tmc2209, crsf, telemetry, yaml, step-dir]
 category: Moduli
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Motion Control на ESP32 - FluidNC / grbl_ESP32 / Klipper / micro-ROS / ESP-Drone

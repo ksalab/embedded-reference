@@ -61,7 +61,7 @@ Find your symptom in the table, take the specified device, check the signal. If 
 
 ## 6. Mermaid: diagnostic route```mermaid
 flowchart TB
-S[Symptom] --> T{Which device?}T -->|No start| MM[Multimeter: Power and Short]T -->|Not sewn| PRG[Programmer: connect and erase]T -->|Tyres| LA[Analyzer: Protocol Decoder]T -->|Noise and Reset| OSC[Oscilloscope: Power and Signals]MM --> SIG [There is a signal - continue]    PRG --> SIG
+S[Symptom] --> T{Which device?}T -->|No start| MM[Multimeter: Power and Short]T -->|Not sewn| PRG[Programmer: connect and erase]T -->|Tyres| LA[Analyzer: Protocol Decoder]T -->|Noise and Reset| OSC[Oscilloscope: Power and Signals]MM --> SIG [There is a signal - continue] PRG --> SIG
     LA --> SIG
     OSC --> SIG
 SIG --> LOC[Localized to one node]```
@@ -228,9 +228,9 @@ Package for a question on the forum:minimal code repeating the bug;connection di
   Кожен наступний відкриває новий клас багів.
 ```
 ## See also- [[Home | Home]]
-- [[99-Additions/01-Troubleshooting-FAQ | answers to questions]]
-- [[99-Additions/02-Cheklisti | checklists]]
-- [[17-Lab/01-Priladi | measuring devices]]
+- [[EN/99-Additions/01-Troubleshooting-FAQ.en| answers to questions]]
+- [[EN/99-Additions/02-Cheklisti.en| checklists]]
+- [[EN/17-Lab/01-Instruments.en| measuring devices]]
 - [[09-Firmware/03-ST-Link-Flashing.en | firmware via ST-Link]]
 
 

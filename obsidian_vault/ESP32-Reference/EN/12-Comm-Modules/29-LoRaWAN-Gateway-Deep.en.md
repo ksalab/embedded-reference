@@ -1,9 +1,11 @@
 ---
+lang: en
 title: ESP32 LoRaWAN-шлюз глибоко - SX1302, TTN and мультиканальний вузол
 description: Будує глибокий LoRaWAN-шлюз on ESP32 - SX1302 8-канал, TTN-протокол, MQTT-мост, розподіл живлення with кодом.; shows schematics, code and tables.
 tags: [esp32, lora, sx1302, loranwan, gateway, ttn, mqtt, multi-channel]
 category: Moduli-zvyazku
 date: 2026-10-06
+original: 12-Moduli-zvyazku/29-LoRaWAN-Gateway-Deep.md
 ---
 
 # ESP32 LoRaWAN-шлюз глибоко - SX1302, TTN and мультиканальний вузол
@@ -12,7 +14,7 @@ date: 2026-10-06
 *Fig. Шлюз: SX1302 8-канал + ESP32-S3 + WiFi-ETH - приймає десятки вузлів, віддає MQTT.*
 
 > [!tip] that this for нота
-> Повний розбір шлюзу: not просто module, but система with мультиплексуванням каналів, TTN-договором and розподілом живлення. Передмова: [[12-Comm-Modules/29-LoRaWAN-Gateway|LoRaWAN-шлюз оглядово]].
+> Повний розбір шлюзу: not просто module, but система with мультиплексуванням каналів, TTN-договором and розподілом живлення. Передмова: [[EN/12-Comm-Modules/29-LoRaWAN-Gateway.en|LoRaWAN-шлюз оглядово]].
 
 ## 1. Мета
 
@@ -31,7 +33,7 @@ flowchart TB
 - SX1302 приймає 8 каналів одночасно (SF7-SF12);
 - ESP32-S3 обробляє пакети, формує MQTT;
 - Веб-інтерфейс стану - чи працює кожен канал;
-- Живлення: 5V 3A for SX1302 (пиk 2A) + ESP32.
+- Power: 5V 3A for SX1302 (peak 2A) + ESP32.
 
 ## 2. Розпіновка шлюзу (ESP32-S3 + SX1302)
 
@@ -52,7 +54,7 @@ flowchart TB
 | 1 | 868.3 МГц | 125 кГц | 9 | Середня |
 | 2 | 868.5 МГц | 125 кГц | 12 | Далека |
 | 3 | 868.3 МГц | 250 кГц | 7 | Швидкий довгий |
-| ... | ... | ... | ... | ... |
+|... |... |... |... |... |
 
 Кожен канал - окремий SX1302-module? Ні, один чип with 8 приймачами. Прийом одночасний.
 
@@ -118,11 +120,11 @@ while True:
 
 ## 9. Суміжні ноти
 
-- [[12-Comm-Modules/02-NRF24-LoRa | NRF24/LoRa]] - вузол із LoRa.
-- [[05-Radio/01-WiFi-STA-AP | WiFi-STA/AP]] - WiFi in вузлі.
-- [[15-Protocols/01-MQTT|передача in хмару]] - broker.
-- [[01-Hardware/04-ESP32-C3-C6-H2|чипи C3/C6/H2]] - радіо-versії.
-- [[Home|головна карта]] - повна навігація.
+- [[EN/12-Comm-Modules/02-NRF24-LoRa.en| NRF24/LoRa]] - вузол із LoRa.
+- [[EN/05-Radio/01-WiFi-STA-AP.en| WiFi-STA/AP]] - WiFi in вузлі.
+- [[EN/15-Protocols/01-MQTT.en|передача in хмару]] - broker.
+- [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|C3/C6/H2 chips]] - radio versions.
+- [[Home.en|головна карта]] - повна навігація.
 
 ## 9.1 Антена and корпус шлюзу
 

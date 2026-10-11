@@ -6,6 +6,7 @@ lang: en
 title: RC522 RFID 13.56 MHz
 description: RC522 RFID (MFRC522) - SPI 13.56 MHz - Module pin legend; ESP32 to RC522 connection; ASCII schematic; shows schematics, code and tables.
 tags: [esp32, rfid, rc522, spi]
+original: 12-Moduli-zvyazku/01-RC522-RFID.md
 ---
 
 # RC522 RFID (MFRC522) - SPI 13.56 MHz
@@ -21,7 +22,7 @@ Specifications: NXP MFRC522, 13.56 MHz, ISO14443A, SPI до 10 МГц. Applicati
 ![[assets/img/rc522-scheme.png|500]]
 *Fig. RC522 - схема connection to ESP32 over VSPI, separate 3.3V power supply.*
 
-Links to [[EN/Home.en]], [[04-Interfaces/02-SPI|SPI]], [[02-Power-Supply/01-Lancjugi-zhivlennya]], [[03-GPIO/01-GPIO-oglyad]], [[99-Additions/02-Troubleshooting-FAQ]], [[EN/12-Comm-Modules/02-NRF24-LoRa.en]].
+Links to [[EN/Home.en]], [[EN/04-Interfaces/02-SPI.en|SPI]], [[EN/02-Power-Supply/01-Power-Rails.en]], [[EN/03-GPIO/01-GPIO-Overview.en]], [[EN/99-Additions/02-Troubleshooting-FAQ.en]], [[EN/12-Comm-Modules/02-NRF24-LoRa.en]].
 
 ## Purpose
 
@@ -44,11 +45,11 @@ The RC522 module (board with MFRC522 chip) has 8 pins. Note: on some boards the 
 
 Pin details:
 
-- **VCC 3.3V:** MFRC522 chip powered from 3.0-3.6V. RC522 board has no 5V→3.3V regulator, so 5V is forbidden - internal LDO breakdown and 13.56 MHz antenna degradation. If DevKit sags - separate LDO 3.3V 300 mA + electrolytic 10 µF + ceramic 100 nF near module, see [[02-Power-Supply/01-Lancjugi-zhivlennya]].
+- **VCC 3.3V:** MFRC522 chip powered from 3.0-3.6V. RC522 board has no 5V→3.3V regulator, so 5V is forbidden - internal LDO breakdown and 13.56 MHz antenna degradation. If DevKit sags - separate LDO 3.3V 300 mA + electrolytic 10 µF + ceramic 100 nF near module, see [[EN/02-Power-Supply/01-Power-Rails.en]].
 - **RST:** active low level. In library `MFRC522(SS, RST)` this pin initializes the chip during `PCD_Init()`. Without RST connection the module sometimes "hangs" after brownout.
 - **GND:** common ground is mandatory. Long "tails" GND = SPI errors `Version 0x00/0xFF`.
-- **IRQ:** open-drain output: pulls to ground itself, pulled up to 3.3V by external 10k resistor. Can be omitted entirely - then `PICC_IsNewCardPresent()` polls in `loop()`. Needed only for ESP32 sleep/wakeup by card, see [[03-GPIO/01-GPIO-oglyad]].
-- **MISO / MOSI / SCK:** classic SPI, see [[04-Interfaces/02-SPI|SPI]]. Order `SPI.begin(SCK, MISO, MOSI, SS)` in Arduino - do not swap MISO/MOSI positions.
+- **IRQ:** open-drain output: pulls to ground itself, pulled up to 3.3V by external 10k resistor. Can be omitted entirely - then `PICC_IsNewCardPresent()` polls in `loop()`. Needed only for ESP32 sleep/wakeup by card, see [[EN/03-GPIO/01-GPIO-Overview.en]].
+- **MISO / MOSI / SCK:** classic SPI, see [[EN/04-Interfaces/02-SPI.en|SPI]]. Order `SPI.begin(SCK, MISO, MOSI, SS)` in Arduino - do not swap MISO/MOSI positions.
 - **SDA (SS):** in SPI mode this is Chip Select. When only RC522 on bus - any free GPIO works (typically GPIO5). When NRF24/LoRa/SD also on bus - each has its own CS, SCK/MOSI/MISO shared.
 
 ## Підключення ESP32 до RC522
@@ -64,7 +65,7 @@ Pin details:
 | GPIO22 | RST | Reset |
 | GPIO21 | IRQ | optional pull-up 10k |
 
-RST/IRQ details: RST active low, hold HIGH. IRQ open-drain for wakeup, see [[03-GPIO/01-GPIO-oglyad]].
+RST/IRQ details: RST active low, hold HIGH. IRQ open-drain for wakeup, see [[EN/03-GPIO/01-GPIO-Overview.en]].
 
 ### ASCII schematic
 
@@ -150,15 +151,15 @@ while True:
 
 1. Check 3.3V at VCC pin with multimeter during card presentation (must not drop below 3.0V).
 2. Place ceramic 100 nF + electrolytic 10 µF directly on VCC/GND of module.
-3. Do not power RC522 from 3V3 pin with WiFi at max + bright LEDs - better separate LDO, see [[02-Power-Supply/01-Lancjugi-zhivlennya]].
+3. Do not power RC522 from 3V3 pin with WiFi at max + bright LEDs - better separate LDO, see [[EN/02-Power-Supply/01-Power-Rails.en]].
 4. Board antenna must not touch metal; read distance 2-4 cm for key fobs, 4-6 cm for cards.
-5. If several devices on SPI bus - each has its own CS, and `SPI.begin()` called once, see [[04-Interfaces/02-SPI|SPI]].
+5. If several devices on SPI bus - each has its own CS, and `SPI.begin()` called once, see [[EN/04-Interfaces/02-SPI.en|SPI]].
 
 | Symptom | Cause | Solution |
 | --- | --- | --- |
 | Version 0x00/0xFF | no SPI | check MOSI/MISO, wires <20cm |
 | Читає via раз | power sag | 3.3V only + caps 100nF+10µF |
-| Reboot at картці | weak LDO | separate LDO, see [[02-Power-Supply/01-Lancjugi-zhivlennya]] |
+| Reboot at картці | weak LDO | separate LDO, see [[EN/02-Power-Supply/01-Power-Rails.en]] |
 | IRQ not спрацьовує | no pull-up | 10k resistor to 3.3V or poll without IRQ |
 | Плутанина SDA/SS | SDA label on board | SDA = SS/CS on GPIO5 |
 
@@ -172,13 +173,13 @@ while True:
 ## See also
 
 - [[EN/Home.en]]
-- [[04-Interfaces/01-UART|UART]]
-- [[04-Interfaces/02-SPI|SPI]]
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]]
-- [[03-GPIO/01-GPIO-oglyad]]
+- [[EN/04-Interfaces/01-UART.en|UART]]
+- [[EN/04-Interfaces/02-SPI.en|SPI]]
+- [[EN/02-Power-Supply/01-Power-Rails.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
 - [[EN/12-Comm-Modules/01-RC522-RFID.en]]
 - [[EN/12-Comm-Modules/02-NRF24-LoRa.en]]
 - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]]
 - [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]]
-- [[99-Additions/01-Pinout-tablici]]
-- [[99-Additions/02-Troubleshooting-FAQ]]
+- [[EN/99-Additions/01-Pinout-tablici.en]]
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en]]

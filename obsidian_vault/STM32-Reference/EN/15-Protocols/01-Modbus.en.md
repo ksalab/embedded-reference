@@ -21,7 +21,7 @@ date: 2026-10-09
 
 Modbus stays the main language of industrial automation: energy meters, frequency converters, temperature sensors, ventilation controllers. One master polls dozens of slaves on a shared pair or over the network. The protocol is simple, so it lives for decades.
 
-On STM32 a typical node is a slave on a pair via a transceiver or a master collecting data from meters. For the physical layer see [[04-Interfaces/01-UART.en | UART serial port]] and [[12-Comm-Modules/02-RS485-CAN-Ethernet | Wired networks]]. The move to the network gives TCP mode via the LWIP stack with no change to register logic.
+On STM32 a typical node is a slave on a pair via a transceiver or a master collecting data from meters. For the physical layer see [[04-Interfaces/01-UART.en | UART serial port]] and [[EN/12-Comm-Modules/02-RS485-CAN-Ethernet.en| Wired networks]]. The move to the network gives TCP mode via the LWIP stack with no change to register logic.
 
 ## 2. RTU frame and checksum field
 
@@ -346,7 +346,7 @@ flowchart TB
 
 - [[Home.en]]
 - [[04-Interfaces/01-UART.en | UART serial port]]
-- [[12-Comm-Modules/02-RS485-CAN-Ethernet | Wired networks]]
+- [[EN/12-Comm-Modules/02-RS485-CAN-Ethernet.en| Wired networks]]
 - [[04-Interfaces/05-USB.en | USB port]]
 - [[15-Protocols/02-DFU-Bootloader.en | Firmware update]]
 - [[15-Protocols/03-Security.en | Product protection]]

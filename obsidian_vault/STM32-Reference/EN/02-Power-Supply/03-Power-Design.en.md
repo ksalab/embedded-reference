@@ -53,9 +53,9 @@ Example: USB 5 V, STM32F4 + W5500 + OLED + LoRa peak = ~550 mA.
 
 | Option | Loss at 550 mA, 5 V to 3.3 V | Efficiency | Heat |
 | --- | --- | --- | --- |
-| AMS1117 (LDO, drop ~1.1 V) | (5-3.3)x0.55 = 0.94 W | ~66 % | 0.94 W in SOT-223 - hot |
-| ME6211 (LDO, low drop) | ~0.85 W | ~69 % | still hot |
-| SY8113 (buck 3 A, 500 kHz) | ~0.07 W | ~94 % | cold, +4...+6 °C |
+| AMS1117 (LDO, drop ~1.1 V) | (5-3.3)x0.55 = 0.94 W | ~66% | 0.94 W in SOT-223 - hot |
+| ME6211 (LDO, low drop) | ~0.85 W | ~69% | still hot |
+| SY8113 (buck 3 A, 500 kHz) | ~0.07 W | ~94% | cold, +4...+6 °C |
 
 Conclusion: at I > 200 mA from 5 V - buck only. LDO - for VDDA and for input from 18650 (3 V to 3.3 V: unlike 5 V, the loss is very small).
 
@@ -87,11 +87,11 @@ VDDA: a separate LDO (ME6211A18 at 1.8 V or a 3.3 V regulator on VDDA), ferrite 
 - overvoltage: TVS SMBJ5.0A on USB and on terminals;
 - overload: 500 mA fuse on the 5 V line;
 - sag: Brownout Detection (PWR, BOR1-BOR4 thresholds) - MCU resets deterministically instead of "hanging";
-- temperature: NTC on the board (channel [[06-Analog/01-ADC | ADC]]) - above 85 °C lower radio duty.
+- temperature: NTC on the board (channel [[EN/06-Analog/01-ADC.en| ADC]]) - above 85 °C lower radio duty.
 
 ## 6. Measurements
 
-- INA219 on the 5 V line shunt - covered in [[10-Sensors/04-INA219-HX711 | INA219]];
+- INA219 on the 5 V line shunt - covered in [[EN/10-Sensors/04-INA219-HX711.en| INA219]];
 - multimeter in the + break: peaks at SPI/I2C bursts and at radio start;
 - thermal camera: where LDO heats vs buck - "heat does not lie";
 - oscilloscope: ripple on VOUT (buck < 20 mV), sags at SPI bursts and at ESC turn-on.
@@ -111,7 +111,7 @@ Conclusion: LDO from 5 V - only when I < 150 mA (loss < 0.25 W). Otherwise - buc
 | Item | Acceptance criterion |
 | --- | --- |
 | VDD on MCU pin | 3.13-3.47 V under load |
-| Sag at SPI burst | < 5 % |
+| Sag at SPI burst | < 5% |
 | Ripple on VOUT (buck) | < 20 mV |
 | VDDA / VREF noise | < 1 mV |
 | Battery voltage (18650) | > 3.0 V |
@@ -119,19 +119,19 @@ Conclusion: LDO from 5 V - only when I < 150 mA (loss < 0.25 W). Otherwise - buc
 | USB current before config | 100 mA (descriptor) |
 
 > [!warning] Battery + buck
-> LiPo (4.2 V) to buck 3.3 V: respect the input range, and keep load below 50 % of buck current, otherwise thermal protection.
+> LiPo (4.2 V) to buck 3.3 V: respect the input range, and keep load below 50% of buck current, otherwise thermal protection.
 
 ## 6.3 Autonomy calculation: example
 
-Board: F407 + LoRa (30 % duty), average load 200 mA at 3.3 V.
+Board: F407 + LoRa (30% duty), average load 200 mA at 3.3 V.
 
 | Parameter | Value |
 | --- | --- |
 | Battery | 18650 3000 mAh, usable ~2400 mAh |
 | Autonomy without sleep | 2400 / 200 = 12 h |
-| 10 % duty (deep-sleep 90 % of time) | ~3 days |
+| 10% duty (deep-sleep 90% of time) | ~3 days |
 | L4-class deep-sleep current | ~30 uA |
-| 2x18650 (7.4 V) + buck | ~14 h at 300 mA, eta 94 % |
+| 2x18650 (7.4 V) + buck | ~14 h at 300 mA, eta 94% |
 
 Rules:
 
@@ -153,10 +153,10 @@ Rules:
 
 ## 8. Related notes
 
-- [[13-Power-Modules/01-Buck-Boost | Buck/Boost]] - modules of ready regulators.
+- [[EN/13-Power-Modules/01-Buck-Boost.en| Buck/Boost]] - modules of ready regulators.
 - [[02-Power-Supply/02-Batareyne-zhivlennya.en | Batteries]] - LiPo, 18650, solar.
-- [[06-Analog/01-ADC | ADC]] - VREF noise and calibration.
-- [[06-Analog/05-Shunt-OPAMP | Current shunt]] - shunt current measurement.
+- [[EN/06-Analog/01-ADC.en| ADC]] - VREF noise and calibration.
+- [[EN/06-Analog/05-Shunt-OPAMP.en| Current shunt]] - shunt current measurement.
 
 ## Official sources
 

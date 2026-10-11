@@ -50,7 +50,7 @@ Golden rule: system on the most enduring media, media files on the largest, back
 ## 3. SD cards: maximum survival
 
 - class A2 mandatory (random OS operations);
-- 50 % volume headroom - the controller has room to spread wear;
+- 50% volume headroom - the controller has room to spread wear;
 - `f3`/`H2testw` over the full volume before the first flash;
 - logs in RAM, swap off or zram;
 - monitoring: sudden read-only - a pre-death symptom;
@@ -112,7 +112,7 @@ USB resets in logs are the first sign of weak disk power supply. NVMe temperatur
 | Suddenly read-only | SD died | backup, new A2, restore |
 | NVMe not visible | no pciex1/old EEPROM | both together + reboot |
 | USB disk drops | power supply | powered hub, short cable |
-| Slow after half a year | full disk + no TRIM | `fstrim`, 30 % free headroom |
+| Slow after half a year | full disk + no TRIM | `fstrim`, 30% free headroom |
 | No boot from USB/NVMe | order in EEPROM | BOOT_ORDER 0xf416 (6 = NVMe) |
 | btrfs does not mount | crash without clean stop | `btrfs rescue`, backup in advance |
 
@@ -129,7 +129,7 @@ USB resets in logs are the first sign of weak disk power supply. NVMe temperatur
 - [[EN/09-Firmware/01-Imager-Headless.en|Imager flashing]] - writing images.
 - [[EN/09-Firmware/02-EEPROM-Boot.en|EEPROM boot]] - media order.
 - [[EN/08-Memory/02-Backup-Clone.en|backups and clones]] - copy strategy.
-- [[14-Devboards/01-Pi5-Flagman|Pi 5 flagship]] - NVMe HAT boards.
+- [[EN/14-Devboards/01-Pi5-Flagship.en|Pi 5 flagship]] - NVMe HAT boards.
 - [[Home.en|main map]] - full navigation.
 
 ## 11. Media choice in one table

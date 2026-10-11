@@ -14,11 +14,11 @@ date: 2026-10-08
 > [!warning] Prototype ≠ product!
 > Board with open UART log, firmware without signature and WiFi password in plaintext-NVS - this desk demo, but not product for client. Pass this checklist BEFORE first batches: half items irreversible (eFuse).
 
-Base: flash and signature [[08-Memory/04-Secure-Boot-Encrypt | 04-Secure-Boot-Encrypt]], доставка оновлень [[08-Memory/03-OTA.en | OTA]], дебаг [[09-Firmware/05-JTAG-Debug | 05-JTAG-Debug]], час and TLS [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]], старт [[Home.en | Home]].
+Base: flash and signature [[EN/08-Memory/04-Secure-Boot-Encrypt.en| 04-Secure-Boot-Encrypt]], доставка оновлень [[08-Memory/03-OTA.en | OTA]], дебаг [[EN/09-Firmware/05-JTAG-Debug.en| 05-JTAG-Debug]], час and TLS [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]], старт [[Home.en | Home]].
 
 ## Purpose
 
-Hardening - this shifting device with "easy to develop" mode in "hard to break" mode. Document gives one checklist: what to enable, what to disable, where it impactsться and чим доведеться заплатити (гроші, час, ризик цегли). Охоплює Secure Boot, шифрування Flash, protection OTA, JTAG-лок та унікальні паролі on виріб.
+Hardening - this shifting device with "easy to develop" mode in "hard to break" mode. Document gives one checklist: what to enable, what to disable, where it impacts and what you will pay (money, time, brick risk). Covers Secure Boot, Flash encryption, OTA protection, JTAG lock and unique per-device passwords.
 
 ## 1. Threat model: who we defend against
 
@@ -30,7 +30,7 @@ Physical access - main difference embedded from server. Device is placed in entr
 | Firmware substitution (своя with бекдором) | reflashing via UART або підміна OTA-файла | Secure Boot V2 + signed OTA |
 | Rollback to old vulnerable version | flash signed but old binary | Anti-rollback, secure version in eFuse |
 | Сніфінг ефіру (WiFi, BLE, MQTT) | читає паролі, підміняє команди | WPA2/WPA3 + PMF, MQTTS/TLS, BLE bonding with шифруванням |
-| Перехоплення provisioning | підключається до відкритого Setup-AP | Пароль on portал, таймаут, PoP (див. [[15-Protocols/04-Provisioning.en | Provisioning]]) |
+| Provisioning interception | connects to open Setup-AP | Password on portal, timeout, PoP (see [[15-Protocols/04-Provisioning.en | Provisioning]]) |
 | Клонування пристроїв batches | копіює одну прошивку on 100 плат | Унікальні паролі/ключі on пристрій (mfg-партиція) |
 | Витяг секретів with логів | UART-консоль сипле токенами | Level логів without секретів, консоль вимкнена in релізі |
 | Віддалена експлуатація старої версії | ботнет with незапатчених вузлів | OTA тільки per HTTPS with підписом + rollback |
@@ -43,8 +43,8 @@ Physical access - main difference embedded from server. Device is placed in entr
 | № | Захід | Де вмикається | Ціна/ризик |
 | --- | --- | --- | --- |
 | 1 | Threat model записано (table вище) | цей документ + ADR під розписку | 1 година; ризик - будувати not той protection |
-| 2 | Flash Encryption, Release-режим | `menuconfig` → Security features → Enable flash encryption; підсумок [[08-Memory/04-Secure-Boot-Encrypt | 04-Secure-Boot-Encrypt]] | Незворотно; `read_flash` віддає шифротекст; бекап до ввімкнення |
-| 3 | Secure Boot V2, signature ECDSA/RSA | `menuconfig` → Secure Boot V2 + key on офлайн-машині; деталі [[08-Memory/04-Secure-Boot-Encrypt | 04-Secure-Boot-Encrypt]] | Незворотно; втрата `signing.pem` = заморожений флот |
+| 2 | Flash Encryption, Release-режим | `menuconfig` → Security features → Enable flash encryption; підсумок [[EN/08-Memory/04-Secure-Boot-Encrypt.en| 04-Secure-Boot-Encrypt]] | Незворотно; `read_flash` віддає шифротекст; бекап до ввімкнення |
+| 3 | Secure Boot V2, signature ECDSA/RSA | `menuconfig` → Secure Boot V2 + key on офлайн-машині; деталі [[EN/08-Memory/04-Secure-Boot-Encrypt.en| 04-Secure-Boot-Encrypt]] | Незворотно; втрата `signing.pem` = заморожений флот |
 | 4 | Anti-rollback, secure version +1 on реліз | `CONFIG_BOOTLOADER_APP_ANTI_ROLLBACK`, `CONFIG_BOOTLOADER_APP_SECURE_VERSION` | Лічильник on 32 кроки; not ставити on factory/test-слоти |
 | 5 | JTAG заблоковано (`DIS_USB_JTAG` / JTAG-disable) | eFuse / `menuconfig` (Secure Boot палить автоматично at першому старті) | Дебаг більше неможливий; дебажити ДО запаювання бітів |
 | 6 | UART-download вимкнено (`DIS_DOWNLOAD_MODE`) | eFuse `DISABLE_DL_ENCRYPT/DECRYPT`, опція UART ROM download mode | Цегла at мертвій OTA - рятує тільки заміна модуля |
@@ -52,11 +52,11 @@ Physical access - main difference embedded from server. Device is placed in entr
 | 8 | WiFi: WPA2/WPA3 + PMF required | `pmf_cfg.required`, `WIFI_AUTH_WPA2_PSK` and вище | Старі роутери without PMF not підключаться - протестувати |
 | 9 | BLE: privacy (RPA) + bonding + шифрування характеристик | `esp_ble_gap_config_local_privacy`, `ESP_LE_AUTH_REQ_SC_MITM_BOND` | Складніше pairing UX; without цього трекінг for MAC |
 | 10 | OTA тільки per HTTPS + signature образу | `esp_https_ota` with CA-bundle, Secure Boot перевіряє signature | Потрібен PKI and server; HTTP-OTA заборонено in проді |
-| 11 | Унікальні паролі/PoP on пристрій (mfg-партиція) | заводський стенд пише `mfg` (серійник, PoP, токен) | Інфраструктура перsleepалізації; один пароль on партію - заборонено |
+| 11 | Unique passwords/PoP per device (mfg partition) | factory rig writes `mfg` (serial, PoP, token) | Personalization infrastructure; one password per batch - forbidden |
 | 12 | Ротація TLS-сертифікатів and API-токенів | server віддає новий токен per старій сесії; CA-bundle оновлюється with OTA | Прострочений CA = відвал флоту; тримати запасний корінь |
 | 13 | UART-консоль вимкнена або without команд запису | `CONFIG_ESP_CONSOLE_NONE` / level логу `Error`, прибрати `console_repl` | Втрата польової діагностики - компенсувати coredump and хмарою |
 | 14 | Debug-логи without секретів | рев'ю `ESP_LOGI` on `password/token/key/ssid-pass`, маскування `***` | 30 хв grep-рев'ю; один токен in логах = компрометація |
-| 15 | Пароль on `/update` and provisioning-portал | `AsyncElegantOTA.begin(&server, "admin", per-device-pass)`, таймаут 180 с | Див. [[15-Protocols/04-Provisioning.en | Provisioning]]; відкритий portал = чужа firmware |
+| 15 | Password on `/update` and provisioning portal | `AsyncElegantOTA.begin(&server, "admin", per-device-pass)`, timeout 180 s | See [[15-Protocols/04-Provisioning.en | Provisioning]]; open portal = foreign firmware |
 | 16 | Фінальний прогон: `espefuse summary` + OTA-тест with підписом | стенд QA, 3+ жертовні модулі перед Release | Час QA; зате партія not стане цеглою |
 
 ![[assets/img/security-hardening-scheme.png | 600]]
@@ -108,7 +108,7 @@ graph TD
 
 ## 3. Flash Encryption + Secure Boot: короткий підсумок
 
-Повна механіка - [[08-Memory/04-Secure-Boot-Encrypt | 04-Secure-Boot-Encrypt]]. Тут тільки прод-підсумок:
+Повна механіка - [[EN/08-Memory/04-Secure-Boot-Encrypt.en| 04-Secure-Boot-Encrypt]]. Тут тільки прод-підсумок:
 
 - key шифрування генерує сам пристрій at першому старті (або вшивається on заводі, але унікальний on плату).
 - Development-режим - for жертовних модулів: reflashing ще можливе.
@@ -145,7 +145,7 @@ that коли відрізається:
 | Біт / дія | that закриває | Коли палити |
 | --- | --- | --- |
 | JTAG-disable (автоматично with Secure Boot / Flash Encryption) | апаратний дебаг, дамп RAM via адаптер | після останньої дебаг-сесії |
-| `DIS_DOWNLOAD_MODE` / `DISABLE_DL_*` | `esptool write_flash`, читання flash via UART | тільки коли OTA with підписом протестована on 3+ boardх |
+| `DIS_DOWNLOAD_MODE` / `DISABLE_DL_*` | `esptool write_flash`, flash read via UART | only when signed OTA is tested on 3+ boards |
 | `RD_DIS` on ключах | навіть власник not прочитає eFuse | разом with релізом, після запису бекапів |
 
 Мінімальний безпечний порядок: дебаг and QA → бекап ключів → Development-шифрування → підписана OTA → Release → and тільки потім JTAG/UART-lock.
@@ -166,7 +166,7 @@ nvs_keys, data, nvs_keys, 0xF000, 0x1000, encrypted
 // ключі генеруються в nvs_keys при першому старті.
 ```
 
-Заборони: not класти секрети in `phy_init`, in незашифровані `data`-партиції, in LittleFS-файли without шифрування, in code (`const char *PASS = ...` читається with бінарника!). Унікальні секрети - in `mfg`-партицію із заводу (наступний розділ).
+Заборони: not класти секрети in `phy_init`, in незашифровані `data`-партиції, in LittleFS-файли without шифрування, in code (`const char *PASS =...` читається with бінарника!). Унікальні секрети - in `mfg`-партицію із заводу (наступний розділ).
 
 ## 7. WiFi PMF + WPA3 and BLE privacy/bonding
 
@@ -200,10 +200,10 @@ BLE-мінімум for носимих/кімнатних пристроїв:
 
 Прод-правила (механіка слотів - [[08-Memory/03-OTA.en | OTA]]):
 
-1. Трансport - тільки HTTPS with перевіркою CA and hostname. Чистий HTTP - стенд.
+1. Transport - HTTPS only with CA and hostname verification. Plain HTTP - test rig.
 2. Образ підписаний тим самим ключем, that in eFuse; непідписаний відхиляє bootloader.
 3. `secure_version` монотонно зростає on security-релізах.
-4. Після старту - self-test (WiFi, сенсори, дотягнувся до OTA-serverа) and тільки потім `mark_valid`, інакше rollback.
+4. After start - self-test (WiFi, sensors, reached OTA server) and only then `mark_valid`, otherwise rollback.
 5. `/update`-ендпоінт під паролем, унікальним on пристрій.
 
 ```c
@@ -259,7 +259,7 @@ esptool.py --port /dev/ttyUSB0 read_flash 0x10000 256 dump.bin
 # Після Release там має бути шифротекст, а не читабельний код.
 ```
 
-Запис - тільки on жертовному модулі, тільки for процедурою with [[08-Memory/04-Secure-Boot-Encrypt | 04-Secure-Boot-Encrypt]] розділ 4, with двома бекапами ключів.
+Запис - тільки on жертовному модулі, тільки for процедурою with [[EN/08-Memory/04-Secure-Boot-Encrypt.en| 04-Secure-Boot-Encrypt]] розділ 4, with двома бекапами ключів.
 
 ## Common issues
 
@@ -268,11 +268,11 @@ esptool.py --port /dev/ttyUSB0 read_flash 0x10000 256 dump.bin
 | JTAG not чіпляється після захисту | Secure Boot / Flash Encryption відрізали JTAG | this штатна поведінка; далі - логи, coredump, `esp-coredump.py`, софтверний трейс |
 | Заблокований JTAG, but дебаг ще потрібен | біти запаяно on робочому зразку | Дебажити on незахищеному близнюці; захищений - тільки for регресійних прогонів |
 | UART-download вимкнено, firmware мертва | `DIS_DOWNLOAD_MODE` + битий app, OTA not піднімається | Порятунку per дроту немає - заміна модуля; висновок: різати download тільки після 3+ вдалих OTA |
-| `flash read err, 1000` per колу | plaintext залито поверх зашифрованого flash | verify `FLASH_CRYPT_CNT`, лити шифрований образ або OTA; деталі [[08-Memory/04-Secure-Boot-Encrypt | 04-Secure-Boot-Encrypt]] |
+| `flash read err, 1000` per колу | plaintext залито поверх зашифрованого flash | verify `FLASH_CRYPT_CNT`, лити шифрований образ або OTA; деталі [[EN/08-Memory/04-Secure-Boot-Encrypt.en| 04-Secure-Boot-Encrypt]] |
 | Пристрій not стартує після підпису | key not той / secure_version нижче eFuse | `verify_signature` офлайн, звірити `CONFIG_BOOTLOADER_APP_SECURE_VERSION` |
 | OTA падає with TLS-ошибкою | час 1970 (немає NTP) або прострочений CA | Спочатку SNTP-синк, потім TLS; ротувати CA-bundle (див. [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]]) |
 | MQTT-пароль витягли with дампа | NVS лежала in plaintext | Увімкнути NVS-шифрування, переписати секрети, старі відкликати |
-| Один пароль on партію злили | немає mfg-перsleepалізації | Відкликати спільний секрет, ввести mfg + ротацію токенів |
+| One password per batch leaked | no mfg personalization | Revoke shared secret, introduce mfg + token rotation |
 | Токен світиться in логах on форумі | `LOGI` with секретом | Маскувати, знизити level, відкликати засвічений токен |
 | PMF-required ні до чого not чіпляється | старі AP without PMF | Fallback: capable without required + WPA2, або оновити парк AP |
 | Після ввімкнення захисту `esptool` мовчить | відрізано download / not той port | verify port and біти via `summary`; якщо біти цілі - this цегла |
@@ -285,17 +285,17 @@ esptool.py --port /dev/ttyUSB0 read_flash 0x10000 256 dump.bin
 - [NVS Encryption - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/storage/nvs_encryption.html) - `nvs_keys`-партиція, шифрування облікових.
 - [OTA / Anti-rollback - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/ota.html) - rollback, secure version, стани слотів.
 - [Wi-Fi Security - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/wifi-security.html) - PMF, WPA3, Enterprise.
-- [ESP-TLS - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_tls.html) - CA, SNI, check serverа.
+- [ESP-TLS - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_tls.html) - CA, SNI, server check.
 - [ESP x509 Certificate Bundle - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_crt_bundle.html) - bundle Mozilla for OTA and MQTTS.
 
 ## See also
 
 - [[Home.en | Home]]
-- [[08-Memory/04-Secure-Boot-Encrypt | Secure Boot та Flash Encryption]] - повна механіка ключів and eFuse
+- [[EN/08-Memory/04-Secure-Boot-Encrypt.en| Secure Boot та Flash Encryption]] - повна механіка ключів and eFuse
 - [[08-Memory/03-OTA.en | OTA]] - слоти, rollback, HTTPS-доставка
-- [[09-Firmware/05-JTAG-Debug | JTAG-дебаг]] - дебажити до запаювання бітів
+- [[EN/09-Firmware/05-JTAG-Debug.en| JTAG-дебаг]] - дебажити до запаювання бітів
 - [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS/NTP/TLS]] - час for TLS and CA-bundle
 - [[08-Memory/01-Partitions-NVS.en | NVS]] - партиції `nvs`, `nvs_keys`, `mfg`
-- [[15-Protocols/01-MQTT.en | MQTT]] - паролі brokerа зберігати шифровано
-- [[15-Protocols/04-Provisioning.en | Provisioning]] - PoP, пароль portалу, таймаут
-- [[99-Additions/02-Troubleshooting-FAQ | FAQ]] - розбір зальотів
+- [[15-Protocols/01-MQTT.en | MQTT]] - store broker passwords encrypted
+- [[15-Protocols/04-Provisioning.en | Provisioning]] - PoP, portal password, timeout
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] - розбір зальотів

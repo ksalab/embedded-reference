@@ -245,7 +245,7 @@ Tests with faked stamps near the top catch the error in a minute.
 
 Long-life nodes truly live to see overflow.
 
-Sleep with supervision is described in [[07-Timers/02-Son-WDT|sleep and watchdog]].
+Sleep with supervision is described in [[EN/07-Timers/02-Sleep-WDT.en|sleep and watchdog]].
 
 ## 6. Servo on timer one
 
@@ -399,4 +399,4 @@ A free loop lets all tasks combine.
 - [[Home.en]]
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
 - [[EN/03-GPIO/03-Interrupts.en|board interrupts]]
-- [[07-Timers/02-Son-WDT|sleep and watchdog]]
+- [[EN/07-Timers/02-Sleep-WDT.en|sleep and watchdog]]

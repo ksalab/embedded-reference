@@ -13,7 +13,7 @@ date: 2026-10-08
 
 ![[assets/img/placeholder.png]]
 
-Navigation: [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], repair [[EN/99-Additions/02-Troubleshooting-FAQ.en]], checklists [[EN/99-Additions/03-Cheklisti-montazhu.en]], power [[02-Power-Supply/01-Lancjugi-zhivlennya]], radio [[05-Radio/01-WiFi-STA-AP]].
+Navigation: [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], repair [[EN/99-Additions/02-Troubleshooting-FAQ.en]], checklists [[EN/99-Additions/03-Cheklisti-montazhu.en]], power [[EN/02-Power-Supply/01-Power-Rails.en]], radio [[EN/05-Radio/01-WiFi-STA-AP.en]].
 
 ## 1. Official Espressif Datasheets (search by name on espressif.com)
 
@@ -25,11 +25,11 @@ Navigation: [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], repai
 | ESP32 Hardware Design Guidelines | antenna layout, power, EMC | own board, external antenna |
 | ESP-IDF Programming Guide | API for all peripherals, TWAI/Ethernet/Camera | ESP-IDF development |
 | ESP-AT Command Set | AT for WiFi/BLE modems | AT firmware |
-| MFRC522 (NXP) | RFID registers, 13.56 MHz antenna | [[12-Comm-Modules/01-RC522-RFID]] deep dive |
-| SX1276/78 (Semtech) | LoRa modem, link budget | [[12-Comm-Modules/02-NRF24-LoRa]] range |
-| SIM800 Series AT Manual (Simcom) | all AT commands GSM/GPRS | [[12-Comm-Modules/03-SIM800L-GPS]] SMS/HTTP |
+| MFRC522 (NXP) | RFID registers, 13.56 MHz antenna | [[EN/12-Comm-Modules/01-RC522-RFID.en]] deep dive |
+| SX1276/78 (Semtech) | LoRa modem, link budget | [[EN/12-Comm-Modules/02-NRF24-LoRa.en]] range |
+| SIM800 Series AT Manual (Simcom) | all AT commands GSM/GPRS | [[EN/12-Comm-Modules/03-SIM800L-GPS.en]] SMS/HTTP |
 | NEO-6M Hardware Integration (u-blox) | NMEA, PPS, antennas | GPS accuracy |
-| SN65HVD230 / TJA1050 | CAN transceivers | [[12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera]] |
+| SN65HVD230 / TJA1050 | CAN transceivers | [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]] |
 | LAN8720A | RMII, REF_CLK 50 MHz | Ethernet classic only |
 | OV2640 | DVP, SCCB, resolution | camera S3 |
 
@@ -78,11 +78,11 @@ Navigation: [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], repai
 
 | Component | Search | Base note |
 | --- | --- | --- |
-| ESP32-C6 / H2 | datasheet + TRM + errata | [[01-Hardware/04-ESP32-C3-C6-H2]] |
-| ESP32-C5 / C61 / P4 | product brief + migration guide | [[01-Hardware/10-ESP32-C5-C61]] |
-| ZED-F9P / UM980 (RTK) | integration manual + interface description | [[12-Comm-Modules/17-GNSS-RTK]] |
-| A7670 / EC200U (Cat-1) | AT manual + hardware design | [[12-Comm-Modules/18-Cellular-LoRa-2]] |
-| ATECC608 / SE050 | datasheet + appnotes ([ATECC608 Microchip](https://www.microchip.com/en-us/product/ATECC608)) | [[12-Comm-Modules/25-Secure-Elements]] |
+| ESP32-C6 / H2 | datasheet + TRM + errata | [[EN/01-Hardware/04-ESP32-C3-C6-H2.en]] |
+| ESP32-C5 / C61 / P4 | product brief + migration guide | [[EN/01-Hardware/10-ESP32-C5-C61.en]] |
+| ZED-F9P / UM980 (RTK) | integration manual + interface description | [[EN/12-Comm-Modules/17-GNSS-RTK.en]] |
+| A7670 / EC200U (Cat-1) | AT manual + hardware design | [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]] |
+| ATECC608 / SE050 | datasheet + appnotes ([ATECC608 Microchip](https://www.microchip.com/en-us/product/ATECC608)) | [[EN/12-Comm-Modules/25-Secure-Elements.en]] |
 
 ## See Also
 
@@ -90,10 +90,10 @@ Navigation: [[EN/Home.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], repai
 - [[EN/99-Additions/01-Pinout-tablici.en]]
 - [[EN/99-Additions/02-Troubleshooting-FAQ.en]]
 - [[EN/99-Additions/03-Cheklisti-montazhu.en]]
-- [[12-Comm-Modules/01-RC522-RFID]]
-- [[12-Comm-Modules/02-NRF24-LoRa]]
-- [[12-Comm-Modules/03-SIM800L-GPS]]
+- [[EN/12-Comm-Modules/01-RC522-RFID.en]]
+- [[EN/12-Comm-Modules/02-NRF24-LoRa.en]]
+- [[EN/12-Comm-Modules/03-SIM800L-GPS.en]]
 
 ![[assets/img/placeholder.png]]
 
-> UA original twin: [[99-Additions/04-Datasheet-Links.md | UA]]
+> UA original twin: [[EN/99-Additions/04-Datasheet-Links.en| UA]]

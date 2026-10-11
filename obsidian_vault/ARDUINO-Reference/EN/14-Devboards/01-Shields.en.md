@@ -302,7 +302,7 @@ Take a prototype when no ready floor suits the task.
 
 Check seating before power-on.
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -313,7 +313,7 @@ Check seating before power-on.
 | 5 | Relay with no transistor and diode | Coil spike hits the output | Transistor plus diode across the coil |
 | 6 | Long force lines near the bus | Pickup kills exchange | Force apart, signals short |
 
-## Official Sources
+## Official sources
 
 - [Shield overview at docs.arduino.cc](https://docs.arduino.cc/hardware/shields/) - seating mechanics, compatibility, floor examples.
 - [Motor shield at arduino.cc](https://www.arduino.cc/en/Main/ArduinoMotorShieldR3) - driver channels, power, pin table.

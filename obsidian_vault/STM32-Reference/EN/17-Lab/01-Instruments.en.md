@@ -169,7 +169,7 @@ flowchart TB
     AN --> FIX[Fix and repeat measurement]
 ```
 
-## Common errors
+## Common issues
 
 | # | Error | Why bad | How right |
 | --- | --- | --- | --- |

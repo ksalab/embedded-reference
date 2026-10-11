@@ -4,6 +4,7 @@ title: HMI-плати ESP32 - Guition, CrowPanel, WT32-SC01, T-Embed
 tags: [esp32, devboards, hmi, display, guition, crowpanel, wt32-sc01, t-embed, lvgl, squareline, touch, encoder, s3]
 category: Devboards
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # HMI-Boards: Guition / CrowPanel / WT32-SC01 / T-Embed
@@ -148,7 +149,7 @@ lib_deps =
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![[assets/img/devboard-hmi-guition-scheme.png|600]]
+> [!example] Фото/схема:![[assets/img/devboard-hmi-guition-scheme.png|600]]
 
 ```text
 [Блок 5V/2A] ──► плата HMI ──► LDO 3.3V ──► S3-логіка

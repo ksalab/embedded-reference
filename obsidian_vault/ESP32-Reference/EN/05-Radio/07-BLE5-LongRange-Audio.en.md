@@ -374,6 +374,6 @@ Field range test: pvvx S8 beacon on a window → C3 scanner with a laptop (`idf.
 - [[EN/05-Radio/02-BLE-Bluetooth.en|BLE/Bluetooth]] - GATT, NimBLE, beacon, base MTU
 - [[EN/05-Radio/05-BLE-Mesh-A2DP-HID.en|BLE Mesh / A2DP / HID]] - Classic audio (A2DP) while no LE Audio exists
 - [[EN/05-Radio/06-BLE-Gateway-Tracker.en|BLE gateway and tracker]] - RSSI distance, ESPresense/Bermuda in practice
-- [[15-Protocols/01-MQTT|MQTT]] - transport for gateways and coordinators
-- [[15-Protocols/05-Cloud-Pipeline]] - where to store RSSI/angles/telemetry
-- [[07-Timers/03-Sleep-ULP|Sleep / ULP]] - battery beacons: adv interval, Coded current cost
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - transport for gateways and coordinators
+- [[EN/15-Protocols/05-Cloud-Pipeline.en]] - where to store RSSI/angles/telemetry
+- [[EN/07-Timers/03-Sleep-ULP.en|Sleep / ULP]] - battery beacons: adv interval, Coded current cost

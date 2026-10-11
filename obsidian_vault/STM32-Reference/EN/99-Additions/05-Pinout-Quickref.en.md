@@ -60,7 +60,7 @@ Each STM32 series (F0, F3, F4, F7, H7, U5, L4) has different AF multipliers on d
 | CAN_RX | PB8 | Industrial tire |
 | SPI MOSI | PB5 | Speed ​​40 MHz |
 
-## Official sources- [[01-Hardware/01-F0-F1-Classic | F0/F1-classic]] - a place in the lineup.- [[01-Hardware/01-F0-F1-Classic | F0/F1-classic]] - a place in the lineup.- <https://www.st.com/resource/en/reference_manual/rm0091-stm32f0x1-stm32f0x2-stm32f0x8-reference-manual-stmicroelectronics.pdf> (F0/F1)
+## Official sources- [[EN/01-Hardware/01-F0-F1-Classic.en| F0/F1-classic]] - a place in the lineup.- [[EN/01-Hardware/01-F0-F1-Classic.en| F0/F1-classic]] - a place in the lineup.- <https://www.st.com/resource/en/reference_manual/rm0091-stm32f0x1-stm32f0x2-stm32f0x8-reference-manual-stmicroelectronics.pdf> (F0/F1)
 - <https://www.st.com/resource/en/reference_manual/rm0432-stm32f4-reference-manual-stmicroelectronics.pdf> (F3/F4)
 
 ## Common issues

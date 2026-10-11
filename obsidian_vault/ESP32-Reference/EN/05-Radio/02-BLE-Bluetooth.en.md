@@ -119,7 +119,7 @@ Steps to create a server:
 | Arduino support | `NimBLEDevice.h` (recommended) | `BLEDevice.h` (heavier) |
 | When to take | sensors, beacons, battery, S3/C3 | need SPP/A2DP on Classic, or an old example |
 
-Rule: **NimBLE by default**. Bluedroid - only if you need BT Classic or you port old code. On projects with WiFi + BLE at once NimBLE saves ~200 KB of flash - that is the difference between "OTA fits" and "does not fit" (see [[08-Memory/01-Partitions-NVS|Partitions]]).
+Rule: **NimBLE by default**. Bluedroid - only if you need BT Classic or you port old code. On projects with WiFi + BLE at once NimBLE saves ~200 KB of flash - that is the difference between "OTA fits" and "does not fit" (see [[EN/08-Memory/01-Partitions-NVS.en|Partitions]]).
 
 In ESP-IDF the choice is via menuconfig `Component config → Bluetooth → NimBLE` vs `Bluedroid`, example: `examples/bluetooth/nimble/gatt_server`.
 
@@ -149,7 +149,7 @@ What to do in code:
 | OOB / Numeric Comparison | maximum | payment/critical (rare on ESP32) |
 | Bonding (key storage) | reconnect without PIN | everything with a passkey |
 
-Minimal pattern: enable bonding + passkey on the server, keys are stored in NVS (see [[08-Memory/01-Partitions-NVS|NVS]]). After a `factory reset` - delete the bond on both sides, otherwise encryption error `0x05 / 0x06`.
+Minimal pattern: enable bonding + passkey on the server, keys are stored in NVS (see [[EN/08-Memory/01-Partitions-NVS.en|NVS]]). After a `factory reset` - delete the bond on both sides, otherwise encryption error `0x05 / 0x06`.
 
 > [!warning] Do not pass "secret" data via open READ
 > A BLE sniffer (nRF Sniffer) sees everything unencrypted. Calibration constants are fine, but WiFi tokens via GATT without bonding are not.
@@ -332,4 +332,4 @@ flowchart TB
 - [[EN/05-Radio/03-ESP-NOW.en|ESP-NOW]]
 - [[EN/10-Sensors/03-BME280-BMP280-SHT31.en|I2C sensors]]
 - [[EN/05-Radio/03-ESP-NOW.en|MQTT]]
-- [[07-Timers/03-Sleep-ULP|Sleep]]
+- [[EN/07-Timers/03-Sleep-ULP.en|Sleep]]

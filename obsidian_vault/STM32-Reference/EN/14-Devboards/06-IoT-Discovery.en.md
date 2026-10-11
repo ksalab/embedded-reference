@@ -14,7 +14,7 @@ date: 2026-10-09
 *Рис. B-L475E-IOT01A: L475 + WiFi/BLE/Sub-GHz/NFC and повний набір сенсорів - готовий IoT-вузол with коробки.*
 
 > [!tip] that це за нота
-> Одна плата замість макетки with десятком модулів: тут уже розпаяні WiFi, BLE, Sub-GHz, NFC and шість сенсорів. Ідеальна відповідь on питання «with чого почати STM32+хмара». База: [[14-Devboards/04-Discovery|лінійка Discovery]], [[01-Hardware/05-L0-L4-U5|родини L0/L4/U5]].
+> Одна плата замість макетки with десятком модулів: тут уже розпаяні WiFi, BLE, Sub-GHz, NFC and шість сенсорів. Ідеальна відповідь on питання «with чого почати STM32+хмара». База: [[EN/14-Devboards/04-Discovery.en|лінійка Discovery]], [[EN/01-Hardware/05-L0-L4-U5.en|родини L0/L4/U5]].
 
 ## 1. Мета
 
@@ -70,7 +70,7 @@ ST-Link V2-1 on платі - прошивка по USB без зовнішньо
 | VL53L0X | дальність ToF | I2C 0x29 |
 | MP34DT01 ×2 | звук, PDM | DFSDM/SAI |
 
-Це готовий набір for метеостанції with компасом and детектором руху - див. [[16-Projects/01-Meteostantsiya|метеостанцію]] and [[10-Sensors/14-Mag-Gesture-RTC|магнітометри]].
+Це готовий набір for метеостанції with компасом and детектором руху - див. [[EN/16-Projects/01-Weather-Station.en|метеостанцію]] and [[EN/10-Sensors/14-Mag-Gesture-RTC.en|магнітометри]].
 
 ## 5. Робочий code HAL
 
@@ -104,7 +104,7 @@ void iot_sensors_poll(float *t, float *h, float *p) {
 | Stop 2 + RTC | ~2 мкА + сенсори | місяці |
 | Будильник руху LSM6DSL | переривання | роки in очікуванні |
 
-for батарейного вузла: Stop 2 між вимірами, WiFi - раз on годину пакетом, BLE-реклама - рідко. Деталі: [[07-Timers/03-Sleep-Stop-Standby|режими сну]].
+for батарейного вузла: Stop 2 між вимірами, WiFi - раз on годину пакетом, BLE-реклама - рідко. Деталі: [[EN/07-Timers/03-Sleep-Stop-Standby.en|режими сну]].
 
 ## 6.1 Хмара за 15 хвилин: шлях даних
 
@@ -124,29 +124,29 @@ flowchart LR
 - Arduino Uno V3 - шилди реле, дисплеїв, моторів;
 - PMOD - модулі Digilent (BT, дисплей, датчики);
 - власні датчики - вільні I2C/SPI/UART on гребінках;
-- Sub-GHz антена - U.FL роз'єм, not забути антену (див. [[05-Radio/03-Antena-50ohm|узгодження антен]]).
+- Sub-GHz антена - U.FL роз'єм, not забути антену (див. [[EN/05-Radio/03-Antenna-50ohm.en|узгодження антен]]).
 
-## 8. typical errors
+## 8. Common issues
 
-| Симптом | Причина | Лікування |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| ST-Link not бачить плату | перемички живлення ST-Link | JP: U5V, драйвер ST-Link переустановити |
-| WiFi not конектиться | 5 ГГц мережа (модуль лише 2.4) | точка 2.4 ГГц, WPA2, без спецсимволів у паролі |
-| I2C сенсори мовчать | шина зайнята NFC або швидкість | 100 кГц for старту, сканер адрес |
-| BLE not рекламується | демо без ініціалізації BlueNRG | example BLE_Beacon зі CubeL4 |
-| Жере батарею | WiFi not спить | Stop 2 + вимикання ISM43362 між сесіями |
-| NFC not читається | антена закрита металом корпусу | пластиковий корпус, мітка догори |
+| ST-Link does not see the board | ST-Link power jumpers | JP: U5V, reinstall the ST-Link driver |
+| WiFi does not connect | 5 GHz network (module is 2.4 only) | 2.4 GHz access point, WPA2, no special chars in password |
+| I2C sensors silent | Bus busy with NFC or speed | 100 kHz for start, address scanner |
+| BLE does not advertise | Demo without BlueNRG init | BLE_Beacon example from CubeL4 |
+| Drains the battery | WiFi never sleeps | Stop 2 + ISM43362 off between sessions |
+| NFC does not read | Antenna covered by metal case | Plastic case, tag facing up |
 
-## 9. Суміжні ноти
+## 9. Related notes
 
-- [[14-Devboards/04-Discovery|лінійка Discovery]] - огляд усіх плат.
-- [[14-Devboards/03-Nucleo|лінійка Nucleo]] - альтернатива без радіо.
-- [[01-Hardware/05-L0-L4-U5|родини L0/L4/U5]] - low-power лінійка.
-- [[10-Sensors/14-Mag-Gesture-RTC|магнітометри and RTC]] - сенсори плати детально.
-- [[16-Projects/01-Meteostantsiya|метеостанція]] - перший проєкт on платі.
+- [[EN/14-Devboards/04-Discovery.en|лінійка Discovery]] - огляд усіх плат.
+- [[EN/14-Devboards/03-Nucleo.en|лінійка Nucleo]] - альтернатива без радіо.
+- [[EN/01-Hardware/05-L0-L4-U5.en|родини L0/L4/U5]] - low-power лінійка.
+- [[EN/10-Sensors/14-Mag-Gesture-RTC.en|магнітометри and RTC]] - сенсори плати детально.
+- [[EN/16-Projects/01-Weather-Station.en|метеостанція]] - перший проєкт on платі.
 
-## official джерела
+## Official sources
 
-- [B-L475E-IOT01A (STMicroelectronics)](https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html) - характеристики, схеми, Gerber.
-- [Disco L475 IoT1 (Zephyr)](https://docs.zephyrproject.org/latest/boards/st/disco_l475_iot1/doc/index.html) - підтримка Zephyr, мапа пінів.
-- [STM32CubeL4 (STMicroelectronics, GitHub)](https://github.com/STMicroelectronics/STM32CubeL4) - HAL, демо B-L475E-IOT01A.
+- [B-L475E-IOT01A (STMicroelectronics)](https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html) - features, schematics, Gerber.
+- [Disco L475 IoT1 (Zephyr)](https://docs.zephyrproject.org/latest/boards/st/disco_l475_iot1/doc/index.html) - Zephyr support, pin map.
+- [STM32CubeL4 (STMicroelectronics, GitHub)](https://github.com/STMicroelectronics/STM32CubeL4) - HAL, B-L475E-IOT01A demos.

@@ -18,7 +18,7 @@ Network overview: [[05-Radio/01-WiFi-STA-AP.en | 01-WiFi-STA-AP]], power supply 
 
 ## Purpose
 
-MQTT - lightweight publish/subscribe protocol for IoT: node does not hold direct connections with dozens of clients, but speaks with one broker. Broker distributes message subscriberам for топіками.
+MQTT - lightweight publish/subscribe protocol for IoT: node does not hold direct connections with dozens of clients, but speaks with one broker. Broker distributes messages to subscribers by topics.
 
 When to use MQTT:
 
@@ -30,7 +30,7 @@ When to use MQTT:
 When NOT to use:
 
 - передача файлів/OTA-прошивок - for цього HTTP(S), див. [[15-Protocols/02-HTTP-WebSocket.en | 02-HTTP-WebSocket]];
-- локальний discovery without serverа - for цього mDNS, див. [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]];
+- local discovery without a server - use mDNS for that, see [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]];
 - разове entry WiFi-облікових - for цього provisioning, див. [[15-Protocols/04-Provisioning.en | Provisioning]];
 - повний хмарний пайплайн with графіками - див. [[15-Protocols/05-Cloud-Pipeline.en | 05-Cloud-Pipeline]].
 
@@ -39,8 +39,8 @@ When NOT to use:
 | Параметр | Value for ESP32 | Note |
 | --- | --- | --- |
 | Бібліотеки | esp-mqtt (IDF), PubSubClient (Arduino), umqtt.simple/robust (MP) | API різне, логіка одна |
-| Broker | Mosquitto 2.x | portи 1883 (plain) / 8883 (TLS) |
-| Версія protocolу | MQTT 3.1.1 (скрізь), MQTT 5 частково in esp-mqtt | PubSubClient тільки 3.1.1 |
+| Broker | Mosquitto 2.x | ports 1883 (plain) / 8883 (TLS) |
+| Protocol version | MQTT 3.1.1 (everywhere), MQTT 5 partly in esp-mqtt | PubSubClient 3.1.1 only |
 | QoS | 0 / 1 / 2 (див. таблицю нижче) | PubSubClient публікує тільки QoS 0 |
 | Keepalive | 15-60 с | пінгує broker, ловить обрив |
 | LWT | топік `device/<id>/status` = `offline` | retained, спрацьовує at обриві |
@@ -50,7 +50,7 @@ When NOT to use:
 | Power supply | WiFi TX пік 500 мА | див. [[02-Power-Supply/01-Power-Rails.en | 01-Lancjugi-zhivlennya]] |
 
 ![[assets/img/mqtt-broker-lwt-scheme.png | 600]]
-*Fig. MQTT-топологія: вузли публікують телеметрію, broker роздає subscriberам, LWT повідомляє про відвал.*
+*Fig. MQTT topology: nodes publish telemetry, broker fans out to subscribers, LWT reports dropouts.*
 
 ### ASCII-схема
 
@@ -85,8 +85,8 @@ graph LR
 
 | Протокол | Коли замість MQTT |
 | --- | --- |
-| LwM2M (OMA, поверх CoAP/UDP) | Керування парком пристроїв оператором (телеметрія + firmwares + конфіг with одного serverа, Leshan/Anjay) |
-| AMQP 0-9-1 / 1.0 (RabbitMQ, Azure Service Bus) | Черги with pathизацією and підтвердженнями on serverному боці; ESP32 - лише client via шлюз (важкий for прямого) |
+| LwM2M (OMA, over CoAP/UDP) | Operator fleet management (telemetry + firmwares + config from one server, Leshan/Anjay) |
+| AMQP 0-9-1 / 1.0 (RabbitMQ, Azure Service Bus) | Queues with routing and acknowledgments on the server side; ESP32 - client only via gateway (too heavy directly) |
 | CoAP | UDP-аналог HTTP for сплячих вузлів (див. Matter/Thread) |
 
 ## Mosquitto broker on Ubuntu
@@ -159,11 +159,11 @@ device/esp32-01/config         → конфіг з хмари (QoS 1, retain)
 device/esp32-01/fw             → тригер OTA (QoS 1, без retain)
 ```
 
-Заборони: пробіли and кирилиця in топіках, `#`/`+` тільки in підписках, глибина not більше 4-5 рівнів. ID вузла - MAC або flashй серійник with NVS, див. [[08-Memory/01-Partitions-NVS.en | 01-Partitions-NVS]].
+Prohibitions: spaces and Cyrillic in topics, `#`/`+` only in subscriptions, depth no more than 4-5 levels. Node ID - MAC or flash serial with NVS, see [[08-Memory/01-Partitions-NVS.en | 01-Partitions-NVS]].
 
 ## TLS: mqtts on port 8883
 
-on brokerі додати слухач:
+on the broker add a listener:
 
 ```conf
 listener 8883
@@ -176,7 +176,7 @@ require_certificate false
 on ESP32 покласти CA-сертифікат in прошивку (IDF: компонент cert bundle або PEM in флеші; Arduino: `WiFiClientSecure::setCACert()`; MP: `ssl_params={'cert':...}`). Час має бути синхронізовано via NTP, інакше handshake падає - див. [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]]. Пам'ять: TLS-сесія with'їдає ~40 КБ heap, on ESP32-C3 without PSRAM not тримати одночасно HTTPS and MQTT-TLS.
 
 ![[assets/img/mqtt-client-3stack-scheme.png | 600]]
-*Fig. Три clientські стеки поруч: esp-mqtt (реконект+LWT+TLS), PubSubClient (QoS 0, буфер), umqtt.robust (WDT-обережно).*
+*Fig. Three client stacks side by side: esp-mqtt (reconnect+LWT+TLS), PubSubClient (QoS 0, buffer), umqtt.robust (WDT-careful).*
 
 ## ESP-IDF code (esp-mqtt, with reconnect)
 
@@ -336,7 +336,7 @@ while True:
 - [[05-Radio/01-WiFi-STA-AP.en | WiFi STA/AP]] - without WiFi MQTT not стартує
 - [[08-Memory/03-OTA.en | OTA]] - тригер оновлення via топік `fw`
 - [[08-Memory/01-Partitions-NVS.en | NVS]] - зберігання ID вузла and MQTT-password
-- [[99-Additions/02-Troubleshooting-FAQ | FAQ]] - діагностика обривів
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] - діагностика обривів
 - [[15-Protocols/02-HTTP-WebSocket.en | HTTP/WebSocket]] - REST and дашборди
 - [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS/NTP/TLS]] - час for TLS, локальні імена
 - [[15-Protocols/04-Provisioning.en | Provisioning]] - entry WiFi without reflashing

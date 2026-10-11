@@ -106,7 +106,7 @@ journalctl -u climate.service -f
 | --- | --- | --- |
 | Температура | `vcgencmd measure_temp` | > 75 °C - діяти |
 | Троттлінг | `vcgencmd get_throttled` | ≠ 0x0 - живлення/тепло |
-| Диск | `df -h` | > 85 % - чистити |
+| Диск | `df -h` | > 85% - чистити |
 | Пам'ять | `free -h` | swap росте - додати RAM/zram |
 | Сервіси | `systemctl --failed` | порожньо |
 

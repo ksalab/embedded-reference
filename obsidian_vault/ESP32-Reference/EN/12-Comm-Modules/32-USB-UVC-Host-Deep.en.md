@@ -1,10 +1,12 @@
 ---
+lang: en
 title: ESP32 USB-OTG and UVC-Host - глибока практика
 description: how використати ESP32 how USB-host (UVC-камери, HID, MSC, CDC), розрізняючи FS/HS, OTG-режими та обмеження per чипу.; shows schematics, code and tables.
 tags: [esp32, usb, otg, uvc, host, usb-c]
 category: Moduli-zvyazku
 date-created: 2026-10-07
 date: 2026-10-07
+original: 12-Moduli-zvyazku/32-USB-UVC-Host-Deep.md
 ---
 
 # ESP32 USB-OTG and UVC-Host - глибока практика
@@ -26,8 +28,8 @@ date: 2026-10-07
 | ESP32-C6 | USB-OTG FS | Full-Speed | Так | Ні (device) | Host обмежений |
 | ESP32-P4 | USB-OTG HS + FS | High-Speed | Так | Так | Native USB-Host, Ethernet |
 
-- **Full-Speed (12 Мб/с)** — достатньо for HID, CDC, MSC (флешки); for UVC-камери — мінімум, але працює (720p @ 30 FPS via компресію).
-- **High-Speed (480 Мб/с)** — for 1080p UVC, аудіо-інтерфейсів, швидких MSC.
+- **Full-Speed (12 Мб/с)** - достатньо for HID, CDC, MSC (флешки); for UVC-камери - мінімум, але працює (720p @ 30 FPS via компресію).
+- **High-Speed (480 Мб/с)** - for 1080p UVC, аудіо-інтерфейсів, швидких MSC.
 
 ```mermaid
 graph LR
@@ -41,8 +43,8 @@ graph LR
 
 ## 2. Роль via OTG-ID
 
-- `GPIO19` (on ESP32-S3) — `OTG_ID`; якщо підключено `GND` → Host; якщо `VCC/плаває` → Device;
-- `GPIO20` / `GPIO21` — `USB_D-` / `USB_D+` (HS via внутрішні PHY);
+- `GPIO19` (on ESP32-S3) - `OTG_ID`; якщо підключено `GND` → Host; якщо `VCC/плаває` → Device;
+- `GPIO20` / `GPIO21` - `USB_D-` / `USB_D+` (HS via внутрішні PHY);
 - for Host-режиму: пін живлення USB (`5V`) має давати `500 мА` (зовнішній БЖ або хаб); плата not живить with `3.3V` регулятора.
 
 ## 3. UVC-Host практика (ESP32-S3 / P4)
@@ -60,9 +62,9 @@ void app_main(void) {
 }
 ```
 
-- **Обмеження**: UVC-потік вимагає `USB-Host` + `USB-Stream` (stack with SDK, not Base); on S2 видалено in 5.2 — перевіряйте версію SDK.
-- **Пам'ять**: кожен UVC-камерний потік займає ~200-400 КБ буфера (720p @ MJPEG); on 512 КБ SRAM — лише 1 камера without іншого.
-- **Живлення**: 5V 500 мА on порт; якщо камера with підсвічуванням — додавайте зовнішній БЖ.
+- **Обмеження**: UVC-потік вимагає `USB-Host` + `USB-Stream` (stack with SDK, not Base); on S2 видалено in 5.2 - перевіряйте версію SDK.
+- **Пам'ять**: кожен UVC-камерний потік займає ~200-400 КБ буфера (720p @ MJPEG); on 512 КБ SRAM - лише 1 камера without іншого.
+- **Живлення**: 5V 500 мА on порт; якщо камера with підсвічуванням - додавайте зовнішній БЖ.
 
 ## 4. HID-Host (клавіатура/миша)
 
@@ -78,8 +80,8 @@ from usb_hid import HIDServer
 
 ## 5. MSC / CDC-Host
 
-- MSC — зчитування флешок via `FATFS` + `USB-Host` (ESP32-S3/P4);
-- CDC — серійний порт via USB-кабель (PC ↔ ESP32) — this Device, not Host.
+- MSC - зчитування флешок via `FATFS` + `USB-Host` (ESP32-S3/P4);
+- CDC - серійний порт via USB-кабель (PC ↔ ESP32) - this Device, not Host.
 
 ## 6. typical errors
 
@@ -95,15 +97,15 @@ from usb_hid import HIDServer
 
 - Full-Speed USB 2.0 = 12 Мбіт/с; достатньо for HID (клавіатура 8 байт/запит, 125 Гц) та MSC (флешка до 32 ГБ FAT32).
 - High-Speed USB 2.0 = 480 Мбіт/с; необхідний for UVC 720p MJPEG (~6 Мб/с потік) та аудіо 48 кГц stereo.
-- ESP32-S3 має вбудований HS PHY; ESP32 (Classic) — лише FS.
-- Device-режим (CDC/MSC) працює on всіх; Host — потребує 5V-source > 500 мА.
+- ESP32-S3 має вбудований HS PHY; ESP32 (Classic) - лише FS.
+- Device-режим (CDC/MSC) працює on всіх; Host - потребує 5V-source > 500 мА.
 
 ## 2.2 Живлення USB-Host
 
-- Порт USB on ESP32-платі not дає 5V on вихід — зовнішній хаб/БЖ обов’язковий.
+- Порт USB on ESP32-платі not дає 5V on вихід - зовнішній хаб/БЖ обов’язковий.
 - for UVC-камери with підсвічуванням: рахувати 5V × 0.5 but (камера) + 0.2 but (стабілізатор PWM) = 3.5 Вт + запас = БЖ 5A.
-- for HID (миша) — 500 мА достатньо; HID not вимагає HS.
-- for MSC — флешка до 32 ГБ FAT32; NTFS/exFAT not підтримуються without додаткового стека.
+- for HID (миша) - 500 мА достатньо; HID not вимагає HS.
+- for MSC - флешка до 32 ГБ FAT32; NTFS/exFAT not підтримуються without додаткового стека.
 
 ## 2.3 code UVC-потоку (ESP-IDF 5.2+)
 
@@ -118,13 +120,13 @@ void app_main() {
 }
 ```
 
-> [!warning] in SDK 5.2 UVC-стек видалено with базового бандла — перевіряйте `component.mk` on наявність `usb_stream`.
+> [!warning] in SDK 5.2 UVC-стек видалено with базового бандла - перевіряйте `component.mk` on наявність `usb_stream`.
 
 ## See also
 
-- [[12-Comm-Modules/32-USB-UVC-Host-Deep | USB-UVC-Host глибоко]] - глибша схема UVC-потоку;
-- [[04-Interfaces/06-USB-OTG-JTAG | USB-OTG-JTAG]] - OTG + JTAG on ESP32;
-- [[01-Hardware/09-ESP32-C2-P4 | C2/P4]] - P4 with HS + Ethernet.
+- [[EN/12-Comm-Modules/32-USB-UVC-Host-Deep.en| USB-UVC-Host глибоко]] - глибша схема UVC-потоку;
+- [[EN/04-Interfaces/06-USB-OTG-JTAG.en| USB-OTG-JTAG]] - OTG + JTAG on ESP32;
+- [[EN/01-Hardware/09-ESP32-C2-P4.en| C2/P4]] - P4 with HS + Ethernet.
 
 ## Official sources
 
@@ -136,7 +138,7 @@ void app_main() {
 ## 7. Живлення USB-Host
 
 - Розрахунок сумарного струму: 500 мА (камера) + 100 мА (PWM-кулер) + 50 мА (контролер) = 650 мА мінімум;
-- БЖ with PD-протоколом (5 in / 5 but = 27 Вт) дає запас for піків at startі USB;
+- БЖ with PD-протоколом (5 in / 5 but = 27 Вт) дає запас for піків at старті USB;
 - якщо БЖ дає лише 3 but - обмежитись однією камерою + HID, without MSC;
 - diagnostics: `usb_host_printf(USB_HOST_LOG_LEVEL_DEBUG)` показує енумерацію пристроїв.
 

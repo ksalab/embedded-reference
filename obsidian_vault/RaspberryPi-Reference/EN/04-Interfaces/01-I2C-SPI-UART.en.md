@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Three buses off one header: I2C - sensors, SPI - displays, UART - console and modems; speeds and pull-ups.*
 
 > [!tip] What this note is
-> Bus practical minimum: enable, find the device, push data. I2C - sensors, SPI - displays/ADC, UART - console/modems/GPS. Base: [[03-GPIO/01-Header-Gpiozero.en | header and gpiozero]], [[09-Firmware/03-OS-Nalashtuvannya | OS setup]].
+> Bus practical minimum: enable, find the device, push data. I2C - sensors, SPI - displays/ADC, UART - console/modems/GPS. Base: [[03-GPIO/01-Header-Gpiozero.en | header and gpiozero]], [[EN/09-Firmware/03-OS-Setup.en| OS setup]].
 
 ## 1. Goal
 
@@ -137,8 +137,8 @@ Packages: `i2c-tools`, `python3-spidev`, `python3-serial`. Turn the console off 
 
 - [[03-GPIO/01-Header-Gpiozero.en | header and gpiozero]] - bus pins.
 - [[04-Interfaces/02-Logic-Analyzer.en | logic analyzer]] - bus debugging.
-- [[09-Firmware/03-OS-Nalashtuvannya | OS setup]] - config.txt and groups.
-- [[10-Sensors/01-BME280-Klimat | BME280 climate]] - first I2C sensor.
+- [[EN/09-Firmware/03-OS-Setup.en| OS setup]] - config.txt and groups.
+- [[EN/10-Sensors/01-BME280-Climate.en| BME280 climate]] - first I2C sensor.
 - [[Home.en | main map]] - full navigation.
 
 ## 9.1 Bus address book

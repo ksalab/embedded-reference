@@ -149,4 +149,4 @@ void encoder_poll(void)
 - [[EN/07-Timers/01-GPTIM-ADTIM.en|timers and PWM]]
 - [[EN/10-Sensors/03-MPU6050-IMU.en|motion and orientation]]
 - [[EN/03-GPIO/01-GPIO-Modes.en|pin modes]]
-- [[11-Vivid/03-Servo-Rele-MOSFET-WS2812|power outputs]]
+- [[EN/11-Vivid/03-Servo-Relay-MOSFET-WS2812.en|power outputs]]

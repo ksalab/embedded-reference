@@ -105,7 +105,7 @@ LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_5, LL_GPIO_SPEED_FREQ_LOW);
 | Relay nearby | 220V load click nearby | No false interrupts |
 | Long lines | Maximum cable length | Protocol holds without retries |
 
-## Common errors
+## Common issues
 
 | # | Error | Why bad | How right |
 | --- | --- | --- | --- |

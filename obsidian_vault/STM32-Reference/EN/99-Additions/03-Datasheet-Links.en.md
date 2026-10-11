@@ -56,7 +56,7 @@ Never pay for a datasheet from an unknown mirror. Beast revision number in the f
 | AN2824 | I2C optimized examples | Examples of polling, interrupts and DMA for I2C |
 | AN1709 | EMC design guide | Protection against interference and static discharge |
 
-All numbers above exist on st.com. If you see a different number on the blog, check it by searching on the manufacturer's website. Reference reference: bootloader in [[15-Protocols/02-DFU-Bootloader | firmware update]], port in [[04-Interfaces/01-UART | UART serial port]], bus in [[04-Interfaces/03-I2C | I2C bus]], measurement in [[06-Analog/01-ADC.en | measurement via ADC]].
+All numbers above exist on st.com. If you see a different number on the blog, check it by searching on the manufacturer's website. Reference reference: bootloader in [[EN/15-Protocols/02-DFU-Bootloader.en| firmware update]], port in [[EN/04-Interfaces/01-UART.en| UART serial port]], bus in [[EN/04-Interfaces/03-I2C.en| I2C bus]], measurement in [[06-Analog/01-ADC.en | measurement via ADC]].
 ## 4. How to read a datasheet in twenty minutes
 
 | Minute | Section | What do we write out |
@@ -65,7 +65,7 @@ All numbers above exist on st.com. If you see a different number on the blog, ch
 | 3-7 | Pinout | Power, NRST, BOOT0, SWD, FT foam |
 | 7-12 | Electrical characteristics | Power supply range, foam current, temperature |
 | 12-16 | Clock and timing | HSE, LSE, requirements for capacitors |
-| 16-20 | Package drawings Landing place and thermal requirements |Start with the classics [[01-Hardware/01-F0-F1-Classic | classic F0 and F1]] and the beast from [[00-Start/03-Porivnyannya-chipiv | chip comparison]].
+| 16-20 | Package drawings Landing place and thermal requirements |Start with the classics [[EN/01-Hardware/01-F0-F1-Classic.en| classic F0 and F1]] and the beast from [[EN/00-Start/03-Chip-Comparison.en| chip comparison]].
 ## 5. How to read errata before ordering a fee
 
 | Step | Action | Example |
@@ -96,7 +96,7 @@ Move from top to bottom. Do not get into the reference manual until you have cov
 | The first launch of the board | User Manual board plus note Nucleo |
 | Firmware by a programmer Note ST-Link plus CubeProg manual |Додатково тримай поруч [[03-GPIO/01-GPIO-Modes.en | GPIO modes]] and [[09-Firmware/03-ST-Link-Flashing.en | firmware via ST-Link]] for швидкої звірки.
 
-Перший запуск плати дивись у [[14-Devboards/03-Nucleo | Nucleo boards]], карту клонів у [[14-Devboards/01-Blue-Pill | the Blue Pill fee]], старт проєкту у [[09-Firmware/01-CubeIDE-CubeMX.en | CubeMX settings]].
+Перший запуск плати дивись у [[EN/14-Devboards/03-Nucleo.en| Nucleo boards]], карту клонів у [[EN/14-Devboards/01-Blue-Pill.en| the Blue Pill fee]], старт проєкту у [[09-Firmware/01-CubeIDE-CubeMX.en | CubeMX settings]].
 ## 8. Typical reading errors
 
 | Number | Error | Consequence | How correct |
@@ -106,16 +106,16 @@ Move from top to bottom. Do not get into the reference manual until you have cov
 | 3 | Ignore footnote FT | 5 V burns input | Check the FT column for each pin |
 | 4 | Do not open errata | Bug catches silicon in series | Read errata to tracing |
 | 5 | Believe copies from the forum | Legacy tables bootloader | Only AN2606 from the manufacturer's website |
-| 6 | Do not save PDF | A year later, the solution cannot be proved | Dated docs folder in repository |for старту with нуля відкрий [[00-Start/01-Yak-koristuvatis-dovidnikom | reference guide]] and оновлення [[15-Protocols/02-DFU-Bootloader | firmware update]].
+| 6 | Do not save PDF | A year later, the solution cannot be proved | Dated docs folder in repository |for старту with нуля відкрий [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]] and оновлення [[EN/15-Protocols/02-DFU-Bootloader.en| firmware update]].
 ## See also- [[Home | Home]]
-- [[00-Start/01-Yak-koristuvatis-dovidnikom | reference guide]]
-- [[01-Hardware/01-F0-F1-Classic | classic F0 and F1]]
-- [[04-Interfaces/03-I2C | I2C bus]]
+- [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]]
+- [[EN/01-Hardware/01-F0-F1-Classic.en| classic F0 and F1]]
+- [[EN/04-Interfaces/03-I2C.en| I2C bus]]
 - [[06-Analog/01-ADC.en | measurement via ADC]]
 - [[09-Firmware/03-ST-Link-Flashing.en | firmware via ST-Link]]
-- [[14-Devboards/01-Blue-Pill | the Blue Pill fee]]
-- [[99-Additions/01-Troubleshooting-FAQ | answers to frequently asked questions]]
-- [[99-Additions/02-Cheklisti | checklists]]
+- [[EN/14-Devboards/01-Blue-Pill.en| the Blue Pill fee]]
+- [[EN/99-Additions/01-Troubleshooting-FAQ.en| answers to frequently asked questions]]
+- [[EN/99-Additions/02-Cheklisti.en| checklists]]
 
 
 ## Common issues

@@ -1,5 +1,5 @@
 ---
-description: Touchscreens; shows schematics, code and tables.
+description: Describes capacitive and resistive touch controllers, three-point calibration and LVGL integration for ESP32 displays; shows wiring diagrams, driver code and comparison tables.
 title: Touchscreens - Capacitive, Resistive, Calibration, LVGL
 tags: [esp32, touch, cst816, gt911, ft6236, xpt2046, tsc2007, lvgl, indev, sunton, crowpanel, i2c, spi, esp32-s3]
 category: Vivid
@@ -14,131 +14,131 @@ date: 2026-10-08
 
 ## Purpose
 
-Тачскрandн перетinорює TFT at паnotль керуinання: кнопки, слайдери, клаinandатури,
-жести. Дinа сinandти: ємнandснand (CST816 / GT911 / FT6236 - пbutць, мультитач,
-I2C + INT + RST) and реwithистиinнand (XPT2046 / TSC2007 / ADS7843 - стилус,
-тиск Z, SPI + окремий CS, калandбруinання обоin'яwithкоinе!).
+Touchscreen turns TFT into control panel: buttons, sliders, keyboards,
+gestures. Two families: capacitive (CST816 / GT911 / FT6236 - finger, multitouch,
+I2C + INT + RST) and resistive (XPT2046 / TSC2007 / ADS7843 - stylus,
+pressure Z, SPI + separate CS, calibration mandatory!).
 
-Нота покриinає: адреси and pinи ємнandсних (INT + RST toinandщо, мультитач);
-реwithистиinнand with тиском Z and 3-точкоinим калandбруinанням; atin'яwithку LVGL `indev`
-(`read_cb`, стани PRESSED/RELEASED); сучаснand S3-дисплеї with тачем
-(Sunton ESP32-2432S028 / CrowPanel / WT32-SC01 - де конфлandкти pinandin);
-code калandбруinання + LVGL for обох типandin.
+This note covers: capacitive addresses and pins (INT + RST matter, multitouch);
+resistive with Z pressure and 3-point calibration; LVGL `indev` binding
+(`read_cb`, PRESSED/RELEASED states); modern S3 displays with touch
+(Sunton ESP32-2432S028 / CrowPanel / WT32-SC01 - where pin conflicts are);
+calibration code + LVGL for both types.
 
-> Вибandр withа 10 секунд: пbutць + скло + жести → ємнandсний (GT911/FT6236);
-> стилус + рукаinички + дешеinий ILI9341-шилд → реwithистиinний XPT2046.
-> Змandшуinати driverи not можto: I2C-тач and SPI-тач - рandwithний code!
+> 10-second choice: finger + glass + gestures → capacitive (GT911/FT6236);
+> stylus + gloves + cheap ILI9341 shield → resistive XPT2046.
+> Drivers are not interchangeable: I2C touch and SPI touch need different code!
 
 ## Characteristics
 
-| Parameter | Ємнandснand (CST816 / GT911 / FT6236) | Реwithистиinнand (XPT2046 / TSC2007) |
+| Parameter | Capacitive (CST816 / GT911 / FT6236) | Resistive (XPT2046 / TSC2007) |
 | --- | --- | --- |
-| Принцип | Ємнandсть пальця, скляto паnotль | Тиск плandinок, потрandбен toтиск/стилус |
+| Principle | Finger capacitance, glass panel | Film pressure, needs press/stylus |
 | Інтерфейс | I2C (SDA/SCL) + INT + RST | SPI (common with TFT!) + T_CS + T_IRQ |
-| Адреси I2C | CST816 0x15; FT6236/FT6206 0x38; GT911 0x5D (або 0x14!) | Неhas (SPI-atстрandй, inибandр through CS) |
-| Пandни керуinання | INT (interrupt up toтику), RST (скидання controller's) | T_CS (окремий on TFT-CS!), T_IRQ (опцandйно) |
-| Точок | 1-5 (CST816: 1 жест; FT6236: 2; GT911: 5) + жести/сinайпи | 1 точка + тиск Z (сила toтиску) |
-| Точнandсть | Заinодська, калandбруinання not потрandбnot | Сирий ADC 0-4095 → калandбруinання 2-3 точки ОБОВ'ЯЗКОВЕ |
-| Рукаinички/inода | Поганand (хибнand спрацюinання on inоди!) | Працюють (тиск is тиск) |
-| Цandto/скло | Дорожчand, withагартоinаnot скло | Дешеinand плandinкоinand шилди ILI9341 2.4-2.8″ |
-| LVGL-тип | `LV_INDEV_TYPE_POINTER`, коордиtoти готоinand | Той же тип, but through `map()` + медandану + дебаунс |
-| Типоinand модулand | S3-дисплеї 2.8-7″ (Sunton, CrowPanel, WT32-SC01) | ILI9341-шилд 2.4″ + XPT2046 at тandй самandй платand |
+| I2C addresses | CST816 0x15; FT6236/FT6206 0x38; GT911 0x5D (or 0x14!) | None (SPI device, selected via CS) |
+| Control pins | INT (touch interrupt), RST (controller reset) | T_CS (separate from TFT-CS!), T_IRQ (optional) |
+| Points | 1-5 (CST816: 1 gesture; FT6236: 2; GT911: 5) + gestures/swipes | 1 point + Z pressure (press force) |
+| Accuracy | Factory, no calibration needed | Raw ADC 0-4095 → 2-3 point calibration MANDATORY |
+| Gloves/water | Bad (false trips on water!) | Work (pressure is pressure) |
+| Price/glass | Pricier, hardened glass | Cheap film ILI9341 2.4-2.8″ shields |
+| LVGL type | `LV_INDEV_TYPE_POINTER`, coordinates ready | Same type, but via `map()` + median + debounce |
+| Typical modules | S3 displays 2.8-7″ (Sunton, CrowPanel, WT32-SC01) | ILI9341 2.4″ shield + XPT2046 on same board |
 
-### Ємнandснand детально
+### Capacitive in detail
 
 | controller | I2C-address | INT / RST | Мультитач | Де стоїть |
 | --- | --- | --- | --- | --- |
-| CST816S | 0x15 | INT + RST обоin'яwithкоinand | 1 точка + жести (сinайп/тап/лонгпрес) | Круглand / малand S3 1.28-2.1″ |
-| FT6236 (FT5x06) | 0x38 | INT опцandйно, RST бажано | 2 точки | ILI9341/ST7789 паnotлand 2.4-3.5″ |
-| GT911 | 0x5D (INT HIGH at стартand) / 0x14 (INT LOW) | INT withадає адресу! RST - скидання | 5 точок | Великand 4.3-7″ (Sunton 4827S043, CrowPanel 7″) |
+| CST816S | 0x15 | INT + RST mandatory | 1 point + gestures (swipe/tap/long-press) | Round / small S3 1.28-2.1″ |
+| FT6236 (FT5x06) | 0x38 | INT optional, RST desired | 2 points | ILI9341/ST7789 panels 2.4-3.5″ |
+| GT911 | 0x5D (INT HIGH at start) / 0x14 (INT LOW) | INT sets address! RST is reset | 5 points | Large 4.3-7″ (Sunton 4827S043, CrowPanel 7″) |
 
-Пandдступи GT911:
+GT911 подводные камни:
 
-1. address inибирається рandinnotм INT in момент reset: тримай INT HIGH → 0x5D,
-   LOW → 0x14. not той level - тач «withник» withand скаnotра!
-2. Пandсля `RST` потрandбto withатримка 10-50 мс before першим читанням.
-3. Читання: регandстр статусу 0x814E → count точок → коордиtoти
-   0x8150… (молодший байт першим!), потandм write 0 in 0x814E (clear!).
+1. Address picked by INT level at reset: hold INT HIGH → 0x5D,
+   LOW → 0x14. Wrong level means touch missing from scan!
+2. After `RST` need 10-50 ms delay before first read.
+3. Read: status register 0x814E → point count → coordinates
+   0x8150… (low byte first!), then write 0 to 0x814E (clear!).
 
-### Реwithистиinнand детально
+### Resistive in detail
 
 | controller | Інтерфейс | Тиск Z | Нотатка |
 | --- | --- | --- | --- |
-| XPT2046 | SPI, команди 0x90 (X) / 0xD0 (Y) / 0xB0 (Z1) / 0xC0 (Z2) | Так (Z1/Z2) | Стандарт ILI9341-шилдandin; library PaulStoffregen |
-| TSC2007 | I2C 0x48 | Так | less often, for малих паnotлей |
-| ADS7843 | SPI (поbeforeник XPT2046) | Так | Сумandсний withа командами with XPT2046 |
+| XPT2046 | SPI, commands 0x90 (X) / 0xD0 (Y) / 0xB0 (Z1) / 0xC0 (Z2) | Yes (Z1/Z2) | ILI9341 shield standard; PaulStoffregen library |
+| TSC2007 | I2C 0x48 | Yes | rarer, for small panels |
+| ADS7843 | SPI (XPT2046 predecessor) | Yes | Command compatible with XPT2046 |
 
-Сирand value: X/Y/Z - 12-бandт ADC (0-4095), шум ±50 одиниць.
-read мandнandмум 3 раwithи + медandаto. Тиск: `z = z1 + 4095 - z2`;
-up toтик inалandдний at `z > 300` (порandг underandбрати!). Беwith toтиску X/Y - смandття.
+Raw values: X/Y/Z - 12-bit ADC (0-4095), noise ±50 units.
+read minimum 3 times + median. Pressure: `z = z1 + 4095 - z2`;
+touch valid at `z > 300` (tune threshold!). Without press X/Y is garbage.
 
-### Сучаснand S3-дисплеї with тачем
+### Modern S3 displays with touch
 
-| Дисплей | Паnotль + тач | Пandни (typically) | Пастка |
+| Display | Panel + touch | Pins (typically) | Pitfall |
 | --- | --- | --- | --- |
-| Sunton ESP32-2432S028 (2.8″) | ILI9341 + XPT2046 | TFT_CS 15, DC 2, T_CS 14, T_IRQ 36 | T_CS vs TFT_CS рandwithнand! power supply 5V USB |
-| Sunton ESP32-4827S043 (4.3″) | ST7262 RGB + GT911 | I2C SDA 19 / SCL 20, INT 38, RST 39 | RGB-паnotль жере DMA + PSRAM; GT911 address 0x5D |
-| CrowPanel 2.4-7″ (Elecrow) | ILI9341/ST‐серandя + XPT2046/GT911 | Диinитись wiki реinandwithandї! | Реinandwithandї мandняють INT/RST мandсцями - withinandряти шоinкографandю |
-| WT32-SC01 / Plus | ST7796 + FT6336U | I2C 0x38 | LovyanGFX has готоinий профandль `LGFX_WT32_SC01` |
+| Sunton ESP32-2432S028 (2.8″) | ILI9341 + XPT2046 | TFT_CS 15, DC 2, T_CS 14, T_IRQ 36 | T_CS vs TFT-CS differ! 5V USB power |
+| Sunton ESP32-4827S043 (4.3″) | ST7262 RGB + GT911 | I2C SDA 19 / SCL 20, INT 38, RST 39 | RGB panel eats DMA + PSRAM; GT911 address 0x5D |
+| CrowPanel 2.4-7″ (Elecrow) | ILI9341/ST series + XPT2046/GT911 | Check revision wiki! | Revisions swap INT/RST - verify silkscreen |
+| WT32-SC01 / Plus | ST7796 + FT6336U | I2C 0x38 | LovyanGFX has ready `LGFX_WT32_SC01` profile |
 
-> in S3-дисплеїin «inсе at платand» тач часто inже underтягнутий up to 3.3 in -
-> not inandшати withоinнandшнand pull-up 10 кОм беwith потреби, буде divider!
+> in S3 all-in-one displays touch is often already pulled to 3.3 V -
+> do not add external 10 k pull-up needlessly, it makes a divider!
 
 ## Легенда pinandin модуля
 
-Ємнandсний шлейф (GT911 / FT6236, 6 pinandin, I2C):
+Capacitive flex (GT911 / FT6236, 6 pins, I2C):
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | 3V3 | 3V3 | Тandльки 3.3 in! |
+| 1 | VCC | 3V3 | 3V3 | 3.3 V only! |
 | 2 | GND | ground | GND | common ground |
-| 3 | SDA | I2C data | GPIO21 (або 19 at S3-дисплеї!) | Pull-up 4.7 кОм (часто inже at платand) |
+| 3 | SDA | I2C data | GPIO21 (or 19 on S3 displays!) | 4.7 k pull-up (often already on board) |
 | 4 | SCL | I2C clock | GPIO22 (або 20!) | 100-400 кГц |
-| 5 | INT | output → input MCU | GPIO27 (або 38!) | interrupt + inибandр адреси GT911! |
-| 6 | RST | input | GPIO33 (або 39!) | Скидання controller's, withатримка пandсля |
+| 5 | INT | output → MCU input | GPIO27 (or 38!) | interrupt + GT911 address select! |
+| 6 | RST | input | GPIO33 (or 39!) | Controller reset, delay after |
 
-Реwithистиinний шилд (XPT2046 at платand ILI9341, SPI):
+Resistive shield (XPT2046 on ILI9341 board, SPI):
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
 | 1 | T_CS | input CS | GPIO14 | ОКРЕМИЙ on TFT-CS (GPIO5)! |
-| 2 | T_IRQ | output → input MCU | GPIO27 (опцandйно) | LOW = торкнулись; беwith нього - polling |
-| 3 | T_CLK | SPI clock | GPIO18 (спandльний with TFT!) | Та ж bus VSPI |
-| 4 | T_DIN | SPI MOSI | GPIO23 (спandльний!) | Команди Controllerу |
-| 5 | T_DOUT | SPI MISO | GPIO19 (спandльний!) | Читання X/Y/Z - MISO ОБОВ'ЯЗКОВИЙ! |
+| 2 | T_IRQ | output → MCU input | GPIO27 (optional) | LOW = touched; without it - polling |
+| 3 | T_CLK | SPI clock | GPIO18 (shared with TFT!) | Same VSPI bus |
+| 4 | T_DIN | SPI MOSI | GPIO23 (shared!) | Controller commands |
+| 5 | T_DOUT | SPI MISO | GPIO19 (shared!) | X/Y/Z read - MISO MANDATORY! |
 | 6 | VCC/GND | power supply | 3V3 / GND | with плати дисплея |
 
-Поясnotння:
+Explanation:
 
-- **INT + RST in ємнandсних - not «withапаснand».** Беwith RST controller can стартуinати
-  with минулою адресою; беwith INT - тandльки polling статусу (toinантаження I2C).
-- **T_CS окремий - сinяте.** Спandльний CS TFT+тач = оби2 моinчать.
-  in `flush_cb` underнandмати T_CS, in `touch_read` - underнandмати TFT-CS.
-- **MISO потрandбен тачу, but not TFT.** ST7789 беwith MISO жиinе, XPT2046 - нand.
-  not underключиin MISO → `touched()` withаinжди false.
+- **INT + RST on capacitive are not spare.** Without RST controller may start
+  with old address; without INT only status polling (I2C load).
+- **Separate T_CS is holy.** Shared TFT+touch CS means both silent.
+  raise T_CS in `flush_cb`, raise TFT-CS in `touch_read`.
+- **Touch needs MISO, TFT does not.** ST7789 lives without MISO, XPT2046 does not.
+  missing MISO means `touched()` always false.
 
 ## Wiring diagram
 
-| ESP32 | ILI9341 + XPT2046 (реwithистиinний) | Note |
+| ESP32 | ILI9341 + XPT2046 (resistive) | Note |
 | --- | --- | --- |
-| 3V3 | VCC | Модулand with LDO - можto 5V (диinитись J1!) |
+| 3V3 | VCC | Module with LDO - 5V possible (check J1!) |
 | GND | GND | common ground |
-| GPIO18 | SCK + T_CLK | Спandльний clock |
-| GPIO23 | MOSI + T_DIN | Спandльний MOSI |
-| GPIO19 | MISO + T_DOUT | Спandльний MISO (тачу обоin'яwithкоinий!) |
+| GPIO18 | SCK + T_CLK | Shared clock |
+| GPIO23 | MOSI + T_DIN | Shared MOSI |
+| GPIO19 | MISO + T_DOUT | Shared MISO (mandatory for touch!) |
 | GPIO5 | TFT-CS | Дисплей |
 | GPIO2 | DC | data/команда |
 | GPIO4 | TFT-RST | Скидання TFT |
 | GPIO14 | T_CS | Тач (окремий!) |
-| GPIO27 | T_IRQ | interrupt тача (опцandйно) |
+| GPIO27 | T_IRQ | touch interrupt (optional) |
 
-| ESP32 | GT911 ємнandсний (ex. Sunton 4.3″) | Note |
+| ESP32 | GT911 capacitive (ex. Sunton 4.3″) | Note |
 | --- | --- | --- |
 | 3V3 / GND | VCC / GND | 3.3 in |
-| GPIO19 | SDA | I2C (at S3 - сinої pinи withand схеми плати!) |
+| GPIO19 | SDA | I2C (on S3 - own pins per board schematic!) |
 | GPIO20 | SCL | I2C |
 | GPIO38 | INT | address 0x5D at HIGH at reset |
-| GPIO39 | RST | Скидання, withатримка 50 мс |
+| GPIO39 | RST | Reset, 50 ms delay |
 
 ### ASCII-schem
 
@@ -176,9 +176,9 @@ graph LR
 ```
 
 ![[assets/img/touchscreens-cap-res-scheme.png]]
-*Рис. Тач: реwithистиinний XPT2046 at спandльному VSPI (окремий T_CS) + ємнandсний GT911 at I2C (INT/RST). Мandсце under схему - see [[assets/README]].*
+*Fig. Touch: resistive XPT2046 on shared VSPI (separate T_CS) + capacitive GT911 on I2C (INT/RST). Space below schematic - see [[assets/README]].*
 
-## Code ESP-IDF - GT911 (ємнandсний, I2C)
+## Code ESP-IDF - GT911 (capacitive, I2C)
 
 ```c
 #include "driver/i2c.h"
@@ -248,7 +248,7 @@ void app_main(void) {
 }
 ```
 
-## Code Arduino - XPT2046 + калandбруinання 3-точкоinе + LVGL indev
+## Code Arduino - XPT2046 + 3-point calibration + LVGL indev
 
 ```cpp
 #include <SPI.h>
@@ -332,7 +332,7 @@ void loop() {
 }
 ```
 
-Калandбруinальний скетч (раwithоinий, before бойоinим):
+Calibration sketch (one-off, before combat):
 
 ```cpp
 // Малює хрестик, чекає дотику, друкує сире значення. Повторити 3 рази.
@@ -350,7 +350,7 @@ void calPoint(int px, int py, const char *name) {
 // Потім: cal.x0 = TL.x; cal.x1 = ... (залежно від rotation - осі можуть мінятися!)
 ```
 
-## Code MicroPython - FT6236 (ємнandсний) + XPT2046 polling
+## Code MicroPython - FT6236 (capacitive) + XPT2046 polling
 
 ```python
 from machine import I2C, SPI, Pin
@@ -405,7 +405,7 @@ while True:
     time.sleep_ms(50)
 ```
 
-## LVGL indev - ємнandсний тач (GT911/FT6236/CST816)
+## LVGL indev - capacitive touch (GT911/FT6236/CST816)
 
 ```cpp
 // Ємнісний: координати вже в пікселях, калібрування НЕ потрібне.
@@ -451,25 +451,25 @@ void cap_cb(lv_indev_drv_t *d, lv_indev_data_t *dt) {
 
 ## Common issues
 
-| error (симптом) | cause | Випраinлення |
+| Error (symptom) | cause | Fix |
 | --- | --- | --- |
-| `touched()` withаinжди false (XPT2046) | MISO not underключено / T_CS = TFT-CS | MISO→GPIO19, T_CS→GPIO14 окремо on TFT-CS=GPIO5 |
-| Тач дwithеркалить / осand переплутанand | Калandбруinання up to `setRotation`, осand X/Y not swap | Калandбруinати ПІСЛЯ фandtoльного rotation; for 90° - `x=map(y)`, `y=map(x)` |
-| Дрижання коордиtoт ±20 px | Шум ADC, одnot читання беwith медandани | 3 читання + медandаto + дебаунс 30 мс + порandг Z>300 |
-| Реагує беwith toтиску / фантоми | Порandг Z withаниwithький, up toinгand wires SPI | Пandдняти порandг up to 400-600, SPI тача ≤2 МГц, 100 нФ |
-| GT911 not inидно in скаnotрand | not той level INT at reset (0x5D vs 0x14) | INT HIGH→0x5D / LOW→0x14, withатримка 50 мс пandсля RST |
-| GT911 читає одну точку inandчно | not очиstillно регandстр 0x814E | Пandсля кожного читання писати 0 in 0x814E |
-| FT6236 дає shift at пandin екраto | Неinandдпоinandднandсть rotation TFT vs тач | Маpinг rotation синхронandwithуinати; переinandрити SWAP XY бandт in 0x00 |
-| Вода/up toлоня тисnot сама (ємнandсний) | Хибнand спрацюinання ємностand | Воup towithахист плandinкою, withбandльшити порandг, sleep at простої |
-| T_IRQ inисить LOW withаinжди | Читання тача триhas IRQ LOW under час SPI | Норма! read in polling 30 Гц, IRQ - тandльки for wakeup |
-| LVGL кнопки «мертinand», тач читається | `read_cb` not withареєстроinано або tick inandдсутнandй | `lv_indev_drv_register` + `lv_tick_inc(5)` esp_timer (see 12-LVGL) |
+| `touched()` always false (XPT2046) | MISO not wired / T_CS = TFT-CS | MISO→GPIO19, T_CS→GPIO14 separate from TFT-CS=GPIO5 |
+| Touch mirrors / axes swapped | Calibration before `setRotation`, X/Y axes not swapped | Calibrate AFTER final rotation; for 90° - `x=map(y)`, `y=map(x)` |
+| Coordinate jitter ±20 px | ADC noise, single read without median | 3 reads + median + 30 ms debounce + Z>300 threshold |
+| Reacts without press / phantoms | Z threshold too low, long SPI wires | Raise threshold to 400-600, touch SPI ≤2 MHz, 100 nF |
+| GT911 missing from scan | wrong INT level at reset (0x5D vs 0x14) | INT HIGH→0x5D / LOW→0x14, 50 ms delay after RST |
+| GT911 reads one point forever | register 0x814E never cleared | After each read write 0 to 0x814E |
+| FT6236 shifts at screen edge | TFT vs touch rotation mismatch | Sync rotation mapping; check SWAP XY bit in 0x00 |
+| Water/palm presses alone (capacitive) | False capacitance trips | Waterproof film, raise threshold, sleep when idle |
+| T_IRQ stuck LOW always | Touch read holds IRQ LOW during SPI | Normal! Read by 30 Hz polling, IRQ only for wakeup |
+| LVGL buttons dead, touch reads fine | `read_cb` not registered or tick missing | `lv_indev_drv_register` + `lv_tick_inc(5)` esp_timer (see 12-LVGL) |
 
 ## Official sources
 
-- [LVGL - documentation (дисплеї, indev, подandї)](https://docs.lvgl.io/master/) - `lv_indev_drv_t`, `read_cb`, PRESSED/RELEASED.
+- [LVGL - documentation (displays, indev, events)](https://docs.lvgl.io/master/) - `lv_indev_drv_t`, `read_cb`, PRESSED/RELEASED.
 - [XPT2046_Touchscreen - library (PaulStoffregen)](https://github.com/PaulStoffregen/XPT2046_Touchscreen) - `touched/getPoint`, T_IRQ, rotation.
-- [TFT_eSPI - library (Bodmer)](https://github.com/Bodmer/TFT_eSPI) - inбуup toinаto support XPT2046, common bus SPI, `TOUCH_CS`.
-- [LovyanGFX - driverи тачandin CST816/FT5x06/GT911/XPT2046](https://github.com/lovyan03/LovyanGFX) - готоinand профandлand Sunton/WT32-SC01, I2C/SPI тач.
+- [TFT_eSPI - library (Bodmer)](https://github.com/Bodmer/TFT_eSPI) - built-in XPT2046 support, common SPI bus, `TOUCH_CS`.
+- [LovyanGFX - CST816/FT5x06/GT911/XPT2046 touch drivers](https://github.com/lovyan03/LovyanGFX) - ready Sunton/WT32-SC01 profiles, I2C/SPI touch.
 
 - ADS7843 Datasheet (TI): <https://www.ti.com/product/ADS7843> - resistive-touch ADC, SPI.
 - TSC2007 Datasheet (TI): <https://www.ti.com/product/TSC2007> - touch + temp/aux ADC, I2C.

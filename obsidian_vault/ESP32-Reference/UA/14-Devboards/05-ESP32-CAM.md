@@ -4,6 +4,7 @@ title: ESP32-CAM (AI-Thinker) - камера OV2640, прошивка через
 tags: [esp32, devboards, esp32-cam, camera, ov2640, psram, ftdi]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # ESP32-CAM - камера без USB
@@ -144,7 +145,7 @@ ESP-IDF: приклад `esp-idf/examples/peripherals/camera`. MicroPython з к
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![[assets/img/devboard-esp32cam.png|600]]
+> [!example] Фото/схема:![[assets/img/devboard-esp32cam.png|600]]
 
 ```text
 [БЖ 5V 2A] ──► пін 5V + GND плати (+ 470–1000 мкФ між 5V і GND!)

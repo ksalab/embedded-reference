@@ -295,7 +295,7 @@ flowchart TB
 | --- | --- | --- |
 | GPIO0 (Classic/S2/S3) / GPIO8 (C3/C6/C5) / GPIO0 (P4) | **LOW** (кнопка натиснута) | **HIGH** (pull-up 10к) |
 | EN | rising edge 0→1 (відпустили reset) | rising edge 0→1 |
-| U0TXD (GPIO1) | ROM видає `waiting for download` | ROM видає `boot:0x13 ... SPI boot` |
+| U0TXD (GPIO1) | ROM видає `waiting for download` | ROM видає `boot:0x13... SPI boot` |
 | Що слухає ROM | UART0 115200 + USB-Serial/JTAG (де є) | читає flash з 0x1000 (bootloader) |
 | esptool.py | `Connecting... chip sync ok` | `Timed out waiting for packet header` (нормально! прошивати - тільки через download) |
 | Струм | 30-60 мА стабільно | пульсації 30→150 мА (bootloader грузить код) |

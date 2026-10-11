@@ -16,7 +16,7 @@ date: 2026-10-08
 
 Класичний MQTT - this TCP + довгі імена топіків: важко for LoRa/Zigbee (маленькі MTU, сплячі вузли, немає TCP). MQTT-SN (Sensor Networks) - той же pub/sub, але поверх UDP, with короткими topic-id and процедурою сну. ESP32 виступає шлюзом: with одного боку LoRa/Zigbee-вузли, with іншого - звичайний broker.
 
-База: старт - [[Home]], MQTT - [[15-Protocols/01-MQTT|MQTT]], LoRa - [[12-Comm-Modules/02-NRF24-LoRa|LoRa]], Zigbee - [[15-Protocols/09-Matter-Thread-Zigbee]], офлайн-буфер - [[12-Comm-Modules/18-Cellular-LoRa-2|Cat-1]].
+База: старт - [[Home.en]], MQTT - [[EN/15-Protocols/01-MQTT.en|MQTT]], LoRa - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]], Zigbee - [[EN/15-Protocols/09-Matter-Thread-Zigbee.en]], офлайн-буфер - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1]].
 
 > MQTT-SN ≠ MQTT: різні дроти! Безпосередньо до Mosquitto not підключитись - потрібен SN-шлюз (прозорий або агрегуючий). Шлюз - this and є робота ESP32 тут.
 
@@ -143,13 +143,13 @@ Paho Gateway або ChirpStack + MQTT-інтеграцію.
 
 ## Див. також
 
-- [[Home|Головна]]
-- [[15-Protocols/01-MQTT|MQTT]]
-- [[15-Protocols/11-Cloud-2|MQTT-клієнт]]
-- [[15-Protocols/09-Matter-Thread-Zigbee|Matter/Thread/Zigbee]]
-- [[12-Comm-Modules/02-NRF24-LoRa|LoRa]]
-- [[12-Comm-Modules/18-Cellular-LoRa-2|Cat-1 (буфер)]]
-- [[10-Sensors/39-Wireless-Sensors|Бездротові сенсори]]
+- [[Home.en|Головна]]
+- [[EN/15-Protocols/01-MQTT.en|MQTT]]
+- [[EN/15-Protocols/05-Cloud-2.en|MQTT-клієнт]]
+- [[EN/15-Protocols/09-Matter-Thread-Zigbee.en|Matter/Thread/Zigbee]]
+- [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]]
+- [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1 (буфер)]]
+- [[EN/10-Sensors/39-Wireless-Sensors.en|Бездротові сенсори]]
 
 
 ## Common issues

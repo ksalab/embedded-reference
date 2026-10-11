@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Arduino as an HTTP client: GET takes commands, POST gives telemetry, a webhook knocks to the world.*
 
 > [!tip] What this note is
-> MQTT is not the only cloud path: plain HTTP is enough for telemetry once a minute and server commands. Runs on ESP8266, Ethernet shield and Nano ESP32. Base: [[EN/15-Protocols/01-Modbus.en|Modbus protocol]], [[EN/15-Protocols/02-MQTT-ESP.en|MQTT on ESP]], [[12-Comm-Modules/03-ESP8266-WiFi|WiFi through ESP8266]].
+> MQTT is not the only cloud path: plain HTTP is enough for telemetry once a minute and server commands. Runs on ESP8266, Ethernet shield and Nano ESP32. Base: [[EN/15-Protocols/01-Modbus.en|Modbus protocol]], [[EN/15-Protocols/02-MQTT-ESP.en|MQTT on ESP]], [[EN/12-Comm-Modules/03-ESP8266-WiFi.en|WiFi through ESP8266]].
 
 ## 1. Goal
 
@@ -161,9 +161,9 @@ Timeouts everywhere: a hung `connect` with no timeout hangs the node for good. F
 ## 9. Neighbor notes
 
 - [[EN/15-Protocols/02-MQTT-ESP.en|MQTT on ESP]] - alternative for frequent data.
-- [[12-Comm-Modules/05-BT-Ethernet|BT and Ethernet]] - transport level.
-- [[12-Comm-Modules/03-ESP8266-WiFi|WiFi through ESP8266]] - wireless transport.
-- [[16-Projects/01-Meteostantsiya|weather station]] - first cloud client.
+- [[EN/12-Comm-Modules/05-BT-Ethernet.en|BT and Ethernet]] - transport level.
+- [[EN/12-Comm-Modules/03-ESP8266-WiFi.en|WiFi through ESP8266]] - wireless transport.
+- [[EN/16-Proekti/01-Weather-Station.en|weather station]] - first cloud client.
 - [[EN/09-Firmware/01-IDE-CLI.en|IDE and CLI setup]] - libraries and managers.
 
 ## Official sources

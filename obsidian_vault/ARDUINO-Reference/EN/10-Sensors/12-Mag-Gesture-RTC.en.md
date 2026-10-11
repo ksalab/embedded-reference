@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Rare trio on one bus: QMC5883L - cardinal points, APDS-9960 - gestures, DS3231 - time with a battery.*
 
 > [!tip] What this note is
-> Sensors people search for one by one: compass for a robot, gestures for a touch-free button, precise time for a logger. Plus a link with MPU6050 and GPS into a full navigation kit. Base: [[EN/10-Sensors/05-MPU6050.en|gyroscope and accelerometer]], [[12-Comm-Modules/04-GPS-NEO|GPS module]], [[EN/10-Sensors/08-Encoder.en|encoders]].
+> Sensors people search for one by one: compass for a robot, gestures for a touch-free button, precise time for a logger. Plus a link with MPU6050 and GPS into a full navigation kit. Base: [[EN/10-Sensors/05-MPU6050.en|gyroscope and accelerometer]], [[EN/12-Comm-Modules/04-GPS-NEO.en|GPS module]], [[EN/10-Sensors/08-Encoder.en|encoders]].
 
 ## 1. Goal
 
@@ -133,7 +133,7 @@ Take the calibration six from your own figure-eight (calibration sample sketch i
 - NEO-6M - coordinates plus speed plus PPS second;
 - GPS course in motion checks the magnetic course;
 - logger: DS3231 time plus coordinates plus course - full track;
-- [[16-Projects/03-Treker|tracker]] - where to fit the kit.
+- [[EN/16-Proekti/03-Tracker.en|tracker]] - where to fit the kit.
 
 ## 7. Compass calibration
 
@@ -159,10 +159,10 @@ Take the calibration six from your own figure-eight (calibration sample sketch i
 ## 9. Neighbor notes
 
 - [[EN/10-Sensors/05-MPU6050.en|gyroscope and accelerometer]] - second half of the compass.
-- [[12-Comm-Modules/04-GPS-NEO|GPS module]] - coordinates and PPS.
+- [[EN/12-Comm-Modules/04-GPS-NEO.en|GPS module]] - coordinates and PPS.
 - [[EN/10-Sensors/08-Encoder.en|encoders]] - robot wheel course.
 - [[EN/08-Memory/01-Memory-EEPROM.en|EEPROM memory]] - compass calibration.
-- [[16-Projects/03-Treker|tracker]] - ready project.
+- [[EN/16-Proekti/03-Tracker.en|tracker]] - ready project.
 
 ## Official sources
 

@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. SoC evolution: CPU grows from A53 to A76, VideoCore VI to VII graphics, Pi 5 peripherals moved to RP1.*
 
 > [!tip] What this note is
-> Chip map: what sits inside each board and why Pi 5 is so fast. Chip details: [[EN/01-Hardware/02-BCM2712-Pi5.en|BCM2712 and Pi 5]], [[EN/01-Hardware/03-RP2040-RP2350.en|RP2040 and RP2350]]. Board choice: [[00-Start/03-Porivnyannya-plate|model comparison]].
+> Chip map: what sits inside each board and why Pi 5 is so fast. Chip details: [[EN/01-Hardware/02-BCM2712-Pi5.en|BCM2712 and Pi 5]], [[EN/01-Hardware/03-RP2040-RP2350.en|RP2040 and RP2350]]. Board choice: [[EN/00-Start/03-Board-Comparison.en|model comparison]].
 
 ## 1. Goal
 
@@ -123,7 +123,7 @@ More about memory:
 
 - [[EN/01-Hardware/02-BCM2712-Pi5.en|BCM2712 and Pi 5]] - flagship in detail.
 - [[EN/01-Hardware/03-RP2040-RP2350.en|RP2040 and RP2350]] - microcontrollers.
-- [[00-Start/03-Porivnyannya-plate|model comparison]] - board choice.
+- [[EN/00-Start/03-Board-Comparison.en|model comparison]] - board choice.
 - [[EN/14-Devboards/01-Pi5-Flagman.en|Pi 5 flagship]] - board in detail.
 - [[EN/09-Firmware/02-EEPROM-Boot.en|EEPROM boot]] - bootloader firmware.
 

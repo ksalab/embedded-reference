@@ -115,7 +115,7 @@ for (int i = 0; i < 3; i++) {
 | Power supply | Relay from mains, not battery |
 | Delay | Every hop adds seconds |
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -127,7 +127,7 @@ for (int i = 0; i < 3; i++) {
 | 6 | Duty-cycle ignored | Outside the law | Pauses per band |
 | 7 | One-way test | Reverse is worse | Both directions! |
 
-## Official Sources
+## Official sources
 
 - [SX126x datasheet (Semtech)](https://www.semtech.com/products/wireless-rf/lora-connect/sx1262) - registers, parameters, CAD.
 - [AN1200 LoRa modulation (Semtech)](https://www.semtech.com/design-support) - SF, sensitivity, budget.
@@ -153,4 +153,4 @@ Frugal receiver:
 - [[EN/05-Radio/02-LoRaWAN-WL.en|long-range network]]
 - [[EN/05-Radio/03-Antenna-50ohm.en|antenna matching]]
 - [[EN/01-Hardware/06-WB-WL.en|wireless chips]]
-- [[12-Comm-Modules/01-NRF24-LoRa|radio over SPI]]
+- [[EN/12-Comm-Modules/01-NRF24-LoRa.en|radio over SPI]]

@@ -105,7 +105,7 @@ The root is elected automatically (signal to the router + set priority); when th
 - A MESH network lives **on one WiFi channel** - because there is only one radio. The root is tied to the home router channel.
 - If the router sits on an **auto channel** and hops from 6 to 11 - the whole mesh rebuilds (~30-120 s). Fix: **fix the router channel** (e.g. 1/6/11) and write the same channel into `mesh_cfg.channel`.
 - The root simultaneously holds **STA (to the router) + MESH (to children)** - memory and CPU are shared. On the Classic that is ~50 KB of heap for the stack alone; with BLE on at the same time - count RAM (see [[EN/01-Hardware/06-Flash-PSRAM.en]]).
-- Without a router (field, warehouse) the mesh works **standalone** (internal exchange), but the root forwards nowhere - either appoint a root gateway with LTE (see [[12-Comm-Modules/03-SIM800L-GPS|SIM800L]]), or collect data by walk-around.
+- Without a router (field, warehouse) the mesh works **standalone** (internal exchange), but the root forwards nowhere - either appoint a root gateway with LTE (see [[EN/12-Comm-Modules/03-SIM800L-GPS.en|SIM800L]]), or collect data by walk-around.
 
 ## Limit table
 
@@ -215,11 +215,11 @@ void loop() {
 | Drive motors/lights in real time? | **ESP-NOW** (lower latency) or wire ([[04-Interfaces/05-CAN-TWAI-RS485.en | RS485]]) |
 | Soil/field without a router, collect once an hour? | **ESP-NOW** + one LTE gateway |
 
-Algorithm: **try ESP-NOW first** (50 lines). Move to MESH only when nodes really cannot reach the gateway directly or you need over 20 nodes with routing. A mixed scheme is also fine: ESP-NOW clusters → 2-3 gateways → MQTT (see [[15-Protocols/01-MQTT|MQTT]]).
+Algorithm: **try ESP-NOW first** (50 lines). Move to MESH only when nodes really cannot reach the gateway directly or you need over 20 nodes with routing. A mixed scheme is also fine: ESP-NOW clusters → 2-3 gateways → MQTT (see [[EN/15-Protocols/01-MQTT.en|MQTT]]).
 
 > [!tip] Mesh commissioning
 >
-> 1. Flash 3 nodes side by side, check ping/broadcast. 2. Spread them over real distances. 3. Switch the root off - measure re-election time. 4. Fix the router channel. 5. Add heap + RSSI monitoring on the root (see [[99-Additions/02-Troubleshooting-FAQ|Troubleshooting]]).
+> 1. Flash 3 nodes side by side, check ping/broadcast. 2. Spread them over real distances. 3. Switch the root off - measure re-election time. 4. Fix the router channel. 5. Add heap + RSSI monitoring on the root (see [[EN/99-Additions/02-Troubleshooting-FAQ.en|Troubleshooting]]).
 
 ### Mermaid: node will not join the mesh
 
@@ -257,4 +257,4 @@ flowchart TB
 - [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi]]
 - [[EN/05-Radio/02-BLE-Bluetooth.en|BLE]]
 - [[EN/05-Radio/03-ESP-NOW.en|MQTT]]
-- [[07-Timers/03-Sleep-ULP|Sleep]]
+- [[EN/07-Timers/03-Sleep-ULP.en|Sleep]]

@@ -129,9 +129,9 @@ Once per 5 seconds - a picture of channel load. A drop to zero in daytime is a r
 ## 10. Related notes
 
 - [[EN/02-Power-Supply/01-USB-C-PD.en|USB-C power supply]] - classic power.
-- [[14-Devboards/02-Pi4-Robocha|Pi 4 workhorse]] - board for the HAT.
-- [[14-Devboards/01-Pi5-Flagman|Pi 5 flagship]] - PoE+ for the flagship.
-- [[09-Firmware/03-OS-Nalashtuvannya|OS setup]] - node network.
+- [[EN/14-Devboards/02-Pi4-Workhorse.en|Pi 4 workhorse]] - board for the HAT.
+- [[EN/14-Devboards/01-Pi5-Flagship.en|Pi 5 flagship]] - PoE+ for the flagship.
+- [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - node network.
 - [[Home.en|main map]] - full navigation.
 
 ## 9.1 PoE mounting checklist

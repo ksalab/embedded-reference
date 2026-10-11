@@ -1,5 +1,6 @@
 ---
 title: Вибір середовища - ESP-IDF vs Arduino vs MicroPython vs PlatformIO
+description: Порівнює ESP-IDF, Arduino-core, MicroPython та PlatformIO: правило вибору середовища за 10 секунд та посилання на деталі.
 tags:
 
   - esp32
@@ -17,6 +18,7 @@ aliases:
   - ESP-IDF vs Arduino
 
 type: guide
+date: 2026-10-08
 ---
 
 # Вибір середовища - ESP-IDF vs Arduino vs MicroPython vs PlatformIO
@@ -58,7 +60,7 @@ EN version: `00-Start/05-Environment-Choice.en.md`
 
 | Середовище | Команди |
 | --- | --- |
-| ESP-IDF | `git clone esp-idf; ./install.sh esp32s3; . export.sh; idf.py create-project demo; idf.py -p /dev/ttyUSB0 flash monitor` |
+| ESP-IDF | `git clone esp-idf;./install.sh esp32s3;. export.sh; idf.py create-project demo; idf.py -p /dev/ttyUSB0 flash monitor` |
 | Arduino IDE | Boards Manager → `esp32 by Espressif` → плата `DOIT ESP32 DEVKIT V1` → порт → Upload |
 | MicroPython | `esptool --chip esp32 write_flash -z 0x1000 firmware.bin` → `mpremote connect /dev/ttyUSB0 repl` → `import machine` |
 | PlatformIO | `pio project init -b esp32dev -o demo; pio run -t upload -t monitor` |
@@ -96,7 +98,7 @@ EN version: `00-Start/05-Environment-Choice.en.md`
 | Wi-Fi STA | `esp_wifi_set_mode(WIFI_MODE_STA)` | `WiFi.begin(ssid,pass)` | `WLAN(STA_IF).connect()` |
 | NVS | `nvs_set_i32()` | `Preferences.putInt()` | файл `config.json` |
 
-> [!example] Фото/схема: ![[assets/img/placeholder.png]]
+> [!example] Фото/схема:![[assets/img/placeholder.png]]
 > Стенд для перевірки всіх SDK (один LED + кнопка):
 
 | ESP32 DevKit | Компонент | Примітка |

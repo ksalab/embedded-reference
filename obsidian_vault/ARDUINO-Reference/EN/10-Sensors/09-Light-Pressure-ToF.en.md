@@ -127,9 +127,9 @@ Read the `dig_Px` factors from 0x88 once in `setup`. VL53L0X here runs in simpli
 
 | Sensor | How to check | Norm |
 | --- | --- | --- |
-| BH1750 | phone lux meter app nearby | ±20 % |
+| BH1750 | phone lux meter app nearby | ±20% |
 | BMP280 | airport QNH or a second barometer | ±1 hPa |
-| VL53L0X | ruler at 100/500/1000 mm | ±3 % up to 1 m |
+| VL53L0X | ruler at 100/500/1000 mm | ±3% up to 1 m |
 
 ## 7. Power supply and levels
 
@@ -155,7 +155,7 @@ Read the `dig_Px` factors from 0x88 once in `setup`. VL53L0X here runs in simpli
 - [[EN/04-Interfaces/03-I2C-Wire.en|I2C Wire bus]] - scanner, speeds, pull-ups.
 - [[EN/10-Sensors/03-HC-SR04-PIR.en|ultrasound and motion]] - cheap ToF alternative.
 - [[EN/06-Analog/01-ADC.en|analog inputs]] - when no I2C sensor exists.
-- [[16-Projects/01-Meteostantsiya|weather station]] - where to fit the trio.
+- [[EN/16-Proekti/01-Weather-Station.en|weather station]] - where to fit the trio.
 
 ## Official sources
 

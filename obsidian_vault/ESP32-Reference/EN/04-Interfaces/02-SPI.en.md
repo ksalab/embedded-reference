@@ -332,7 +332,7 @@ Capture setup: sample rate at least **4x SCK** (for 10 MHz SCK - 40 MHz+ samples
 | Bits shifted by half a tick | wrong Mode (CPHA) | iterate 0 to 3, watch the first ID-register byte |
 | First byte ok, then garbage | speed too high for the stub / dummy needed | halve it, add series-R 33 Ohm |
 | CS jitters (short spikes) | two drivers pull CS / no `acquire_bus` | mutex + one bus owner |
-| Packets tear mid-way | WDT/high-priority interrupt cuts `transmit` | queue + separate task, see [[09-Firmware/06-FreeRTOS-Patterns | FreeRTOS patterns]] |
+| Packets tear mid-way | WDT/high-priority interrupt cuts `transmit` | queue + separate task, see [[EN/09-Firmware/06-FreeRTOS-Patterns.en| FreeRTOS patterns]] |
 
 Reading Mode from a capture (with no datasheet for the chip!):
 
@@ -433,7 +433,7 @@ flowchart TB
 - [[EN/Home.en]]
 - [[EN/01-Hardware/01-ESP32-Classic.en]]
 - [[EN/04-Interfaces/07-SD-SDIO.en]]
-- [[11-Vivid/02-TFT-LCD-Epaper | TFT displays]]
+- [[EN/11-Vivid/02-TFT-LCD-Epaper.en| TFT displays]]
 - [[04-Interfaces/03-I2C.en | I2C]]
 - [[03-GPIO/02-Strapping-Pins.en | Strapping pins]]
 - [[03-GPIO/01-GPIO-Overview.en | GPIO overview]]

@@ -5,13 +5,14 @@ title: SIM800L GSM та NEO-6M GPS
 description: SIM800L GSM + NEO-6M GPS - SIM800L - живлення (найважливіше); Легенда пінів модуля SIM800L; ASCII-схема (SIM800L); shows schematics, code and tables.
 tags: [esp32, sim800l, gsm, gps, neo-6m, uart, at]
 date: 2026-10-08
+original: 12-Moduli-zvyazku/03-SIM800L-GPS.md
 ---
 
 # SIM800L GSM + NEO-6M GPS
 
 > [!danger] SIM800L not живити from 5V and not from 3.3V ESP32! Норма: 3.7-4.2V, пік 2A in TX-бурсті. without потужного живлення - вічні перезавантаження and мережа not реєструється.
 
-Контекст: UART див. [[04-Interfaces/01-UART|UART]], живлення [[02-Power-Supply/01-Lancjugi-zhivlennya]] та [[13-Power-Modules/01-Buck-Boost-Solar]], рівні [[13-Power-Modules/02-Level-Shifters]], піни [[99-Additions/01-Pinout-tablici]], diagnostics [[99-Additions/02-Troubleshooting-FAQ]], start [[EN/Home.en]].
+Контекст: UART див. [[EN/04-Interfaces/01-UART.en|UART]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]] та [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]], рівні [[EN/13-Power-Modules/02-Level-Shifters.en]], піни [[EN/99-Additions/01-Pinout-tablici.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start [[EN/Home.en]].
 
 ## Purpose
 
@@ -36,7 +37,7 @@ SIM800L GSM + NEO-6M GPS - SIM800L - живлення (найважливіше)
 | --- | --- | --- | --- | --- |
 | 1 | VCC | Живлення 3.4-4.4V, пік 2A | Вихід buck LM2596 виставлений on 4.0V | not 5V (пробій!) and not 3.3V ESP32 (просадки, ребути); + електроліт 1000 мкФ low-ESR + 100 нФ біля піна |
 | 2 | RST | Вхід reset, active low | GPIO4 або кнопка до GND | Імпульс LOW >100 мс = перезапуск; in роботі підтягнутий до HIGH |
-| 3 | RXD | Вхід UART | GPIO17 (TX2 ESP32) via дільник | ESP32 TX → SIM800L RX: дільник 1к/2к або 2к/3.3к, або level-shifter, див. [[13-Power-Modules/02-Level-Shifters]] |
+| 3 | RXD | Вхід UART | GPIO17 (TX2 ESP32) via дільник | ESP32 TX → SIM800L RX: дільник 1к/2к або 2к/3.3к, або level-shifter, див. [[EN/13-Power-Modules/02-Level-Shifters.en]] |
 | 4 | TXD | Вихід UART | GPIO16 (RX2 ESP32) безпосередньо | SIM800L TX → ESP32 RX перехресно; рівень ~2.8V - ESP32 читає how HIGH without проблем |
 | 5 | GND | Земля | GND ESP32 + GND buck | Спільна товста земля, дроти <10 см, зірка заземлення |
 | 6 | NET | Вихід індикація | LED on платі / GPIO-вхід (опційно) | Блимання: 1 Гц = пошук мережі, 1 раз/3 с = зареєстровано |
@@ -48,8 +49,8 @@ SIM800L GSM + NEO-6M GPS - SIM800L - живлення (найважливіше)
 
 1. **not 5V:** абсолютний максимум чипа 4.4V. Подача 5V пробиває RF-підсилювач - module гріється and вмирає for секунди. Виняток - лише червона плата EVB with власним стабілізатором and micro-USB: їй можна 5V, because on платі стоїть buck. Перевіряй свою версію візуально!
 2. **not 3.3V ESP32:** нижня межа чипа 3.4V, but in TX-бурсті 2A просадка on тонких доріжках DevKit сягає 0.3-0.5V → 2.8V on чипі → brownout and перезапуск саме in момент реєстрації in мережі. Symptom класичний: «AT OK, but AT+CREG ніколи not 0,1».
-3. **Правильно:** окремий buck LM2596 (або MP1584) with 5V 2A адаптера, on виході рівно 4.0V під навантаженням, електроліт 1000 мкФ low-ESR + кераміка 100 нФ біля SIM800L, товсті короткі дроти, див. [[02-Power-Supply/01-Lancjugi-zhivlennya]] and [[13-Power-Modules/01-Buck-Boost-Solar]].
-4. **UART перехресно:** TX модуля → RX ESP32, RX модуля → TX ESP32. Швидкість for замовчуванням 115200, див. [[04-Interfaces/01-UART|UART]]. RX SIM800L not 5V-толерантний - дільник обов'язковий.
+3. **Правильно:** окремий buck LM2596 (або MP1584) with 5V 2A адаптера, on виході рівно 4.0V під навантаженням, електроліт 1000 мкФ low-ESR + кераміка 100 нФ біля SIM800L, товсті короткі дроти, див. [[EN/02-Power-Supply/01-Power-Rails.en]] and [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]].
+4. **UART перехресно:** TX модуля → RX ESP32, RX модуля → TX ESP32. Швидкість for замовчуванням 115200, див. [[EN/04-Interfaces/01-UART.en|UART]]. RX SIM800L not 5V-толерантний - дільник обов'язковий.
 5. **AT-повідомлення:** після `AT+CMGF=1` and `AT+CMGS` module відповідає `>` and чекає текст + Ctrl+Z (0x1A). Довгі AT-сесії вести via міст Serial↔Serial2 for відладки.
 
 | ESP32 | SIM800L | Примітка |
@@ -151,7 +152,7 @@ Specifications: u-blox NEO-6M, UART 9600 NMEA, холодний start ~30 с, г
 
 Пояснення:
 
-- **TX модуля → RX ESP32:** головне правило UART, див. [[04-Interfaces/01-UART|UART]]. GPS лише передає NMEA, therefore мінімальна схема - 4 дроти: VCC, GND, TX→RX. RX GPS можна залишити вільним.
+- **TX модуля → RX ESP32:** головне правило UART, див. [[EN/04-Interfaces/01-UART.en|UART]]. GPS лише передає NMEA, therefore мінімальна схема - 4 дроти: VCC, GND, TX→RX. RX GPS можна залишити вільним.
 - **PPS:** імпульс точної секунди from супутників (джиттер ~десятки нс). Використовується for RTC-синхронізації або міток часу. without PPS час беруть with NMEA-речення `$GPRMC`.
 - **Антена:** керамічний квадрат on платі працює лише with видом неба; in приміщенні - зовнішня активна антена with живленням 3.3V via коаксіал. Холодний start with видом неба 30 с - 15 хв.
 - **Два UART одночасно:** SIM800L on Serial2 (16/17), GPS on Serial1 (26/27). not вішати обидва on один UART - NMEA потопить AT-відповіді.
@@ -335,7 +336,7 @@ RING                          <- гудок 2 …
 | MIC_P / MIC_N | Електретний мікрофон | Безпосередньо капсуль, живлення дає сам module |
 | SPK_P / SPK_N | Динамік 8 Ом | Диференційно, not садити один кінець on GND! |
 | `AT+CMIC=0,10` | Чутливість мікрофона (канал 0, рівень 0-15) | Підбирати: фон/луна |
-| `AT+CLVL=60` | Гучність динаміка 0-100 | 60 - startова |
+| `AT+CLVL=60` | Speaker volume 0-100 | 60 - initial value |
 | `AT+CHFA=1` | Перемикання аудіоканалу (гарнітура/гучномовець on EVB) | on синій платі зазвичай один канал |
 
 ## 6. USSD and APN українських операторів
@@ -465,7 +466,7 @@ GPIO19 ◄────────────  RI (прокидається LOW
 GND ────────────────  GND
 ```
 
-> PSM how in NB-IoT in SIM800 НЕМАЄ - not шукати. Економія будується так: `CSCLK=2` між сеансами + повне вимкнення PWRKEY on години (with MOSFET-ключем живлення, див. [[13-Power-Modules/04-LDO-Buck-XL4015-Protect]]). RI-пін - будильник ESP32: прокинувся → читай `+CLIP`/`+CMTI`.
+> PSM how in NB-IoT in SIM800 НЕМАЄ - not шукати. Економія будується так: `CSCLK=2` між сеансами + повне вимкнення PWRKEY on години (with MOSFET-ключем живлення, див. [[EN/13-Power-Modules/04-LDO-Buck-XL4015-Protect.en]]). RI-пін - будильник ESP32: прокинувся → читай `+CLIP`/`+CMTI`.
 
 ### 9.3. Mermaid: сон and пробудження
 
@@ -576,7 +577,7 @@ while True:
 2. `AT+CBC` має показати 3900-4200 мВ; якщо менше - товстіші дроти, коротші, зірка GND.
 3. `AT+CSQ` > 10, інакше винести GSM-антену до вікна.
 4. `AT+CREG?` чекати `0,1` до 60 с; блимання NET 1 раз/3 с = успіх.
-5. GPRS: `AT+SAPBR`, HTTP або MQTT - лише після стабільної реєстрації, див. [[05-Radio/01-WiFi-STA-AP]] for порівняння with WiFi.
+5. GPRS: `AT+SAPBR`, HTTP або MQTT - лише після стабільної реєстрації, див. [[EN/05-Radio/01-WiFi-STA-AP.en]] for порівняння with WiFi.
 
 | Symptom | Cause | Solution |
 | --- | --- | --- |
@@ -607,15 +608,15 @@ while True:
 ## See also
 
 - [[EN/Home.en]]
-- [[04-Interfaces/01-UART|UART]]
-- [[04-Interfaces/02-SPI|SPI]]
-- [[02-Power-Supply/01-Lancjugi-zhivlennya]]
-- [[03-GPIO/01-GPIO-oglyad]]
-- [[13-Power-Modules/01-Buck-Boost-Solar]]
-- [[13-Power-Modules/02-Level-Shifters]]
+- [[EN/04-Interfaces/01-UART.en|UART]]
+- [[EN/04-Interfaces/02-SPI.en|SPI]]
+- [[EN/02-Power-Supply/01-Power-Rails.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]]
+- [[EN/13-Power-Modules/02-Level-Shifters.en]]
 - [[EN/12-Comm-Modules/01-RC522-RFID.en]]
 - [[EN/12-Comm-Modules/02-NRF24-LoRa.en]]
 - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]]
 - [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]]
-- [[99-Additions/01-Pinout-tablici]]
-- [[99-Additions/02-Troubleshooting-FAQ]]
+- [[EN/99-Additions/01-Pinout-tablici.en]]
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en]]

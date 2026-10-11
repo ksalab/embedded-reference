@@ -190,7 +190,7 @@ flowchart TB
     Soft --> Work
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -201,7 +201,7 @@ flowchart TB
 | 5 | Strip on thin wires | Voltage drop and red tail | Thick wires and feed every 2 meters |
 | 6 | Strip data with no resistor | Echo and first-LED flicker | 330 Ohm resistor at the data input |
 
-## Official Sources
+## Official sources
 
 - [STM32 TIM PWM manual (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32f4-series.html) - timer channels, compare and PWM rate.
 - [WS2812B datasheet (Worldsemi)](https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf) - timing diagrams, currents and color order.

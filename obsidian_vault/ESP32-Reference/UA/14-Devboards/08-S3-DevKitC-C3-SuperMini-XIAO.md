@@ -4,6 +4,7 @@ title: ESP32-S3 DevKitC, C3 SuperMini і XIAO - сучасні малюки
 tags: [esp32, devboards, s3, c3, supermini, xiao, seed, risc-v, native-usb]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # S3-DevKitC / C3-SuperMini / XIAO
@@ -67,7 +68,7 @@ S3-DevKitC-1 має ОБИДВА: CP2102N (UART-порт, драйвер SiLabs)
 
 ## Кнопки
 
-S3-DevKitC-1: великі BOOT + RESET - зручно. SuperMini: мікроскопічні, потрібен пінцет/ніготь; BOOT утримувати при вмиканні для download. XIAO: маленькі, але доступні; подвійний клік Reset на деяких прошивках = UF2-bootloader (перетягнути .uf2 файл!). RGB/user/charging LED допомагають зрозуміти режим.
+S3-DevKitC-1: великі BOOT + RESET - зручно. SuperMini: мікроскопічні, потрібен пінцет/ніготь; BOOT утримувати при вмиканні для download. XIAO: маленькі, але доступні; подвійний клік Reset на деяких прошивках = UF2-bootloader (перетягнути.uf2 файл!). RGB/user/charging LED допомагають зрозуміти режим.
 
 ## Для чого підходить
 
@@ -125,7 +126,7 @@ board_build.psram_type = opi
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![[assets/img/devboard-s3-c3-xiao.png|600]]
+> [!example] Фото/схема:![[assets/img/devboard-s3-c3-xiao.png|600]]
 
 ```text
 S3-DevKitC-1: [USB-C UART-порт] ─► CP2102N ─► прошивка. [USB-C native] ─► S3-USB.

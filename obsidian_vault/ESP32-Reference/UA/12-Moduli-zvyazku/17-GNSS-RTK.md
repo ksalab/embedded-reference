@@ -4,6 +4,7 @@ title: GNSS RTK - ZED-F9P, UM980, LC29H, бюджетні модулі, NTRIP н
 tags: [esp32, gnss, rtk, zed-f9p, um980, lc29h, ntrip, rtcm, nmea, ubx, atgm336h, u-center, rtklib]
 category: Moduli
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # GNSS RTK - ZED-F9P / UM980, база + ровер, NTRIP-клієнт на ESP32
@@ -190,10 +191,10 @@ graph LR
 | Протокол | Напрям | Приклад | Призначення |
 | --- | --- | --- | --- |
 | NMEA-0183 ASCII | Модуль → ESP32 | `$GNGGA,123519,4807.038,N,01131.000,E,4,12,0.9,545.4,M,,*47` | Позиція для людини/карти. Поле fix: 1=Single, 2=DGPS, 4=RTK Fix, 5=RTK Float! |
-| UBX бінарний (u-blox) | Обидва | `B5 62 01 3C ...` NAV-RELPOSNED | Конфігурація, carrier-phase, точний статус RTK. Тільки u-blox! |
+| UBX бінарний (u-blox) | Обидва | `B5 62 01 3C...` NAV-RELPOSNED | Конфігурація, carrier-phase, точний статус RTK. Тільки u-blox! |
 | Unicore binary | Обидва | `$GPTXT...` / binary | Конфігурація UM980, аналог UBX |
 | PQTM (Quectel) | Обидва | `$PQTMCFG...` | Конфігурація LC29H |
-| RTCM3 бінарний | База/кастер → ровер | `D3 00 13 3E ...` type 1077 | Поправки! 1005=координати бази, 1077/1087/1097/1127=MSM спостереження, 1230=GLONASS bias |
+| RTCM3 бінарний | База/кастер → ровер | `D3 00 13 3E...` type 1077 | Поправки! 1005=координати бази, 1077/1087/1097/1127=MSM спостереження, 1230=GLONASS bias |
 
 NMEA читаємо, RTCM3 пишемо всліпу в RX ровера, UBX - для конфігурації.
 RTCM3 не парсимо на ESP32 - просто пересилаємо байти з NTRIP-с blom сокета в UART!

@@ -4,6 +4,7 @@ title: Камера OV2640 - MJPEG-стрим, RTSP, QR-AprilTag, Timelapse, Tel
 tags: [esp32, camera, ov2640, mjpeg, rtsp, qr, apriltag, telegram, timelapse, psram]
 category: Moduli
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Камера OV2640 - MJPEG-стрим, RTSP, QR/AprilTag, Timelapse, Telegram

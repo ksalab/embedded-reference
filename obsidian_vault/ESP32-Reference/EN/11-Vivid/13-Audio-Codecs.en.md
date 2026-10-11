@@ -254,7 +254,7 @@ while True:
 | PCM5102A silent | expecting I2C/MCLK that do not exist | normal: only BCLK/LRCK/DIN; check FMT=GND (I2S mode) |
 | Clicking on start / stop | amp enabled before DAC | first `es8388_ctrl_state(START)`, then `PA_CTRL=1`; mute ramp |
 | Bass crackle | power sag (4 Ω speaker!) | separate 5 V / 2 A supply for amp; 470+ µF near supply |
-| WAV does not play | MP3 renamed to .wav; 8-bit / mono without conversion | only PCM 16-bit; convert: `ffmpeg -i in.mp3 -ar 44100 -ac 2 out.wav` |
+| WAV does not play | MP3 renamed to.wav; 8-bit / mono without conversion | only PCM 16-bit; convert: `ffmpeg -i in.mp3 -ar 44100 -ac 2 out.wav` |
 | Recording noisy (WiFi background) | analog mic traces near antenna | short screened mic wires; AGC/ALC in registers; separate antenna |
 | Volume "0 or 100" | writing to wrong volume register | ES8388: LOUT1/ROUT1 (0x2E/0x2F) for headphones, DAC-volume separate |
 

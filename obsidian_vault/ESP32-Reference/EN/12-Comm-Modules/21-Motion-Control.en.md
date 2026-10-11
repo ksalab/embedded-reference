@@ -5,6 +5,8 @@ tags: [esp32, motion, fluidnc, grbl-esp32, klipper, micro-ros, esp-drone, cnc, t
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/21-Motion-Control.md
 ---
 
 # Motion Control on ESP32 - FluidNC / grbl_ESP32 / Klipper / micro-ROS / ESP-Drone
@@ -51,7 +53,7 @@ ESP-Drone (режими stabilize/height-hold/position-hold, flow-deck),
 ## FluidNC - головний контролер ЧПК
 
 FluidNC - наступник grbl_ESP32 from того ж автора (bdring). Архітектура
-об'єктна: маbus описується текстовим `config.yaml`, прошивка одна on всіх -
+Object-oriented: the machine is described by a text `config.yaml`, one firmware for all -
 перекомпіляція not потрібна. Підтримує до 6 координованих осей, подвійні
 мотори on вісь with авто-вирівнюванням порталу (auto-squaring), шпиндель PWM /
 RS485 Modbus / DAC 0-10 in / реле, лазер with компенсацією потужності from швидкості,
@@ -85,10 +87,10 @@ Telnet-подачу G-коду, OTA-оновлення and push-сповіщен
 | GPIO4 | UART TX до TMC2209 | RX драйверів (ланцюжок) | один TX on всіх: адреси 0/1/2 перемичками MS1/MS2 |
 | GPIO15 | UART RX from TMC2209 | TX драйверів via 1 кОм | резистор-суматор обов'язковий at ланцюжку! |
 | GPIO34 | X.limit | кінцевик X, NO до GND | вхід only-input, тільки pull-up, without виходу! |
-| GPIO35 | Y.limit | кінцевик Y | only-input, див. [[03-GPIO/01-GPIO-oglyad]] |
+| GPIO35 | Y.limit | кінцевик Y | only-input, див. [[EN/03-GPIO/01-GPIO-Overview.en]] |
 | GPIO32 | Z.probe | щуп Z | підтяжка до 3V3, екран from шпинделя |
-| GPIO27 | spindle PWM | MOSFET/лазер TTL | via [[11-Vivid/11-PowerMotion-2]] |
-| GPIO13, GPIO5, GPIO23, GPIO19, GPIO18 | SD SPI | SD-карта | SCK/MOSI/MISO/CS how in [[04-Interfaces/07-SD-SDIO]] |
+| GPIO27 | spindle PWM | MOSFET/лазер TTL | via [[EN/11-Vivid/11-PowerMotion-2.en]] |
+| GPIO13, GPIO5, GPIO23, GPIO19, GPIO18 | SD SPI | SD-карта | SCK/MOSI/MISO/CS how in [[EN/04-Interfaces/07-SD-SDIO.en]] |
 | EN, GPIO0 | reset/feed-hold кнопки | кнопки до GND | - |
 
 Пояснення:
@@ -438,7 +440,7 @@ STM32-польотник (Betaflight/INAV)  <──CRS F/SBUS/MAVLink──>  ES
 
 Деталі CRSF-парсингу, інверсії SBUS and MAVLink-heartbeat - in ноті
 [[EN/12-Comm-Modules/12-RC-Protocols.en]], таймінг DShot via RMT -
-in [[07-Timers/01-Timeri-MCPWM-PCNT-RMT]].
+in [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]].
 
 ## Code 1 - FluidNC `config.yaml` (3 осі + TMC2209 + лазер/шпиндель)
 
@@ -691,7 +693,7 @@ void app_main(void) {
 > Робочий мінімум without скорочень - in репозиторії компонента:
 > `examples/int32_publisher` (паблішер) and `examples/int32_subscriber`.
 > code вище - каркас під твій робот: підстав реальний `rcl_publish(&pub, …)`
-> in таймері, PCNT-енкодери and MCPWM-мости with [[11-Vivid/11-PowerMotion-2]].
+> in таймері, PCNT-енкодери and MCPWM-мости with [[EN/11-Vivid/11-PowerMotion-2.en]].
 
 Кроки запуску зв'язки:
 
@@ -840,16 +842,16 @@ void loop() {
 ## See also
 
 - [[EN/Home.en]]
-- [[11-Vivid/11-PowerMotion-2]]
-- [[11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209]]
-- [[07-Timers/01-Timeri-MCPWM-PCNT-RMT]]
-- [[04-Interfaces/01-UART|UART]]
+- [[EN/11-Vivid/11-PowerMotion-2.en]]
+- [[EN/11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209.en]]
+- [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]]
+- [[EN/04-Interfaces/01-UART.en|UART]]
 - [[EN/12-Comm-Modules/12-RC-Protocols.en]]
-- [[04-Interfaces/07-SD-SDIO]]
-- [[03-GPIO/01-GPIO-oglyad]]
-- [[05-Radio/01-WiFi-STA-AP]]
-- [[09-Firmware/06-FreeRTOS-Patterns]]
-- [[10-Sensors/19-IMU-6-9DOF]]
+- [[EN/04-Interfaces/07-SD-SDIO.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en]]
+- [[EN/09-Firmware/06-FreeRTOS-Patterns.en]]
+- [[EN/10-Sensors/19-IMU-6-9DOF.en]]
 - [[EN/12-Comm-Modules/17-GNSS-RTK.en]]
-- [[99-Additions/02-Troubleshooting-FAQ]]
-- [[99-Additions/06-Official-Sources-Modules]]
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en]]
+- [[EN/99-Additions/06-Official-Sources-Modules.en]]

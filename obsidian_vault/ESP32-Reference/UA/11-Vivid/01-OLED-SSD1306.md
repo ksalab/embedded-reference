@@ -4,6 +4,7 @@ title: OLED SSD1306 128x64 (I2C) - дисплей
 tags: [esp32, display, oled, ssd1306, i2c, u8g2]
 category: Vivid
 date-created: 2026-09-27
+date: 2026-09-27
 ---
 
 # OLED SSD1306 128×64 (I2C) - дисплей

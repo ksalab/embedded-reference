@@ -41,7 +41,7 @@ date: 2026-10-08
 
 - [[EN/Home.en]]
 - [[EN/99-Additions/04-Datasheet-Links.en]]
-- [[13-Power-Modules/01-Buck-Boost-Solar]]
-- [[12-Comm-Modules/01-RC522-RFID]]
+- [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]]
+- [[EN/12-Comm-Modules/01-RC522-RFID.en]]
 
-> UA original twin: [[99-Additions/06-Official-Sources-Modules.md | UA]]
+> UA original twin: [[EN/99-Additions/06-Official-Sources-Modules.en| UA]]

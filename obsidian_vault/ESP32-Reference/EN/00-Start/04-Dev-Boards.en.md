@@ -25,7 +25,7 @@ date: 2026-10-08
 # DevKit boards - choice and power
 
 > [!tip] What to buy in 2026
-> First board - **ESP32-DevKitC V4 / DOIT V1 (WROOM-32)** for compatibility. Second - **ESP32-S3-DevKitC-1** for camera/displays. Third - **C3 SuperMini** for tiny sensors. Crystal comparison - [[00-Start/03-Porivnyannya-chipiv| Chip comparison]], terms - [[00-Start/02-Glosariy| Glossary]], flashing - [[00-Start/05-Vibir-seredovischa| Environment choice]].
+> First board - **ESP32-DevKitC V4 / DOIT V1 (WROOM-32)** for compatibility. Second - **ESP32-S3-DevKitC-1** for camera/displays. Third - **C3 SuperMini** for tiny sensors. Crystal comparison - [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]], terms - [[EN/00-Start/02-Glossary.en| Glossary]], flashing - [[EN/00-Start/05-Environment-Choice.en| Environment choice]].
 >
 > [!warning] 5V on VIN/USB only!
 > On a DevKit the `5V/VIN` pin is a power input. All GPIO, TX/RX, SDA/SCL are **3.3V**. Wiring a 5V sensor signal into GPIO kills the pin or the chip. Use the [[_templates/Component-Template.en | level-matching template]].
@@ -41,7 +41,7 @@ date: 2026-10-08
 | ESP32-C3 SuperMini | C3FN4 | Native CDC | USB-C | No | 22x18 mm, 4 mA deep-sleep |
 | Generic C3 DevKitM | C3-MINI-1 | Native CDC | Micro-USB | No | Cheap, weaker LDO |
 
-Reference map - [[Home.en | Home map]], how to search - [[00-Start/01-Yak-koristuvatis-dovidnikom| How to use it]].
+Reference map - [[Home.en | Home map]], how to search - [[EN/00-Start/01-How-to-Use-Guide.en| How to use it]].
 
 ## Power and USB-UART
 
@@ -80,7 +80,7 @@ If auto-reset fails (cheap boards), enter the mode by hand using the table above
 
 ## Typical power wiring
 
-> [!example] Photo/schematic: ![[assets/img/devkit-boards-compare.png|600]]
+> [!example] Photo/schematic:![[assets/img/devkit-boards-compare.png|600]]
 > Baseline: DevKit power from USB + external 5V sensor:
 
 | ESP32 DevKit | External module | Note |
@@ -94,10 +94,10 @@ If auto-reset fails (cheap boards), enter the mode by hand using the table above
 ## See also
 
 - [[Home.en | Home map]]
-- [[00-Start/01-Yak-koristuvatis-dovidnikom| How to use it]]
-- [[00-Start/02-Glosariy| Glossary]]
-- [[00-Start/03-Porivnyannya-chipiv| Chip comparison]]
-- [[00-Start/05-Vibir-seredovischa| Environment choice]]
+- [[EN/00-Start/01-How-to-Use-Guide.en| How to use it]]
+- [[EN/00-Start/02-Glossary.en| Glossary]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]
+- [[EN/00-Start/05-Environment-Choice.en| Environment choice]]
 - [[_templates/Component-Template.en | Component template]]
 - [[14-Devboards/01-DOIT-DevKitV1-NodeMCU32S.en | DOIT DevKitV1 / NodeMCU-32S]]
 - [[EN/14-Devboards/02-Wemos-D1-R32.en]]

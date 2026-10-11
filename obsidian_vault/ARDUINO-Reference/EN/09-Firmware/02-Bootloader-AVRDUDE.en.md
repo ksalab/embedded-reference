@@ -269,7 +269,7 @@ flowchart TB
     Blink --> Done
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -281,7 +281,7 @@ flowchart TB
 | 6 | Closing protection during learning | Backup does not read | Leave open until the final series |
 | 7 | Monitor open during flashing | Port busy, write never starts | Close the monitor before every write |
 
-## Official Sources
+## Official sources
 
 - [Arduino Bootloader documentation](https://docs.arduino.cc/hacking/software/Bootloader/) - bootloader work, reset, writes into the board.
 - [Arduino as programmer](https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoISP/) - second board as programmer, bootloader writes.

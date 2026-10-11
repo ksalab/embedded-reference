@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Three paths: newcomer (board to OS to first LED), maker (GPIO to buses to HAT), IoT (network to cloud).*
 
 > [!tip] What this note is
-> Entry point of the base: how to read notes, where to go for your goal, what validators mean. The note standard is single for all sections. Map: [[Home.en|home map]], board comparison: [[00-Start/03-Porivnyannya-plate|board comparison]].
+> Entry point of the base: how to read notes, where to go for your goal, what validators mean. The note standard is single for all sections. Map: [[Home.en|home map]], board comparison: [[EN/00-Start/03-Board-Comparison.en|board comparison]].
 
 ## 1. Goal
 
@@ -28,7 +28,7 @@ Orient the reader in 15 minutes:
 
 | Who you are | Path | First action |
 | --- | --- | --- |
-| Newcomer, no board yet | Comparison to purchase to Imager | [[00-Start/03-Porivnyannya-plate| board comparison]] |
+| Newcomer, no board yet | Comparison to purchase to Imager | [[EN/00-Start/03-Board-Comparison.en| board comparison]] |
 | Have a Pi, no OS | Imager to headless to SSH | [[09-Firmware/01-Imager-Headless.en | Imager flashing]] |
 | Maker, need GPIO | Header to gpiozero to sensor | [[03-GPIO/01-Header-Gpiozero.en | pin header and gpiozero]] |
 | IoT, need cloud | WiFi to MQTT to dashboard | [[15-Protocols/01-MQTT.en | MQTT protocol]] |
@@ -139,10 +139,10 @@ Run from the base root: `python3 scripts/check_style.py` and so on. The registry
 
 ## 9. Related notes
 
-- [[00-Start/02-Glosariy|glossary of terms]] - all base terms.
-- [[00-Start/03-Porivnyannya-plate|board comparison]] - board choice.
-- [[00-Start/04-Devkit-plati|boards and accessories]] - what to buy.
-- [[00-Start/05-Vibir-seredovischa|environment choice]] - OS and languages.
+- [[EN/00-Start/02-Glossary.en|glossary of terms]] - all base terms.
+- [[EN/00-Start/03-Board-Comparison.en|board comparison]] - board choice.
+- [[EN/00-Start/04-Dev-Boards.en|boards and accessories]] - what to buy.
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]] - OS and languages.
 - [[Home.en|home map]] - full navigation.
 
 ## Official sources

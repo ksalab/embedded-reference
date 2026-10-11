@@ -136,7 +136,7 @@ if __name__ == '__main__':
 - [[EN/03-GPIO/01-Header-Gpiozero.en|pin header and gpiozero]] - pin base.
 - [[EN/03-GPIO/02-PWM-Interrupts.en|PWM and interrupts]] - HAT signals.
 - [[EN/02-Power-Supply/02-PoE-HAT.en|PoE power supply]] - PoE-HAT boards.
-- [[09-Firmware/03-OS-Nalashtuvannya|OS setup]] - overlays in config.txt.
+- [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - overlays in config.txt.
 - [[Home.en|main map]] - full navigation.
 
 ## 9.1 Own HAT in a weekend

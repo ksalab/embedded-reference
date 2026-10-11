@@ -204,9 +204,9 @@ A fifty-millisecond flash shows to the eye and eats little.
 
 Such a loop average current falls hundreds of times.
 
-See battery voltage measurement in [[06-Analog/01-ADC|voltage measurement]].
+See battery voltage measurement in [[EN/06-Analog/01-ADC.en|voltage measurement]].
 
-The millisecond clock is described in [[07-Timers/01-Timeri-millis|timers and time]].
+The millisecond clock is described in [[EN/07-Timers/01-Timers-millis.en|timers and time]].
 
 ## 5. Wake-up: button or guard
 
@@ -412,5 +412,5 @@ The budget shows true months of life.
 
 - [[Home.en]]
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
-- [[07-Timers/01-Timeri-millis|timers and time]]
-- [[06-Analog/01-ADC|voltage measurement]]
+- [[EN/07-Timers/01-Timers-millis.en|timers and time]]
+- [[EN/06-Analog/01-ADC.en|voltage measurement]]

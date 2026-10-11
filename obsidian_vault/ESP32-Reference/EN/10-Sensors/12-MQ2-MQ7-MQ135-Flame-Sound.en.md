@@ -28,7 +28,7 @@ Gas and environmental sensors for simple monitoring: MQ-2 (smoke/propane/butane)
 | Load resistor RL | 5 kΩ (recommended) | 20 kΩ | 20 kΩ |
 | Operating temp | −20…+50 °C | −20…+50 °C | −20…+50 °C |
 | Warm-up time | 24-48 h | 24-48 h | 24-48 h |
-| Response / recovery | < 10 s / < 30 s | < 30 s | — |
+| Response / recovery | < 10 s / < 30 s | < 30 s | - |
 
 | KY-026 Flame | Function |
 | --- | --- |
@@ -40,7 +40,7 @@ Gas and environmental sensors for simple monitoring: MQ-2 (smoke/propane/butane)
 | KY-038 Sound | Function |
 | --- | --- |
 | VCC / GND | 5 V better (larger MIC reserve), GND common |
-| AO | Sound envelope → [[06-Analog/01-ADC|ADC]] (quiet ~1.6 V, shout ~3 V) |
+| AO | Sound envelope → [[EN/06-Analog/01-ADC.en|ADC]] (quiet ~1.6 V, shout ~3 V) |
 | DO | LOW/HIGH pulse on loud burst (clap, knock) |
 | Potentiometer | DO threshold |
 
@@ -69,7 +69,7 @@ Gas and environmental sensors for simple monitoring: MQ-2 (smoke/propane/butane)
 | 3V3 | - | VCC | - | VCC | KY-026/Rain logic can be 3.3 V |
 | GND | GND | GND | GND | GND | Common ground mandatory |
 | GPIO34 (ADC1_CH6) | AO via divider | - | - | - | Divider 20 kΩ / 10 kΩ (5 V → 3.3 V) |
-| GPIO35 (ADC1_CH7) | - | AO | AO (via divider if 5 V) | AO | [[06-Analog/01-ADC|ADC]] |
+| GPIO35 (ADC1_CH7) | - | AO | AO (via divider if 5 V) | AO | [[EN/06-Analog/01-ADC.en|ADC]] |
 | GPIO27 | DO via divider | DO | - | - | [[EN/03-GPIO/04-Interrupts-PWM.en]] for events |
 | GPIO26 | - | - | DO | DO | Edge interrupt |
 
@@ -232,9 +232,11 @@ while True:
 - KY-026 Flame Datasheet (module manufacturer) - `check manually`.
 - LM393 Datasheet (TI): <https://www.ti.com/product/LM393> - dual comparator (thresholds DO).
 
+![[assets/img/placeholder.png|600]]
+*Fig. 1. Gas and event sensing: MQ-2/MQ-7/MQ-135 heaters, KY-026 flame IR, KY-038 sound envelope, rain comb, all into ESP32 ADC and interrupt pins.*
 ## See also
 
-- [[06-Analog/01-ADC|ADC]]
+- [[EN/06-Analog/01-ADC.en|ADC]]
 - [[EN/03-GPIO/04-Interrupts-PWM.en]]
 - [[EN/03-GPIO/01-GPIO-Overview.en]]
 - [[EN/04-Interfaces/03-I2C.en|I2C]]

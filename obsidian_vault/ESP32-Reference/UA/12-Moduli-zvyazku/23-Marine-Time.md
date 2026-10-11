@@ -4,6 +4,7 @@ description: Ця нота - морський і часо-вимірювальн
 tags: [esp32, marine, nmea2000, pgn, can, seatalk, dcf77, wwvb, msf, gpsdo, holdover, ip67, 12v, 24v, timing, rtc]
 category: Moduli
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Marine-Time - NMEA2000, SeaTalk, DCF77/WWVB/MSF, GPSDO, корпус IP67, живлення 12/24V

@@ -4,6 +4,7 @@ title: MAX44009 OPT3001 VEML6075 AMG8833 MLX90640 VL53L5CX TMF8820 TF-Luna RPLID
 tags: [esp32, sensor, light, lux, uv, amg8833, mlx90640, thermal, tof, vl53l5cx, tmf8820, lidar, rplidar, ultrasonic, ld2420, ld2450, mmwave, i2c, uart]
 category: Sensori
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Світло / УФ / Тепловізори / ToF-матриці / Лідари / Ультразвук / mmWave-радари

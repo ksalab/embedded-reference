@@ -18,7 +18,7 @@ date: 2026-10-08
 
 AHT10, AHT20 and SHT40 - compact digital I2C humidity and temperature sensors. Next generation after DHT11/DHT22: no time-dependent single-wire protocol, work on standard I2C bus, stable with FreeRTOS and Wi-Fi. Applications: room weather stations, greenhouses, incubators, HVAC control, outdoor IoT nodes with deep-sleep, calibration of cheaper sensors.
 
-AHT10 - cheapest (~$1), AHT20 - improved version with better stability, SHT40 (Sensirion) - precision successor to SHT31 with ±1.8 %RH accuracy.
+AHT10 - cheapest (~$1), AHT20 - improved version with better stability, SHT40 (Sensirion) - precision successor to SHT31 with ±1.8%RH accuracy.
 
 > Unlike DHT, these sensors do not block the scheduler waiting for microsecond pulses - they can be polled safely from any ESP-IDF task.
 
@@ -28,9 +28,9 @@ AHT10 - cheapest (~$1), AHT20 - improved version with better stability, SHT40 (S
 | --- | --- | --- | --- |
 | Temperature range | −40…+85 °C | −40…+85 °C | −40…+125 °C |
 | Temperature accuracy | ±0.3 °C | ±0.3 °C | ±0.2 °C |
-| Humidity range | 0…100 %RH | 0…100 %RH | 0…100 %RH |
-| Humidity accuracy | ±2 %RH | ±2 %RH | ±1.8 %RH |
-| Resolution | 0.01 °C / 0.024 %RH | 0.01 °C / 0.024 %RH | 0.01 °C / 0.01 %RH |
+| Humidity range | 0…100%RH | 0…100%RH | 0…100%RH |
+| Humidity accuracy | ±2%RH | ±2%RH | ±1.8%RH |
+| Resolution | 0.01 °C / 0.024%RH | 0.01 °C / 0.024%RH | 0.01 °C / 0.01%RH |
 | Interface | I2C, 100 kHz | I2C, up to 400 kHz | I2C, up to 1 MHz |
 | I2C address | 0x38 (fixed) | 0x38 (fixed) | 0x44 (0x45 for BD1B variant) |
 | Supply | 1.8-3.6 V (modules with LDO: 3.3-5 V) | 2.2-5.5 V | 1.08-3.6 V (modules: 3.3-5 V) |
@@ -232,7 +232,7 @@ while True:
 | Parameter | SHT20 | Si7021 | DHT12 |
 | --- | --- | --- | --- |
 | Manufacturer | Sensirion (predecessor to SHT3x) | Silicon Labs | Aosong (I2C version of DHT11) |
-| Range / accuracy RH | 0…100 %RH / ±3 %RH | 0…100 %RH / ±3 %RH | 20…95 %RH / ±5 %RH |
+| Range / accuracy RH | 0…100%RH / ±3%RH | 0…100%RH / ±3%RH | 20…95%RH / ±5%RH |
 | Temperature | −40…+125 °C / ±0.3 °C | −40…+85 °C / ±0.4 °C | −20…+60 °C / ±0.5 °C |
 | Interface | I2C 0x40 | I2C 0x40 (+ heater) | I2C 0x5C (4-pin module) |
 | Supply | 2.1-3.6 V | 1.9-3.6 V | 3.3-5 V |
@@ -255,7 +255,7 @@ ESP32 GPIO22 (SCL) ──► SCL (pull-up 4.7k to 3V3)
 | 3 | Address conflict 0x38 | Two AHT on bus, only one visible | One sensor per bus or multiplexer TCA9548A |
 | 4 | I2C speed 400 kHz for AHT10 | NACK, bus hang | AHT10 - only 100 kHz; AHT20/SHT40 - up to 400 kHz / 1 MHz |
 | 5 | 5 V supply on bare sensor without LDO | Overheating, reading drift | Bare AHT10 - max 3.6 V; GY modules - 5 V allowed |
-| 6 | Condensation after outdoor use | Humidity 100 % "stuck" | Dry out, on SHT40 turn heater on 1 s (SHT4X_HIGH_HEATER_1S) |
+| 6 | Condensation after outdoor use | Humidity 100% "stuck" | Dry out, on SHT40 turn heater on 1 s (SHT4X_HIGH_HEATER_1S) |
 | 7 | Confusing SHT40 0x44 vs 0x45 | `i2c.scan()` empty at 0x44 | Check chip variant (AD1B → 0x44, BD1B → 0x45), scan bus |
 | 8 | DHT12 instead of SHT20 in code | Wrong address/data format | DHT12 - 0x5C and its own format, SHT20/Si7021 - 0x40; check chip marking |
 
@@ -274,4 +274,4 @@ ESP32 GPIO22 (SCL) ──► SCL (pull-up 4.7k to 3V3)
 - [[EN/10-Sensors/02-DS18B20.en|DS18B20]]
 - [[EN/10-Sensors/04-MPU6050.en|MPU6050]]
 - [[EN/10-Sensors/06-INA219-HX711-BH1750.en]]
-- [[06-Analog/01-ADC|ADC]]
+- [[EN/06-Analog/01-ADC.en|ADC]]
