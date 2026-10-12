@@ -12,40 +12,40 @@ date: 2026-10-09
 # WeAct - minimal STM32 board with USB-C
 
 ![[assets/img/stm32-weact-board-scheme.png|600]]
-*Рис. Мінімум розміру, максимум зручності: USB-C, кнопки, документація.*
+*Fig. Minimum size, maximum convenience: USB-C, buttons, documentation.*
 
-> [!tip] Призначення ноти
-> Навчити вибирати and шити WeAct-плати: моделі, ревізії, USB-режими and приклади.
+> [!tip] Note purpose
+> Teach how to choose and flash WeAct boards: models, revisions, USB modes and examples.
 
-## 1. Призначення
+## 1. Purpose
 
-WeAct Studio робить акуратні міні-плати: Black Pill, MiniF4, Mini Debugger окремо. USB-C with даними, кнопки NRST and BOOT0 on платі, схеми у відкритому доступі. for прототипів це крок угору від безіменних клонів: відома розводка and живі приклади.
+WeAct Studio makes neat mini boards: Black Pill, MiniF4, separate Mini Debugger. USB-C with data, NRST and BOOT0 buttons on the board, schematics openly available. For prototypes this is a step up from no-name clones: known routing and live examples.
 
-## 2. Модельний ряд: that брати
+## 2. Model range: what to take
 
-| Плата | Чип | Особливість | for чого |
+| Board | Chip | Feature | For what |
 | --- | --- | --- | --- |
-| Black Pill F401 | F401CC | USB-C, FPU | Універсальний прототип |
-| Black Pill F411 | F411CE | Більше памяті | USB-девайси, звук |
-| MiniF4 F401 | F401CC | Компактна | Вбудовані вузли |
-| Mini Debugger | - | ST-Link клон | Прошивка голих плат |
+| Black Pill F401 | F401CC | USB-C, FPU | General prototype |
+| Black Pill F411 | F411CE | More memory | USB devices, sound |
+| MiniF4 F401 | F401CC | Compact | Embedded nodes |
+| Mini Debugger | - | ST-Link clone | Flashing bare boards |
 
-## 3. Ревізії: перевіряй перед купівлею
+## 3. Revisions: check before buying
 
-| Тема | Практика |
+| Topic | Practice |
 | --- | --- |
-| Номер ревізії | on шовкографії плати! |
-| Зміни між ревізіями | Кварц, LDO, розводка USB |
-| Приклади під ревізію | code зі старої може not зійтись пінами |
-| Відгуки | Свіжі партії перевіряти першою |
+| Revision number | On the board silkscreen! |
+| Changes between revisions | Crystal, LDO, USB routing |
+| Examples for the revision | Code from the old one may not match the pins |
+| Reviews | Check fresh batches first |
 
-## 4. USB-C: дані, but not тільки живлення
+## 4. USB-C: data, not just power
 
-| Режим | how увімкнути |
+| Mode | How to enable |
 | --- | --- |
-| CDC VCP | Прошивка with USB-стеком |
-| DFU прошивка | BOOT0 at підключенні! |
-| Живлення | USB-C дає більше струму |
+| CDC VCP | Firmware with USB stack |
+| DFU flashing | BOOT0 at connection! |
+| Power | USB-C gives more current |
 
 ```text
 Перша DFU-прошивка без ST-Link:
@@ -54,37 +54,37 @@ WeAct Studio робить акуратні міні-плати: Black Pill, Mini
   відпустити, натиснути NRST.
 ```
 
-## Mermaid: старт with WeAct
+## Mermaid: start with WeAct
 
 ```mermaid
 flowchart TB
-    Q[Плата в руках] --> REV[Прочитати ревізію]
-    REV --> USB[USB-C в компютер]
-    USB --> PORT{Порт видно?}
-    PORT -->|Ні| DFU[BOOT0 і перепідключити]
-    PORT -->|Так| BLINK[Залити Blink]
+    Q[Board in hand] --> REV[Read the revision]
+    REV --> USB[USB-C into the computer]
+    USB --> PORT{Port visible?}
+    PORT -->|No| DFU[BOOT0 and reconnect]
+    PORT -->|Yes| BLINK[Flash Blink]
     DFU --> BLINK
-    BLINK --> LED{PC13 блимає?}
-    LED -->|Так| NEXT[Далі за проєктом]
-    LED -->|Ні| SCH[Звірити піни зі схемою ревізії]
+    BLINK --> LED{PC13 blinking?}
+    LED -->|Yes| NEXT[Further per project]
+    LED -->|No| SCH[Check pins against the revision schematic]
 ```
 
-## 5. Приклади WeAct: де брати
+## 5. WeAct examples: where to get
 
-| source | that всередині |
+| Source | What is inside |
 | --- | --- |
-| GitHub WeAct | Приклади під кожну плату |
-| Схеми плат | PDF with розводкою |
-| Заводські демо | USB, дисплей, SD |
+| GitHub WeAct | Examples for each board |
+| Board schematics | PDF with routing |
+| Factory demos | USB, display, SD |
 
-## 6. WeAct проти безіменних клонів
+## 6. WeAct vs no-name clones
 
-| Критерій | WeAct | Клон |
+| Criterion | WeAct | Clone |
 | --- | --- | --- |
-| Схема | Відкрита | Вгадай сам |
-| USB-C | with даними | Часто тільки живлення |
-| Кварц | Нормальний | Буває перемарковано |
-| Ціна | Трохи дорожче | Дешевше |
+| Schematic | Open | Guess yourself |
+| USB-C | With data | Often power only |
+| Crystal | Decent | Sometimes remarked |
+| Price | Slightly more expensive | Cheaper |
 
 ## Common issues
 
@@ -98,36 +98,36 @@ flowchart TB
 | NRST not wired in code | No reset | Button on the board exists |
 | Clone instead of WeAct | Surprises with the crystal | Check with st-info |
 
-## Зберігання and ESD: дрібниці with ціною
+## Storage and ESD: small things with a price
 
-| Правило | Пояснення |
+| Rule | Explanation |
 | --- | --- |
-| Антистатичний пакет | Гола плата без нього вбивається взимку |
-| not класти on метал | Коротке знизу |
-| USB-C гніздо берегти | Механічно найслабше місце |
+| Antistatic bag | A bare board without it dies in winter |
+| Do not put on metal | Short from below |
+| Protect the USB-C socket | Mechanically the weakest spot |
 
 ## Official sources
 
 - [WeAct GitHub (WeAct Studio)](https://github.com/WeActStudio) - examples, schematics, firmware.
 - [MiniF4 product page (WeAct)](https://github.com/WeActStudio/MiniF4-STM32F4x1) - routing and demo.
 
-## Mini Debugger: прошивка голих плат
+## Mini Debugger: flashing bare boards
 
-| Тема | Практика |
+| Topic | Practice |
 | --- | --- |
-| Підключення | SWDIO, SWCLK, GND, NRST до своєї плати |
-| Живлення цілі | Краще окреме, not від дебагера! |
-| CubeProgrammer | Бачить how звичайний ST-Link |
-| Оновлення прошивки | Дебагер сам шиється via USB |
+| Connection | SWDIO, SWCLK, GND, NRST to your board |
+| Target power | Better separate, not from the debugger! |
+| CubeProgrammer | Seen as a regular ST-Link |
+| Firmware update | The debugger flashes itself over USB |
 
-## Живлення периферії with плати: межі
+## Powering peripherals from the board: limits
 
-| Споживач | Можна? |
+| Consumer | Allowed? |
 | --- | --- |
-| Датчики міліамперні | Так, with 3.3 in плати |
-| Дисплей маленький | Так, with запасом |
-| Реле and мотори | Ні! Окремий БЖ |
-| ESP-модуль поруч | Ні, піки WiFi вбивають LDO |
+| Milliamp sensors | Yes, from the board 3.3 V |
+| Small display | Yes, with reserve |
+| Relays and motors | No! Separate PSU |
+| ESP module nearby | No, WiFi peaks kill the LDO |
 
 ```text
 Правило струму:
@@ -136,20 +136,20 @@ flowchart TB
   реле і мотори завжди окремо.
 ```
 
-## WeAct проти Nucleo: коли that
+## WeAct vs Nucleo: which when
 
-| Задача | Вибір |
+| Task | Choice |
 | --- | --- |
-| Навчання with дебагом | Nucleo, все with коробки |
-| Компактний вузол | WeAct міні |
-| Своя плата потім | WeAct how референс розводки |
-| Вимір струму | Тільки Nucleo with IDD! |
+| Learning with debug | Nucleo, all out of the box |
+| Compact node | WeAct mini |
+| Own board later | WeAct as routing reference |
+| Current measurement | Only Nucleo with IDD! |
 
 ## See also
 
 - [[Home.en]]
-- [[EN/14-Devboards/02-Black-Pill.en|плата Black Pill]]
-- [[EN/14-Devboards/01-Blue-Pill.en|плата Blue Pill]]
-- [[EN/14-Devboards/03-Nucleo.en|плати Nucleo]]
-- [[EN/04-Interfaces/05-USB.en|порт USB]]
-- [[EN/09-Firmware/03-ST-Link-Flashing.en|прошивка via ST-Link]]
+- [[EN/14-Devboards/02-Black-Pill.en|Black Pill board]]
+- [[EN/14-Devboards/01-Blue-Pill.en|Blue Pill board]]
+- [[EN/14-Devboards/03-Nucleo.en|Nucleo boards]]
+- [[EN/04-Interfaces/05-USB.en|USB port]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|flashing via ST-Link]]

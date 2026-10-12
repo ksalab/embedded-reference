@@ -27,13 +27,13 @@ This section covers advanced displays for professional attachments, UI/HMI and p
 | SSD1351 | 128x128 (Colour) | SPI | SSD1351 | 3.3 V | 65K colours, built-in RAM animation |
 | ILI9340 / ILI9341 | 240x320 (TFT) | SPI / 8080 | ILI9340 (predecessor) / ILI9341 | 3.3 V (I/O), 5V (Backlight) | Popular 2.4-2.8″ TFT; ILI9340 - old revision, ILI9341 - current (TFT_eSPI out of box) |
 | ST7796 | 480x320 (TFT) | 8080-bus / SPI | ST7796 | 3.3 V (I/O), 5V (Backlight) | Wide viewing angle, LVGL support, compatible with FT81x |
-| GC9A01 | 240×240 (Colour) | SPI / 8080 | SSD2805 / st7789 | 3.3 in (I/O), 5V (Backlight) | Kreis-формат, support tactile-tochu |
+| GC9A01 | 240x240 (Colour) | SPI / 8080 | SSD2805 / ST7789 | 3.3 V (I/O), 5V (Backlight) | Round format, touch support |
 | RA8875 | 320x240 / 3.5" TFT | 8080-cat / SPI | RA8875 | 3.3 V (I/O), 5V (Backlight) | Large display, SPI speed up to 40 MHz |
-| FT81x (EVE) | 3.5" / 4.3" / 7" TFT | SPI / 8080 / RGB | FT81x (EVE) | 3.3 in (I/O), 5V (Backlight) | 'Elektor Graphics Engine' - hardwired GUI, списки команд |
+| FT81x (EVE) | 3.5" / 4.3" / 7" TFT | SPI / 8080 / RGB | FT81x (EVE) | 3.3 V (I/O), 5V (Backlight) | 'Elektor Graphics Engine' - hardwired GUI, command lists |
 
 ## Module pin legend (universal for SPI / 8080)
 
-| pin | Тип | Куди at ESP32 | Note |
+| Pin | Type | To on ESP32 | Note |
 | --- | --- | --- | --- |
 | VCC | power supply | 3.3 V (logic) / 5 V (Backlight) | SSDO VCC, Backlight - separate sources |
 | GND | ground | Common GND | Common minus |
@@ -45,7 +45,7 @@ This section covers advanced displays for professional attachments, UI/HMI and p
 | RESX / RST | Reset | GPIO4 (or other) | Hard reset at start |
 | SCK / SCK | Clocking | GPIO18 (SPI) | SPI clock (if 8080 - use WRX) |
 | SDI / SDA | SPI data | GPIO23 (VSPI) | write data |
-| SDO | SPI MISO | GPIO19 (VSPI) | Читання даних |
+| SDO | SPI MISO | GPIO19 (VSPI) | Read data |
 
 ## Wiring diagram (SPI 4-wire)
 
@@ -189,9 +189,9 @@ display.show()
 - ST7796: `lcdwiki.com` (ST7796 breakdown), `waveshare.com`
 - RA8875: `rapidonline.com` (RA8875 datasheet)
 
-- RA8875 Datasheet (Raio, пошук PDF): [RA8875 search](https://www.alldatasheet.com/view.jsp?Searchword=RA8875) - TFT-controller with GPU.
-- ST7796 Datasheet (Sitronix, пошук PDF): [ST7796 search](https://www.alldatasheet.com/view.jsp?Searchword=ST7796) - TFT 480×320.
-- ILI9340 Datasheet (Ilitek, пошук PDF): [ILI9340 search](https://www.alldatasheet.com/view.jsp?Searchword=ILI9340) - TFT 240×320.
+- RA8875 Datasheet (Raio, PDF search): [RA8875 search](https://www.alldatasheet.com/view.jsp?Searchword=RA8875) - TFT-controller with GPU.
+- ST7796 Datasheet (Sitronix, PDF search): [ST7796 search](https://www.alldatasheet.com/view.jsp?Searchword=ST7796) - TFT 480x320.
+- ILI9340 Datasheet (Ilitek, PDF search): [ILI9340 search](https://www.alldatasheet.com/view.jsp?Searchword=ILI9340) - TFT 240x320.
 - SSD1322/SSD1351 Datasheet (Solomon, PDF search): [SSD1322 search](https://www.alldatasheet.com/view.jsp?Searchword=SSD1322) - OLED controllers.
 - SSD2805 Datasheet (Solomon, PDF search): [SSD2805 search](https://www.alldatasheet.com/view.jsp?Searchword=SSD2805) - MIPI bridge.
 

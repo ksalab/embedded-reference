@@ -1,53 +1,52 @@
 ---
 title: Provisioning WiFi on ESP32 without reflashing
-description: Provisioning - entry SSID/password (and MQTT-settings) in готовий пристрій without reflashing. Користувач підключається до тимчасової точки пристрою, вводить домашній WiFi - пристрій...
+description: Provisioning - entering SSID, password and MQTT settings without reflashing; shows schematics, code and tables.
 tags: [esp32, wifi, provisioning, captive, ble, rainmaker, protokoli]
 category: Protokoli
 date-created: 2026-09-28
 date: 2026-09-28
 lang: en
 original: 15-Protocols/04-Provisioning.md
-date: 2026-10-08
 ---
 
 # Provisioning WiFi on ESP32 without reflashing
 
-> [!warning] Відкритий портал provisioning without password and таймауту - дірка: будь-хто поруч перехопить пристрій!
-> Пароль on SoftAP, таймаут порталу 3-5 хв, після успіху - гасити AP and чистити NVS at потребі.
+> [!warning] Open provisioning portal without password and timeout is a hole: anyone nearby can hijack the device!
+> Password on SoftAP, portal timeout 3-5 min, after success - stop AP and wipe NVS if needed.
 
-База WiFi: [[EN/05-Radio/01-WiFi-STA-AP.en]], зберігання облікових [[EN/08-Memory/01-Partitions-NVS.en]], далі MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], старт [[Home.en]].
+WiFi base: [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]], credential storage [[EN/08-Memory/01-Partitions-NVS.en|NVS]], then MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], start [[Home.en|Home]].
 
-## Призначення
+## Purpose
 
-Provisioning - entry SSID/password (and MQTT-settings) in готовий пристрій without reflashing. Користувач підключається до тимчасової точки пристрою, вводить домашній WiFi - пристрій перезапускається вже клієнтом.
+Provisioning - entering SSID, password (and MQTT settings) into a finished device without reflashing. The user joins the temporary access point of the device, enters home WiFi - the device reboots as a client.
 
-Варіанти:
+Options:
 
-- **WiFiManager (Arduino)** - captive-портал, найпростіше for хобі.
-- **wifi_provisioning + protocomm (IDF)** - BLE або SoftAP-транспорт, security1/2, продакшен-підхід.
-- **Ручний AP-портал (MicroPython)** - сокет-сервер on 192.168.4.1, мінімум залежностей.
-- **ESP RainMaker** - коли потрібні хмара, застосунок and claiming with коробки.
-- **SmartConfig / BluFi** - застереження: крихко, лише legacy.
+- **WiFiManager (Arduino)** - captive portal, simplest for hobby.
+- **wifi_provisioning + protocomm (IDF)** - BLE or SoftAP transport, security1/2, production approach.
+- **Manual AP portal (MicroPython)** - socket server on 192.168.4.1, minimal dependencies.
+- **ESP RainMaker** - when cloud, mobile app and out-of-the-box claiming are needed.
+- **SmartConfig / BluFi** - warning: fragile, legacy only.
 
-## Параметри
+## Parameters
 
-| Параметр | Значення | Примітка |
+| Parameter | Value | Note |
 | --- | --- | --- |
-| WiFiManager AP | SSID `ESP32-Setup`, IP 192.168.4.1 | captive-портал + DNS-перехоплення |
-| IDF BLE-provisioning | GATT-сервіс protocomm, security1 (PoP) / security2 | телефон поруч, without відкритого AP |
-| IDF SoftAP-provisioning | AP + HTTP-endpoints protocomm | how WiFiManager, але with шифруванням |
-| MP-портал | свій `socket` + форма HTML | ~60 рядків, повний контроль |
-| RainMaker | claiming + MQTT до хмари Espressif | застосунки iOS/Android Ready |
-| SmartConfig | ESP-Touch per довжині пакетів | ламається on 5 ГГц/mesh, not радити |
-| BluFi | BLE-канал закритого протоколу | лише Espressif-додаток, legacy |
-| Безпека | пароль AP ≥ 8 символів, таймаут 180-300 с | після provision - стоп AP |
-| Сховище | NVS (SSID/пасс), стирати at зміні власника | `nvs_flash_erase` / `WiFi.disconnect(true)` |
-| Кнопка скидання | утримання GPIO 10 с → erase + reboot in портал | обов'язково for корпусного виробу |
+| WiFiManager AP | SSID `ESP32-Setup`, IP 192.168.4.1 | captive portal + DNS hijack |
+| IDF BLE provisioning | protocomm GATT service, security1 (PoP) / security2 | phone nearby, no open AP |
+| IDF SoftAP provisioning | AP + protocomm HTTP endpoints | like WiFiManager, but with encryption |
+| MP portal | own `socket` + HTML form | about 60 lines, full control |
+| RainMaker | claiming + MQTT to Espressif cloud | ready iOS and Android apps |
+| SmartConfig | ESP-Touch by packet lengths | breaks on 5 GHz and mesh, not advised |
+| BluFi | closed-protocol BLE channel | Espressif app only, legacy |
+| Security | AP password at least 8 chars, 180-300 s timeout | after provision - stop AP |
+| Storage | NVS (SSID and password), erase on owner change | `nvs_flash_erase` / `WiFi.disconnect(true)` |
+| Reset button | 10 s GPIO hold to erase + reboot to portal | mandatory for an enclosed product |
 
 ![[assets/img/provisioning-blufi-rainmaker-scheme.png|600]]
-*Рис. Provisioning-транспорта: BLE/SoftAP-портал віддає облікові, пристрій стає STA-клієнтом домашнього WiFi.*
+*Fig. Provisioning transports: BLE or SoftAP portal hands over credentials, the device becomes an STA client of home WiFi.*
 
-### ASCII-схема
+### ASCII diagram
 
 ```text
 ПЕРВИННИЙ СТАН (нема NVS-облікових / кнопка утримана)
@@ -69,48 +68,48 @@ Provisioning - entry SSID/password (and MQTT-settings) in готовий при�
 
 ```mermaid
 graph LR
-    P[Телефон<br/>браузер/BLE] -->|SSID+пароль| AP[ESP32-AP портал<br/>192.168.4.1]
-    AP -->|зберегти NVS| STA[ESP32 STA<br/>домашній WiFi]
-    STA -->|MQTT/HTTPS| NET[broker/бекенд]
-    STA -.->|3 невдачі| AP
-    BT[BLE protocomm<br/>security1] -->|альтернатива| STA
+    P[Phone<br/>browser and BLE] -->|SSID+пароль| AP[ESP32-AP portal<br/>192.168.4.1]
+    AP -->|save NVS| STA[ESP32 STA<br/>home WiFi]
+    STA -->|MQTT/HTTPS| NET[broker and backend]
+    STA -.->|3 failures| AP
+    BT[BLE protocomm<br/>security1] -->|alternative| STA
 ```
 
-## WiFiManager (Arduino): captive-портал
+## WiFiManager (Arduino): captive portal
 
-Поведінка: стартує STA, немає збереженої мережі або конект провалився - піднімає AP + DNS + вебсервер. Captive-портал сам відкривається on телефоні.
+Behavior: starts STA, no saved network or connect failed - raises AP + DNS + web server. The captive portal opens on the phone by itself.
 
-Безпека мінімум: `autoConnect("ESP32-Setup", "SetupPass123")` (пароль!), `setConfigPortalTimeout(180)`, після успіху - звичайний `loop()`. Кастомні поля (MQTT-хост/порт) via `WiFiManagerParameter`, зберігати in NVS/Preferences.
+Security minimum: `autoConnect("ESP32-Setup", "SetupPass123")` (password!), `setConfigPortalTimeout(180)`, after success - plain `loop()`. Custom fields (MQTT host and port) through `WiFiManagerParameter`, store in NVS or Preferences.
 
-Підводні: портал, that not закрився після provision (завис in AP+STA) - явно `stopConfigPortal()` / перезавантаження; старі облікові in NVS після зміни роутера - довге утримання кнопки → `WiFi.disconnect(true)` + reboot.
+Pitfalls: a portal that never closed after provisioning (stuck in AP+STA) - call `stopConfigPortal()` or reboot explicitly; stale credentials in NVS after a router change - long button hold to `WiFi.disconnect(true)` + reboot.
 
-## wifi_provisioning + protocomm (IDF): BLE / SoftAP
+## wifi_provisioning + protocomm (IDF): BLE and SoftAP
 
-Продакшен-шлях: транспорт BLE (телефон поруч, ефір чистий) або SoftAP + HTTP, поверх - protocomm-сесія with security:
+Production path: BLE transport (phone nearby, clean air) or SoftAP + HTTP, with a protocomm session on top:
 
-- security0 - without шифрування, тільки розробка;
-- security1 - Curve25519 + PoP (proof-of-possession with наліпки on корпусі);
-- security2 - SRP6a, рекомендовано for серії.
+- security0 - no encryption, development only;
+- security1 - Curve25519 + PoP (proof of possession from the case sticker);
+- security2 - SRP6a, advised for production.
 
-Сценарій: `wifi_prov_mgr_init()` → `wifi_prov_mgr_start_provisioning(security, pop, service_name)` → застосунок/додаток передає SSID → подія `WIFI_PROV_END` → `wifi_prov_mgr_deinit()` (звільнити BLE-пам'ять!) → STA-конект. Після успіху BLE вимикати (`esp_bt_mem_release`) - інакше RAM тече.
+Flow: `wifi_prov_mgr_init()` to `wifi_prov_mgr_start_provisioning(security, pop, service_name)` to app sending SSID to `WIFI_PROV_END` event to `wifi_prov_mgr_deinit()` (free BLE memory!) to STA connect. After success turn BLE off (`esp_bt_mem_release`) - else RAM leaks.
 
-## Ручний AP-портал (MicroPython)
+## Manual AP portal (MicroPython)
 
-Коли бібліотек немає: підняти AP `esp32-setup`, сокет on 80, віддати форму, прийняти POST, записати `wifi.json`, reboot. Плюс - нуль залежностей and повний контроль; мінус - самому робити валідацію, таймаут and dnS-перехоплення (without нього користувач іде on 192.168.4.1 вручну).
+When no libraries exist: raise AP `esp32-setup`, socket on 80, serve a form, accept POST, write `wifi.json`, reboot. Plus - zero dependencies and full control; minus - validation, timeout and DNS hijack by hand (without it the user opens 192.168.4.1 manually).
 
-## ESP RainMaker - оглядово
+## ESP RainMaker - overview
 
-Коли брати: потрібні віддалене керування with інтернету, Ready мобільні застосунки, claiming пристроїв, OTA with хмари - and немає своєї бекенд-команди. RainMaker дає агент on пристрої + хмару + застосунки; параметри (реле, температура) описуються моделлю and самі малюються in UI.
+When to take it: remote control over the internet, ready mobile apps, device claiming, and cloud OTA are needed - and there is no backend team. RainMaker gives an on-device agent + cloud + apps; parameters (relay, temperature) follow a model and render in the UI by themselves.
 
-Коли not брати: локальний пристрій without інтернету, свій бекенд уже є (тоді MQTT/HTTP with розділів 01-02), жорсткі вимоги до приватності даних.
+When to skip it: local device without internet, own backend already exists (then MQTT or HTTP from sections 01-02), strict data privacy demands.
 
-## SmartConfig / BluFi: застереження
+## SmartConfig / BluFi: warnings
 
-- **SmartConfig (ESP-Touch):** кодує SSID довжинами пакетів. Ламається on 5 ГГц, mesh-роумінгу, ізольованих AP. Тільки legacy-підтримка старих партій.
-- **BluFi:** закритий BLE-протокол під додаток Espressif. Працює, але прив'язує до чужого застосунку.
-- Новим виробам - WiFiManager (хобі) або wifi_provisioning security1/2 (серія).
+- **SmartConfig (ESP-Touch):** encodes SSID in packet lengths. Breaks on 5 GHz, mesh roaming, and isolated APs. Legacy support for old batches only.
+- **BluFi:** closed BLE protocol for the Espressif app. Works, but ties to someone else app.
+- For new products - WiFiManager (hobby) or wifi_provisioning security1/2 (production).
 
-## code Arduino (WiFiManager, безпечний)
+## Arduino code (WiFiManager, secure)
 
 ```cpp
 #include <WiFi.h>
@@ -144,7 +143,7 @@ void setup() {
 void loop() { /* робочий код: MQTT/HTTP */ }
 ```
 
-## code ESP-IDF (wifi_provisioning via BLE)
+## ESP-IDF code (wifi_provisioning over BLE)
 
 ```c
 #include "wifi_provisioning/manager.h"
@@ -167,7 +166,7 @@ void prov_start(const char *pop) {
 // WIFI_PROV_END → deinit + робочий режим STA.
 ```
 
-## code MicroPython (ручний AP-портал)
+## MicroPython code (manual AP portal)
 
 ```python
 import network, socket, json, time, machine
@@ -213,39 +212,39 @@ except OSError:
     start_portal()  # конфіга нема → портал
 ```
 
-## typical errors
+## Typical issues
 
-| Симптом | Причина | Рішення |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| Портал висить після provision | немає `deinit`/reboot, AP+STA одночасно | `wifi_prov_mgr_deinit()` / `ESP.restart()` після успіху |
-| Пристрій not бачить нову мережу | старі облікові in NVS | кнопка 10 с → `resetSettings()` / `nvs_flash_erase` |
-| Captive-портал not спливає | немає DNS-перехоплення (ручний портал) | йти вручну on 192.168.4.1; in WiFiManager увімкнено |
-| Цикл reboot ↔ портал | FAIL without лічильника | 3 спроби → лишити портал, not ребутитись |
-| BLE-provisioning with'їв RAM | BTDM not звільнено після deinit | `esp_bt_mem_release(ESP_BT_MODE_BTDM)` |
-| Чужі підключаються до Setup-AP | відкритий AP without таймауту | пароль ≥ 8 символів + timeout 180 с |
-| SmartConfig not ловить | 5 ГГц / mesh / ізоляція AP | тільки 2.4 ГГц або перейти on BLE/SoftAP |
-| PoP-наліпка одна on партію | клонування доступу | унікальний PoP on пристрій (MAC-based) |
+| Portal hangs after provision | no `deinit` or reboot, AP+STA at once | `wifi_prov_mgr_deinit()` or `ESP.restart()` after success |
+| Device ignores the new network | stale credentials in NVS | 10 s button to `resetSettings()` or `nvs_flash_erase` |
+| Captive portal never pops | no DNS hijack (manual portal) | open 192.168.4.1 by hand; enabled in WiFiManager |
+| Reboot to portal loop | FAIL without a counter | 3 tries to stay in portal, no reboot loop |
+| BLE provisioning ate RAM | BTDM not freed after deinit | `esp_bt_mem_release(ESP_BT_MODE_BTDM)` |
+| Strangers join the Setup AP | open AP without timeout | password of 8+ chars + 180 s timeout |
+| SmartConfig never catches | 5 GHz, mesh, or AP isolation | 2.4 GHz only or move to BLE or SoftAP |
+| Same PoP sticker for a batch | cloned access | unique PoP per device (MAC-based) |
 
-## official джерела
+## Official sources
 
-- [Protocomm - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/provisioning/protocomm.html) - security0/1/2, BLE and SoftAP-транспорт.
-- [WiFiManager - GitHub](https://github.com/tzapu/WiFiManager) - captive-портал, таймаути, кастомні параметри.
-- [ESP RainMaker - Programming Guide](https://docs.espressif.com/projects/esp-rainmaker/en/latest/) - claiming, модель пристрою, OTA.
-- [esp-rainmaker - GitHub](https://github.com/espressif/esp-rainmaker) - агент, приклади, застосунки.
+- [Protocomm - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/provisioning/protocomm.html) - security0/1/2, BLE and SoftAP transport.
+- [WiFiManager - GitHub](https://github.com/tzapu/WiFiManager) - captive portal, timeouts, custom parameters.
+- [ESP RainMaker - Programming Guide](https://docs.espressif.com/projects/esp-rainmaker/en/latest/) - claiming, device model, OTA.
+- [esp-rainmaker - GitHub](https://github.com/espressif/esp-rainmaker) - agent, examples, apps.
 
-## Див. також
+## See also
 
-- [[Home.en]]
-- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - режими, that перемикає provisioning
-- [[EN/08-Memory/03-OTA.en|OTA]] - оновлення вже provisioned-пристроїв
-- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - де лежать облікові, стирання
-- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - портал not стартує, цикли
-- [[EN/15-Protocols/01-MQTT.en|MQTT]] - наступний крок після WiFi
-- [[EN/15-Protocols/03-HTTP-Client.en|HTTP/WebSocket]] - наступний крок після WiFi
-- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS/NTP/TLS]] - знахідка пристрою після provision
-- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud-Pipeline]] - куди течуть дані
+- [[Home.en|Home]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]] - modes that provisioning switches
+- [[EN/08-Memory/03-OTA.en|OTA]] - updates for provisioned devices
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - where credentials live, erasing
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - portal never starts, loops
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - next step after WiFi
+- [[EN/15-Protocols/03-HTTP-Client.en|HTTP and WebSocket]] - next step after WiFi
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS, NTP and TLS]] - finding the device after provision
+- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud pipeline]] - where data flows
 
-## Common issues
+## Appendix: checklist
 
 | Symptom | Cause | Fix |
 |---|---|---|

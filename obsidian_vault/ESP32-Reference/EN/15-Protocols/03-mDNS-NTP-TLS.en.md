@@ -1,52 +1,51 @@
 ---
-title: mDNS, NTP та TLS on ESP32
-description: Три базові сервіси, without яких прикладна комунікація кульгає: mDNS-імена, NTP-час, TLS-сертифікати.
+title: mDNS, NTP and TLS on ESP32
+description: Three base services for applied comms: mDNS names, NTP time, TLS certificates; shows schematics, code and tables.
 tags: [esp32, mdns, ntp, sntp, tls, https, mqtt, protokoli]
 category: Protokoli
 date-created: 2026-09-28
 date: 2026-09-28
 lang: en
 original: 15-Protocols/03-mDNS-NTP-TLS.md
-date: 2026-10-08
 ---
 
-# mDNS, NTP та TLS on ESP32
+# mDNS, NTP and TLS on ESP32
 
-> [!warning] without NTP час = 1970 рік - and падає БУДЬ-which TLS (HTTPS, MQTTS)!
-> Порядок старту: WiFi → SNTP-синхронізація → тільки потім TLS-with'єднання.
+> [!warning] Without NTP time sticks at 1970 - and ANY TLS fails (HTTPS, MQTTS)!
+> Start order: WiFi to SNTP sync to TLS connections only after that.
 
-Огляд мережі: [[EN/05-Radio/01-WiFi-STA-AP.en]], MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], HTTP [[EN/15-Protocols/03-HTTP-Client.en]], старт [[Home.en]].
+Network overview: [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]], MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], HTTP [[EN/15-Protocols/03-HTTP-Client.en|HTTP and WebSocket]], start [[Home.en|Home]].
 
-## Призначення
+## Purpose
 
-Три базові сервіси, without яких прикладна комунікація кульгає:
+Three base services without which applied comms limp:
 
-- **mDNS** - звертання до плати for ім'ям `esp32.local` замість IP. Зручно for локального дашборда and firmwares.
-- **NTP/SNTP** - точний час: мітки телеметрії, check TLS-сертифікатів, розклад deep-sleep.
-- **TLS** - шифрування and автентифікація сервера (HTTPS, MQTTS): CA-сертифікат, check імені, fingerprint how тимчасовий костиль.
+- **mDNS** - reaching the board by the name `esp32.local` instead of IP. Handy for a local dashboard and firmware upload.
+- **NTP/SNTP** - precise time: telemetry stamps, TLS certificate checks, deep-sleep schedule.
+- **TLS** - server encryption and auth (HTTPS, MQTTS): CA certificate, name check, fingerprint as a temporary crutch.
 
-## Параметри
+## Parameters
 
-| Параметр | Значення | Примітка |
+| Parameter | Value | Note |
 | --- | --- | --- |
-| mDNS-ім'я | `esp32.local` (налаштовується) | тільки одна підмережа / broadcast-домен |
-| mDNS IDF | компонент `espressif/mdns` | сервіси `_http._tcp`, `_mqtt._tcp` |
+| mDNS name | `esp32.local` (configurable) | single subnet / broadcast domain only |
+| mDNS IDF | `espressif/mdns` component | `_http._tcp` and `_mqtt._tcp` services |
 | mDNS Arduino | `ESPmDNS.h` | `MDNS.begin("esp32")` |
-| mDNS MicroPython | немає вбудованого | тільки клієнт via IP; резолв `.local` - with ПК |
-| NTP-сервери | `pool.ntp.org`, `time.google.com` | 2-3 сервери for надійності |
-| SNTP-режим IDF | `esp_netif_sntp_init()` | smooth або immediate |
-| Arduino-час | `configTzTime()` + `getLocalTime()` | POSIX-час + пояс |
-| MP-час | `ntptime.settime()` + RTC | тільки UTC, пояс вручну |
-| Пояс Київ | `EET-2EEST,M3.5.0/3,M10.5.0/4` | літній/зимовий автоматично |
-| TLS-стек IDF/Arduino-ESP32 | mbedTLS | повний, ~40 КБ heap |
-| TLS ESP8266-legacy | BearSSL | легший, але this not ESP32 |
-| Зберігання CA | NVS / LittleFS / вшитий PEM | bundle Mozilla for загальних URL |
-| check | CA + hostname, fingerprint - тимчасово | `setInsecure()` тільки стенд |
+| mDNS MicroPython | no built-in support | client by IP only; `.local` resolving from a PC |
+| NTP servers | `pool.ntp.org`, `time.google.com` | 2-3 servers for reliability |
+| IDF SNTP mode | `esp_netif_sntp_init()` | smooth or immediate |
+| Arduino time | `configTzTime()` + `getLocalTime()` | POSIX time + zone |
+| MP time | `ntptime.settime()` + RTC | UTC only, zone by hand |
+| Kyiv zone | `EET-2EEST,M3.5.0/3,M10.5.0/4` | summer and winter automatic |
+| IDF/Arduino-ESP32 TLS stack | mbedTLS | full, about 40 KB heap |
+| ESP8266-legacy TLS | BearSSL | lighter, but this is not ESP32 |
+| CA storage | NVS / LittleFS / embedded PEM | Mozilla bundle for public URLs |
+| Check | CA + hostname, fingerprint temporary | `setInsecure()` bench only |
 
 ![[assets/img/mdns-ntp-tls-scheme.png|600]]
-*Рис. Ланцюжок довіри: mDNS дає ім'я, NTP дає час, CA-bundle дає перевірку TLS.*
+*Fig. Trust chain: mDNS gives the name, NTP gives time, CA bundle gives TLS verification.*
 
-### ASCII-схема
+### ASCII diagram
 
 ```text
 ESP32                        Локальна мережа / Інтернет
@@ -68,49 +67,49 @@ ESP32                        Локальна мережа / Інтернет
 
 ```mermaid
 graph LR
-    ESP[ESP32] -->|mDNS 5353/UDP| LAN[Локалка<br/>esp32.local]
+    ESP[ESP32] -->|mDNS 5353/UDP| LAN[LAN<br/>esp32.local]
     ESP -->|SNTP UDP 123| NTP[pool.ntp.org]
     NTP -->|UTC + TZ| ESP
-    ESP -->|TLS 443/8883<br/>CA + hostname| SRV[Сервер/broker]
-    LAN -.->|одна підмережа!| ESP
+    ESP -->|TLS 443/8883<br/>CA + hostname| SRV[Server/broker]
+    LAN -.->|one subnet!| ESP
 ```
 
-## mDNS: `esp32.local` and межі
+## mDNS: `esp32.local` and limits
 
-that вміє: відповідати on `esp32.local`, анонсувати сервіси (`_http._tcp` with портом 80 - браузер/IDE знаходить плату сам). that not вміє:
+What it can do: answer on `esp32.local`, announce services (`_http._tcp` with port 80 - the browser or IDE finds the board itself). What it cannot do:
 
-- not працює via роутери між підмережами (multicast not форвардиться);
-- Android without спеціального резолвера `.local` not бачить (iOS/macOS/Windows with Bonjour - бачать);
-- VPN and гостьові WiFi with ізоляцією клієнтів ріжуть multicast.
+- does not work through routers between subnets (multicast is not forwarded);
+- Android without a special resolver cannot see `.local` (iOS, macOS, and Windows with Bonjour can);
+- VPN and guest WiFi with client isolation cut multicast.
 
-Практика: mDNS - for домашньої лабораторії and демо, in продакшені - статичний IP / DHCP-reservation + свій DNS або конфіг via provisioning, див. [[EN/15-Protocols/04-Provisioning.en|Provisioning]].
+Practice: mDNS is for the home lab and demos, in production use a static IP or DHCP reservation + own DNS or config via provisioning, see [[EN/15-Protocols/04-Provisioning.en|Provisioning]].
 
-## SNTP-синхронізація and часові пояси
+## SNTP sync and time zones
 
-Порядок: чекати `WL_CONNECTED` → старт SNTP → чекати перший синк (таймаут ~10 с) → тільки потім MQTT-TLS/HTTPS. Період повторного синку - година (дефолт lwIP).
+Order: wait for `WL_CONNECTED` to start SNTP to wait for the first sync (about 10 s timeout) to MQTT-TLS/HTTPS only after that. Resync period is one hour (lwIP default).
 
-Пояс одним рядком (POSIX TZ):
+Zone in one line (POSIX TZ):
 
 ```text
 Київ:  EET-2EEST,M3.5.0/3,M10.5.0/4
 ```
 
-Після `setenv("TZ",...); tzset();` функція `localtime()` повертає київський час with автоматичним переходом. on MicroPython пояса немає - тримати UTC and додавати 2/3 год вручну або on сервері.
+After `setenv("TZ",...); tzset();` the `localtime()` function returns Kyiv time with automatic switch. On MicroPython there is no zone - keep UTC and add 2/3 hours by hand or on the server.
 
-## TLS on практиці
+## TLS in practice
 
-Де лежить CA:
+Where the CA lives:
 
-- **Вшитий PEM** in прошивку - один свій сервер, мінімум коду.
-- **CA-bundle Mozilla** (`esp_crt_bundle_attach`) - загальні HTTPS-URL, +~200 КБ флеш.
-- **LittleFS-файл** `/ca.pem` - оновлення сертифіката without reflashing (завантажити per HTTP раз).
-- **NVS** - маленький CA або fingerprint.
+- **Embedded PEM** in firmware - one own server, minimal code.
+- **Mozilla CA bundle** (`esp_crt_bundle_attach`) - public HTTPS URLs, +about 200 KB flash.
+- **LittleFS file** `/ca.pem` - certificate update without reflashing (download over HTTP once).
+- **NVS** - small CA or fingerprint.
 
-BearSSL vs mbedTLS: on ESP32 стандарт - mbedTLS (повний TLS 1.2/1.3, більше RAM). BearSSL - спадщина ESP8266, on ESP32 його беруть лише for специфічних constranit-задач. **WolfSSL** - третій гравець: менший footprint ніж mbedTLS, сертифікації під авто/мед, API сумісний частково; беруть коли замовник вимагає саме WolfSSL або not влізають in RAM with mbedTLS. Пам'ять: одна TLS-сесія ~40 КБ heap; дві паралельні сесії on ESP32-C3 without PSRAM - on межі.
+BearSSL vs mbedTLS: on ESP32 the standard is mbedTLS (full TLS 1.2/1.3, more RAM). BearSSL is ESP8266 legacy, on ESP32 it is taken only for specific constrained tasks. **WolfSSL** is a third player: smaller footprint than mbedTLS, auto and medical certifications, partly compatible API; chosen when the customer demands WolfSSL or RAM cannot fit mbedTLS. Memory: one TLS session is about 40 KB of heap; two parallel sessions on ESP32-C3 without PSRAM are borderline.
 
-Fingerprint (SHA-256 відбитка серверного сертифіката): працює without CA and without NTP-часу, але ламається at кожному перевипуску сертифіката (Let's Encrypt - кожні 90 днів). Тільки how тимчасовий місток, not продакшен.
+Fingerprint (SHA-256 of the server certificate): works without CA and without NTP time, but breaks on every certificate reissue (Let's Encrypt - every 90 days). Only as a temporary bridge, not production.
 
-## code ESP-IDF (mDNS + SNTP + TLS-bundle)
+## ESP-IDF code (mDNS + SNTP + TLS bundle)
 
 ```c
 #include "mdns.h"
@@ -143,7 +142,7 @@ void sntp_start(void) {
 // };
 ```
 
-## code Arduino (ESPmDNS + configTzTime + CA)
+## Arduino code (ESPmDNS + configTzTime + CA)
 
 ```cpp
 #include <WiFi.h>
@@ -170,7 +169,7 @@ void setup() {
 // sec.setInsecure();              // ТІЛЬКИ стенд
 ```
 
-## code MicroPython (ntptime + TLS-сокет)
+## MicroPython code (ntptime + TLS socket)
 
 ```python
 import network, ntptime, time, socket, ssl
@@ -202,42 +201,42 @@ local = time.localtime(time.time() + KYIV_OFFSET)
 # s.connect(("broker.example.com", 8883))
 ```
 
-## typical errors
+## Typical issues
 
-| Симптом | Причина | Рішення |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| TLS FAIL, час 1970 | NTP ще not синкнувся | чекати `sntp_sync_wait` / `getLocalTime` до першого TLS |
-| `esp32.local` not відкривається | інша підмережа / Android without резолвера | IP with DHCP, iOS/ПК with Bonjour, статичний IP |
-| WolfSSL not збирається під ESP-IDF | not та версія wolfssl / конфіг wolfSSL | Брати wolfSSL-example під свою версію IDF; without вимоги замовника - лишатись on mbedTLS |
-| mDNS видно, сервісу немає | not додано `addService` | `_http._tcp:80`, `_mqtt._tcp:1883` |
-| `verify failed` після оновлення сервера | Let's Encrypt перевипустив cert | CA-bundle замість fingerprint |
-| Fingerprint перестав працювати | перевипуск кожні 90 днів | перейти on CA, fingerprint - тимчасово |
-| `setInsecure` in проді | MITM читає паролі MQTT | тільки стенд; прод - CA-bundle |
-| Два TLS одночасно → крах | ~40 КБ × 2 on C3 without PSRAM | одна сесія for раз, закривати `cleanup/end` |
-| Час пливе in deep-sleep | RC-генератор RTC without калібрування | ресинк NTP після пробудження |
-| NTP timeout for фаєрволом | закрито UDP 123 | відкрити 123/UDP або свій NTP in локалці |
-| Пояс not той взимку/влітку | жорсткий `+2` замість TZ-правила | повний TZ-рядок with M3/M10 переходами |
+| TLS FAIL, time 1970 | NTP not synced yet | wait for `sntp_sync_wait` or `getLocalTime` before the first TLS |
+| `esp32.local` does not open | other subnet or Android without resolver | IP from DHCP, iOS or PC with Bonjour, static IP |
+| WolfSSL fails to build under ESP-IDF | wrong wolfssl version or wolfSSL config | Take the wolfSSL example for your IDF version; without a customer demand stay on mbedTLS |
+| mDNS visible, no service | `addService` not added | `_http._tcp:80`, `_mqtt._tcp:1883` |
+| `verify failed` after server update | Let us Encrypt reissued the cert | CA bundle instead of fingerprint |
+| Fingerprint stopped working | reissue every 90 days | move to CA, fingerprint is temporary |
+| `setInsecure` in production | MITM reads MQTT passwords | bench only; production uses CA bundle |
+| Two TLS at once to crash | about 40 KB x 2 on C3 without PSRAM | one session at a time, close with `cleanup/end` |
+| Time drifts in deep-sleep | uncalibrated RTC RC oscillator | NTP resync after wake |
+| NTP timeout behind firewall | UDP 123 closed | open 123/UDP or run own NTP on LAN |
+| Wrong zone in winter or summer | hardcoded `+2` instead of a TZ rule | full TZ string with M3/M10 switches |
 
-## official джерела
+## Official sources
 
-- [mDNS Service - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/mdns.html) - хостнейм, сервіси `_http._tcp`.
-- [System Time / SNTP - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/system_time.html) - `esp_netif_sntp`, пояси, smooth/immed.
-- [ESP-TLS - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_tls.html) - CA, SNI, сесії, BearSSL/mbedTLS.
-- [ESP x509 Certificate Bundle - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_crt_bundle.html) - bundle Mozilla, `esp_crt_bundle_attach`.
+- [mDNS Service - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/mdns.html) - hostname, `_http._tcp` services.
+- [System Time / SNTP - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/system_time.html) - `esp_netif_sntp`, zones, smooth and immediate modes.
+- [ESP-TLS - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_tls.html) - CA, SNI, sessions, BearSSL and mbedTLS.
+- [ESP x509 Certificate Bundle - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_crt_bundle.html) - Mozilla bundle, `esp_crt_bundle_attach`.
 
-## Див. також
+## See also
 
-- [[Home.en]]
-- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - транспорт for mDNS/NTP/TLS
-- [[EN/08-Memory/03-OTA.en|OTA]] - HTTPS-доставка прошивок потребує часу and CA
-- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - зберігання CA and TZ-рядка
-- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - TLS FAIL, час 1970
-- [[EN/15-Protocols/01-MQTT.en|MQTT]] - споживач NTP+TLS (mqtts 8883)
-- [[EN/15-Protocols/03-HTTP-Client.en|HTTP/WebSocket]] - споживач CA-bundle
-- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - mDNS how знахідка порталу
-- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud-Pipeline]] - мітки часу in InfluxDB
+- [[Home.en|Home]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]] - transport for mDNS, NTP and TLS
+- [[EN/08-Memory/03-OTA.en|OTA]] - HTTPS firmware delivery needs time and CA
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - storage for CA and TZ string
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - TLS FAIL, time 1970
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - NTP+TLS consumer (mqtts 8883)
+- [[EN/15-Protocols/03-HTTP-Client.en|HTTP and WebSocket]] - CA bundle consumer
+- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - mDNS as portal discovery
+- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud pipeline]] - time stamps in InfluxDB
 
-## Common issues
+## Appendix: network checklist
 
 | Symptom | Cause | Fix |
 |---|---|---|

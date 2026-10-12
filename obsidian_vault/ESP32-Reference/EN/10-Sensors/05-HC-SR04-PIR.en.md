@@ -13,57 +13,57 @@ date: 2026-10-08
 
 ## Purpose
 
-HC-SR04 - ультразвуковий далекомір (2-400 см) for вимірювання відстані, рівня рідини, парктроніків, роботів-уникачів перешкод. PIR HC-SR501 - пасивний ІЧ-детектор руху людини (до ~7 м, кут ~110°) for освітлення, сигналізації, економії енергії (пробудження with deep-sleep). HC-SR04 живиться 5V (Echo - via дільник!), PIR - 5-12V with виходом 3.3V.
+HC-SR04 - ultrasonic rangefinder (2-400 cm) for distance measurement, liquid level, parking sensors, and obstacle-avoiding robots. PIR HC-SR501 - passive IR human motion detector (up to about 7 m, angle about 110 deg) for lighting, alarms, and energy saving (wake-up from deep-sleep). HC-SR04 is powered from 5V (Echo - through a divider!), PIR - 5-12V with a 3.3V output.
 
 ## Specifications
 
-| Параметр | HC-SR04 | PIR HC-SR501 |
+| Parameter | HC-SR04 | PIR HC-SR501 |
 | --- | --- | --- |
-| Принцип | Echo 40 кГц, час прольоту | Піроелектрик + лінза Френеля |
-| Діапазон | 2-400 см (точно 2-200) | до 7 м, кут <110° |
-| Точність | ±3 мм (ідеально), реально ±1 см | Бінарний: рух є/немає |
-| Живлення | 5 in (логіка Trig 5 in, Echo 5 in!) | 5-12 in (вихід 3.3 in, сумісний with ESP32) |
-| Струм | 15 мА | 65 мкА (очікування) |
-| Вихід | Trig (вхід), Echo (імпульс 150 мкс-25 мс) | OUT 3.3 in, утримання H/L перемичка |
-| Регулювання | - | Sx: чутливість; Tx: час утримання 0.3-300 с |
+| Principle | Echo 40 kHz, time of flight | Pyroelectric element + Fresnel lens |
+| Range | 2-400 cm (accurate 2-200) | up to 7 m, angle <110 deg |
+| Accuracy | +-3 mm (ideal), typically +-1 cm | Binary: motion yes/no |
+| Power supply | 5 V (Trig logic 5 V, Echo 5 V!) | 5-12 V (output 3.3 V, compatible with ESP32) |
+| Current | 15 mA | 65 uA (idle) |
+| Output | Trig (input), Echo (pulse 150 us-25 ms) | OUT 3.3 V, H/L hold jumper |
+| Adjustment | - | Sx: sensitivity; Tx: hold time 0.3-300 s |
 
-> HC-SR04 живиться from 5 in, but Echo видає 5 in - ESP32 not 5V-tolerant! Обов'язковий дільник 1 кОм / 2 кОм. PIR HC-SR501 має on борту стабілізатор 3.3 in and вихід 3.3 in - підключається безпосередньо.
+> HC-SR04 is powered from 5 V, but Echo outputs 5 V - ESP32 is not 5V-tolerant! A 1 kOhm / 2 kOhm divider is mandatory. PIR HC-SR501 has an on-board 3.3 V regulator and a 3.3 V output - connects directly.
 
 ## Pinout
 
-| HC-SR04 | Призначення |
+| HC-SR04 | Purpose |
 | --- | --- |
-| VCC | 5 in (from VIN/VU або зовнішні 5 in) |
-| Trig | launch (10 мкс HIGH), вхід 5 in - ESP32 3.3 in вистачає |
-| Echo | Імпульс шириною ∝ відстані, 5 in → via дільник in GPIO |
-| GND | Спільна земля |
+| VCC | 5 V (from VIN/VU or external 5 V) |
+| Trig | trigger (10 us HIGH), 5 V input - ESP32 3.3 V is enough |
+| Echo | Pulse with width proportional to distance, 5 V -> through divider to GPIO |
+| GND | Common ground |
 
-| HC-SR501 | Призначення |
+| HC-SR501 | Purpose |
 | --- | --- |
-| VCC | 5 in (4.5-12 in), стабілізатор on борту |
-| OUT | 3.3 in логіка → безпосередньо in GPIO |
-| GND | Спільна земля |
-| Sx / Tx | Потенціометри чутливості / часу |
-| Jumper H/L | H - повторний тригер, L - одиничний |
+| VCC | 5 V (4.5-12 V), on-board regulator |
+| OUT | 3.3 V logic -> directly to GPIO |
+| GND | Common ground |
+| Sx / Tx | Sensitivity / time potentiometers |
+| Jumper H/L | H - retriggerable, L - single trigger |
 
 ## Wiring diagram
 
-| ESP32 | HC-SR04 | Примітка |
+| ESP32 | HC-SR04 | Note |
 | --- | --- | --- |
-| 5V (VIN/VU) | VCC | 5 in обов'язково (from 3.3 in not працює/бреше) |
-| GPIO5 | Trig | Вихід ESP32 3.3 in → Trig спрацьовує (поріг ~2 in) |
-| GPIO18 | Echo via дільник | Echo → 1 кОм → GPIO; GPIO → 2 кОм → GND (on GPIO ~3.3 in) |
-| GND | GND | Спільна земля |
+| 5V (VIN/VU) | VCC | 5 V mandatory (from 3.3 V it fails or reads wrong) |
+| GPIO5 | Trig | ESP32 3.3 V output -> Trig triggers (threshold about 2 V) |
+| GPIO18 | Echo via divider | Echo -> 1 kOhm -> GPIO; GPIO -> 2 kOhm -> GND (on GPIO about 3.3 V) |
+| GND | GND | Common ground |
 
-| ESP32 | HC-SR501 | Примітка |
+| ESP32 | HC-SR501 | Note |
 | --- | --- | --- |
-| 5V (VIN/VU) | VCC | 5 in for стабільної роботи реле часу |
-| GPIO13 | OUT | Безпосередньо, 3.3 in-сумісний; for пробудження - RTC-GPIO |
-| GND | GND | Спільна земля |
+| 5V (VIN/VU) | VCC | 5 V for stable timer operation |
+| GPIO13 | OUT | Direct, 3.3 V compatible; for wake-up - RTC-GPIO |
+| GND | GND | Common ground |
 
-Формула відстані: `distance_cm = echo_us / 58.0` (або `echo_us * 0.0343 / 2`). Пояснення: звук ~343 м/с → 29.1 мкс/мм in один бік, туди-назад 58.2 мкс/см.
+Distance formula: `distance_cm = echo_us / 58.0` (or `echo_us * 0.0343 / 2`). Explanation: sound is about 343 m/s -> 29.1 us per mm one way, 58.2 us per cm round trip.
 
-### ASCII-схема
+### ASCII diagram
 
 ```text
 ESP32 DevKit            HC-SR04 (5 В!) + дільник Echo
@@ -83,14 +83,14 @@ PIR для пробудження — тільки RTC-GPIO (напр. GPIO13/15
 graph LR
   ESP32["ESP32<br/>5V / GPIO5 / GPIO18 / GND"] -->|5V| VCC["HC-SR04 VCC"]
   ESP32 -->|GPIO5| TRIG["HC-SR04 Trig"]
-  ECHO["HC-SR04 Echo 5V"] -->|1 кОм| GPIO["GPIO18"]
-  GPIO ---|2 кОм| GNDN["GND"]
+  ECHO["HC-SR04 Echo 5V"] -->|1 kOhm| GPIO["GPIO18"]
+  GPIO ---|2 kOhm| GNDN["GND"]
   ESP32 -->|GND| GNDM["HC-SR04 GND"]
   ESP32 --- PIR["PIR HC-SR501<br/>OUT→GPIO13"]
 ```
 
 ![[assets/img/hcsr04-divider.png|500]]
-*Рис. HC-SR04 - живлення 5 in, Echo via дільник 1к/2к, PIR безпосередньо on GPIO13. Місце під фото - див. [[assets/README]].*
+*Fig. HC-SR04 - 5 V power, Echo via 1k/2k divider, PIR directly on GPIO13. Photo placeholder - see [[assets/README]].*
 
 ## ESP-IDF code
 
@@ -201,29 +201,29 @@ while True:
 
 ## Common issues
 
-1. **Echo 5 in безпосередньо in GPIO** → деградація/згоряння входу ESP32. Дільник 1 кОм/2 кОм обов'язковий.
-2. **Живлення HC-SR04 from 3.3 in** → занижені/нульові покази. Тільки 5 in.
-3. **without таймауту `pulseIn` / циклу очікування** → зависання at відсутності echo (відкрите небо). Завжди таймаут 25-30 мс.
-4. **М'які/похилі поверхні** → echo губиться (тканина, килим, кут >15°). for таких цілей - ToF-лазер VL53L0X.
-5. **PIR хибні спрацювання** → протяги, батареї, сонячні зайчики. Зменшити Sx, направити лінзу вниз, прогрів 30-60 с після ввімкнення.
-6. **PIR not бачить крізь скло** → ІЧ not проходить via скло. Тільки пряма видимість.
-7. **Декілька HC-SR04 одночасно** → перехресні echo. Опитувати per черзі with паузою ≥60 мс.
+1. **Echo 5 V directly to GPIO** -> degradation or burnout of the ESP32 input. A 1 kOhm/2 kOhm divider is mandatory.
+2. **HC-SR04 powered from 3.3 V** -> low or zero readings. Only 5 V.
+3. **No timeout on `pulseIn` / wait loop** -> hang when echo is missing (open sky). Always use a 25-30 ms timeout.
+4. **Soft or tilted surfaces** -> echo is lost (fabric, carpet, angle above 15 deg). For such targets use a VL53L0X ToF laser.
+5. **PIR false triggers** -> drafts, heaters, sun spots. Reduce Sx, point the lens down, warm up 30-60 s after power-on.
+6. **PIR does not see through glass** -> IR does not pass through glass. Line of sight only.
+7. **Several HC-SR04 at once** -> cross-talk echoes. Poll in turn with a pause of at least 60 ms.
 
 ## Official sources
 
-- [Туторіал HC-SR04 + ESP32 with кодом (RNT)](https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/) - вимірювання відстані, example.
-- [how працює HC-SR04 with кодом (LME)](https://lastminuteengineers.com/arduino-sr04-ultrasonic-sensor-tutorial/) - принцип, таймінги, приклади.
-- [Туторіал PIR + ESP32 with кодом (RNT)](https://randomnerdtutorials.com/esp32-pir-motion-sensor-interrupts-timers/) - переривання and таймери.
-- [how працює HC-SR501 PIR with кодом (LME)](https://lastminuteengineers.com/pir-sensor-arduino-tutorial/) - налаштування чутливості and затримки.
+- [HC-SR04 + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/) - distance measurement, example.
+- [How HC-SR04 works with code (LME)](https://lastminuteengineers.com/arduino-sr04-ultrasonic-sensor-tutorial/) - principle, timings, examples.
+- [PIR + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-pir-motion-sensor-interrupts-timers/) - interrupts and timers.
+- [How HC-SR501 PIR works with code (LME)](https://lastminuteengineers.com/pir-sensor-arduino-tutorial/) - sensitivity and delay setup.
 
 ## See also
 
 - [[03-GPIO/01-GPIO-Overview.en | GPIO overview]]
 - [[03-GPIO/04-Interrupts-PWM.en | Interrupts and PWM]]
-- [[EN/06-Analog/01-ADC.en| ADC]]
+- [[EN/06-Analog/01-ADC.en|ADC]]
 - [[04-Interfaces/03-I2C.en | I2C]]
 - [[04-Interfaces/02-SPI.en | SPI]]
-- [[EN/11-Vivid/04-L298N-TB6612-A4988-Buzzer.en| Motors / Buzzer]]
+- [[EN/11-Vivid/04-L298N-TB6612-A4988-Buzzer.en|Motors / Buzzer]]
 
 ## ESP-IDF code (PIR wake-up)
 

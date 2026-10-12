@@ -34,7 +34,7 @@ calibration code + LVGL for both types.
 | Parameter | Capacitive (CST816 / GT911 / FT6236) | Resistive (XPT2046 / TSC2007) |
 | --- | --- | --- |
 | Principle | Finger capacitance, glass panel | Film pressure, needs press/stylus |
-| Інтерфейс | I2C (SDA/SCL) + INT + RST | SPI (common with TFT!) + T_CS + T_IRQ |
+| Interface | I2C (SDA/SCL) + INT + RST | SPI (common with TFT!) + T_CS + T_IRQ |
 | I2C addresses | CST816 0x15; FT6236/FT6206 0x38; GT911 0x5D (or 0x14!) | None (SPI device, selected via CS) |
 | Control pins | INT (touch interrupt), RST (controller reset) | T_CS (separate from TFT-CS!), T_IRQ (optional) |
 | Points | 1-5 (CST816: 1 gesture; FT6236: 2; GT911: 5) + gestures/swipes | 1 point + Z pressure (press force) |
@@ -46,13 +46,13 @@ calibration code + LVGL for both types.
 
 ### Capacitive in detail
 
-| controller | I2C-address | INT / RST | Мультитач | Де стоїть |
+| controller | I2C-address | INT / RST | Multitouch | Where used |
 | --- | --- | --- | --- | --- |
 | CST816S | 0x15 | INT + RST mandatory | 1 point + gestures (swipe/tap/long-press) | Round / small S3 1.28-2.1″ |
 | FT6236 (FT5x06) | 0x38 | INT optional, RST desired | 2 points | ILI9341/ST7789 panels 2.4-3.5″ |
 | GT911 | 0x5D (INT HIGH at start) / 0x14 (INT LOW) | INT sets address! RST is reset | 5 points | Large 4.3-7″ (Sunton 4827S043, CrowPanel 7″) |
 
-GT911 подводные камни:
+GT911 pitfalls:
 
 1. Address picked by INT level at reset: hold INT HIGH → 0x5D,
    LOW → 0x14. Wrong level means touch missing from scan!
@@ -62,7 +62,7 @@ GT911 подводные камни:
 
 ### Resistive in detail
 
-| controller | Інтерфейс | Тиск Z | Нотатка |
+| controller | Interface | Z pressure | Note |
 | --- | --- | --- | --- |
 | XPT2046 | SPI, commands 0x90 (X) / 0xD0 (Y) / 0xB0 (Z1) / 0xC0 (Z2) | Yes (Z1/Z2) | ILI9341 shield standard; PaulStoffregen library |
 | TSC2007 | I2C 0x48 | Yes | rarer, for small panels |
@@ -84,7 +84,7 @@ touch valid at `z > 300` (tune threshold!). Without press X/Y is garbage.
 > in S3 all-in-one displays touch is often already pulled to 3.3 V -
 > do not add external 10 k pull-up needlessly, it makes a divider!
 
-## Легенда pinandin модуля
+## Module pin legend
 
 Capacitive flex (GT911 / FT6236, 6 pins, I2C):
 
@@ -93,7 +93,7 @@ Capacitive flex (GT911 / FT6236, 6 pins, I2C):
 | 1 | VCC | 3V3 | 3V3 | 3.3 V only! |
 | 2 | GND | ground | GND | common ground |
 | 3 | SDA | I2C data | GPIO21 (or 19 on S3 displays!) | 4.7 k pull-up (often already on board) |
-| 4 | SCL | I2C clock | GPIO22 (або 20!) | 100-400 кГц |
+| 4 | SCL | I2C clock | GPIO22 (or 20!) | 100-400 kHz |
 | 5 | INT | output → MCU input | GPIO27 (or 38!) | interrupt + GT911 address select! |
 | 6 | RST | input | GPIO33 (or 39!) | Controller reset, delay after |
 
@@ -101,12 +101,12 @@ Resistive shield (XPT2046 on ILI9341 board, SPI):
 
 | Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | T_CS | input CS | GPIO14 | ОКРЕМИЙ on TFT-CS (GPIO5)! |
+| 1 | T_CS | input CS | GPIO14 | SEPARATE from TFT-CS (GPIO5)! |
 | 2 | T_IRQ | output → MCU input | GPIO27 (optional) | LOW = touched; without it - polling |
 | 3 | T_CLK | SPI clock | GPIO18 (shared with TFT!) | Same VSPI bus |
 | 4 | T_DIN | SPI MOSI | GPIO23 (shared!) | Controller commands |
 | 5 | T_DOUT | SPI MISO | GPIO19 (shared!) | X/Y/Z read - MISO MANDATORY! |
-| 6 | VCC/GND | power supply | 3V3 / GND | with плати дисплея |
+| 6 | VCC/GND | power supply | 3V3 / GND | From display board |
 
 Explanation:
 
@@ -126,15 +126,15 @@ Explanation:
 | GPIO18 | SCK + T_CLK | Shared clock |
 | GPIO23 | MOSI + T_DIN | Shared MOSI |
 | GPIO19 | MISO + T_DOUT | Shared MISO (mandatory for touch!) |
-| GPIO5 | TFT-CS | Дисплей |
-| GPIO2 | DC | data/команда |
-| GPIO4 | TFT-RST | Скидання TFT |
-| GPIO14 | T_CS | Тач (окремий!) |
+| GPIO5 | TFT-CS | Display |
+| GPIO2 | DC | data/command |
+| GPIO4 | TFT-RST | TFT reset |
+| GPIO14 | T_CS | Touch (separate!) |
 | GPIO27 | T_IRQ | touch interrupt (optional) |
 
 | ESP32 | GT911 capacitive (ex. Sunton 4.3″) | Note |
 | --- | --- | --- |
-| 3V3 / GND | VCC / GND | 3.3 in |
+| 3V3 / GND | VCC / GND | 3.3 V |
 | GPIO19 | SDA | I2C (on S3 - own pins per board schematic!) |
 | GPIO20 | SCL | I2C |
 | GPIO38 | INT | address 0x5D at HIGH at reset |
@@ -473,8 +473,8 @@ void cap_cb(lv_indev_drv_t *d, lv_indev_data_t *dt) {
 
 - ADS7843 Datasheet (TI): <https://www.ti.com/product/ADS7843> - resistive-touch ADC, SPI.
 - TSC2007 Datasheet (TI): <https://www.ti.com/product/TSC2007> - touch + temp/aux ADC, I2C.
-- CST816S Datasheet (Hynitron, пошук PDF): [CST816S search](https://www.alldatasheet.com/view.jsp?Searchword=CST816S) - capacitive touch.
-- FT6206/FT6236 Datasheet (FocalTech, пошук PDF): [FT6206 search](https://www.alldatasheet.com/view.jsp?Searchword=FT6206) - capacitive touch, I2C.
+- CST816S Datasheet (Hynitron, PDF search): [CST816S search](https://www.alldatasheet.com/view.jsp?Searchword=CST816S) - capacitive touch.
+- FT6206/FT6236 Datasheet (FocalTech, PDF search): [FT6206 search](https://www.alldatasheet.com/view.jsp?Searchword=FT6206) - capacitive touch, I2C.
 
 ## See also
 

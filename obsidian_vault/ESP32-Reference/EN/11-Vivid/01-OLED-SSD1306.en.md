@@ -22,10 +22,10 @@ Monochrome OLED 0.96″ 128x64 on SSD1306 controller - standard display for debu
 | --- | --- |
 | controller | SSD1306 (less often SH1106 - different driver!) |
 | resolution | 128x64, mono (white/blue/yellow-blue) |
-| Інтерфейс | I2C, address 0x3C (typically) / 0x3D (jumper) |
+| Interface | I2C, address 0x3C (typically) / 0x3D (jumper) |
 | power supply | 3.3-5 V (module with LDO/charge-pump; 3.3 V logic OK) |
 | current | ~15-25 mA (depends on white pixel count) |
-| buffer frame | 1024 байти (128×64/8) - in ОЗП controller's |
+| Frame buffer | 1024 bytes (128x64/8) - in controller RAM |
 | speed | I2C 400 kHz → ~10-20 fps full frame |
 | lifetime | ~10 000 hours up to noticeable burn-in |
 
@@ -33,9 +33,9 @@ Monochrome OLED 0.96″ 128x64 on SSD1306 controller - standard display for debu
 
 ## Pinout
 
-| pin модуля (4-pin I2C) | Purpose | Note |
+| Module pin (4-pin I2C) | Purpose | Note |
 | --- | --- | --- |
-| VCC | 3.3 in (або 5 in, if is LDO) | recommended 3.3 in on ESP32 |
+| VCC | 3.3 V (or 5 V if LDO present) | 3.3 V recommended on ESP32 |
 | GND | ground | common ground |
 | SCL | I2C clock | GPIO22 + pull-up (is on module) |
 | SDA | I2C data | GPIO21 + pull-up (is on module) |
@@ -48,7 +48,7 @@ SPI versions (7 pin: CS/DC/RES/DIN/CLK): faster, but occupy 5 GPIO - see [[04-In
 | --- | --- | --- |
 | 3V3 | VCC | power supply 3.3 in |
 | GND | GND | common ground |
-| GPIO22 | SCL | hardware I2C0, up to 400 кГц-1 МГц |
+| GPIO22 | SCL | hardware I2C0, up to 400 kHz-1 MHz |
 | GPIO21 | SDA | hardware I2C0 |
 
 Check addresses: `I2C.scan()` should show `0x3C`. If 0x3D - pass address in constructor. Two displays: one with address 0x3C, second resoldered to 0x3D (jumper SA0) or second I2C port.
@@ -173,7 +173,7 @@ oled.show()
 
 ## Official sources
 
-- SSD1306 Datasheet (Solomon Systech) - `check manually`.
+- SSD1306 Datasheet (Solomon Systech) - see manufacturer page.
 - [OLED 0.96″ - live photo (Adafruit)](https://www.adafruit.com/product/326) - product page with photo.
 - [OLED + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-SSD1306-OLED-display-arduino-ide/) - Adafruit_SSD1306, examples.
 - [Monochrome OLED guide with code (Adafruit Learn)](https://learn.adafruit.com/monochrome-OLED-breakouts) - SSD1306/SH1106, libraries.

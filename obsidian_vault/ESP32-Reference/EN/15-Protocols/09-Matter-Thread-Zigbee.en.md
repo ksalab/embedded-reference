@@ -1,71 +1,70 @@
 ---
 title: Matter, Thread and Zigbee on ESP32 - esp-matter, OpenThread, esp-zigbee-SDK
-description: Три різні відповіді on питання «how розумному дому спілкуватись without хмари»: Matter, Thread and Zigbee.
-tags: [esp32, matter, thread, openthread, zigbee, esp-matter, esp32-c6, esp32-h2, border-router, protokoli]
+description: Three local smart-home answers without cloud: Matter, Thread and Zigbee; shows schematics, code and tables.
+tags: [esp32, matter, thread, openthread, zigbee, esp-matter, esp32-c6, esp32-h2, border-router, protocols]
 category: Protokoli
 date-created: 2026-09-28
 date: 2026-09-28
 lang: en
 original: 15-Protocols/09-Matter-Thread-Zigbee.md
-date: 2026-10-08
 ---
 
 # Matter, Thread and Zigbee on ESP32 - esp-matter, OpenThread, esp-zigbee-SDK
 
-> [!warning] Matter/Thread/Zigbee потребують радіо 802.15.4 - this C6/H2, but not C3!
-> ESP32-C3 not має 802.15.4 and not підтримує ані Thread, ані Zigbee. for Matter-over-WiFi підійде будь-which ESP32 with WiFi, але for Matter-over-Thread або Zigbee беріть C6/H2. Див. [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|C3/C6/H2]].
+> [!warning] Matter, Thread, and Zigbee need an 802.15.4 radio - that is C6 or H2, not C3!
+> ESP32-C3 has no 802.15.4 and supports neither Thread nor Zigbee. For Matter-over-WiFi any ESP32 with WiFi fits, but for Matter-over-Thread or Zigbee take C6 or H2. See [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|C3/C6/H2]].
 
-Огляд радіо: [[EN/05-Radio/02-BLE-Bluetooth.en|BLE]], живлення [[EN/02-Power-Supply/01-Power-Rails.en|живлення]], старт [[Home.en]].
+Radio overview: [[EN/05-Radio/02-BLE-Bluetooth.en|BLE]], power [[EN/02-Power-Supply/01-Power-Rails.en|Power rails]], start [[Home.en|Home]].
 
-## Призначення
+## Purpose
 
-Три різні відповіді on питання «how розумному дому спілкуватись without хмари»:
+Three different answers to how a smart home talks without cloud:
 
-- **Matter** - прикладний IP-протокол верхнього рівня (застосунок). Працює поверх WiFi, Thread або Ethernet. Єдина «мова» for Apple Home, Google Home, Alexa, SmartThings: один пристрій видно in кількох екосистемах одразу (multi-admin). Комісіонування - via BLE + QR-code/числовий code.
-- **Thread** - мережевий транспорт (IPv6 поверх 802.15.4, mesh). this «дороги», якими їздять Matter-пакети, коли WiFi недоступний або невигідний (батарейні датчики). Thread сам per собі застосунку not дає - поверх нього йде Matter (або plain UDP/CoAP).
-- **Zigbee** - зрілий not-IP стек (802.15.4 + власний мережевий/прикладний рівень). Своя екосистема: координатор + роутери + кінцеві пристрої, інтеграція with Home Assistant via ZHA або Zigbee2MQTT. with Matter несумісний безпосередньо - міст via Border Router/хаб.
+- **Matter** is a top-level applied IP protocol (application). Runs over WiFi, Thread, or Ethernet. One language for Apple Home, Google Home, Alexa, and SmartThings: one device is visible in several ecosystems at once (multi-admin). Commissioning goes over BLE + QR code or numeric code.
+- **Thread** is a network transport (IPv6 over 802.15.4, mesh). These are the roads for Matter packets when WiFi is down or wasteful (battery sensors). Thread alone gives no application - Matter (or plain UDP/CoAP) runs on top.
+- **Zigbee** is a mature non-IP stack (802.15.4 + own network and app layers). Own ecosystem: coordinator + routers + end devices, Home Assistant integration through ZHA or Zigbee2MQTT. Not directly compatible with Matter - bridge through a border router or hub.
 
-Коли брати that:
+When to take what:
 
-- лампа/розетка in Apple/Google Home without власної хмари - Matter-over-WiFi on будь-якому ESP32;
-- батарейний датчик with роками роботи and mesh - Matter-over-Thread on C6/H2;
-- велика наявна Zigbee-мережа (десятки пристроїв Aqara/IKEA) - Zigbee-координатор/кінцевий on C6/H2;
-- один сенсор до телефону поруч - звичайний BLE, див. [[EN/05-Radio/02-BLE-Bluetooth.en]].
+- lamp or outlet in Apple or Google Home without own cloud - Matter-over-WiFi on any ESP32;
+- battery sensor with years of life and mesh - Matter-over-Thread on C6 or H2;
+- large existing Zigbee network (dozens of Aqara or IKEA devices) - Zigbee coordinator or end device on C6 or H2;
+- one sensor to a nearby phone - plain BLE, see [[EN/05-Radio/02-BLE-Bluetooth.en|BLE]].
 
-## that обрати - Matter vs Zigbee vs BLE vs WiFi
+## What to choose - Matter vs Zigbee vs BLE vs WiFi
 
-| Критерій | Matter-over-WiFi | Matter-over-Thread | Zigbee 3.0 | BLE (GATT) | Plain WiFi (MQTT/HTTP) |
+| Criterion | Matter-over-WiFi | Matter-over-Thread | Zigbee 3.0 | BLE (GATT) | Plain WiFi (MQTT/HTTP) |
 | --- | --- | --- | --- | --- | --- |
-| Чіпи ESP | будь-which with WiFi | C6/H2 (+Border Router) | C6/H2 | всі | будь-which with WiFi |
-| Транспорт | IP/WiFi | 802.15.4 mesh + IP | 802.15.4 mesh, not IP | BLE-with'єднання | IP/WiFi |
-| Екосистеми | Apple/Google/Alexa одночасно | ті ж | ZHA/Zigbee2MQTT, хаби | телефон/додаток | своя хмара, Node-RED |
-| Комісіонування | BLE + QR/code | BLE + QR/code | pairing (permit join) | connect | provisioning, див. [[EN/15-Protocols/04-Provisioning.en| Provisioning]] |
-| Живлення батарей | погане (WiFi) | відмінне (SED сплять роками) | відмінне | добре | погане without deep-sleep |
-| Дальність/топологія | зірка до роутера | mesh, саморемонт | mesh, саморемонт | точка-точка ~10-50 м | зірка до роутера |
-| Сертифікація | потрібна for логотипа | потрібна for логотипа | потрібна for логотипа | not потрібна | not потрібна |
-| Складність коду | висока (esp-matter) | найвища (matter+thread) | середня (esp-zigbee-SDK) | низька | низька |
-| Коли | розетка in HomeKit | датчик on батареї in HomeKit | наявний Zigbee-дім | пульт/маяк поруч | свій дашборд/MQTT |
+| ESP chips | any with WiFi | C6/H2 (+ border router) | C6/H2 | all | any with WiFi |
+| Transport | IP/WiFi | 802.15.4 mesh + IP | 802.15.4 mesh, not IP | BLE connection | IP/WiFi |
+| Ecosystems | Apple, Google, and Alexa at once | same | ZHA/Zigbee2MQTT, hubs | phone or app | own cloud, Node-RED |
+| Commissioning | BLE + QR or code | BLE + QR or code | pairing (permit join) | connect | provisioning, see [[EN/15-Protocols/04-Provisioning.en|Provisioning]] |
+| Battery life | poor (WiFi) | excellent (SEDs sleep for years) | excellent | good | poor without deep-sleep |
+| Range and topology | star to the router | mesh, self-healing | mesh, self-healing | point-to-point about 10-50 m | star to the router |
+| Certification | needed for the logo | needed for the logo | needed for the logo | not needed | not needed |
+| Code complexity | high (esp-matter) | highest (matter+thread) | medium (esp-zigbee-SDK) | low | low |
+| When | outlet in HomeKit | battery sensor in HomeKit | existing Zigbee home | nearby remote or beacon | own dashboard or MQTT |
 
-Правило: **немає екосистем Apple/Google - not платіть ціну Matter**. for свого дому достатньо Zigbee або MQTT, див. [[EN/15-Protocols/01-MQTT.en|MQTT]].
+Rule: **no Apple or Google ecosystems means never pay the Matter price**. For your own home Zigbee or MQTT is enough, see [[EN/15-Protocols/01-MQTT.en|MQTT]].
 
-## Вимоги до чіпів and пам'яті
+## Chip and memory requirements
 
-| Чіп | WiFi | 802.15.4 | Matter-over-WiFi | Matter-over-Thread / Zigbee | Роль in Thread/Zigbee |
+| Chip | WiFi | 802.15.4 | Matter-over-WiFi | Matter-over-Thread / Zigbee | Role in Thread/Zigbee |
 | --- | --- | --- | --- | --- | --- |
-| ESP32 Classic | так | ні | так | ні | - |
-| ESP32-S3 | так | ні | так | ні | - |
-| ESP32-C3 | так | ні | так | ні | - |
-| ESP32-C6 | WiFi 6 | так | так | так | вузол, RCP-радіо, Border Router |
-| ESP32-H2 | ні | так | ні (немає WiFi) | так | вузол, RCP-радіо |
-| ESP32-C2 | так | ні | обмежено (мало RAM) | ні | - |
-| ESP32-P4 | ні (треба зовнішнє радіо) | ні | how хост per Ethernet | how хост + C6/H2-радіо per UART/SPI | хост Border Router |
+| ESP32 Classic | yes | no | yes | no | - |
+| ESP32-S3 | yes | no | yes | no | - |
+| ESP32-C3 | yes | no | yes | no | - |
+| ESP32-C6 | WiFi 6 | yes | yes | yes | node, RCP radio, border router |
+| ESP32-H2 | no | yes | no (no WiFi) | yes | node, RCP radio |
+| ESP32-C2 | yes | no | limited (little RAM) | no | - |
+| ESP32-P4 | no (needs external radio) | no | as host over Ethernet | as host + C6/H2 radio over UART/SPI | border router host |
 
-Пам'ять: esp-matter тягне ~1 МБ flash (сертифікати DAC, кластери, BLE-комісіонування) - закладайте flash from 4 МБ and партиції під factory + OTA, див. [[EN/08-Memory/01-Partitions-NVS.en|Partitions]]. Thread-вузол on H2 живе in ~320 КБ flash. Деталі заліза: [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|C3/C6/H2]], [[EN/01-Hardware/09-ESP32-C2-P4.en|C2/P4]].
+Memory: esp-matter pulls about 1 MB of flash (DAC certificates, clusters, BLE commissioning) - plan flash from 4 MB and partitions for factory + OTA, see [[EN/08-Memory/01-Partitions-NVS.en|Partitions]]. A Thread node on H2 lives in about 320 KB of flash. Hardware details: [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|C3/C6/H2]], [[EN/01-Hardware/09-ESP32-C2-P4.en|C2/P4]].
 
 ![[assets/img/matter-thread-zigbee-scheme.png|600]]
-*Рис. Matter поверх WiFi and Thread: комісіонування BLE+QR, fabric кількох екосистем, Border Router між Thread-mesh and домашнім LAN.*
+*Fig. Matter over WiFi and Thread: BLE+QR commissioning, multi-ecosystem fabric, border router between Thread mesh and home LAN.*
 
-### ASCII-схема
+### ASCII diagram
 
 ```text
 ЕКOSИСТЕМИ (multi-admin, одна fabric або кілька):
@@ -90,21 +89,21 @@ Zigbee-гілка (окрема мережа, не IP):
 
 ```mermaid
 graph LR
-    subgraph ECO[Екосистеми]
+    subgraph ECO[Ecosystems]
         A[Apple Home]
         G[Google Home]
         X[Alexa]
     end
-    subgraph IP[Домашній LAN]
-        W[Matter-вузол<br/>WiFi S3/C6]
+    subgraph IP[Home LAN]
+        W[Matter node<br/>WiFi S3/C6]
         BR[Border Router<br/>C6/P4 + OTBR]
     end
     subgraph THR[Thread-mesh]
-        SED[Датчик H2<br/>sleepy]
-        RT[Роутер C6]
+        SED[H2 sensor<br/>sleepy]
+        RT[C6 router]
     end
     subgraph ZB[Zigbee]
-        ZC[Координатор C6]
+        ZC[C6 coordinator]
         ZE[End-device]
     end
     A --> W
@@ -117,64 +116,64 @@ graph LR
     ZC -.->|USB/MQTT| W
 ```
 
-## esp-matter SDK: комісіонування, кластери, fabric, OTA
+## esp-matter SDK: commissioning, clusters, fabric, OTA
 
-**Комісіонування (BLE + QR).** Новий пристрій рекламується per BLE. Комісіонер (телефон with Home) зчитує QR: там passcode, discriminator and дані for PASE-сесії. Далі per BLE йдуть operational-credentials (NOC - node operational certificate), пристрій входить in **fabric** and переходить on робочий транспорт (WiFi/Thread). Практика: QR друкуйте on корпусі + тримайте копію; without заводського QR перекомісіонування - via ручне entry коду with консолі.
+**Commissioning (BLE + QR).** A new device advertises over BLE. The commissioner (phone with Home) scans the QR: passcode, discriminator, and PASE session data. Operational credentials (NOC - node operational certificate) follow over BLE, the device joins a **fabric** and moves to the work transport (WiFi or Thread). Practice: print the QR on the case + keep a copy; without a factory QR recommission through manual code entry from the console.
 
-**Модель даних: endpoints → clusters → attributes/commands.**
+**Data model: endpoints to clusters to attributes and commands.**
 
-| Рівень | example (розумна лампа) | Примітка |
+| Level | Example (smart lamp) | Note |
 | --- | --- | --- |
-| Endpoint 0 | Root Node (Descriptor, Basic Information, OTA) | службовий, є завжди |
-| Endpoint 1 | On/Off Light (0x0100): OnOff-сервер, LevelControl-сервер | твій пристрій |
-| Cluster-сервер | OnOff (0x0006): атрибут `OnOff`, команди `On/Off/Toggle` | стан + керування |
-| Cluster-клієнт | OnOff-клієнт on вимикачі - шле команди лампі | binding |
-| Атрибут | `OnOff = true`, reporting at зміні | підписки екосистем |
+| Endpoint 0 | Root Node (Descriptor, Basic Information, OTA) | service, always present |
+| Endpoint 1 | On/Off Light (0x0100): OnOff server, LevelControl server | your device |
+| Cluster server | OnOff (0x0006): `OnOff` attribute, `On/Off/Toggle` commands | state + control |
+| Cluster client | OnOff client on a switch - sends commands to the lamp | binding |
+| Attribute | `OnOff = true`, reporting on change | ecosystem subscriptions |
 
-**Fabric and multi-admin.** Fabric - домен безпеки (один дім = одна fabric; пристрій може бути in кількох - multi-admin: Apple + Google одночасно). Кожна fabric має свій NOC and своїх адмінів. Видалення fabric = «прибрати with дому» without скидання інших.
+**Fabric and multi-admin.** Fabric is a security domain (one home = one fabric; a device can join several - multi-admin: Apple + Google at once). Each fabric has its own NOC and admins. Removing a fabric means remove from home without resetting others.
 
-**Matter OTA.** Прошивка тягнеться via BDX-протокол from OTA-провайдера (хаб/телефон), образ перевіряється for VID/PID/версією. Закладайте два OTA-слоти, див. [[EN/08-Memory/03-OTA.en|OTA]].
+**Matter OTA.** Firmware is pulled through BDX from the OTA provider (hub or phone), the image is checked by VID, PID, and version. Plan two OTA slots, see [[EN/08-Memory/03-OTA.en|OTA]].
 
-Приклади esp-matter: `examples/light` (on-off + level), `examples/light_switch` (клієнт), `examples/thermostat`. Збірка - тільки ESP-IDF (esp-matter how компонент, CMake).
+esp-matter examples: `examples/light` (on-off + level), `examples/light_switch` (client), `examples/thermostat`. Build is ESP-IDF only (esp-matter as a component, CMake).
 
-## Thread, OpenThread and Border Router
+## Thread, OpenThread, and border router
 
-**Ролі вузлів Thread:**
+**Thread node roles:**
 
-| Роль | Живлення | that робить | example |
+| Role | Power | What it does | Example |
 | --- | --- | --- | --- |
-| Leader | мережа | керує mesh, один on мережу | C6-роутер |
-| Router | мережа | ретранслює, до 32 on мережу | C6-лампа |
-| Child (FTD/MTD) | мережа/батарея | говорить via батька | H2-вимикач |
-| SED (Sleepy End Device) | батарея, роки | спить, опитує батька | H2-датчик дверей |
+| Leader | mains | drives the mesh, one per network | C6 router |
+| Router | mains | relays, up to 32 per network | C6 lamp |
+| Child (FTD/MTD) | mains or battery | talks through its parent | H2 switch |
+| SED (Sleepy End Device) | battery, years | sleeps, polls its parent | H2 door sensor |
 
-**OpenThread on ESP:** стек OpenThread in ESP-IDF (`CONFIG_OPENTHREAD_*`), транспорт 802.15.4 on C6/H2. Два дизайни: SoC (все on одному C6) або **RCP** (C6/H2 - тільки радіо per Spinel/UART, but стек and застосунок - on хості: P4 або Linux).
+**OpenThread on ESP:** OpenThread stack in ESP-IDF (`CONFIG_OPENTHREAD_*`), 802.15.4 transport on C6/H2. Two designs: SoC (all on one C6) or **RCP** (C6/H2 is radio only over Spinel/UART, while the stack and app run on the host: P4 or Linux).
 
-**Border Router (OTBR):** міст Thread-mesh ↔ WiFi/Ethernet. Варіанти: готовий OTBR on Raspberry Pi + C6/H2-RCP, або ESP32-Border-Router (C6-радіо + WiFi-аплінк). without Border Router Thread-пристрої ізольовані from LAN and екосистем - this error №1 новачків.
+**Border Router (OTBR):** Thread mesh to WiFi/Ethernet bridge. Options: ready OTBR on Raspberry Pi + C6/H2 RCP, or ESP32 border router (C6 radio + WiFi uplink). Without a border router Thread devices are isolated from LAN and ecosystems - newcomer fault No.1.
 
-> [!tip] C6 how радіо + P4 how хост
-> Зв'язка with ТЗ: P4 (потужний хост without радіо) + C6/H2 how RCP per UART/SPI. Використовуйте офіційний образ `esp-border-router` and транспорт Spinel - not винаходьте свій протокол між хостом and радіо.
+> [!tip] C6 as radio + P4 as host
+> Pair from the spec: P4 (strong host without radio) + C6/H2 as RCP over UART/SPI. Use the official `esp-border-router` image and Spinel transport - never invent your own host-to-radio protocol.
 
-## esp-zigbee-SDK: ролі, pairing, touchlink
+## esp-zigbee-SDK: roles, pairing, touchlink
 
-**Ролі:**
+**Roles:**
 
-| Роль | Живлення | example | Примітка |
+| Role | Power | Example | Note |
 | --- | --- | --- | --- |
-| Coordinator | мережа, 1 on мережу | C6-стік on Home Assistant | формує мережу, зберігає таблиці |
-| Router | мережа | лампа/розетка | ретранслює, діти до нього чіпляються |
-| End Device | батарея | кнопка/датчик | спить, опитує батька |
+| Coordinator | mains, 1 per network | C6 stick on Home Assistant | forms the network, stores tables |
+| Router | mains | lamp or outlet | relays, children attach to it |
+| End Device | battery | button or sensor | sleeps, polls its parent |
 
-**Pairing with ZHA/Zigbee2MQTT:** in координатора/ХАБа вмикається `permit join` (60-120 с), пристрій переводиться in pairing (кнопка/ресет), далі interview (кластери) and поява in HA. Канали 11-26 (2.4 ГГц); канали 25-26 перетинаються with WiFi 11-м - at глухому ефірі змініть канал координатора. Приклади SDK: `examples/esp_zigbee_HA_sample` (HA on-off light/switch), `HA_on_off_light`, `HA_on_off_switch`.
+**Pairing with ZHA/Zigbee2MQTT:** `permit join` turns on in the coordinator or hub (60-120 s), the device is put into pairing (button or reset), then interview (clusters) and appearance in HA. Channels 11-26 (2.4 GHz); channels 25-26 overlap with WiFi 11 - on deaf air change the coordinator channel. SDK examples: `examples/esp_zigbee_HA_sample` (HA on-off light/switch), `HA_on_off_light`, `HA_on_off_switch`.
 
-**Touchlink (оглядово).** Пряме спарювання «лампа↔пульт» зблизька (кілька метрів, знижена потужність), without координатора: пульт «краде» лампу in свою міні-мережу. Корисно for демо, in продакшені - обережно: touchlink може відв'язати чужу лампу via стіну, therefore тримайте його вимкненим for замовчуванням.
+**Touchlink (overview).** Direct lamp-to-remote pairing at close range (a few meters, reduced power), no coordinator: the remote steals the lamp into its mini network. Good for demos, careful in production: touchlink can unbind a foreign lamp through a wall, so keep it off by default.
 
-> [!warning] Zigbee and Matter - різні мережі
-> Zigbee-пристрій not with'явиться in Apple Home безпосередньо. Міст - via Home Assistant (ZHA/Z2M → HomeKit-bridge) або Matter-bridge-пристрій. Закладайте this in архітектуру одразу.
+> [!warning] Zigbee and Matter are different networks
+> A Zigbee device never appears in Apple Home directly. Bridge through Home Assistant (ZHA/Z2M to HomeKit bridge) or a Matter bridge device. Plan this into the architecture at once.
 
-## code - комісіонування and кластер on-off
+## Code - commissioning and on-off cluster
 
-**ESP-IDF, esp-matter: on-off light (скорочено, example `examples/light`):**
+**ESP-IDF, esp-matter: on-off light (short, `examples/light` example):**
 
 ```c
 // idf.py menuconfig: ESP_MATTER_ENABLE_DATA_MODEL_SERVER, WiFi/Thread транспорт,
@@ -209,7 +208,7 @@ void app_main(void)
 }
 ```
 
-**ESP-IDF, esp-zigbee-SDK: HA on-off light (скорочено, `HA_on_off_light`):**
+**ESP-IDF, esp-zigbee-SDK: HA on-off light (short, `HA_on_off_light` example):**
 
 ```c
 // menuconfig: Zigbee channel/mode (Coordinator/Router/End Device), install code.
@@ -251,45 +250,45 @@ void app_main(void)
 }
 ```
 
-**Arduino:** офіційної Arduino-обгортки esp-matter/esp-zigbee-SDK немає - ці стеки збираються тільки під ESP-IDF (CMake, партиції, NVS-фабричні дані). Практика: Matter/Zigbee-вузол пишіть on ESP-IDF, but Arduino-логіку тримайте on другому контролері або спілкуйтесь via UART/MQTT-міст. not намагайтесь «залити Matter скетчем» - this глухий кут.
+**Arduino:** there is no official Arduino wrapper for esp-matter or esp-zigbee-SDK - these stacks build only under ESP-IDF (CMake, partitions, NVS factory data). Practice: write the Matter or Zigbee node on ESP-IDF, keep Arduino logic on a second controller or talk over a UART or MQTT bridge. Never try to flash Matter as a sketch - it is a dead end.
 
-**MicroPython:** підтримки Matter/Thread/Zigbee in MicroPython немає (немає 802.15.4-драйвера and місця під сертифікати). Практика: MicroPython-вузол говорить with шлюзом per MQTT/UART (див. [[EN/15-Protocols/01-MQTT.en|MQTT]]), but Matter/Zigbee-частину тримає окремий C6/H2 on ESP-IDF.
+**MicroPython:** no Matter, Thread, or Zigbee support in MicroPython (no 802.15.4 driver and no room for certificates). Practice: a MicroPython node talks to a gateway over MQTT or UART (see [[EN/15-Protocols/01-MQTT.en|MQTT]]), while a separate C6 or H2 on ESP-IDF holds the Matter or Zigbee part.
 
-## typical errors
+## Typical issues
 
-| Симптом | Причина | Рішення |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| Thread/Zigbee not збирається on C3 | немає радіо 802.15.4 on C3 | перейти on C6/H2, див. [[EN/01-Hardware/04-ESP32-C3-C6-H2.en| C3/C6/H2]] |
-| Телефон not бачить QR / комісіонування висить | BLE зайнято іншим стеком; фабричні дані стерті | чистий example `light`, verify лог QR; not стирати NVS після комісіонування |
-| Пристрій in fabric, але «not відповідає» | немає маршруту: Thread without Border Router; WiFi in іншому VLAN | підняти OTBR; тримати IoT and телефон in одному L2 |
-| Після `erase_flash` пристрій «привид» in Home | fabric-дані лишились in хабі | видалити вузол with усіх fabric (усіх екосистем) до reflashing |
-| Zigbee-інтерв'ю падає in ZHA/Z2M | сівший акумулятор end-device; канал with перешкодами | свіжа батарея; змінити канал координатора; роутер ближче |
-| Touchlink «вкрав» чужу лампу | touchlink увімкнено скрізь | вимикати touchlink for замовчуванням, вмикати on хвилину |
-| OTA Matter not стартує | not збігаються VID/PID/версія; малий OTA-слот | вирівняти версії in дескрипторі; партиції під два слоти |
-| NVS переповнено після десятків комісіонувань | старі fabric not чистяться | factory-reset via довгу кнопку + `nvs_flash_erase()` |
+| Thread or Zigbee never builds on C3 | no 802.15.4 radio on C3 | move to C6 or H2, see [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|C3/C6/H2]] |
+| Phone misses QR or commissioning hangs | BLE busy with another stack; factory data erased | clean `light` example, check the QR log; never erase NVS after commissioning |
+| Device in fabric but not responding | no route: Thread without border router; WiFi in another VLAN | bring up OTBR; keep IoT and phone in one L2 |
+| Device is a ghost in Home after `erase_flash` | fabric data stayed in the hub | remove the node from all fabrics (all ecosystems) before reflashing |
+| Zigbee interview fails in ZHA or Z2M | dead end-device battery; noisy channel | fresh battery; change the coordinator channel; router closer |
+| Touchlink stole a foreign lamp | touchlink on everywhere | turn touchlink off by default, on for a minute |
+| Matter OTA never starts | VID, PID, or version mismatch; small OTA slot | align versions in the descriptor; partitions for two slots |
+| NVS full after dozens of commissionings | old fabrics never cleaned | factory reset with a long button + `nvs_flash_erase()` |
 
-## official джерела
+## Official sources
 
-- [ESP-Matter - Programming Guide](https://docs.espressif.com/projects/esp-matter/en/latest/) - комісіонування, data model, Matter OTA, приклади light/switch.
-- [ESP Zigbee SDK - Programming Guide](https://docs.espressif.com/projects/esp-zigbee-sdk/en/latest/) - ролі, HA-приклади, API reference.
-- [OpenThread](https://openthread.io/guides/border-router) - Border Router, Commissioner, RCP-дизайн.
-- [Matter - Connectivity Standards Alliance](https://csa-iot.org/all-solutions/matter/) - специфікація, сертифікація, multi-admin.
+- [ESP-Matter - Programming Guide](https://docs.espressif.com/projects/esp-matter/en/latest/) - commissioning, data model, Matter OTA, light and switch examples.
+- [ESP Zigbee SDK - Programming Guide](https://docs.espressif.com/projects/esp-zigbee-sdk/en/latest/) - roles, HA examples, API reference.
+- [OpenThread](https://openthread.io/guides/border-router) - border router, commissioner, RCP design.
+- [Matter - Connectivity Standards Alliance](https://csa-iot.org/all-solutions/matter/) - spec, certification, multi-admin.
 
-## Див. також
+## See also
 
-- [[Home.en]]
-- [[EN/05-Radio/02-BLE-Bluetooth.en|BLE/Bluetooth]] - BLE-комісіонування Matter, GATT-база
-- [[EN/05-Radio/05-BLE-Mesh-A2DP-HID.en|BLE Mesh / A2DP / HID]] - інший BLE-стек Espressif, A2DP тільки on Classic
-- [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|ESP32-C3/C6/H2]] - which радіо де є
-- [[EN/01-Hardware/09-ESP32-C2-P4.en|ESP32-C2/P4]] - P4 how хост Border Router
-- [[EN/11-Vivid/13-Audio-Codecs.en|Аудіо-кодеки]] - I2S-звук for голосових Matter-пристроїв
-- [[EN/15-Protocols/01-MQTT.en|MQTT]] - міст Zigbee2MQTT → хмара
-- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - entry WiFi without reflashing
-- [[EN/08-Memory/03-OTA.en|OTA]] - слоти під Matter OTA
-- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - fabric-дані живуть in NVS
+- [[Home.en|Home]]
+- [[EN/05-Radio/02-BLE-Bluetooth.en|BLE and Bluetooth]] - Matter BLE commissioning, GATT base
+- [[EN/05-Radio/05-BLE-Mesh-A2DP-HID.en|BLE Mesh, A2DP, HID]] - another Espressif BLE stack, A2DP on Classic only
+- [[EN/01-Hardware/04-ESP32-C3-C6-H2.en|ESP32-C3, C6, H2]] - which radio lives where
+- [[EN/01-Hardware/09-ESP32-C2-P4.en|ESP32-C2 and P4]] - P4 as border router host
+- [[EN/11-Vivid/13-Audio-Codecs.en|Audio codecs]] - I2S sound for Matter voice devices
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - Zigbee2MQTT to cloud bridge
+- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - WiFi entry without reflashing
+- [[EN/08-Memory/03-OTA.en|OTA]] - slots for Matter OTA
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - fabric data lives in NVS
 
 
-## Common issues
+## Appendix: checklist
 
 | Symptom | Cause | Fix |
 |---|---|---|

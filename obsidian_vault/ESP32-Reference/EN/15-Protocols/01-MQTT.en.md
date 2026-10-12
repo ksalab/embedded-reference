@@ -11,10 +11,10 @@ date: 2026-10-08
 
 # MQTT on ESP32 - esp-mqtt, PubSubClient, umqtt
 
-> [!warning] MQTT without TLS on відкритому WiFi - passwords and telemetry летять plain text!
-> In local network достатньо `mqtt://:1883` with password, in production - тільки `mqtts://:8883` with CA-сертифікатом. See section 7.
+> [!warning] MQTT without TLS on open WiFi - passwords and telemetry fly as plain text!
+> In a local network `mqtt://:1883` with a password is enough, in production - only `mqtts://:8883` with a CA certificate. See section 7.
 
-Network overview: [[05-Radio/01-WiFi-STA-AP.en | 01-WiFi-STA-AP]], power supply радіо [[02-Power-Supply/01-Power-Rails.en | 01-Lancjugi-zhivlennya]], sleep [[07-Timers/03-Sleep-ULP.en | 03-Sleep-ULP]], OTA [[08-Memory/03-OTA.en | OTA]], старт [[Home.en | Home]].
+Network overview: [[05-Radio/01-WiFi-STA-AP.en | WiFi STA and AP]], radio power [[02-Power-Supply/01-Power-Rails.en | Power rails]], sleep [[07-Timers/03-Sleep-ULP.en | Sleep and ULP]], OTA [[08-Memory/03-OTA.en | OTA]], start [[Home.en | Home]].
 
 ## Purpose
 
@@ -23,36 +23,36 @@ MQTT - lightweight publish/subscribe protocol for IoT: node does not hold direct
 When to use MQTT:
 
 - sensor telemetry every second/minute (temperature, humidity, current);
-- commands to node (`relay/set ON`) with підтвердженням стану (`relay/state`);
-- tens/hundreds of nodes on один broker Mosquitto on Raspberry Pi / VPS;
-- unstable connection: QoS 1 + LWT дають знати, that вузол відвалився.
+- commands to a node (`relay/set ON`) with state confirmation (`relay/state`);
+- tens or hundreds of nodes on one Mosquitto broker on Raspberry Pi or VPS;
+- unstable link: QoS 1 + LWT report that a node has dropped.
 
 When NOT to use:
 
-- передача файлів/OTA-прошивок - for цього HTTP(S), див. [[EN/15-Protocols/03-HTTP-Client.en| 02-HTTP-WebSocket]];
-- local discovery without a server - use mDNS for that, see [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]];
-- разове entry WiFi-облікових - for цього provisioning, див. [[15-Protocols/04-Provisioning.en | Provisioning]];
-- повний хмарний пайплайн with графіками - див. [[15-Protocols/05-Cloud-Pipeline.en | 05-Cloud-Pipeline]].
+- file or OTA firmware transfer - use HTTP(S) for that, see [[EN/15-Protocols/03-HTTP-Client.en|HTTP and WebSocket]];
+- local discovery without a server - use mDNS for that, see [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS, NTP and TLS]];
+- one-time entry of WiFi credentials - use provisioning for that, see [[15-Protocols/04-Provisioning.en | Provisioning]];
+- full cloud pipeline with charts - see [[15-Protocols/05-Cloud-Pipeline.en | Cloud pipeline]].
 
 ## Parameters
 
-| Параметр | Value for ESP32 | Note |
+| Parameter | Value for ESP32 | Note |
 | --- | --- | --- |
-| Бібліотеки | esp-mqtt (IDF), PubSubClient (Arduino), umqtt.simple/robust (MP) | API різне, логіка одна |
+| Libraries | esp-mqtt (IDF), PubSubClient (Arduino), umqtt.simple/robust (MP) | APIs differ, logic is the same |
 | Broker | Mosquitto 2.x | ports 1883 (plain) / 8883 (TLS) |
 | Protocol version | MQTT 3.1.1 (everywhere), MQTT 5 partly in esp-mqtt | PubSubClient 3.1.1 only |
-| QoS | 0 / 1 / 2 (див. таблицю нижче) | PubSubClient публікує тільки QoS 0 |
-| Keepalive | 15-60 с | пінгує broker, ловить обрив |
-| LWT | топік `device/<id>/status` = `offline` | retained, спрацьовує at обриві |
-| Retain | for `state`/`config`, not for потоку телеметрії | інакше retain-шторм після реконекту |
-| Буфер Arduino | 256 байт for замовчуванням | `setBufferSize()` for JSON |
-| Пам'ять TLS | ~40 КБ heap під mbedTLS-сесію | врахувати on S2/C3 without PSRAM |
-| Power supply | WiFi TX пік 500 мА | див. [[02-Power-Supply/01-Power-Rails.en | 01-Lancjugi-zhivlennya]] |
+| QoS | 0 / 1 / 2 (see the table below) | PubSubClient publishes only QoS 0 |
+| Keepalive | 15-60 s | pings the broker, catches drops |
+| LWT | topic `device/<id>/status` = `offline` | retained, fires on drop |
+| Retain | for `state` and `config`, not for the telemetry stream | else a retain storm follows reconnect |
+| Arduino buffer | 256 bytes by default | `setBufferSize()` for JSON |
+| TLS memory | about 40 KB heap for an mbedTLS session | mind it on S2/C3 without PSRAM |
+| Power supply | WiFi TX peak 500 mA | see [[02-Power-Supply/01-Power-Rails.en | Power rails]] |
 
 ![[assets/img/mqtt-broker-lwt-scheme.png | 600]]
 *Fig. MQTT topology: nodes publish telemetry, broker fans out to subscribers, LWT reports dropouts.*
 
-### ASCII-схема
+### ASCII diagram
 
 ```text
 ESP32-вузол #1 (DHT22)          Mosquitto-broker (RPi 192.168.1.10)
@@ -76,14 +76,14 @@ graph LR
     N1[ESP32-01<br/>DHT22 publish] -->|1883/8883| B[Mosquitto<br/>broker]
     N2[ESP32-02<br/>BME280 publish] -->|1883/8883| B
     B -->|SUB device/#| NR[Node-RED]
-    B -->|SUB relay/state| DASH[Дашборд]
+    B -->|SUB relay/state| DASH[Dashboard]
     B -.->|LWT offline| NR
     N1 -.->|keepalive 30s| B
 ```
 
 ## Mosquitto broker on Ubuntu
 
-installation and перший launch:
+Installation and first launch:
 
 ```bash
 sudo apt update && sudo apt install -y mosquitto mosquitto-clients
@@ -92,7 +92,7 @@ mosquitto -v                      # перевірка версії
 mosquitto_sub -h localhost -t 'device/#' -v   # слухач усіх топіків
 ```
 
-with Mosquitto 2.0 анонімний доступ із мережі заборонено for замовчуванням. Мінімальна configuration `/etc/mosquitto/conf.d/esp32.conf`:
+With Mosquitto 2.0 anonymous access from the network is denied by default. Minimal configuration `/etc/mosquitto/conf.d/esp32.conf`:
 
 ```conf
 listener 1883
@@ -100,7 +100,7 @@ allow_anonymous false
 password_file /etc/mosquitto/passwd
 ```
 
-Паролі й ACL:
+Passwords and ACL:
 
 ```bash
 sudo mosquitto_passwd -c /etc/mosquitto/passwd esp      # створити користувача esp
@@ -108,7 +108,7 @@ sudo mosquitto_passwd /etc/mosquitto/passwd esp32-01    # додати вузо�
 sudo systemctl restart mosquitto
 ```
 
-example ACL-файлу (`acl_file /etc/mosquitto/acl`):
+Example ACL file (`acl_file /etc/mosquitto/acl`):
 
 ```conf
 user esp32-01
@@ -118,7 +118,7 @@ user nodered
 topic readwrite device/#
 ```
 
-check with консолі:
+Check from the console:
 
 ```bash
 mosquitto_pub -h localhost -u esp -P '***' -t 'device/esp32-01/sensors' -m '{"t":24.5}'
@@ -126,19 +126,19 @@ mosquitto_pub -h localhost -u esp -P '***' -t 'device/esp32-01/sensors' -m '{"t"
 
 ## QoS 0/1/2, retain, LWT, keepalive
 
-| Рівень | Назва | Гарантія | Ціна | Застосування |
+| Level | Name | Guarantee | Cost | Use |
 | --- | --- | --- | --- | --- |
-| QoS 0 | At most once | може загубитись | 1 пакет | сира телеметрія кожні 5 с |
-| QoS 1 | At least once | дійде, можливі дублі | 2+ пакети, idempotent-обробка | команди реле, статуси |
-| QoS 2 | Exactly once | рівно 1 раз | 4 пакети, повільно | білінг, критичні лічильники |
+| QoS 0 | At most once | may be lost | 1 packet | raw telemetry every 5 s |
+| QoS 1 | At least once | arrives, duplicates possible | 2+ packets, idempotent handling | relay commands, statuses |
+| QoS 2 | Exactly once | exactly once | 4 packets, slow | billing, critical counters |
 
-Правила практики:
+Practical rules:
 
-- Телеметрія потоку - QoS 0, without retain. Втрата одного пакета погоди not робить.
-- `state`/`status`/`config` - QoS 1 + retain: новий subscriber одразу бачить останній стан.
-- LWT завжди разом with retained `online` at старті: вузол публікує `online` (retain), but LWT налаштовано on `offline` (retain). Хто живий - видно одразу.
-- Keepalive 30 с for power supply from мережі, 60 с for батареї. Менше 15 с - зайвий трафік and пробудження радіо.
-- PubSubClient: публікація тільки QoS 0, підписка QoS 0/1 - закладатись on this in архітектурі.
+- Streaming telemetry - QoS 0, no retain. Losing one packet changes nothing.
+- `state`, `status`, and `config` - QoS 1 + retain: a new subscriber sees the last state at once.
+- Always pair LWT with retained `online` at start: the node publishes `online` (retained), while LWT is set to `offline` (retained). Live nodes are visible at once.
+- Keepalive 30 s for mains power, 60 s for batteries. Under 15 s means extra traffic and radio wake-ups.
+- PubSubClient: publish is QoS 0 only, subscribe is QoS 0/1 - design the architecture around this.
 
 ## Topic convention `device/<id>/...`
 
@@ -151,7 +151,7 @@ device/esp32-01/config         → конфіг з хмари (QoS 1, retain)
 device/esp32-01/fw             → тригер OTA (QoS 1, без retain)
 ```
 
-Prohibitions: spaces and Cyrillic in topics, `#`/`+` only in subscriptions, depth no more than 4-5 levels. Node ID - MAC or flash serial with NVS, see [[08-Memory/01-Partitions-NVS.en | 01-Partitions-NVS]].
+Prohibitions: spaces and Cyrillic in topics, `#` and `+` only in subscriptions, depth no more than 4-5 levels. Node ID - MAC or flash serial with NVS, see [[08-Memory/01-Partitions-NVS.en | Partitions and NVS]].
 
 ## TLS: mqtts on port 8883
 
@@ -165,7 +165,7 @@ keyfile /etc/mosquitto/ca/server.key
 require_certificate false
 ```
 
-on ESP32 покласти CA-сертифікат in прошивку (IDF: компонент cert bundle або PEM in флеші; Arduino: `WiFiClientSecure::setCACert()`; MP: `ssl_params={'cert':...}`). Час має бути синхронізовано via NTP, інакше handshake падає - див. [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]]. Пам'ять: TLS-сесія with'їдає ~40 КБ heap, on ESP32-C3 without PSRAM not тримати одночасно HTTPS and MQTT-TLS.
+On ESP32 place the CA certificate in firmware (IDF: cert bundle component or PEM in flash; Arduino: `WiFiClientSecure::setCACert()`; MP: `ssl_params={'cert':...}`). Time must be synced via NTP, else the handshake fails - see [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS, NTP and TLS]]. Memory: a TLS session eats about 40 KB of heap, on ESP32-C3 without PSRAM do not hold HTTPS and MQTT-TLS at once.
 
 ## ESP-IDF code (esp-mqtt, with reconnect)
 
@@ -294,38 +294,38 @@ while True:
     time.sleep(5)
 ```
 
-> [!tip] umqtt.simple вміє тільки QoS 0/1 (QoS 2 немає свідомо - економія RAM). for TLS: `MQTTClient(..., ssl=True, ssl_params={})`.
+> [!tip] umqtt.simple supports only QoS 0/1 (no QoS 2 by design - RAM saving). For TLS: `MQTTClient(..., ssl=True, ssl_params={})`.
 
 ## Common issues
 
-| Симптом | Причина | Рішення |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| `rc=-2` (conn lost) | WiFi ліг раніше for MQTT | реконект тільки після `WL_CONNECTED`, backoff |
-| `rc=-4` (connection refused) | невірний логін/пароль або `allow_anonymous false` without юзера | `mosquitto_passwd`, verify ACL |
-| `rc=5` (not authorized) | юзеру заборонено топік ACL-файлом | `topic readwrite device/<id>/#` for вузла |
-| Обриви кожні ~15 с | `mqtt.loop()` / `check_msg()` викликається рідко | keepalive 30 с + виклик loop кожну ітерацію |
-| JSON обрізається | буфер PubSubClient 256 байт | `setBufferSize(1024)` до `connect()` |
-| Після deep-sleep - мовчання | сесія померла, LWT спрацював how offline | повний `connect()` + повторний `subscribe()` після сну |
-| retain-шторм після реконекту | retain on потоці телеметрії | retain тільки on `state/status/config` |
-| TLS `handshake failed` | час 1970 (немає NTP) або not той CA | спочатку SNTP, див. [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]] |
-| broker слухає тільки localhost | дефолт Mosquitto 2.x | явний `listener 1883` in conf.d |
+| `rc=-2` (conn lost) | WiFi fell before MQTT | reconnect only after `WL_CONNECTED`, backoff |
+| `rc=-4` (connection refused) | wrong login or password, or `allow_anonymous false` without a user | `mosquitto_passwd`, check ACL |
+| `rc=5` (not authorized) | topic denied to the user by the ACL file | `topic readwrite device/<id>/#` for the node |
+| Drops every 15 s | `mqtt.loop()` / `check_msg()` called rarely | keepalive 30 s + loop call each iteration |
+| JSON gets cut | PubSubClient 256-byte buffer | `setBufferSize(1024)` before `connect()` |
+| Silence after deep-sleep | session died, LWT fired as offline | full `connect()` + repeated `subscribe()` after sleep |
+| Retain storm after reconnect | retain on the telemetry stream | retain only on `state/status/config` |
+| TLS `handshake failed` | time stuck at 1970 (no NTP) or wrong CA | SNTP first, see [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS, NTP and TLS]] |
+| Broker listens only on localhost | Mosquitto 2.x default | explicit `listener 1883` in conf.d |
 
 ## Official sources
 
-- [ESP-MQTT - API reference (ESP-IDF)](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/mqtt.html) - esp-mqtt, події, LWT, TLS.
-- [Eclipse Mosquitto - документація](https://mosquitto.org/documentation/) - broker, утиліти `mosquitto_pub/sub`.
-- [mosquitto.conf - man page](https://mosquitto.org/man/mosquitto-conf-5.html) - listener, ACL, паролі, TLS-слухачі.
-- [PubSubClient (knolleary) - GitHub](https://github.com/knolleary/pubsubclient) - ліміт 256 байт, QoS 0 on публікацію.
-- [umqtt.simple - micropython-lib](https://github.com/micropython/micropython-lib/tree/master/micropython/umqtt.simple) - QoS 0/1, `set_last_will`, robust-реконект.
+- [ESP-MQTT - API reference (ESP-IDF)](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/mqtt.html) - esp-mqtt, events, LWT, TLS.
+- [Eclipse Mosquitto - docs](https://mosquitto.org/documentation/) - broker, `mosquitto_pub/sub` tools.
+- [mosquitto.conf - man page](https://mosquitto.org/man/mosquitto-conf-5.html) - listener, ACL, passwords, TLS listeners.
+- [PubSubClient (knolleary) - GitHub](https://github.com/knolleary/pubsubclient) - 256-byte limit, QoS 0 on publish.
+- [umqtt.simple - micropython-lib](https://github.com/micropython/micropython-lib/tree/master/micropython/umqtt.simple) - QoS 0/1, `set_last_will`, robust reconnect.
 
 ## See also
 
-- [[Home.en | Home]]
-- [[05-Radio/01-WiFi-STA-AP.en | WiFi STA/AP]] - without WiFi MQTT not стартує
-- [[08-Memory/03-OTA.en | OTA]] - тригер оновлення via топік `fw`
-- [[08-Memory/01-Partitions-NVS.en | NVS]] - зберігання ID вузла and MQTT-password
-- [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] - діагностика обривів
-- [[EN/15-Protocols/03-HTTP-Client.en| HTTP/WebSocket]] - REST and дашборди
-- [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS/NTP/TLS]] - час for TLS, локальні імена
-- [[15-Protocols/04-Provisioning.en | Provisioning]] - entry WiFi without reflashing
-- [[15-Protocols/05-Cloud-Pipeline.en | Cloud-Pipeline]] - MQTT → Node-RED → InfluxDB → Grafana
+- [[Home.en|Home]]
+- [[05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]] - MQTT cannot start without WiFi
+- [[08-Memory/03-OTA.en|OTA]] - update trigger through the `fw` topic
+- [[08-Memory/01-Partitions-NVS.en|NVS]] - storage for node ID and MQTT password
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - drop diagnostics
+- [[EN/15-Protocols/03-HTTP-Client.en|HTTP and WebSocket]] - REST and dashboards
+- [[15-Protocols/03-mDNS-NTP-TLS.en|mDNS, NTP and TLS]] - time for TLS, local names
+- [[15-Protocols/04-Provisioning.en|Provisioning]] - WiFi entry without reflashing
+- [[15-Protocols/05-Cloud-Pipeline.en|Cloud pipeline]] - MQTT to Node-RED to InfluxDB to Grafana

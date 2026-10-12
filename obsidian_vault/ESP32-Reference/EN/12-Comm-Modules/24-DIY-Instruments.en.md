@@ -1,6 +1,6 @@
 ---
-title: DIY-прилади for ESP32 - AD9833, GM328, мультиплексори, Flash (DIY Instruments)
-description: Цей module розглядає низку потужних але економних цифрових та аналогових модулів, які можна використати for створення професійних вимірювальних інструментів, генераторів сигналів,...; shows schematics, code and tables.
+title: DIY instruments for ESP32 - AD9833, GM328, multiplexers, Flash (DIY Instruments)
+description: This module covers a number of powerful but economical digital and analog modules that can be used to create professional measuring instruments, signal generators,...; shows schematics, code and tables.
 tags: [esp32, diy, instruments, ad9833, gm328, cd74hc4067, ds2482, sc16is750, w25q32, qi]
 category: Moduli
 lang: en
@@ -9,120 +9,120 @@ date: 2026-10-10
 original: 12-Moduli-zvyazku/24-DIY-Instruments.md
 ---
 
-# DIY-прилади for ESP32 (AD9833, GM328, мультиплексори, Flash)
+# DIY instruments for ESP32 (AD9833, GM328, multiplexers, Flash)
 
 ![[assets/img/diy-instruments-ad9833-scheme.png|600]]
 
 > [!info]
-> Цей документ охоплює популярні модулі for створення зовнішніх інструментів with ESP32. Кожен module описан with точки зору підключення, характеристик та поширених помилок.
+> This document covers popular modules for creating external instruments with ESP32. Each module is described from the point of view of connection, characteristics and common errors.
 
 ## Purpose
 
-Цей module розглядає низку потужних але економних цифрових та аналогових модулів, які можна використати for створення професійних вимірювальних інструментів, генераторів сигналів, моніторингу та інших DIY проектах on базі ESP32. Всі модулі вибрані згідно with принципом "розмір/ціна/функціональність" and мають добру підтримку in ESP-IDF, Arduino та MicroPython.
+This module covers a number of powerful but economical digital and analog modules that can be used to create professional measuring instruments, signal generators, monitoring and other DIY projects on ESP32. All modules are chosen per the "size/price/functionality" principle and have good support in ESP-IDF, Arduino and MicroPython.
 
-Модулі охоплюють:
+Modules covered:
 
-- **AD9833** - DDS-генератор синуса/трикутника/меандр до 12.5 МГц per SPI
-- **GM328** - транзисторний тестер with виміром β, HFE, continuing and іншими параметрами
-- **CD74HC4067** - 16-чатовий аналоговий мультиплексор for розширення вхідів
-- **DS2482** - 1-Wire master, which перетворює протокол on I2C
-- **SC16IS750** - UART-розширювач per SPI/I2C (решає проблему дефісу UART)
-- **W25Q32** - зовнішня SPI-flash пам'ять 32 Мб for логування/datalogingu
-- **Qi-зарядка** - приймач/передавач индуктивної зарядки for пристроїв
+- **AD9833** - DDS sine/triangle/square generator up to 12.5 MHz over SPI
+- **GM328** - transistor tester with beta, HFE, continuity and other parameter measurement
+- **CD74HC4067** - 16-channel analog multiplexer for input expansion
+- **DS2482** - 1-Wire master that converts the protocol to I2C
+- **SC16IS750** - UART expander over SPI/I2C (solves the UART shortage problem)
+- **W25Q32** - external SPI-flash memory 32 Mb for logging/datalogging
+- **Qi charging** - inductive charging receiver/transmitter for devices
 
-## Характеристики
+## Characteristics
 
-| module | Інтерфейс | Основні параметри | Назначення |
+| Module | Interface | Main parameters | Purpose |
 | --- | --- | --- | --- |
-| **AD9833** | SPI | Частота: 0.01-12.5 МГц; виходи: синус, трикутник, меандр; точність: 14 біт | DDS-генератор сигналів for тестування, аудіо, радіо |
-| **GM328** | Аналог (GPIO) | Виміри: β (DC current gain), HFE, Vces(sat), Ic, Ie; тест транзисторів SMD/DIP | Тестування and категорізація транзисторів |
-| **CD74HC4067** | 16-ch Analog MUX | Живлення: 0.6-5.5 in; логіка: 3.3 in / 5 in; ємність: ~15 пФ | Розширення аналогових входів ESP32 (ADC) |
-| **DS2482** | 1-Wire → I2C | I2C адреса: 0x18; швидкість: до 100 кГц (потужніше модифікації) | Links to 1-Wire сенсорами (DS18B20, DS1822 тощо) via I2C-порт |
-| **DS2408 / DS2413 / DS2450** | 1-Wire GPIO/АЦП | 8×GPIO (2408), 2×GPIO (2413), 4×АЦП (2450) | Дискретні входи/виходи per одній лінії 1-Wire: геркони, реле, кнопки далеких вузлів |
-| **SC16IS750** | SPI / I2C | 4 незалежних UART; baud до 460800; UART FIFO: 16 байт | Розширення UART-портів for GPS, датчиків, модулів with serial інтерфейсом |
-| **W25Q32** | SPI | Ємність: 32 Мб (4 МБ); швидкість SPI: до 104 МГц (adrv); памець: SOIC-8, WSON-8 | зовнішній накопичувач for логів, прошивок, конфігурації |
-| **Qi-зарядка** | Resonant inductive coupling | Частота: 110-205 кГц; потужність: до 5 in/1 A (степінь залежно от котушки); протокол: управляється via GPIO та аналоговий попереджач | Натсужена та бездротова зарядка мобільних пристроїв |
+| **AD9833** | SPI | Frequency: 0.01-12.5 MHz; outputs: sine, triangle, square; accuracy: 14 bit | DDS signal generator for testing, audio, radio |
+| **GM328** | Analog (GPIO) | Measurements: beta (DC current gain), HFE, Vces(sat), Ic, Ie; SMD/DIP transistor test | Transistor testing and categorization |
+| **CD74HC4067** | 16-ch Analog MUX | Power: 0.6-5.5 V; logic: 3.3 V / 5 V; capacitance: ~15 pF | ESP32 ADC analog input expansion |
+| **DS2482** | 1-Wire to I2C | I2C address: 0x18; speed: up to 100 kHz (stronger mods) | Links to 1-Wire sensors (DS18B20, DS1822 etc) via I2C port |
+| **DS2408 / DS2413 / DS2450** | 1-Wire GPIO/ADC | 8xGPIO (2408), 2xGPIO (2413), 4xADC (2450) | Discrete inputs/outputs over one 1-Wire line: reed switches, relays, buttons of remote nodes |
+| **SC16IS750** | SPI / I2C | 4 independent UARTs; baud up to 460800; UART FIFO: 16 bytes | UART port expansion for GPS, sensors, modules with serial interface |
+| **W25Q32** | SPI | Capacity: 32 Mb (4 MB); SPI speed: up to 104 MHz (adrv); package: SOIC-8, WSON-8 | external storage for logs, firmware, configuration |
+| **Qi charging** | Resonant inductive coupling | Frequency: 110-205 kHz; power: up to 5 V/1 A (degree depends on coil); protocol: controlled via GPIO and analog warner | Contact and wireless charging of mobile devices |
 
-## Легенда пінів модулів
+## Module pin legends
 
 ### AD9833 SPI pins
 
-| Пін | Позначення | Тип | Опис |
+| Pin | Marking | Type | Description |
 | --- | --- | --- | --- |
-| 1 | VDD | Живлення | 2.85-3.63 in |
-| 2 | FSELECT | Вхід | Вибір форми сигналу (0=синус, 1=трикутник) |
-| 3 | CLK | Вихід SPI Clock | Тактування SPI |
-| 4 | FUDATA | Вихід послідовних даних | Послідовні дані, форма сигналу |
-| 5 | GND | Земля | Спільна земля |
-| 6 | FSCTRL1 | Вхід | Біт керування частотою |
-| 7 | FSCTRL0 | Вхід | Біт керування частотою |
-| 8 | SDO | Вихід SPI Data Out | Дані SPI (може бути not підключено) |
+| 1 | VDD | Power supply | 2.85-3.63 V |
+| 2 | FSELECT | Input | Waveform select (0=sine, 1=triangle) |
+| 3 | CLK | SPI Clock output | SPI clocking |
+| 4 | FUDATA | Serial data output | Serial data, waveform |
+| 5 | GND | Ground | Common ground |
+| 6 | FSCTRL1 | Input | Frequency control bit |
+| 7 | FSCTRL0 | Input | Frequency control bit |
+| 8 | SDO | SPI Data Out output | SPI data (may be left unconnected) |
 
 ### GM328 transistor tester pins
 
-| Пін | Позначення | Тип | Опис |
+| Pin | Marking | Type | Description |
 | --- | --- | --- | --- |
-| Base (B) | Вхід бази | Вхід | Підключається до бази транзистора |
-| Emitter (E) | Вхід еміттера | Вхід | Підключається до еміттера транзистора |
-| Collector (C) | Вхід колектору | Вхід | Підключається до колектора транзистора |
-| VCC | Живлення | Вхід | 3.3В або 5В (залежно from модуля) |
-| GND | Земля | Земля | Спільна земля |
-| Test pin | Вихід тесту | Вихід | LED/Buzzer indicator |
+| Base (B) | Base input | Input | Connects to the transistor base |
+| Emitter (E) | Emitter input | Input | Connects to the transistor emitter |
+| Collector (C) | Collector input | Input | Connects to the transistor collector |
+| VCC | Power supply | Input | 3.3V or 5V (depends on module) |
+| GND | Ground | Ground | Common ground |
+| Test pin | Test output | Output | LED/Buzzer indicator |
 
 ### CD74HC4067 16-ch mux pins
 
-| Пін | Позначення | Тип | Опис |
+| Pin | Marking | Type | Description |
 | --- | --- | --- | --- |
-| S0-S3 | Вибір чату | Вхід | 4 біти for вибору одного with 16 чатів |
-| COM | Спільний контакт | Вихід/Вхід | Вихідний сигнал вибраного каналу |
-| NC1-NC16 | not використовується | - | Затворі (зазвичай not підключені) |
-| VCC | Живлення | Вхід | 2.0-5.5 in |
-| GND | Земля | Земля | Спільна земля |
+| S0-S3 | Channel select | Input | 4 bits to select one of 16 channels |
+| COM | Common contact | Output/Input | Output signal of the selected channel |
+| NC1-NC16 | not used | - | Closed (usually unconnected) |
+| VCC | Power supply | Input | 2.0-5.5 V |
+| GND | Ground | Ground | Common ground |
 
 ### DS2482 1-Wire master pins
 
-| Пін | Позначення | Тип | Опис |
+| Pin | Marking | Type | Description |
 | --- | --- | --- | --- |
-| GND | Земля | Земля | Спільна земля |
-| I/O | Вхід/Виход 1-Wire | Вихід/Вхід | Дані 1-Wire протоколу |
-| VCC | Живлення | Вхід | 3.0-5.5 in |
-| A0 | Адресний ввід | Вхід | Визвача I2C адреси (зазвичай підтяжене) |
+| GND | Ground | Ground | Common ground |
+| I/O | 1-Wire input/output | Output/Input | 1-Wire protocol data |
+| VCC | Power supply | Input | 3.0-5.5 V |
+| A0 | Address input | Input | Defines the I2C address (usually pulled) |
 
-### SC16IS750 UART-розширивач pins
+### SC16IS750 UART expander pins
 
-| Пін | Позначення | Тип | Опис |
+| Pin | Marking | Type | Description |
 | --- | --- | --- | --- |
-| SCL / SDA | I2C clock / data | Вхід/Вхід | I2C інтерфейс керування |
-| SDO / SDI | SPI data out / in | Вихід/Вхід | SPI інтерфейс даних |
-| CS | Chip Select | Вхід | Активний низький вибір чіпа |
-| RST | Reset | Вхід | Активний високий скидання |
-| VCC | Живлення | Вхід | 2.7-3.6 in |
-| GND | Земля | Земля | Спільна земля |
+| SCL / SDA | I2C clock / data | Input/Input | I2C control interface |
+| SDO / SDI | SPI data out / in | Output/Input | SPI data interface |
+| CS | Chip Select | Input | Active-low chip select |
+| RST | Reset | Input | Active-high reset |
+| VCC | Power supply | Input | 2.7-3.6 V |
+| GND | Ground | Ground | Common ground |
 
 ### W25Q32 SPI flash pins
 
-| Пін | Позначення | Тип | Опис |
+| Pin | Marking | Type | Description |
 | --- | --- | --- | --- |
-| VCC | Живлення | Вхід | 2.7-3.6 in |
-| GND | Земля | Земля | Спільна земля |
-| CS | Chip Select | Вхід | Активний низький вибір чіпа |
-| CLK | SPI Clock | Тактування | SPI тактування |
-| IO0 / IO1 | SPI Data lines | Вихід/Вхід | Двоспічні дані SPI (IO0 for даних, IO1 for розширених команд) |
-| WP | Write Protect | Вхід | protection from запису (підтягнути до VCC або GND) |
-| HOLD | Hold | Вхід | Пауза операціій SPI (підтягнути до VCC або GND) |
+| VCC | Power supply | Input | 2.7-3.6 V |
+| GND | Ground | Ground | Common ground |
+| CS | Chip Select | Input | Active-low chip select |
+| CLK | SPI Clock | Clocking | SPI clocking |
+| IO0 / IO1 | SPI Data lines | Output/Input | Bidirectional SPI data (IO0 for data, IO1 for extended commands) |
+| WP | Write Protect | Input | Write protection (pull to VCC or GND) |
+| HOLD | Hold | Input | SPI operation pause (pull to VCC or GND) |
 
-### Qi-зарядка module (приймач) pins
+### Qi charging module (receiver) pins
 
-| Пін | Позначення | Тип | Опис |
+| Pin | Marking | Type | Description |
 | --- | --- | --- | --- |
-| Coil+ | Котушка + (анод) | Вихід | Підключення до primary coil |
-| Coil- | Котушка - (катод) | Вихід | Підключення до primary coil |
-| D+ / D- | Data lines | Аналогові | Дані PWM/parator управління |
-| GND | Земля | Земля | Спільна земля with ESP32 |
+| Coil+ | Coil + (anode) | Output | Connection to primary coil |
+| Coil- | Coil - (cathode) | Output | Connection to primary coil |
+| D+ / D- | Data lines | Analog | Control PWM/parator data |
+| GND | Ground | Ground | Common ground with ESP32 |
 
-## ## Схема
+## ## Schematic
 
-### ASCII schematic (зразок for AD9833 + ESP32)
+### ASCII schematic (example for AD9833 + ESP32)
 
 ```text
            +-------------------+       +-----------------+
@@ -145,7 +145,7 @@ original: 12-Moduli-zvyazku/24-DIY-Instruments.md
                +-----------------------+
 ```
 
-### Mermaid graph LR (with'єднання модулів with ESP32)
+### Mermaid graph LR (connecting modules with ESP32)
 
 ```mermaid
 graph LR
@@ -216,7 +216,7 @@ graph LR
 
 ## ## Code
 
-### Arduino - AD9833 генератор сигналу
+### Arduino - AD9833 signal generator
 
 ```cpp
 #include <SPI.h>
@@ -246,7 +246,7 @@ void loop() {
 }
 ```
 
-### Arduino - CD74HC4067 мультиплексор (читаємо 16 каналів ADC)
+### Arduino - CD74HC4067 multiplexer (reading 16 ADC channels)
 
 ```cpp
 const int s0 = 14;
@@ -285,7 +285,7 @@ void loop() {
 }
 ```
 
-### MicroPython - SC16IS750 UART розширювач
+### MicroPython - SC16IS750 UART expander
 
 ```python
 from machine import Pin, SoftI2C, UART
@@ -317,7 +317,7 @@ if uart.any():
     print("Received:", data)
 ```
 
-### ESP-IDF - W25Q32 Flash операції (Arduino-стиль for ESP-IDF)
+### ESP-IDF - W25Q32 Flash operations (Arduino style for ESP-IDF)
 
 ```c
 #include "driver/spi_master.h"
@@ -369,57 +369,57 @@ void app_main(void) {
 }
 ```
 
-### DS2484 / W25Q128 / AD9850 - старші родичі
+### DS2484 / W25Q128 / AD9850 - older relatives
 
-| Позиція | that this | Відмінність |
+| Item | What it is | Difference |
 | --- | --- | --- |
-| DS2484 | 1-Wire master how DS2482, але with регульованим таймінгом | Гнучкіший slew-rate for довгих ліній; I2C-адресація та ж |
-| W25Q128 | SPI-flash 128 Мбіт (16 МБ) | Удвічі більше for W25Q32; той же SOIC-8 footprint, команди сумісні |
-| AD9850 | DDS до 40 МГц (старший брат AD9833) | Вища частота and паралельний/послідовний інтерфейс, але більший корпус and апетит |
+| DS2484 | 1-Wire master like DS2482, but with adjustable timing | More flexible slew-rate for long lines; same I2C addressing |
+| W25Q128 | SPI-flash 128 Mbit (16 MB) | Twice bigger than W25Q32; same SOIC-8 footprint, compatible commands |
+| AD9850 | DDS up to 40 MHz (older brother of AD9833) | Higher frequency and parallel/serial interface, but bigger package and appetite |
 
-> DS2484 vs DS2482: for шин до 30 м вистачає DS2482; довші/шумні лінії - DS2484 with налаштованим таймінгом.
+> DS2484 vs DS2482: DS2482 is enough for buses up to 30 m; longer/noisy lines - DS2484 with tuned timing.
 
-## ## typical errors 12+ таблицею
-
-| # | Symptom | Cause | Solution |
-| --- | --- | --- | --- |
-| 1 | AD9833 виводить 0В або шуми | Невірне живлення (not 3.3В) | verify напругу on VDD, додати конденсатори 100нФ + 10мкФ біля чіпа |
-| 2 | Нечитабельний сигнал on OSC'ї | error in налаштуванні FSCTRL1/FSCTRL0 | Використати калькулятор частот with даташиту, verify bits |
-| 3 | GM328 not визначній транзистор | Неправильне with'єднання Base/Emitter/Collector | Повипрямити підключення, verify datasheet транзистора |
-| 4 | GM328 показує β = 0 або дуже високий | Транзистор згорів (burnt-out) | verify on тестері токів або замінювати транзистор |
-| 5 | CD74HC4067 виводить "захоплює" всі канали | error in бітових налаштуваннях S0-S3 | verify послідовність бітів (LSB first), verify живлення мультиплексора |
-| 6 | ADC reading флутить/дрейфовить | Електромагнітний інтерференцій (EMI) | Додати керамічний фільтр on COM вихід, збільшить конденсатори |
-| 7 | DS2482 not видить 1-Wire пристрої | Паразитне живлення from 1-Wire лінії not працює | Додати зовнішній конденсатор (100 мкФ) між VCC and GND DS2482 |
-| 8 | DS2482 I2C адреса 0x18 not відповідає | error налаштування A0 pine | verify підтяжку A0 до VCC/GND accordingly до даташиту |
-| 9 | SC16IS750 UART виводить сміття | Baud rate mismatch між ESP та peripheral | verify спільну швидкість, використовувати точні baud settings |
-| 10 | W25Q32 not відповідає on SPI | Неправильне налаштування CS pine або CLK | verify SPI connections, verify WP/HOLD pine (підтяжки) |
-| 11 | Qi-зарядка not запускається | Невірна частота рушійного генератора | Перевірить GPIO management code, перевірить котушки та відповідні резистори |
-| 12 | Qi-зарядка перегрівається | КЗ in обмотці або потужність > 1A | Замінити котушку on меншу потужність, додатковий термобезпека |
+## ## Common errors 12+ as a table
 
 | # | Symptom | Cause | Solution |
 | --- | --- | --- | --- |
-| 13 | Загальна SPI взаємодія (AD9833 + W25Q32 + DS2482) | Спільна SPI-bus without роздільних CS | Додати окремі CS pine for кожного пристроя, викликати `spi.begin()` один раз |
-| 14 | Перемикань між модулями перезавантажує ESP32 | Зворотній ток між модулями живлення | Встановіть ізольовані LDO for кожного модуля або використайте спільну 3.3V шину (common bus) with діодною ізоляцією |
+| 1 | AD9833 outputs 0V or noise | Wrong power (not 3.3V) | verify voltage on VDD, add 100nF + 10uF capacitors near the chip |
+| 2 | Unreadable signal on scope | Error in FSCTRL1/FSCTRL0 setting | Use the frequency calculator from the datasheet, verify bits |
+| 3 | GM328 does not identify the transistor | Wrong Base/Emitter/Collector connection | Straighten the connection, verify the transistor datasheet |
+| 4 | GM328 shows beta = 0 or very high | Transistor burnt-out | verify on a current tester or replace the transistor |
+| 5 | CD74HC4067 outputs "grabs" all channels | Error in S0-S3 bit settings | verify bit order (LSB first), verify multiplexer power |
+| 6 | ADC reading floats/drifts | Electromagnetic interference (EMI) | Add a ceramic filter on COM output, increase capacitors |
+| 7 | DS2482 does not see 1-Wire devices | Parasitic power from the 1-Wire line does not work | Add an external capacitor (100 uF) between DS2482 VCC and GND |
+| 8 | DS2482 I2C address 0x18 does not answer | A0 pin setting error | verify A0 pull to VCC/GND per the datasheet |
+| 9 | SC16IS750 UART outputs garbage | Baud rate mismatch between ESP and peripheral | verify common speed, use exact baud settings |
+| 10 | W25Q32 does not answer on SPI | Wrong CS pin or CLK setting | verify SPI connections, verify WP/HOLD pins (pull-ups) |
+| 11 | Qi charging does not start | Wrong driver generator frequency | Check GPIO management code, check coils and matching resistors |
+| 12 | Qi charging overheats | Short in winding or power > 1A | Replace the coil with a lower-power one, extra thermal safety |
+
+| # | Symptom | Cause | Solution |
+| --- | --- | --- | --- |
+| 13 | Common SPI interaction (AD9833 + W25Q32 + DS2482) | Shared SPI bus without separate CS | Add separate CS pins for each device, call `spi.begin()` once |
+| 14 | Switching between modules reboots ESP32 | Reverse current between power modules | Install isolated LDOs for each module or use a common 3.3V bus with diode isolation |
 | 15 | MicroPython AD9833 import error | wrong library or MicroPython version | Use `from machine import SPI, Pin` with manual registration, see the AD9833 datasheet |
-| 16 | CD74HC4067 пошкоджений сигнал on високих частотах | Погіршення мультиплексування on ВЧ | Зменшити частоту перемикання каналів, додати тригер Шмітта on вихід for очищення сигналу |
-| 17 | DS2482 sporadically reset ESP32 | Підтяжковий резистор on 1-Wire лінії занадто малий | Використати 4.7кΩ-10kΩ pull-up до 3.3V, verify довжину дроту |
-| 18 | SC16IS750 not визначається in MicroPython | Відсутність pull-up on SDA/SCL | Додати 10kΩ pull-up резистори on шині I2C |
-| 19 | W25Q32 write protection error | WP pin Hard-grounded до GND | Підтягніть WP до VCC або with'єднайте with GND тільки at необхідності запису |
-| 20 | Qi charger інтерміттентна робота | Міцність полета магнітного поля | Перемістити кутку котушки, verify шаблон резонансу, використайте оболонковий дизайн |
-| 21 | W25Q128 how заміна W25Q32 without уваги до адресації | Старі бібліотеки not знають 4-байтних адрес | Оновити драйвер; AD9850 вимагає окремого тактування 30-125 МГц, not SPI-клок ESP32 |
+| 16 | CD74HC4067 damaged signal at high frequencies | Multiplexing degradation at HF | Lower the channel switching frequency, add a Schmitt trigger on output to clean the signal |
+| 17 | DS2482 sporadically resets ESP32 | Pull-up resistor on the 1-Wire line too small | Use a 4.7k-10k pull-up to 3.3V, verify wire length |
+| 18 | SC16IS750 not detected in MicroPython | Missing pull-up on SDA/SCL | Add 10k pull-up resistors on the I2C bus |
+| 19 | W25Q32 write protection error | WP pin hard-grounded to GND | Pull WP to VCC or join with GND only when writing is needed |
+| 20 | Qi charger intermittent operation | Magnetic field flight strength | Move the coil angle, verify resonance pattern, use a shell design |
+| 21 | W25Q128 as a W25Q32 replacement without attention to addressing | Old libraries do not know 4-byte addresses | Update the driver; AD9850 requires separate 30-125 MHz clocking, not the ESP32 SPI clock |
 
 ## ## Official sources
 
-1. [AD9833 DDS Generator Datasheet (PDF, Analog Devices)](https://www.analog.com/en/products/ad9833.html) - офіційний даташит with регістрами, формулами частоти та App Note
-2. [GM328 Transistor Tester Guide (Blog, Greatest-Tech)](https://greatest-tech.com/gm328-transistor-tester-guide/) - розбір пінов, функцій та тестів
-3. [CD74HC4067 16-Channel Multiplexer Datasheet (PDF, TI)](https://www.ti.com/lit/ds/symlink/cd74hc4067.pdf) - повна table каналів та характеристик
-4. [DS2482 1-Wire to I2C Master Datasheet (PDF, Maxim Integrated/Dallas)](https://datasheets.maximintegrated.com/en/ds/DS2482A.pdf) - протокол деталі та I2C адресизація
-5. [SC16IS750 UART Expander Datasheet (PDF, NXP/Silicon Labs)](https://www.nxp.com/docs/en/data-sheet/SC16IS750.pdf) - регістри UART та SPI/I2C налаштування
-6. [W25Q32 Flash Memory Datasheet (PDF, Winbond)](https://www.winbond.com/products/spi-nor-flash/w25q32) - page sizes, SPI modes, endurance тести
-7. [Qi Wireless Charging Specification (PDF, WPC)](https://www.wirelesspowerconsortium.com/specifications/) - стандартні частоти, потужності, протокол управління
+1. [AD9833 DDS Generator Datasheet (PDF, Analog Devices)](https://www.analog.com/en/products/ad9833.html) - official datasheet with registers, frequency formulas and App Note
+2. [GM328 Transistor Tester Guide (Blog, Greatest-Tech)](https://greatest-tech.com/gm328-transistor-tester-guide/) - pin breakdown, functions and tests
+3. [CD74HC4067 16-Channel Multiplexer Datasheet (PDF, TI)](https://www.ti.com/lit/ds/symlink/cd74hc4067.pdf) - full channel table and characteristics
+4. [DS2482 1-Wire to I2C Master Datasheet (PDF, Maxim Integrated/Dallas)](https://datasheets.maximintegrated.com/en/ds/DS2482A.pdf) - protocol details and I2C addressing
+5. [SC16IS750 UART Expander Datasheet (PDF, NXP/Silicon Labs)](https://www.nxp.com/docs/en/data-sheet/SC16IS750.pdf) - UART registers and SPI/I2C settings
+6. [W25Q32 Flash Memory Datasheet (PDF, Winbond)](https://www.winbond.com/products/spi-nor-flash/w25q32) - page sizes, SPI modes, endurance tests
+7. [Qi Wireless Charging Specification (PDF, WPC)](https://www.wirelesspowerconsortium.com/specifications/) - standard frequencies, powers, control protocol
 
 > [!warning]
-> Вгадані URL-адреси without перевірки via webfetch заборонені. Перевірте кожен посилання перед використанням in продакшн-коді.
+> Guessed URL addresses without webfetch verification are forbidden. Check each link before use in production code.
 
 ## ## See also
 

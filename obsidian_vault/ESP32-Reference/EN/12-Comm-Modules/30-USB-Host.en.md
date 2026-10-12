@@ -1,68 +1,68 @@
 ---
 lang: en
-title: ESP32 how USB-хост - флешки, HID and CDC via TinyUSB
-description: Перетворює ESP32-S3/P4 on USB-хост - читає флешки, клавіатури and модеми via TinyUSB with робочими прикладами IDF.; shows schematics, code and tables.
+title: ESP32 as USB host - flash drives, HID and CDC via TinyUSB
+description: Turns ESP32-S3/P4 into a USB host - reads flash drives, keyboards and modems via TinyUSB with working IDF examples.; shows schematics, code and tables.
 tags: [esp32, usb-host, tinyusb, hid, msc, cdc, s3, p4, otg]
 category: Moduli-zvyazku
 date: 2026-10-06
 original: 12-Moduli-zvyazku/30-USB-Host.md
 ---
 
-# ESP32 how USB-хост - флешки, HID and CDC via TinyUSB
+# ESP32 as USB host - flash drives, HID and CDC via TinyUSB
 
 ![[assets/img/esp32-usb-host-scheme.png|600]]
-*Fig. S3/P4 in ролі хоста: опитує флешку, клавіатуру and модем - живлення 5V on VBUS обов'язкове.*
+*Fig. S3/P4 as host: polls a flash drive, keyboard and modem - 5V power on VBUS mandatory.*
 
-> [!tip] that this for нота
-> Зворотний бік USB: ESP32 not пристрій for ПК, but хост for периферії - логер on флешку without SD-слота, штрих-code сканером, модем per CDC. Працює on S3 (OTG FS) and P4 (OTG HS). База: [[EN/04-Interfaces/06-USB-OTG-JTAG.en|USB-OTG and JTAG]], [[EN/04-Interfaces/07-SD-SDIO.en|карти SD]], [[EN/09-Firmware/01-ESP-IDF-Setup.en|налаштування ESP-IDF]].
+> [!tip] What this note is about
+> The reverse side of USB: ESP32 not a device for a PC, but a host for peripherals - a logger to a flash drive without an SD slot, a barcode scanner, a modem over CDC. Works on S3 (OTG FS) and P4 (OTG HS). Base: [[EN/04-Interfaces/06-USB-OTG-JTAG.en|USB-OTG and JTAG]], [[EN/04-Interfaces/07-SD-SDIO.en|SD cards]], [[EN/09-Firmware/01-ESP-IDF-Setup.en|ESP-IDF setup]].
 
-## 1. Мета
+## 1. Goal
 
-Освоїти три класи USB-пристроїв with ESP32:
+Master three USB device classes with ESP32:
 
-- MSC: флешка - читання/запис FATFS, логер without SD-слота;
-- HID: клавіатура/миша/сканер штрих-кодів - ввід without кнопок;
-- CDC: USB-модеми and конвертери - AT-команди via USB;
-- живлення VBUS 5V - хост живить пристрій, not навпаки.
+- MSC: flash drive - FATFS read/write, logger without SD slot;
+- HID: keyboard/mouse/barcode scanner - input without buttons;
+- CDC: USB modems and converters - AT commands over USB;
+- VBUS 5V power - the host powers the device, not vice versa.
 
-| Клас | Пристрій | Бібліотека/example |
+| Class | Device | Library/example |
 | --- | --- | --- |
-| MSC | флешка FAT32 | `usb/host/msc` + FATFS |
-| HID | клавіатура, сканер | `usb/host/hid` |
-| CDC | модем, CP2102 | `usb/host/cdc_acm` |
-| Hub | розгалужувач | каскад for потребою |
+| MSC | FAT32 flash drive | `usb/host/msc` + FATFS |
+| HID | keyboard, scanner | `usb/host/hid` |
+| CDC | modem, CP2102 | `usb/host/cdc_acm` |
+| Hub | splitter | cascade if needed |
 
-## 2. Архітектура
+## 2. Architecture
 
 ```mermaid
 flowchart TB
-  ESP[ESP32-S3/P4: TinyUSB host] -->|VBUS 5V| HUB[Хаб / пристрій]
-  HUB --> MSC[Флешка FAT32]
-  HUB --> HID[Клавіатура / сканер]
-  HUB --> CDC[Модем CDC-ACM]
-  ESP -->|FATFS| LOG[Логи на флешку]
-  ESP -->|HID-репорти| KEY[Коди клавіш]
-  ESP -->|AT| MOD[Команди модема]
+  ESP[ESP32-S3/P4: TinyUSB host] -->|VBUS 5V| HUB[Hub / device]
+  HUB --> MSC[FAT32 flash drive]
+  HUB --> HID[Keyboard / scanner]
+  HUB --> CDC[CDC-ACM modem]
+  ESP -->|FATFS| LOG[Logs to flash drive]
+  ESP -->|HID reports| KEY[Key codes]
+  ESP -->|AT| MOD[Modem commands]
 ```
 
-Стек: TinyUSB host → клас-драйвер → застосунок. Дескриптори парсимо Ready, вручну - лише in відладці.
+Stack: TinyUSB host → class driver → application. We parse descriptors as Ready, manually - only in debugging.
 
-## 3. Апаратна частина
+## 3. Hardware part
 
-- S3: GPIO19/20 - USB D−/D+, вбудований PHY;
-- P4: окремий USB-OTG HS PHY - швидше and більше струму;
-- VBUS 5V on роз'єм - хост зобов'язаний живити пристрій (до 500 мА);
-- захисний key живлення (TPS2051 або поліфьюз) - КЗ on флешці not має вбити плату;
-- for тестів - OTG-перехідник with живленням, not голий кабель.
+- S3: GPIO19/20 - USB D-/D+, built-in PHY;
+- P4: separate USB-OTG HS PHY - faster and more current;
+- VBUS 5V to the connector - the host must power the device (up to 500 mA);
+- protective power switch (TPS2051 or polyfuse) - a short on the flash drive must not kill the board;
+- for tests - a powered OTG adapter, not a bare cable.
 
-## 4. MSC: флешка how диск
+## 4. MSC: flash drive as a disk
 
-- example `usb/host/msc`: монтування, `fopen/fwrite/fclose` via FATFS;
-- логер: відкриваємо файл раз on годину, пишемо рядками, закриваємо - флешка переживе виймання;
-- безпечне виймання: кнопка «відмонтуй», світлодіод підтвердження;
-- швидкість: десятки КБ/с - вистачає on логи and конфіги, not on відео.
+- `usb/host/msc` example: mounting, `fopen/fwrite/fclose` via FATFS;
+- logger: open the file once an hour, write line by line, close - the flash drive survives removal;
+- safe removal: "unmount" button, confirmation LED;
+- speed: tens of KB/s - enough for logs and configs, not for video.
 
-## 5. Робочий code (IDF)
+## 5. Working code (IDF)
 
 ```c
 #include "usb/msc_host.h"
@@ -97,59 +97,59 @@ void app_main(void) {
 }
 ```
 
-Шлях `/usb` - точка монтування with прикладу. Реальний логер пише пакетами per 512 байт - рівно сектор, without фрагментації.
+`/usb` path - mount point from the example. A real logger writes in 512-byte packets - exactly a sector, without fragmentation.
 
-## 6. HID: клавіатура and сканер
+## 6. HID: keyboard and scanner
 
-- example `usb/host/hid`: репорти 8 байт, коди клавіш HID-table;
-- сканер штрих-кодів - та сама клавіатура: читаємо рядок до Enter;
-- NKRO-клавіатури - довші репорти, парсимо довжину with дескриптора;
-- миша - координати and кнопки for HMI without тача.
+- `usb/host/hid` example: 8-byte reports, HID-table key codes;
+- barcode scanner - the same keyboard: read the line until Enter;
+- NKRO keyboards - longer reports, parse the length from the descriptor;
+- mouse - coordinates and buttons for HMI without touch.
 
-## 6.1 Хаби and живлення периферії
+## 6.1 Hubs and peripheral power
 
-- хаб without живлення: максимум 2 низькоспоживчі пристрої;
-- хаб with живленням: флешка + сканер + модем одночасно;
-- поліфьюз 500 мА on VBUS - КЗ not вбиває плату;
-- довгі кабелі USB 2.0 - до 3 м without хаба, далі активний;
-- OTG-перехідник with окремим входом живлення - must-have in сумці.
+- unpowered hub: maximum 2 low-power devices;
+- powered hub: flash drive + scanner + modem at the same time;
+- 500 mA polyfuse on VBUS - a short does not kill the board;
+- long USB 2.0 cables - up to 3 m without a hub, active beyond that;
+- OTG adapter with a separate power input - a must-have in the bag.
 
-## 6.2 Швидкість and межі хоста
+## 6.2 Host speed and limits
 
-- FS (S3): 12 Мбіт/с, реально ~1 МБ/с on флешку;
-- HS (P4): 480 Мбіт/с, флешка впирається in FATFS;
-- ізохронні камери (UVC-відео) - межа можливостей, брати MIPI;
-- один пристрій on порт without хаба - найстабільніша configuration;
-- довгі трансфери - подвійні буфери, інакше underrun.
+- FS (S3): 12 Mbps, really ~1 MB/s to a flash drive;
+- HS (P4): 480 Mbps, the flash drive runs into FATFS;
+- isochronous cameras (UVC video) - the limit of possibilities, take MIPI;
+- one device per port without a hub - the most stable configuration;
+- long transfers - double buffers, otherwise underrun.
 
-## 7. CDC-модеми
+## 7. CDC modems
 
-- example `usb/host/cdc_acm`: VCP how файл - читаємо/пишемо;
-- 4G-модеми in CDC-режимі - AT-команди and PPP далі;
-- кілька інтерфейсів - відкриваємо кожен окремо;
-- [[EN/12-Comm-Modules/03-SIM800L-GPS.en|модеми SIM800L]] - AT-частина та сама.
+- `usb/host/cdc_acm` example: VCP like a file - read/write;
+- 4G modems in CDC mode - AT commands and PPP next;
+- several interfaces - open each separately;
+- [[EN/12-Comm-Modules/03-SIM800L-GPS.en|SIM800L modems]] - the AT part is the same.
 
 ## 8. typical errors
 
-| Symptom | Cause | Лікування |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| Пристрій not бачиться | немає 5V on VBUS | подати живлення хоста, verify key |
-| Флешка монтується via раз | просадка струму | хаб with живленням, коротший кабель |
-| HID мовчить | складний дескриптор пристрою | читати довжину репорту, not фіксовані 8 |
-| CDC not відкривається | модем in QMI-режимі | перевести in CDC-ACM AT-командою |
-| Працює on P4, not on S3 | HS проти FS таймінги | різні приклади під чип, not копіювати |
-| Після виймання - паніка | немає обробки disconnect | колбек відмонтування + прапорець |
+| Device not seen | no 5V on VBUS | apply host power, verify switch |
+| Flash drive mounts every other time | current sag | powered hub, shorter cable |
+| HID silent | complex device descriptor | read the report length, not fixed 8 |
+| CDC does not open | modem in QMI mode | switch to CDC-ACM with an AT command |
+| Works on P4, not on S3 | HS vs FS timings | different examples per chip, do not copy |
+| Panic after removal | no disconnect handling | unmount callback + flag |
 
-## 9. Суміжні ноти
+## 9. Adjacent notes
 
-- [[EN/04-Interfaces/06-USB-OTG-JTAG.en|USB-OTG and JTAG]] - залізна сторона USB.
-- [[EN/04-Interfaces/07-SD-SDIO.en|карти SD]] - альтернатива флешці.
-- [[EN/12-Comm-Modules/03-SIM800L-GPS.en|модеми SIM800L]] - AT поверх CDC.
-- [[EN/09-Firmware/05-JTAG-Debug.en|налагодження JTAG]] - той же роз'єм, інша роль.
-- [[EN/14-Devboards/16-P4-DevKit.en|плата P4]] - OTG HS on борту.
+- [[EN/04-Interfaces/06-USB-OTG-JTAG.en|USB-OTG and JTAG]] - the hardware side of USB.
+- [[EN/04-Interfaces/07-SD-SDIO.en|SD cards]] - flash drive alternative.
+- [[EN/12-Comm-Modules/03-SIM800L-GPS.en|SIM800L modems]] - AT over CDC.
+- [[EN/09-Firmware/05-JTAG-Debug.en|JTAG debugging]] - same connector, different role.
+- [[EN/14-Devboards/16-P4-DevKit.en|P4 board]] - OTG HS on board.
 
 ## Official sources
 
-- [USB Host API (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/usb_host.html) - хост-стек, класи, події.
-- [USB Host examples (Espressif, GitHub)](https://github.com/espressif/esp-idf/tree/master/examples/peripherals/usb/host) - MSC/HID/CDC приклади.
-- [TinyUSB (GitHub)](https://github.com/hathach/tinyusb) - стек під капотом, дескриптори.
+- [USB Host API (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/usb_host.html) - host stack, classes, events.
+- [USB Host examples (Espressif, GitHub)](https://github.com/espressif/esp-idf/tree/master/examples/peripherals/usb/host) - MSC/HID/CDC examples.
+- [TinyUSB (GitHub)](https://github.com/hathach/tinyusb) - stack under the hood, descriptors.

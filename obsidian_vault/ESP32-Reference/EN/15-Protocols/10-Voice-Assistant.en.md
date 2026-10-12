@@ -1,81 +1,80 @@
 ---
 title: Voice assistant on ESP32 - microWakeWord, Home Assistant Assist, Wyoming, Piper TTS
-description: Коротко: перетворити ESP32 with мікрофоном and динаміком on Voice пульт розумного будинку - «увімкни світло in вітальні», «постав таймер», «which температура». ESP32 тут - лише «вуха and...
-tags: [esp32, voice-assistant, microwakeword, home-assistant, assist, wyoming, piper, whisper, vosk, porcupine, openwakeword, esphome, atom-echo, voip, sip, intercom, i2s, protokoli]
+description: Turn ESP32 with mic and speaker into a smart-home voice remote with local pipeline; shows schematics, code and tables.
+tags: [esp32, voice-assistant, microwakeword, home-assistant, assist, wyoming, piper, whisper, vosk, porcupine, openwakeword, esphome, atom-echo, voip, sip, intercom, i2s, protocols]
 category: Protokoli
 date-created: 2026-09-29
 date: 2026-09-29
 lang: en
 original: 15-Protocols/10-Voice-Assistant.md
-date: 2026-10-08
 ---
 
 # Voice assistant on ESP32 - microWakeWord → Assist → Wyoming → Piper TTS
 
-> [!info] Призначення
-> Нотатка про повний Voice конвеєр: **microWakeWord** слухає wake word прямо on ESP32 → аудіо летить in **Home Assistant Assist** → **Wyoming-протокол** роздає задачі сервісам → **Piper TTS** озвучує відповідь назад on динамік → **STT** (faster-whisper/Vosk) on сервері розпізнає фразу. Плюс: порівняння wake-двигунів (Porcupine/Rhino/Cobra/OpenWakeWord), готова прошивка **ESPHome voice + Atom Echo**, оглядово **VoIP/SIP-домофон** та **intercom ESP32↔ESP32**, чесна розмова про **приватність** (все локально vs хмара). Офлайн-команди without сервера - [[EN/12-Comm-Modules/16-Offline-Voice.en]], нейромережі on чипі - [[EN/12-Comm-Modules/11-TinyML-Voice.en]].
+> [!info] Purpose
+> Note on the full voice pipeline: **microWakeWord** hears the wake word right on ESP32 to audio flying to **Home Assistant Assist** to the **Wyoming protocol** handing tasks to services to **Piper TTS** speaking the answer back on the speaker to **STT** (faster-whisper or Vosk) on the server recognizing the phrase. Plus: wake engine comparison (Porcupine, Rhino, Cobra, OpenWakeWord), ready **ESPHome voice + Atom Echo** firmware, **VoIP and SIP intercom** and **ESP32 to ESP32 intercom** overview, honest talk on **privacy** (all local vs cloud). Offline commands without a server - [[EN/12-Comm-Modules/16-Offline-Voice.en|Offline voice]], neural nets on chip - [[EN/12-Comm-Modules/11-TinyML-Voice.en|TinyML voice]].
 
-Огляд мережі: [[EN/05-Radio/01-WiFi-STA-AP.en]], звук [[EN/04-Interfaces/04-I2S.en|I2S]], команди in будинок [[EN/15-Protocols/01-MQTT.en|MQTT]], старт [[Home.en]].
+Network overview: [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]], sound [[EN/04-Interfaces/04-I2S.en|I2S]], commands to the house [[EN/15-Protocols/01-MQTT.en|MQTT]], start [[Home.en|Home]].
 
-## Призначення
+## Purpose
 
-Коротко: перетворити ESP32 with мікрофоном and динаміком on Voice пульт розумного будинку - «увімкни світло in вітальні», «постав таймер», «which температура». ESP32 тут - лише «вуха and рот» (сателіт): слухає wake word, стримить аудіо, грає відповідь. Думає - Home Assistant із сервісами.
+Short version: turn ESP32 with mic and speaker into a smart-home voice remote - turn on the living room light, set a timer, what is the temperature. ESP32 here is only ears and mouth (satellite): hears the wake word, streams audio, plays the answer. Home Assistant with services does the thinking.
 
-| Параметр | Значення |
+| Parameter | Value |
 | --- | --- |
-| Транспорт | WiFi (сателіт ↔ HA), Wyoming TCP (HA ↔ сервіси STT/TTS/wake) |
-| Аудіоформат | 16 кГц, 16 біт, моно (скрізь однаково - from мікрофона до Whisper) |
-| Залізо сателіта | ESP32-S3 (рекомендовано, PSRAM) або ESP32 + I2S-мікрофон/динамік; готовий Atom Echo |
-| Сервер | Home Assistant OS (RPi 4 мінімум for Piper; x86/NUC for Whisper) |
-| Хмара | not потрібна взагалі (повністю локальний варіант) або HA Cloud (найпростіший старт) |
-| Мови | Українська - Whisper + Piper `uk_*` голоси; wake word - тренується окремо |
+| Transport | WiFi (satellite to HA), Wyoming TCP (HA to STT, TTS, and wake services) |
+| Audio format | 16 kHz, 16 bit, mono (same everywhere - from mic to Whisper) |
+| Satellite hardware | ESP32-S3 (advised, PSRAM) or ESP32 + I2S mic and speaker; ready Atom Echo |
+| Server | Home Assistant OS (RPi 4 minimum for Piper; x86 or NUC for Whisper) |
+| Cloud | Not needed at all (fully local option) or HA Cloud (simplest start) |
+| Languages | Ukrainian - Whisper + Piper `uk_*` voices; wake word trains separately |
 
-Коли брати цей конвеєр:
+When to take this pipeline:
 
-- треба вільне мовлення, but not 15 фіксованих команд;
-- будинок уже on Home Assistant and хочеться «поговорити» with сутностями;
-- приватність: нічого not летить in хмару (лікарня, офіс, дитяча).
+- free speech needed, not 15 fixed commands;
+- house already on Home Assistant and talking to entities sounds good;
+- privacy: nothing flies to the cloud (hospital, office, kids room).
 
-Коли not брати:
+When to skip it:
 
-- немає сервера 24/7 - беріть офлайн-модулі [[EN/12-Comm-Modules/16-Offline-Voice.en]];
-- треба реакція <300 мс on одну кнопку-команду - швидше GPIO/BLE-пульт;
-- лише українські фіксовані команди and нуль WiFi - SU-61T/SYN7318 дешевші.
+- no 24/7 server - take offline modules [[EN/12-Comm-Modules/16-Offline-Voice.en|Offline voice]];
+- sub-300 ms reaction to one button command needed - GPIO or BLE remote is faster;
+- only fixed Ukrainian commands and zero WiFi - SU-61T or SYN7318 are cheaper.
 
-## Характеристики
+## Specifications
 
-| Ланка конвеєра | Де виконується | that робить | typical затримка | Пам'ять/вимоги |
+| Pipeline link | Where it runs | What it does | Typical delay | Memory and demands |
 | --- | --- | --- | --- | --- |
-| microWakeWord | ESP32-S3 (on пристрої!) | Слухає «okay nabu» / «hey jarvis», решту часу мовчить | 200-500 мс до старту стріму | Арена ~23 КБ + PSRAM під аудіо; модель `.tflite` + JSON |
-| ESPHome `voice_assistant` | ESP32 (сателіт) | Стримить 16 кГц аудіо in HA, грає відповідь on динамік | Залежить from WiFi (50-200 мс) | ~100 КБ heap on буфери; BLE одночасно not вмикати! |
-| Wyoming-протокол | TCP між HA and сервісами | JSON-заголовок + байти аудіо; порти 10300/10400/10500… | <10 мс локально | Один контейнер on сервіс |
-| STT faster-whisper | Сервер (CPU/GPU) | Мовлення → текст (open-ended, будь-which фраза) | 0.5-8 с (див. таблицю VRAM/CPU!) | base/small on CPU; medium+ хоче GPU |
-| STT Vosk / Speech-to-Phrase | Сервер (навіть RPi!) | Мовлення → текст зі словника HA (close-ended, швидко) | <1 с on RPi 4 | Модель 50 МБ, RAM ~200 МБ |
-| Piper TTS | Сервер (навіть RPi!) | Текст → голос `uk_…` назад on динамік | ~0.6 с генерації on 1 с мови (medium) | RAM ~200-300 МБ |
-| Assist intent | Home Assistant | Текст → дія (світло, таймер, скрипт) | <100 мс | - |
+| microWakeWord | ESP32-S3 (on device!) | Listens for okay nabu or hey jarvis, silent the rest of the time | 200-500 ms to stream start | Arena about 23 KB + PSRAM for audio; `.tflite` model + JSON |
+| ESPHome `voice_assistant` | ESP32 (satellite) | Streams 16 kHz audio to HA, plays the answer on the speaker | Depends on WiFi (50-200 ms) | About 100 KB heap for buffers; never turn BLE on at once! |
+| Wyoming protocol | TCP between HA and services | JSON header + audio bytes; ports 10300, 10400, 10500 | Under 10 ms locally | One container per service |
+| STT faster-whisper | Server (CPU/GPU) | Speech to text (open-ended, any phrase) | 0.5-8 s (see VRAM/CPU table!) | base and small on CPU; medium+ wants GPU |
+| STT Vosk / Speech-to-Phrase | Server (even RPi!) | Speech to text from the HA dictionary (close-ended, fast) | Under 1 s on RPi 4 | 50 MB model, about 200 MB RAM |
+| Piper TTS | Server (even RPi!) | Text to `uk_` voice back on the speaker | About 0.6 s of render per 1 s of speech (medium) | RAM about 200-300 MB |
+| Assist intent | Home Assistant | Text to action (light, timer, script) | Under 100 ms | - |
 
 ![[assets/img/voice-assistant-pipeline-scheme.png|600]]
-*Рис. Конвеєр: мікрофон → microWakeWord (ESP32) → WiFi → Assist → Wyoming (STT/TTS) → Piper-голос → динамік.*
+*Fig. Pipeline: mic to microWakeWord (ESP32) to WiFi to Assist to Wyoming (STT/TTS) to Piper voice to speaker.*
 
-## 1. microWakeWord - wake word on самому ESP32
+## 1. microWakeWord - wake word on the ESP32 itself
 
-microWakeWord - this TinyML-модель (стримований CNN, ~23 КБ арени), that постійно слухає мікрофон and прокидається тільки on своє слово. Все інше - тиша, телевізор, розмови - ігнорується. Працює on ESP32-S3 without сервера взагалі.
+microWakeWord is a TinyML model (streaming CNN, about 23 KB arena) that always hears the mic and wakes only on its word. Everything else - silence, TV, talk - is ignored. Runs on ESP32-S3 with no server at all.
 
-how this влаштовано:
+How it is built:
 
-1. I2S-мікрофон дає потік 16 кГц → спектрограма кроками per 10 мс (`feature_step_size`);
-2. модель рахує ймовірність wake word in ковзному вікні (`sliding_window_size: 5`);
-3. якщо середнє вище `probability_cutoff` (типово 0.97) - подія `on_wake_word_detected`;
-4. ESPHome зупиняє детектор (`stop_after_detection: true`) and починає стрім in HA - щоб not слухати самого себе.
+1. I2S mic gives a 16 kHz stream to a spectrogram in 10 ms steps (`feature_step_size`);
+2. model scores the wake word in a sliding window (`sliding_window_size: 5`);
+3. if the mean is above `probability_cutoff` (typically 0.97) - `on_wake_word_detected` event;
+4. ESPHome stops the detector (`stop_after_detection: true`) and starts the stream to HA - so it never hears itself.
 
-Ready моделі (репозиторій `esphome/micro-wake-word-models`, v2): `okay_nabu`, `hey_jarvis`, `alexa`, `hey_mycroft`. Своє слово («привіт хато») - тренується in Colab-блокноті microWakeWord: 100+ вимов цільового слова + години негативів (шум, телевізор, схожі слова!), on виході `model.tflite` + JSON-маніфест.
+Ready models (`esphome/micro-wake-word-models` repo, v2): `okay_nabu`, `hey_jarvis`, `alexa`, `hey_mycroft`. Own word (like hello house) trains in the microWakeWord Colab notebook: 100+ target sayings + hours of negatives (noise, TV, similar words!), output is `model.tflite` + JSON manifest.
 
-> [!tip] VAD проти телевізора
-> Додайте VAD-модель (`vad:` in конфігу) - вона відсікає несловесні звуки and ріже хибні спрацювання from музики/TV in 3-5 разів. Поріг VAD тримайте 0.6-0.7, інакше тихе мовлення здалеку губитиметься.
+> [!tip] VAD against the TV
+> Add a VAD model (`vad:` in config) - it cuts non-speech sounds and false fires from music and TV by 3-5 times. Hold the VAD threshold at 0.6-0.7, else quiet speech from afar gets lost.
 
-## 2. Home Assistant Assist - мозок конвеєра
+## 2. Home Assistant Assist - pipeline brain
 
-Assist - вбудований Voice assistant HA. Логіка пайплайна (налаштовується in **Налаштування → Голосові асистенти → Додати асистента**):
+Assist is the built-in HA voice assistant. Pipeline logic (set in **Settings to Voice assistants to Add assistant**):
 
 ```text
 [Сателіт ESP32] ──WiFi 16кГц──► [Assist pipeline]
@@ -94,25 +93,25 @@ Assist - вбудований Voice assistant HA. Логіка пайплайн�
         expose devices! (інакше «не знайдено»)
 ```
 
-Критичні налаштування, without яких «not працює»:
+Critical settings without which it never works:
 
-1. **Expose сутностей:** кожне світло/розетка/скрипт - «Налаштування → Голосові асистенти → Expose»; інакше Assist відповість «вибачте, not знайдено».
-2. **Зони (Areas):** пристрій прив'язаний до кімнати - «увімкни світло» означає світло *цієї* кімнати (per сателіту!).
-3. **Псевдоніми:** «люстра», «бра», «тєлік» - аліаси сутностей українською, інакше Whisper почує, but intent not зрозуміє.
-4. `assist_pipeline:` in `configuration.yaml` - якщо асистентів not видно in UI (немає default-конфігу).
+1. **Entity expose:** each light, outlet, or script goes to Settings to Voice assistants to Expose; else Assist answers sorry, not found.
+2. **Zones (Areas):** device bound to a room - turn on the light means the light of *this* room (per satellite!).
+3. **Aliases:** chandelier, sconce, telly - entity aliases in Ukrainian, else Whisper hears but intent never gets it.
+4. `assist_pipeline:` in `configuration.yaml` - if no assistants show in the UI (no default config).
 
-## 3. Wyoming-протокол - клей між HA and сервісами
+## 3. Wyoming protocol - glue between HA and services
 
-Wyoming - простий TCP-протокол: JSON-заголовок with типом події + опційні байти. Кожен сервіс (Whisper, Piper, openWakeWord) - окремий Wyoming-сервер on своєму порту, HA підключається інтеграцією **Wyoming Protocol** (автовиявлення in локалці!).
+Wyoming is a simple TCP protocol: JSON header with event type + optional bytes. Each service (Whisper, Piper, openWakeWord) is a separate Wyoming server on its own port, HA joins with the **Wyoming Protocol** integration (autodiscovery on LAN!).
 
-| Сервіс | Порт for замовчуванням | Події (спрощено) | Куди ставиться |
+| Service | Default port | Events (simplified) | Where installed |
 | --- | --- | --- | --- |
-| faster-whisper | 10300 | `transcribe` → аудіо-чанки → `transcript` (текст + мова + ймовірність) | Add-on / Docker on сервері |
-| Piper | 10200 | `synthesize` (текст + голос `uk_UA-…-medium`) → WAV-чанки 22050 Гц | Add-on / Docker (навіть RPi!) |
-| openWakeWord | 10400 | `detect` → аудіо → `detection` (слово + мітка часу) | Add-on / Docker |
-| Speech-to-Phrase | 10300 (замість Whisper) | ті ж `transcribe`/`transcript`, але словник = ваші сутності HA | Add-on + токен HA WebSocket |
+| faster-whisper | 10300 | `transcribe` to audio chunks to `transcript` (text + language + score) | Add-on or Docker on the server |
+| Piper | 10200 | `synthesize` (text + `uk_UA` medium voice) to 22050 Hz WAV chunks | Add-on or Docker (even RPi!) |
+| openWakeWord | 10400 | `detect` to audio to `detection` (word + timestamp) | Add-on or Docker |
+| Speech-to-Phrase | 10300 (instead of Whisper) | same `transcribe` and `transcript`, but the dictionary is your HA entities | Add-on + HA WebSocket token |
 
-Формат кадру (концепт, повна спека - `rhasspy3/docs/wyoming.md`):
+Frame format (concept, full spec in `rhasspy3/docs/wyoming.md`):
 
 ```text
 TCP-пакет:  {"type": "audio-start", "data": {"rate": 16000, "width": 2, "channels": 1}}\n
@@ -121,13 +120,13 @@ TCP-пакет:  {"type": "audio-start", "data": {"rate": 16000, "width": 2, "ch
             ◄── {"type": "transcript", "data": {"text": "увімкни світло"}}\n
 ```
 
-Чому this зручно: STT може жити on потужному ПК in коморі (`Wyoming Protocol → host: 192.168.1.50:10300`), but HA - on Green. Один Whisper обслуговує 5 сателітів per черзі.
+Why it is handy: STT can live on a strong PC in the closet (`Wyoming Protocol to host: 192.168.1.50:10300`), while HA runs on Green. One Whisper serves 5 satellites in turn.
 
-## 4. Piper TTS - голос назад on динамік
+## 4. Piper TTS - voice back on the speaker
 
-Piper - локальна нейронна озвучка (VITS), оптимізована під RPi 4: medium-модель генерує 1.6 с голосу for 1 с. Українські голоси - `uk_UA-ukrainian_…-medium` (жіночий/чоловічий, семпли слухайте on `rhasspy.github.io/piper-samples/`).
+Piper is local neural speech (VITS), tuned for RPi 4: a medium model renders 1.6 s of voice per 1 s. Ukrainian voices are `uk_UA-ukrainian-medium` (female and male, listen to samples at `rhasspy.github.io/piper-samples/`).
 
-Шлях відповіді:
+Answer path:
 
 ```text
 [Assist: "Світло у вітальні увімкнено"]
@@ -135,52 +134,52 @@ Piper - локальна нейронна озвучка (VITS), оптиміз�
    ──WAV по WiFi──► [ESP32: I2S → MAX98357A → динамік 4 Ом]
 ```
 
-Практика:
+Practice:
 
-- якість `medium` - оптимум (low - роботно, high - вдвічі повільніше);
-- довгі відповіді (>30 с) ріжте реченнями - ESP32-буфер стріму обмежений;
-- Piper in автоматизаціях: сервіс `tts.speak` → `media_player` сателіта (оголошення «ворота відчинено» without wake word!);
-- гучність: `volume_multiplier` in ESPHome (динамік 3W in корпусі голосно верещить on максимумі).
+- `medium` quality is the optimum (low sounds robotic, high is twice slower);
+- cut long answers (over 30 s) by sentences - the ESP32 stream buffer is small;
+- Piper in automations: `tts.speak` service to the satellite `media_player` (gate open announcements with no wake word!);
+- volume: `volume_multiplier` in ESPHome (a 3W speaker in a case screams at max).
 
-## 5. STT on сервері: faster-whisper vs Vosk (вимоги VRAM/CPU!)
+## 5. Server STT: faster-whisper vs Vosk (VRAM and CPU demands!)
 
-| Модель / рушій | Де біжить | VRAM (GPU) / RAM (CPU) | Швидкість | Українська | Коли брати |
+| Model or engine | Where it runs | VRAM (GPU) / RAM (CPU) | Speed | Ukrainian | When to take |
 | --- | --- | --- | --- | --- | --- |
-| faster-whisper `tiny` | CPU RPi 4 | ~300 МБ RAM | ~8 с on фразу (RPi 4) | Слабка | Тільки тести |
-| faster-whisper `base` | CPU RPi 4 / NUC | ~500 МБ RAM | ~4 с / <1 с (NUC) | Задовільна | Мінімум for керування будинком |
-| faster-whisper `small` | CPU NUC / GPU 2 ГБ | ~1 ГБ | <1 с | Добра | Оптимум ціни/якості |
-| faster-whisper `medium` | GPU 4-5 ГБ (int8: ~3 ГБ) | ~5 ГБ fp16 / ~3 ГБ int8 | ~1 с батчем | Дуже добра | LLM-діалоги, диктування |
-| faster-whisper `large-v3` | GPU 6-8 ГБ (int8: ~4.5 ГБ) | ~10 ГБ fp16 | 1-2 с | Найкраща | Максимум точності |
-| faster-whisper `distil-large-v3` | GPU 6 ГБ | ~6 ГБ fp16 | Швидше large on ~40% | how large (EN-оптимізовано!) | EN-будинок, швидкість |
-| Vosk `vosk-model-small-uk` | CPU RPi (навіть Zero 2!) | ~50 МБ RAM | Реальний час | Добра (словникова) | Слабке залізо, фіксований словник |
-| Vosk server `uk` big | CPU NUC 4+ ядер | ~1.5 ГБ RAM | ~реальний час | Дуже добра | Сервер without GPU |
-| Speech-to-Phrase | CPU Green/RPi 4 | ~200 МБ RAM | <1 с | via шаблони HA | Тільки керування будинком, максимум швидкості |
+| faster-whisper `tiny` | CPU RPi 4 | about 300 MB RAM | about 8 s per phrase (RPi 4) | Weak | Tests only |
+| faster-whisper `base` | CPU RPi 4 or NUC | about 500 MB RAM | about 4 s or under 1 s (NUC) | Fair | Minimum for house control |
+| faster-whisper `small` | CPU NUC or 2 GB GPU | about 1 GB | under 1 s | Good | Price and quality optimum |
+| faster-whisper `medium` | 4-5 GB GPU (int8: about 3 GB) | about 5 GB fp16 or 3 GB int8 | about 1 s batched | Very good | LLM talks, dictation |
+| faster-whisper `large-v3` | 6-8 GB GPU (int8: about 4.5 GB) | about 10 GB fp16 | 1-2 s | Best | Max accuracy |
+| faster-whisper `distil-large-v3` | 6 GB GPU | about 6 GB fp16 | About 40 percent faster than large | like large (EN optimized!) | EN house, speed |
+| Vosk `vosk-model-small-uk` | CPU RPi (even Zero 2!) | about 50 MB RAM | Real time | Good (dictionary) | Weak hardware, fixed dictionary |
+| Vosk server `uk` big | 4+ core NUC CPU | about 1.5 GB RAM | near real time | Very good | Server without GPU |
+| Speech-to-Phrase | CPU Green or RPi 4 | about 200 MB RAM | under 1 s | through HA templates | House control only, max speed |
 
-Правила:
+Rules:
 
-- керування будинком on RPi - Speech-to-Phrase (миттєво) або whisper `base`;
-- вільні фрази/українська диктовка - NUC + `small`, бажано GPU;
-- int8-квантування (`compute_type="int8"`) ріже VRAM майже вдвічі with втратою ~1% точності - завжди вмикайте on слабких GPU;
-- `beam_size=5` for замовчуванням; for швидкості - `beam_size=1` (greedy), −30% часу, −2% точності.
+- house control on RPi means Speech-to-Phrase (instant) or whisper `base`;
+- free phrases and Ukrainian dictation mean NUC + `small`, GPU preferred;
+- int8 quantization (`compute_type="int8"`) cuts VRAM almost in half with about 1 percent accuracy loss - always on for weak GPUs;
+- default `beam_size=5`; for speed use `beam_size=1` (greedy), minus 30 percent time, minus 2 percent accuracy.
 
-## 6. Wake-двигуни: Porcupine / Rhino / Cobra / OpenWakeWord - порівняння
+## 6. Wake engines: Porcupine, Rhino, Cobra, OpenWakeWord compared
 
-| Двигун | Де біжить | that детектить | Українська / кастом | Ліцензія/ціна | ESP32? |
+| Engine | Where it runs | What it detects | Ukrainian and custom | License and price | ESP32? |
 | --- | --- | --- | --- | --- | --- |
-| microWakeWord | ESP32-S3 (пристрій!) | 1 wake word | Кастом via Colab (будь-which мова, треба 100+ семплів) | Apache-2.0, безкоштовно | **Так, основний вибір** |
-| OpenWakeWord | Сервер HA (Wyoming 10400) | Кілька wake words | Кастомні моделі спільноти, EN переважно | Apache-2.0, безкоштовно | Ні (аудіо стрімиться завжди!) |
-| Porcupine (Picovoice) | RPi/мобілка/MCU (Cortex-M!) | 1-3 wake words, вбудовані + консоль | 9 мов, української немає; кастом - консоль Picovoice | Безкоштовно for особистого; AccessKey обов'язковий | Так (C-бібліотека, але not via ESPHome voice!) |
-| Rhino (Picovoice) | Те саме | Speech-to-Intent (команда → намір, without STT!) | EN/DE/FR/ES…, української немає | how Porcupine | MCU так, ESP32 - руками |
-| Cobra (Picovoice) | Те саме | VAD (є голос / немає) | Мовонезалежний | how Porcupine | Так (легкий) |
-| ESP-SR WakeNet | ESP32/S3 (пристрій!) | «Hi ESP» + MultiNet-команди | EN/CN with коробки | Espressif, безкоштовно | **Так, альтернатива microWakeWord** |
+| microWakeWord | ESP32-S3 (device!) | 1 wake word | Custom through Colab (any language, 100+ samples needed) | Apache-2.0, free | **Yes, main pick** |
+| OpenWakeWord | HA server (Wyoming 10400) | Several wake words | Community custom models, mostly EN | Apache-2.0, free | No (audio always streams!) |
+| Porcupine (Picovoice) | RPi, phone, or MCU (Cortex-M!) | 1-3 wake words, built in + console | 9 languages, no Ukrainian; custom through the Picovoice console | Free for personal use; AccessKey mandatory | Yes (C library, but not through ESPHome voice!) |
+| Rhino (Picovoice) | Same | Speech-to-Intent (command to intent, no STT!) | EN, DE, FR, ES, no Ukrainian | like Porcupine | MCU yes, ESP32 by hand |
+| Cobra (Picovoice) | Same | VAD (voice or not) | Language independent | like Porcupine | Yes (light) |
+| ESP-SR WakeNet | ESP32/S3 (device!) | Hi ESP + MultiNet commands | EN and CN out of the box | Espressif, free | **Yes, microWakeWord alternative** |
 
-Висновок for ESP32+HA: wake word - **microWakeWord** (безкоштовно, інтегровано in ESPHome, українське слово тренується). OpenWakeWord - якщо сателіт слабкий (ESP32 without S3) and Ready гнати аудіо on сервер постійно. Porcupine/Rhino - якщо будуєте власний C-проєкт without HA взагалі.
+Bottom line for ESP32+HA: wake word means **microWakeWord** (free, built into ESPHome, Ukrainian words trainable). OpenWakeWord fits if the satellite is weak (ESP32 without S3) and ready to stream audio to the server all the time. Porcupine and Rhino fit a custom C project with no HA at all.
 
-## 7. ESPHome voice + Atom Echo - готова прошивка
+## 7. ESPHome voice + Atom Echo - ready firmware
 
-M5Stack Atom Echo (~$13): ESP32-PICO + мікрофон + кнопка + Grove-роз'єм, динаміка немає with коробки (допаяти 2W via Grove або взяти Atom Echo + зовнішній SPK). Офіційний готовий YAML - `esphome/voice-kit` / майстер прошивок HA («$13 voice remote»): прошивається with браузера via ESPHome Web, далі тільки WiFi-дані.
+M5Stack Atom Echo (about $13): ESP32-PICO + mic + button + Grove jack, no speaker out of the box (solder a 2W one through Grove or take Atom Echo + external speaker). Official ready YAML is `esphome/voice-kit` or the HA firmware wizard ($13 voice remote): flashes from the browser through ESPHome Web, then only WiFi data.
 
-Мінімальний YAML сателіта (S3 + INMP441 + MAX98357A):
+Minimal satellite YAML (S3 + INMP441 + MAX98357A):
 
 ```yaml
 esphome:
@@ -263,12 +262,12 @@ binary_sensor:
       - voice_assistant.stop:
 ```
 
-> [!warning] Аудіо + BLE = краш!
-> Voice-компоненти with'їдають RAM/CPU: одночасний Bluetooth-proxy on therefore ж ESP32 майже гарантовано роняє прошивку. Сателіт - тільки голос; BLE-трекер - окремий чіп. Див. Troubleshooting ESPHome (backtrace via `esp-idf`).
+> [!warning] Audio + BLE means crash!
+> Voice components eat RAM and CPU: a Bluetooth proxy on the same ESP32 almost surely drops the firmware. Satellite is voice only; BLE tracker is a separate chip. See ESPHome troubleshooting (backtrace through `esp-idf`).
 
-## 8. VoIP / SIP-домофон - оглядово (UDP-потік, затримка!)
+## 8. VoIP and SIP intercom - overview (UDP stream, latency!)
 
-Домофон = той же голос, але розмова людина↔людина via SIP-сервер (Asterisk/FreePBX) або безпосередньо. ESP32 виступає SIP-клієнтом (бібліотеки `esp-sip`, проєкти `esphone`, `SIP-Doorbell`).
+Intercom is the same voice, but human-to-human talk through a SIP server (Asterisk or FreePBX) or directly. ESP32 acts as a SIP client (`esp-sip` libraries, `esphone` and `SIP-Doorbell` projects).
 
 ```text
 [Кнопка біля хвіртки] → ESP32: INVITE → [Asterisk 192.168.1.5]
@@ -276,30 +275,30 @@ binary_sensor:
    → DTMF «5» → ESP32 відкриває замок (GPIO)
 ```
 
-Числа, які треба знати:
+Numbers to know:
 
-| Параметр | Значення | Примітка |
+| Parameter | Value | Note |
 | --- | --- | --- |
-| Кодек ESP32 | G.711 μ-law/A-law (8 кГц) | Opus on ESP32 - ні (див. розділ 9!) |
-| Трафік | ~80 кбіт/с with заголовками (20 мс пакети) | WiFi тягне легко; джитер-буфер 100-200 мс |
-| Затримка | 200-600 мс (кодек + буфер + WiFi) | Говорити per черзі, not перебивати! |
-| Реєстрація | SIP REGISTER кожні 60-300 с | without перереєстрації вхідні дзвінки пропадуть |
-| Живлення | Дзвінок будить ESP32 with light-sleep per кнопці | Постійний RTP-стрім батарею with'їсть for години |
+| ESP32 codec | G.711 mu-law and A-law (8 kHz) | No Opus on ESP32 (see section 9!) |
+| Traffic | About 80 kbit/s with headers (20 ms packets) | WiFi pulls it easily; 100-200 ms jitter buffer |
+| Latency | 200-600 ms (codec + buffer + WiFi) | Talk in turn, never interrupt! |
+| Registration | SIP REGISTER every 60-300 s | without re-registration incoming calls vanish |
+| Power | A call wakes ESP32 from light-sleep by button | Constant RTP stream eats the battery in hours |
 
-this огляд: повний SIP-стек (SDP, NAT, STUN) - тема окремої ноти and окремого сервера. for «подзвонити with хвіртки on телефон» простіше готовий Grandstream + ESP32-тільки-замок.
+This is an overview: a full SIP stack (SDP, NAT, STUN) is a separate note and server topic. For call from gate to phone a ready Grandstream + ESP32 lock-only is simpler.
 
-## 9. Intercom ESP32↔ESP32 - I2S→UDP (Opus? opus on ESP32 важко - чесно!)
+## 9. ESP32 to ESP32 intercom - I2S to UDP (Opus? Opus on ESP32 is hard, honestly!)
 
-Ідея: два ESP32 with мікрофоном and динаміком, кнопка PTT - голос летить per UDP in локалці without сервера взагалі. Реально працює on сирому PCM/ADPCM; Opus - пастка.
+Idea: two ESP32 boards with mic and speaker, PTT button - voice flies over UDP on LAN with no server at all. It really works on raw PCM or ADPCM; Opus is a trap.
 
-| Варіант кодека | Бітрейт | CPU ESP32 | RAM | Вердикт |
+| Codec option | Bitrate | ESP32 CPU | RAM | Verdict |
 | --- | --- | --- | --- | --- |
-| PCM 16 кГц/16 біт | 256 кбіт/с | ~0% (прямий DMA→UDP) | 2×4 КБ буфери | **Працює.** Локалка тягне 2-3 пари одночасно |
-| ADPCM (IMA, 4 біт) | 64 кбіт/с | ~5% (табличний кодер) | +1 КБ | Працює, якість «рація» - for домофона ок |
-| G.711 | 64 кбіт/с | ~3% | +1 КБ | Працює, сумісно with SIP! |
-| Opus | 16-32 кбіт/с | **not ВЛІЗАЄ стабільно**: енкодер ~40-60 МГц + ~100 КБ RAM + float, конфліктує with WiFi-стеком on одному ядрі | - | **Чесно: not беріть.** Є експерименти on S3 (16 кГц, mono, complexity 0), але джиттер and дропи. Хочете Opus - ставте сервер (Janus/Mumble) and гоніть PCM до нього |
+| PCM 16 kHz/16 bit | 256 kbit/s | about 0% (direct DMA to UDP) | 2x4 KB buffers | **Works.** LAN pulls 2-3 pairs at once |
+| ADPCM (IMA, 4 bit) | 64 kbit/s | about 5% (table coder) | +1 KB | Works, walkie-talkie quality - fine for an intercom |
+| G.711 | 64 kbit/s | about 3% | +1 KB | Works, SIP compatible! |
+| Opus | 16-32 kbit/s | **Never fits stably**: encoder needs about 40-60 MHz + about 100 KB RAM + float, fights the WiFi stack on one core | - | **Honestly: skip it.** Tests exist on S3 (16 kHz, mono, complexity 0), but jitter and drops remain. For Opus run a server (Janus or Mumble) and stream PCM to it |
 
-Схема PTT-інтеркома (PCM/UDP broadcast):
+PTT intercom scheme (PCM and UDP broadcast):
 
 ```text
 [ESP32-A: INMP441 → I2S 16кГц] ──UDP:5004 broadcast──► [ESP32-B: UDP → MAX98357A]
@@ -307,65 +306,65 @@ this огляд: повний SIP-стек (SDP, NAT, STUN) - тема окре�
 Кнопка PTT: поки затиснута — TX; відпустив — RX (half-duplex, без AEC!)
 ```
 
-Full-duplex (говорити одночасно) вимагає AEC (див. ESP-SR AFE, [[EN/12-Comm-Modules/11-TinyML-Voice.en]]) - on двох ESP32 via WiFi with джиттером this not злітає. Half-duplex + PTT - робоча схема for гаража/дачі.
+Full duplex (talk at once) needs AEC (see ESP-SR AFE, [[EN/12-Comm-Modules/11-TinyML-Voice.en|TinyML voice]]) - on two ESP32 boards over WiFi with jitter it never flies. Half-duplex + PTT is the working scheme for a garage or cottage.
 
-## 10. Приватність: все локально vs хмара
+## 10. Privacy: all local vs cloud
 
-| Режим | that куди летить | Затримка | Ціна | Коли |
+| Mode | What goes where | Delay | Price | When |
 | --- | --- | --- | --- | --- |
-| Все локально (microWakeWord + Whisper/S2P + Piper) | Нічого not покидає LAN | 1-3 с | Сервер 24/7 (RPi/NUC) | Дім, офіс, вимоги GDPR/лікарня |
-| HA Cloud (Nabu Casa, ~$6/міс) | Аудіо → хмара Nabu Casa → текст назад | 1-2 с | Підписка, нуль адміністрування | Старт for 10 хв, підтримка розробки HA |
-| LLM-персонаж локально (Ollama) | Текст → локальна LLM (Llama 3 8B) | 5-30 с | GPU 8+ ГБ VRAM | Жарти/діалоги without хмари |
-| LLM-персонаж хмарою (OpenAI/Gemini) | Текст → API | 2-5 с | $/tokens + дані in хмарі | «Поговори how Маріо», складні питання |
-| Alexa/Google-колонка | Все in вендора | ~1 с | $0 + ваші дані | not ця нотатка взагалі |
+| All local (microWakeWord + Whisper/S2P + Piper) | Nothing leaves LAN | 1-3 s | 24/7 server (RPi/NUC) | Home, office, GDPR or hospital demands |
+| HA Cloud (Nabu Casa, about $6/month) | Audio to Nabu Casa cloud to text back | 1-2 s | Subscription, zero admin | 10-minute start, HA development support |
+| Local LLM character (Ollama) | Text to local LLM (Llama 3 8B) | 5-30 s | 8+ GB VRAM GPU | Jokes and talks with no cloud |
+| Cloud LLM character (OpenAI/Gemini) | Text to API | 2-5 s | Dollars per tokens + data in cloud | Talk like Mario, hard questions |
+| Alexa or Google speaker | All to the vendor | about 1 s | $0 + your data | not this note at all |
 
-Мінімум приватності навіть in локальному режимі: окремий IoT-VLAN for сателітів, пароль API ESPHome not in гіті (`!secret`), логи HA without аудіо (зберігаються тільки тексти транскриптів), мікрофонний MUTE-вимикач (фізична кнопка `micro_wake_word.stop` + LED-індикатор запису!).
+Privacy minimum even locally: separate IoT VLAN for satellites, ESPHome API password never in git (`!secret`), HA logs with no audio (only transcript texts stored), mic MUTE switch (physical `micro_wake_word.stop` button + recording LED!).
 
-## Легенда пінів модулів сателіта
+## Satellite module pin legend
 
-### M5Stack Atom Echo (готове, нічого паяти for старту)
+### M5Stack Atom Echo (ready, nothing to solder for start)
 
-| Пін / елемент Atom Echo | Призначення | Примітка in ESPHome |
+| Atom Echo pin or part | Purpose | ESPHome note |
 | --- | --- | --- |
-| ESP32-PICO-D4 | Мозок (4 МБ flash, without PSRAM!) | Тільки `voice_assistant`, microWakeWord on ньому not влізе - wake on сервері (openWakeWord) або кнопка! |
-| Мікрофон (I2S, вбудований) | Вхід | `i2s_audio` готовий пресет `m5stack-atom-echo.yaml` |
-| Кнопка (GPIO39) | Push-to-talk | `on_press → voice_assistant.start` (див. YAML вище) |
-| RGB LED (SK6812, GPIO27) | Статус (слухає/думає/говорить) | `on_listening/on_stt_end/on_tts_start` - різні кольори |
-| Grove (GPIO32/26: SDA/SCL + 5V/GND) | Зовнішній динамік/датчики | Динамік - via I2S-ЦАП, not безпосередньо! |
-| USB-C | Живлення + прошивка | 5V 500 мА достатньо |
+| ESP32-PICO-D4 | Brain (4 MB flash, no PSRAM!) | Only `voice_assistant`, microWakeWord never fits there - wake on the server (openWakeWord) or button! |
+| Mic (I2S, built in) | Input | `i2s_audio` ready preset `m5stack-atom-echo.yaml` |
+| Button (GPIO39) | Push-to-talk | `on_press to voice_assistant.start` (see YAML above) |
+| RGB LED (SK6812, GPIO27) | Status (hears, thinks, speaks) | `on_listening`, `on_stt_end`, `on_tts_start` in different colors |
+| Grove (GPIO32/26: SDA/SCL + 5V/GND) | External speaker or sensors | Speaker through an I2S DAC, never directly! |
+| USB-C | Power + flashing | 5V 500 mA is enough |
 
-### Саморобний сателіт S3 + INMP441 + MAX98357A (повний цикл with microWakeWord)
+### DIY satellite S3 + INMP441 + MAX98357A (full cycle with microWakeWord)
 
-| module / пін | Куди on ESP32-S3 | Примітка |
+| Module or pin | Where on ESP32-S3 | Note |
 | --- | --- | --- |
-| INMP441 VDD/GND | 3V3 / GND (+100 нФ) | Тільки 3.3V |
-| INMP441 SD / WS / SCK | GPIO4 / GPIO5 / GPIO6 | I2S RX 16 кГц, <10 см |
+| INMP441 VDD/GND | 3V3 / GND (+100 nF) | 3.3V only |
+| INMP441 SD / WS / SCK | GPIO4 / GPIO5 / GPIO6 | I2S RX 16 kHz, under 10 cm |
 | INMP441 L/R | GND (Left) | - |
-| MAX98357A VIN/GND | 5V окремо! / GND спільний | Піки 1A+ - not with 3V3 ESP32! |
-| MAX98357A BCLK / LRCK / DIN | GPIO14 / GPIO15 / GPIO22 | I2S TX; BCLK/LRCK можна спільні with мікрофоном for частотою |
-| MAX98357A GAIN | GND (12 dB) / NC (9 dB) | 12 dB in кімнаті верещить - ставте 9 dB |
-| Динамік 4 Ом 3W | Вихід MAX98357A | in корпус with фазоінвертором, подалі from мікрофона 10 см+ (заводка!) |
-| Кнопка PTT/MUTE | GPIO39/0 + GND | MUTE: `micro_wake_word.stop` + червоний LED |
+| MAX98357A VIN/GND | separate 5V! / common GND | 1A+ peaks - never from ESP32 3V3! |
+| MAX98357A BCLK / LRCK / DIN | GPIO14 / GPIO15 / GPIO22 | I2S TX; BCLK and LRCK may share with the mic by frequency |
+| MAX98357A GAIN | GND (12 dB) / NC (9 dB) | 12 dB screams in a room - set 9 dB |
+| 4 Ohm 3W speaker | MAX98357A output | in a ported case, 10+ cm away from the mic (feedback!) |
+| PTT/MUTE button | GPIO39/0 + GND | MUTE: `micro_wake_word.stop` + red LED |
 
-## Схема підключення
+## Wiring diagram
 
-| ESP32-S3 DevKit | INMP441 | MAX98357A | Кнопка/LED | Примітка |
+| ESP32-S3 DevKit | INMP441 | MAX98357A | Button/LED | Note |
 | --- | --- | --- | --- | --- |
-| 3V3 | VDD (+100 нФ) | - (SD_MODE→GND!) | LED-анод via 220 Ом | - |
-| 5V (VIN, окремий БЖ 2A) | - | VIN | - | Піки динаміка 1A+ |
-| GND | GND | GND | GND | Зірка, товстий дріт до підсилювача |
+| 3V3 | VDD (+100 nF) | - (SD_MODE to GND!) | LED anode through 220 Ohm | - |
+| 5V (VIN, separate 2A PSU) | - | VIN | - | 1A+ speaker peaks |
+| GND | GND | GND | GND | Star, thick wire to the amp |
 | GPIO4 | SD | - | - | I2S DIN |
-| GPIO5 | WS | - | - | I2S WS (можна спільний) |
+| GPIO5 | WS | - | - | I2S WS (may be shared) |
 | GPIO6 | SCK | - | - | I2S BCK |
 | GPIO22 | - | DIN | - | I2S DOUT |
-| GPIO15/14 | - | LRCK/BCLK | - | I2S TX-клок |
-| GPIO39 | - | - | Кнопка PTT → GND | Внутрішній pull-up |
-| GPIO27 | - | - | Статус-LED | Слухає=зелений, думає=синій, error=червоний |
+| GPIO15/14 | - | LRCK/BCLK | - | I2S TX clock |
+| GPIO39 | - | - | PTT button to GND | Internal pull-up |
+| GPIO27 | - | - | Status LED | Hears means green, thinks means blue, fault means red |
 
-> [!warning] Заводка мікрофон↔динамік
-> Динамік-відповідь потрапляє назад in мікрофон → Assist «чує сам себе» → цикл. Ліки: динамік and мікрофон on протилежних стінках корпусу 10 см+, `noise_suppression_level: 2`, AEC (ESP-SR AFE) for просунутих, гучність not вище 70%.
+> [!warning] Mic to speaker feedback
+> Speaker answer leaks back to the mic to Assist hearing itself to a loop. Cure: speaker and mic on opposite case walls 10+ cm apart, `noise_suppression_level: 2`, AEC (ESP-SR AFE) for advanced users, volume at most 70 percent.
 
-### ASCII-схема
+### ASCII diagram
 
 ```text
 ESP32-S3 DevKit                  INMP441 (I2S-мікрофон)
@@ -398,24 +397,24 @@ GPIO39 ──[кнопка]──► GND (PTT/MUTE)      GPIO27 ──[220]─�
 
 ```mermaid
 graph LR
-    subgraph SAT[Сателіт ESP32-S3]
-        MIC[(INMP441<br/>I2S 16кГц)]
+    subgraph SAT[ESP32-S3 satellite]
+        MIC[(INMP441<br/>I2S 16kHz)]
         MWW[microWakeWord<br/>okay_nabu]
-        VA[voice_assistant<br/>стрим + програвання]
-        SPK[(MAX98357A<br/>динамік)]
+        VA[voice_assistant<br/>stream + playback]
+        SPK[(MAX98357A<br/>speaker)]
         MIC -->|PCM| MWW
         MWW -->|wake!| VA
         VA -->|WAV| SPK
     end
     VA -->|WiFi PCM| HA[Home Assistant<br/>Assist pipeline]
-    HA -->|Wyoming 10300| STT[Whisper/Vosk/S2P<br/>мовлення→текст]
-    HA -->|intent| ACT[Світло/таймер<br/>MQTT-реле]
-    HA -->|Wyoming 10200| TTS[Piper<br/>текст→голос uk]
+    HA -->|Wyoming 10300| STT[Whisper/Vosk/S2P<br/>speech to text]
+    HA -->|intent| ACT[Light and timer<br/>MQTT relay]
+    HA -->|Wyoming 10200| TTS[Piper<br/>text to Ukrainian voice]
     TTS -->|WAV| VA
-    BTN[Кнопка PTT<br/>GPIO39] --> VA
+    BTN[PTT button<br/>GPIO39] --> VA
 ```
 
-## code ESP-IDF (сателіт: I2S-мікрофон → TCP-стрим → I2S-динамік, концепт)
+## ESP-IDF code (satellite: I2S mic to TCP stream to I2S speaker, concept)
 
 ```c
 // Концепт: повний Wyoming-клієнт — це ~500 рядків (сокети, перепідключення,
@@ -483,7 +482,7 @@ void app_main(void) {
 }
 ```
 
-## code Arduino (сателіт: I2S читання + UDP-стрим on сервер, концепт)
+## Arduino code (satellite: I2S read + UDP stream to server, concept)
 
 ```cpp
 #include <WiFi.h>
@@ -537,7 +536,7 @@ void loop() {
 // відповідь назад (див. MicroPython-приклад нижче і розділ 5).
 ```
 
-## code MicroPython (PTT-інтерком ESP32↔ESP32 per UDP + серверний пайплайн)
+## MicroPython code (PTT intercom ESP32 to ESP32 over UDP + server pipeline)
 
 ```python
 # Частина A: PTT-інтерком (однаковий код на обох ESP32, різні порти!).
@@ -611,55 +610,55 @@ while True:
         # echo "<text>" | piper --model uk_UA-medium.onnx --output_file out.wav
 ```
 
-Детальніше про середовища: [[EN/00-Start/05-Environment-Choice.en|Вибір середовища]].
+More on environments: [[EN/00-Start/05-Environment-Choice.en|Environment choice]].
 
-## typical errors
+## Typical issues
 
-| # | Симптом | Причина | Виправлення |
+| # | Symptom | Cause | Fix |
 | --- | --- | --- | --- |
-| 1 | Сателіт видно in ESPHome, але Assist його not чує | `voice_assistant` without `microphone:` або `use_wake_word: false` without кнопки | Додати мікрофон and `use_wake_word: true` + прив'язаний `micro_wake_word`; або PTT-кнопку |
-| 2 | Краш/ребут at старті voice | Немає PSRAM on платі (звичайний ESP32-WROOM / Atom Echo!) | microWakeWord - тільки S3 with PSRAM; on without-PSRAM - wake on сервері (openWakeWord) або кнопка |
-| 3 | Краш at одночасному BLE + voice | Аудіо with'їдає heap, BLE-стек not влізає | Прибрати `bluetooth_proxy` with сателіта; BLE - окремий чіп |
-| 4 | Whisper 8+ с on RPi 4 | Модель `small/medium` on слабкому CPU | `tiny/base` або Speech-to-Phrase for команд; важкі моделі - on NUC/GPU |
-| 5 | «Вибачте, not знайдено» on кожну команду | Сутності not exposed, немає зон/аліасів | Expose + Area + аліаси українською; verify вбудовані речення Assist |
-| 6 | Асистентів немає in UI взагалі | Немає default-конфігу | Додати `assist_pipeline:` in `configuration.yaml`, перезапустити HA |
-| 7 | Wyoming-сервіс not знаходиться | Сервіс not in тій підмережі / порт закритий / контейнер not стартував | Один LAN/VLAN; `telnet host 10300`; логи add-on; ручне додавання IP:порт |
-| 8 | Piper говорить англійською замість української | Обрано голос `en_*` in пайплайні | in пайплайні TTS обрати `uk_UA-…-medium`; verify `language: uk` |
-| 9 | Сателіт чує сам себе (цикл відповідей) | Динамік поруч with мікрофоном, гучність 100% | 10 см+ між ними; `noise_suppression_level: 2`; гучність ≤70%; AEC for просунутих |
-| 10 | Хибні спрацювання on телевізор | Немає VAD, поріг wake низький | Додати `vad:`; `probability_cutoff` 0.97+; сателіт подалі from TV |
-| 11 | UDP-інтерком хрипить/рветься | WiFi-джиттер, малі буфери, PCM 256 кбіт/с on межі | `ibuf=8192`; half-duplex PTT; ADPCM/G.711 замість PCM; точки доступу ближче |
-| 12 | Opus on ESP32 тріщить and дропає | Енкодер not влізає in CPU/RAM поруч with WiFi | not використовувати Opus on ESP32 (див. розділ 9); PCM/ADPCM або серверний транскод |
-| 13 | SIP-дзвінок проходить, але тиша | NAT/RTP-порти закриті, not той кодек (запит Opus!) | G.711 обов'язково; STUN/проброс RTP-діапазону; SDP звірити with Asterisk-логами |
-| 14 | MicroPython пише with клацаннями | `ibuf` малий, GC-паузи під час `write` | `ibuf=4096+`; `mic.readinto` блоками 2048; важке - винести in окремий потік/`_thread` |
+| 1 | Satellite visible in ESPHome, but Assist never hears it | `voice_assistant` without `microphone:` or `use_wake_word: false` without a button | Add the mic and `use_wake_word: true` + bound `micro_wake_word`; or a PTT button |
+| 2 | Crash or reboot at voice start | No PSRAM on the board (plain ESP32-WROOM or Atom Echo!) | microWakeWord is S3 with PSRAM only; on boards without PSRAM use wake on the server (openWakeWord) or a button |
+| 3 | Crash on simultaneous BLE + voice | Audio eats the heap, BLE stack never fits | Remove `bluetooth_proxy` from the satellite; BLE is a separate chip |
+| 4 | Whisper 8+ s on RPi 4 | `small` or `medium` model on a weak CPU | `tiny` or `base`, or Speech-to-Phrase for commands; heavy models go to NUC or GPU |
+| 5 | Sorry, not found on every command | Entities never exposed, no zones or aliases | Expose + Area + Ukrainian aliases; check built-in Assist sentences |
+| 6 | No assistants in the UI at all | No default config | Add `assist_pipeline:` to `configuration.yaml`, restart HA |
+| 7 | Wyoming service never found | Service in another subnet, port closed, or container never started | One LAN or VLAN; `telnet host 10300`; add-on logs; manual IP:port entry |
+| 8 | Piper speaks English instead of Ukrainian | `en_*` voice picked in the pipeline | Pick `uk_UA` medium TTS in the pipeline; check `language: uk` |
+| 9 | Satellite hears itself (answer loop) | Speaker next to the mic, volume 100 percent | 10+ cm between them; `noise_suppression_level: 2`; volume at most 70 percent; AEC for advanced users |
+| 10 | False fires on the TV | No VAD, low wake threshold | Add `vad:`; `probability_cutoff` 0.97+; satellite away from TV |
+| 11 | UDP intercom crackles or drops | WiFi jitter, small buffers, 256 kbit/s PCM borderline | `ibuf=8192`; half-duplex PTT; ADPCM or G.711 instead of PCM; access points closer |
+| 12 | Opus on ESP32 crackles and drops | Encoder never fits CPU and RAM next to WiFi | Never use Opus on ESP32 (see section 9); PCM/ADPCM or server transcode |
+| 13 | SIP call rings, but silence | NAT or RTP ports closed, wrong codec (Opus requested!) | G.711 mandatory; STUN and RTP range forwarding; compare SDP with Asterisk logs |
+| 14 | MicroPython records with clicks | Small `ibuf`, GC pauses during `write` | `ibuf=4096+`; `mic.readinto` in 2048 blocks; heavy work to a separate thread or `_thread` |
 
-## official джерела
+## Official sources
 
-- [Home Assistant Assist - голосове керування будинком](https://www.home-assistant.io/voice_control/) - концепція Assist, сателіти, мови (включно with українською).
-- [Локальний Assist-пайплайн: Whisper + Piper without хмари](https://www.home-assistant.io/voice_control/voice_remote_local_assistant/) - покрокове installation STT/TTS add-on'ів, Speech-to-Phrase vs Whisper.
-- [Wyoming Protocol - інтеграція](https://www.home-assistant.io/integrations/wyoming/) - how HA підключає зовнішні STT/TTS/wake-сервіси, порти, автовиявлення.
-- [ESPHome micro_wake_word - wake word on пристрої](https://esphome.io/components/micro_wake_word.html) - моделі `okay_nabu`, VAD, `probability_cutoff`, JSON-маніфест.
-- [ESPHome voice_assistant - сателіт](https://esphome.io/components/voice_assistant.html) - мікрофон/динамік, `noise_suppression_level`, PTT, таймери, події `on_stt_end/on_tts_end`.
-- [ESP-SR - WakeNet/MultiNet/AFE from Espressif](https://github.com/espressif/esp-sr) - альтернатива microWakeWord + AEC for full-duplex.
-- [ESP-Skainet - приклади голосового асистента Espressif](https://github.com/espressif/esp-skainet) - `wake_word_detection`, команди MultiNet7.
-- [faster-whisper - швидкий STT (CTranslate2, int8, бенчмарки VRAM)](https://github.com/SYSTRAN/faster-whisper) - моделі tiny→large-v3, вимоги CPU/GPU.
-- [Piper - локальний нейронний TTS](https://github.com/rhasspy/piper) - голоси, семпли, оптимізація під RPi 4.
-- [Speech-to-Phrase - швидкий локальний STT під сутності HA](https://github.com/OHF-Voice/speech-to-phrase) - close-ended розпізнавання <1 с on RPi.
-- [Porcupine - wake word двигун Picovoice](https://github.com/Picovoice/porcupine) - MCU/RPi/мобілка, чутливість, кастомні слова via консоль.
-- [Vosk - офлайн STT (українська модель included)](https://alphacephei.com/vosk/) - легкі моделі 50 МБ for слабкого заліза.
+- [Home Assistant Assist - house voice control](https://www.home-assistant.io/voice_control/) - Assist concept, satellites, languages (including Ukrainian).
+- [Local Assist pipeline: Whisper + Piper with no cloud](https://www.home-assistant.io/voice_control/voice_remote_local_assistant/) - step-by-step STT and TTS add-on install, Speech-to-Phrase vs Whisper.
+- [Wyoming Protocol - integration](https://www.home-assistant.io/integrations/wyoming/) - how HA joins external STT, TTS, and wake services, ports, autodiscovery.
+- [ESPHome micro_wake_word - on-device wake word](https://esphome.io/components/micro_wake_word.html) - `okay_nabu` models, VAD, `probability_cutoff`, JSON manifest.
+- [ESPHome voice_assistant - satellite](https://esphome.io/components/voice_assistant.html) - mic and speaker, `noise_suppression_level`, PTT, timers, `on_stt_end` and `on_tts_end` events.
+- [ESP-SR - WakeNet, MultiNet, and AFE from Espressif](https://github.com/espressif/esp-sr) - microWakeWord alternative + AEC for full duplex.
+- [ESP-Skainet - Espressif voice assistant examples](https://github.com/espressif/esp-skainet) - `wake_word_detection`, MultiNet7 commands.
+- [faster-whisper - fast STT (CTranslate2, int8, VRAM benches)](https://github.com/SYSTRAN/faster-whisper) - tiny to large-v3 models, CPU and GPU demands.
+- [Piper - local neural TTS](https://github.com/rhasspy/piper) - voices, samples, RPi 4 tuning.
+- [Speech-to-Phrase - fast local STT for HA entities](https://github.com/OHF-Voice/speech-to-phrase) - close-ended recognition under 1 s on RPi.
+- [Porcupine - Picovoice wake word engine](https://github.com/Picovoice/porcupine) - MCU, RPi, and phone, sensitivity, custom words through the console.
+- [Vosk - offline STT (Ukrainian model included)](https://alphacephei.com/vosk/) - light 50 MB models for weak hardware.
 
-## Див. також
+## See also
 
-- [[Home.en]]
-- [[EN/15-Protocols/01-MQTT.en|MQTT]] - команди Assist → реле/датчики per топіках
-- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - without стабільного WiFi стрім 16 кГц рветься
-- [[EN/04-Interfaces/04-I2S.en|I2S]] - INMP441 + MAX98357A, формати 16 кГц/16 біт
-- [[EN/12-Comm-Modules/11-TinyML-Voice.en|TinyML/Голос]] - ESP-SR, WakeNet, нейромережі on S3
-- [[EN/12-Comm-Modules/16-Offline-Voice.en|Offline-Voice]] - LD3320/SU-61T/SYN7318: команди without сервера взагалі
-- [[EN/01-Hardware/03-ESP32-S3.en|ESP32-S3]] - PSRAM під wake word and буфери
-- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS/NTP/TLS]] - пошук Wyoming-сервісів in LAN, час for TLS
+- [[Home.en|Home]]
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - Assist commands to relays and sensors through topics
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]] - without stable WiFi the 16 kHz stream breaks
+- [[EN/04-Interfaces/04-I2S.en|I2S]] - INMP441 + MAX98357A, 16 kHz and 16 bit formats
+- [[EN/12-Comm-Modules/11-TinyML-Voice.en|TinyML voice]] - ESP-SR, WakeNet, neural nets on S3
+- [[EN/12-Comm-Modules/16-Offline-Voice.en|Offline voice]] - LD3320, SU-61T, SYN7318: commands with no server at all
+- [[EN/01-Hardware/03-ESP32-S3.en|ESP32-S3]] - PSRAM for wake word and buffers
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS, NTP and TLS]] - Wyoming service discovery on LAN, time for TLS
 
 
-## Common issues
+## Appendix: checklist
 
 | Symptom | Cause | Fix |
 |---|---|---|

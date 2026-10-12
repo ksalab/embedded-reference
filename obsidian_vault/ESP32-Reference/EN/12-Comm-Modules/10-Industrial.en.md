@@ -1,7 +1,7 @@
 ---
 lang: en
-description: Цехова нота-міст from 12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera та [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]] до промислових шин: CANopen (об'єктний словник, SDO/PDO оглядово), DMX512 (сценічне...; shows schematics, code and tables.
-title: CANopen DMX512 KNX DALI 4-20мА 0-10V TRIAC-димер BACnet OPC-UA MCP2518FD ізольований RS485 - industrial fieldbus
+description: Workshop bridge note from 12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera and [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]] to industrial buses: CANopen (object dictionary, SDO/PDO overview), DMX512 (stage...; shows schematics, code and tables.
+title: CANopen DMX512 KNX DALI 4-20mA 0-10V TRIAC dimmer BACnet OPC-UA MCP2518FD isolated RS485 - industrial fieldbus
 tags: [esp32, industrial, canopen, dmx512, knx, dali, 4-20ma, 0-10v, triac, moc3021, bacnet, opc-ua, mqtt-sn, can-fd, mcp2518fd, rs485, modbus]
 category: Moduli-zvyazku
 date-created: 2026-09-28
@@ -9,129 +9,129 @@ date: 2026-10-10
 original: 12-Moduli-zvyazku/10-Industrial.md
 ---
 
-# Industrial fieldbus: CANopen / DMX512 / KNX / DALI / 4-20 мА / 0-10 in / TRIAC / BACnet / CAN-FD
+# Industrial fieldbus: CANopen / DMX512 / KNX / DALI / 4-20 mA / 0-10 V / TRIAC / BACnet / CAN-FD
 
 ![[assets/img/industrial-fieldbus-scheme.png|600]]
-*Fig. 1. Цеховий вузол ESP32: CANopen/CAN-FD, DMX-світло, петля 4-20 мА, димер 0-10 in, TRIAC with zero-cross, ізольований RS485 - with гальванічною розв'язкою from 220 in.*
+*Fig. 1. Workshop ESP32 node: CANopen/CAN-FD, DMX light, 4-20 mA loop, 0-10 V dimmer, TRIAC with zero-cross, isolated RS485 - with galvanic isolation from 220 V.*
 
-> [!danger] 220 in - СМЕРТЕЛЬНО НЕБЕЗПЕЧНО!
-> TRIAC-димер, zero-cross детектор and БЖ 220 in - this мережева напруга! Монтаж тільки at вимкненому автоматі, check індикатором, корпус IP54+, запобіжник + варистор on вході. Нуль (N) and земля (PE) - not одне й те саме! without досвіду with мережами 220 in - not повторювати, віддати електрику. ESP32-сторона завжди via оптопари (MOC3021/PC817/H11AA1) + ізольований DC-DC.
+> [!danger] 220 V - LETHALLY DANGEROUS!
+> TRIAC dimmer, zero-cross detector and 220 V PSU - this is mains voltage! Install only with the breaker off, check with an indicator, IP54+ enclosure, fuse + varistor on input. Neutral (N) and ground (PE) are not the same thing! Without mains experience - do not repeat, give to an electrician. The ESP32 side always via optocouplers (MOC3021/PC817/H11AA1) + isolated DC-DC.
 >
-> [!warning] Ізоляція обов'язкова!
-> Цех = довгі лінії + перешкоди + різні потенціали земель. RS485/CAN without ізоляції згорають першими. Правило: логіка ESP32 ↔ (ADuM/ISO + ізольований DC-DC) ↔ польова сторона. Пробита ізоляція = пробитий ESP32 and пожежа in щиті.
+> [!warning] Isolation mandatory!
+> Workshop = long lines + noise + different ground potentials. RS485/CAN without isolation burn first. Rule: ESP32 logic to (ADuM/ISO + isolated DC-DC) to field side. Broken isolation = broken ESP32 and fire in the cabinet.
 
 ## Purpose
 
-Цехова нота-міст from [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en|RS485/CAN-камери]] та [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]] до промислових шин: CANopen (об'єктний словник, SDO/PDO оглядово), DMX512 (сценічне світло via MAX485 on 250 кбод!), KNX/DALI оглядово (that живе in будівлях), струмова петля 4-20 мА (передавач XTR115 + прийом шунтом 165 Ом → 3.3 in!), димер 0-10 in (ЦАП + ОП), TRIAC-димер with детектором переходу via нуль (MOC3021 + H11AA1!, ІЗОЛЯЦІЯ), оглядова table BACnet/OPC-UA/MQTT-SN/AMQP «that for цеху», CAN-FD контролери MCP2518FD/TCAN4550 та ізольовані RS485-модулі. Живлення - тільки via [[EN/02-Power-Supply/01-Power-Rails.en]] with захистом.
+A workshop bridge note from [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en|RS485/CAN cameras]] and [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]] to industrial buses: CANopen (object dictionary, SDO/PDO overview), DMX512 (stage light over MAX485 at 250 kbaud!), KNX/DALI overview (what lives in buildings), 4-20 mA current loop (XTR115 transmitter + shunt 165 Ohm reception to 3.3 V!), 0-10 V dimmer (DAC + op-amp), TRIAC dimmer with zero-cross detector (MOC3021 + H11AA1!, ISOLATION), overview table BACnet/OPC-UA/MQTT-SN/AMQP "what for the workshop", CAN-FD MCP2518FD/TCAN4550 controllers and isolated RS485 modules. Power supply - only via [[EN/02-Power-Supply/01-Power-Rails.en]] with protection.
 
-> Де that живе: станок/робот - CANopen; сцена/клуб - DMX512; будівля/офіс - KNX/DALI/BACnet; датчики тиску/рівня on 100+ м - 4-20 мА; старі світильники/вентилятори - 0-10 in; лампи розжарювання/ТЕНи - TRIAC with zero-cross; хмари/ SCADA - OPC-UA/MQTT.
+> Where it lives: machine/robot - CANopen; stage/club - DMX512; building/office - KNX/DALI/BACnet; pressure/level sensors over 100+ m - 4-20 mA; old lamps/fans - 0-10 V; incandescent lamps/heaters - TRIAC with zero-cross; clouds/SCADA - OPC-UA/MQTT.
 
-## Характеристики
+## Characteristics
 
-| Параметр | CANopen (CC/FD) | DMX512 | KNX / DALI (оглядово) |
+| Parameter | CANopen (CC/FD) | DMX512 | KNX / DALI (overview) |
 | --- | --- | --- | --- |
-| Фізичний рівень | CAN ISO 11898-2, 10 кбіт-1 Мбіт (CC) / до 8 Мбіт дані (FD) | RS485 + UART 250 кбод 8N2! | KNX: вита пара 9600 + 30 in; DALI: 2 дроти 1200 бод, 16 in |
-| Модель даних | Об'єктний словник (OD): індекси 0x1000-0x9FFF | 512 каналів-слотів, кадр BREAK+MAB | KNX: групові адреси; DALI: 64 адреси + 16 груп |
-| Сервіси | SDO (configuration) / PDO (реальний час) / NMT / SYNC / EMCY / Heartbeat | Постійний потік кадрів ~44 Гц, without підтверджень | KNX: телеграми; DALI: команди лампам/баластам |
+| Physical level | CAN ISO 11898-2, 10 kbps-1 Mbps (CC) / up to 8 Mbps data (FD) | RS485 + UART 250 kbaud 8N2! | KNX: twisted pair 9600 + 30 V; DALI: 2 wires 1200 baud, 16 V |
+| Data model | Object dictionary (OD): indexes 0x1000-0x9FFF | 512 channel slots, BREAK+MAB frame | KNX: group addresses; DALI: 64 addresses + 16 groups |
+| Services | SDO (configuration) / PDO (real time) / NMT / SYNC / EMCY / Heartbeat | Constant frame stream ~44 Hz, without acks | KNX: telegrams; DALI: lamp/ballast commands |
 | Addressing | Node-ID 1-127, COB-ID | Universe 1-512, fixture start address | KNX: area.line.device; DALI: short address |
-| Довжина | До 1000 м (on низьких бодах), 120 Ом термінатори | До 300-1200 м, 120 Ом, 32 прилади on сегмент! | KNX до 1000 м/сегмент; DALI до 300 м |
-| ESP32 | TWAI (CC) + MCP2518FD/TCAN4550 (FD!) | UART + MAX485 (DE завжди TX!) | Шлюзи/мости (not GPIO безпосередньо!) |
+| Length | Up to 1000 m (at low bauds), 120 Ohm terminators | Up to 300-1200 m, 120 Ohm, 32 devices per segment! | KNX up to 1000 m/segment; DALI up to 300 m |
+| ESP32 | TWAI (CC) + MCP2518FD/TCAN4550 (FD!) | UART + MAX485 (DE always TX!) | Gateways/bridges (not GPIO directly!) |
 
-| Параметр | Петля 4-20 мА (XTR115) | Прийом 4-20 мА (шунт!) | Димер 0-10 in |
+| Parameter | 4-20 mA loop (XTR115) | 4-20 mA reception (shunt!) | 0-10 V dimmer |
 | --- | --- | --- | --- |
-| Передавач | XTR115: 2-провідний, Vref 2.5 in, живлення петлі 7.5-36 in | Шунт 165 Ом → 0.66-3.3 in for ADC ESP32! | ЦАП MCP4725 → ОП LM358 → 0-10 in |
-| Струм / точність | 4 мА = 0%, 20 мА = 100%, обрив = 0 мА (diagnostics!) | 4 мА×165 Ом = 0.66 in; 20 мА×165 Ом = 3.30 in | 0 in = min, 10 in = max, вхідний опір баласта ~100 кОм |
-| Ізоляція | Рекомендовано ISO124/AMC1301 | TVS + RC + ОП-буфер | ОП with живленням 12 in + опторазв'язка PWM-альтернативи |
-| protection | Обмеження струму, зворотна полярність | PTC + TVS 5 in on ADC! | Діод Шотткі, обмеження 11 in |
-| Застосування | Датчики тиску/температури/рівня in цех | ESP32 приймає цехові датчики | Драйвери LED/вентилятори/заслінки |
+| Transmitter | XTR115: 2-wire, Vref 2.5 V, loop power 7.5-36 V | Shunt 165 Ohm to 0.66-3.3 V for ESP32 ADC! | MCP4725 DAC to LM358 op-amp to 0-10 V |
+| Current / accuracy | 4 mA = 0%, 20 mA = 100%, break = 0 mA (diagnostics!) | 4 mA x 165 Ohm = 0.66 V; 20 mA x 165 Ohm = 3.30 V | 0 V = min, 10 V = max, ballast input resistance ~100 kOhm |
+| Isolation | ISO124/AMC1301 recommended | TVS + RC + op-amp buffer | Op-amp with 12 V supply + optoisolation of PWM alternative |
+| Protection | Current limit, reverse polarity | PTC + 5 V TVS on ADC! | Schottky diode, 11 V limit |
+| Application | Pressure/temperature/level sensors in the workshop | ESP32 receives workshop sensors | LED drivers/fans/dampers |
 
-| Параметр | TRIAC-димер + zero-cross (MOC3021!) | CAN-FD MCP2518FD / TCAN4550 | Ізольований RS485 |
+| Parameter | TRIAC dimmer + zero-cross (MOC3021!) | CAN-FD MCP2518FD / TCAN4550 | Isolated RS485 |
 | --- | --- | --- | --- |
-| key | BT136/BTA16 + MOC3021 (random-phase!) / MOC3041 (zero-cross вбудований); BTA24 - до 25 but in ізольованому корпусі for ламп/ТЕНів понад 2 кВт | SPI→CAN-FD до 8 Мбіт дані, 32 FIFO | ISO1410 / ADM2587E / MAX14850 + iso-DC-DC |
-| Детектор нуля | H11AA1/PC814 + 2×100 кОм до 220 in! | Кварц 20/40 МГц, INT | ADuM1201 + ізольований 5 in |
-| Керування | Фазова відсічка: затримка 0-10 мс після zero | SPI 10-20 МГц, переривання | DE/RE + термінатор 120 Ом |
-| Навантаження | R (лампи/ТЕНи); L/C - тільки зі снабером! | CANH/CANL вита пара | A/B вита пара + GND-екран |
-| protection | Запобіжник + варистор + снабер 100 Ом+100 нФ | TVS CAN, спільний GND шини | TVS A/B, газорозрядники on вулиці |
+| Key | BT136/BTA16 + MOC3021 (random-phase!) / MOC3041 (built-in zero-cross); BTA24 - up to 25 A in isolated package for lamps/heaters over 2 kW | SPI to CAN-FD up to 8 Mbps data, 32 FIFOs | ISO1410 / ADM2587E / MAX14850 + iso-DC-DC |
+| Zero detector | H11AA1/PC814 + 2x100 kOhm to 220 V! | 20/40 MHz quartz, INT | ADuM1201 + isolated 5 V |
+| Control | Phase cut: 0-10 ms delay after zero | SPI 10-20 MHz, interrupts | DE/RE + 120 Ohm terminator |
+| Load | R (lamps/heaters); L/C - only with snubber! | CANH/CANL twisted pair | A/B twisted pair + GND shield |
+| Protection | Fuse + varistor + 100 Ohm+100 nF snubber | CAN TVS, common bus GND | TVS A/B, gas arresters outdoors |
 
-| Протокол «that for цеху» | Рівень | Транспорт | Коли брати |
+| "What for the workshop" protocol | Level | Transport | When to take |
 | --- | --- | --- | --- |
-| Modbus RTU/TCP | Поле/цех | RS485 / Ethernet | Насоси, лічильники, ПЛК - перший вибір |
+| Modbus RTU/TCP | Field/workshop | RS485 / Ethernet | Pumps, meters, PLC - first choice |
 | CANopen | Field/bus | CAN | Drives, encoders, input modules |
-| DMX512 | Сцена | RS485-250к | Світло, дим, лебідки сцени |
-| KNX | Будівля | Вита пара 30 in | Освітлення/жалюзі/клімат офісу |
-| DALI-2 | Будівля/світло | 2 дроти 16 in | Адресні світильники, аварійне світло |
-| BACnet MS/TP-IP | Будівля/BMS | RS485 / IP | Вентиляція, чилери, облік енергії |
-| OPC-UA | Цех/SCADA | TCP | Історія, аларми, MES/шлюз до хмари |
-| MQTT / MQTT-SN | IoT/цех | TCP / UDP | Телеметрія ESP32 → broker → SCADA |
-| AMQP | IT/черги | TCP | Надійні черги між сервісами (not поле!) |
+| DMX512 | Stage | RS485-250k | Light, smoke, stage winches |
+| KNX | Building | 30 V twisted pair | Office lighting/blinds/climate |
+| DALI-2 | Building/light | 2-wire 16 V | Addressable lamps, emergency light |
+| BACnet MS/TP-IP | Building/BMS | RS485 / IP | Ventilation, chillers, energy metering |
+| OPC-UA | Workshop/SCADA | TCP | History, alarms, MES/cloud gateway |
+| MQTT / MQTT-SN | IoT/workshop | TCP / UDP | ESP32 telemetry to broker to SCADA |
+| AMQP | IT/queues | TCP | Reliable queues between services (not the field!) |
 
-## Легенда пінів модуля
+## Module pin legend
 
-| MAX485 → DMX512 (перепрошивка!) | Призначення | Куди |
+| MAX485 to DMX512 (reflash!) | Purpose | Where |
 | --- | --- | --- |
 | VCC / GND | 5 in (MAX485) / 3.3 in (MAX3485!) | 5V / GND |
-| DI / RO | TX / RX UART | GPIO17 / GPIO16 (UART2 250 кбод 8N2!) |
-| DE + RE (міст!) | TX-режим завжди for DMX-передавача | VCC via 1 кОм (передавач!) / GPIO4 (приймач) |
-| A / B | DMX+ / DMX− (XLR-3: 1=GND, 2=−, 3=+) | Вита пара, 120 Ом on кінцях! |
+| DI / RO | UART TX / RX | GPIO17 / GPIO16 (UART2 250 kbaud 8N2!) |
+| DE + RE (bridge!) | TX mode always for DMX transmitter | VCC via 1 kOhm (transmitter!) / GPIO4 (receiver) |
+| A / B | DMX+ / DMX- (XLR-3: 1=GND, 2=-, 3=+) | Twisted pair, 120 Ohm on ends! |
 
-| XTR115 (петля) | Призначення | Куди |
+| XTR115 (loop) | Purpose | Where |
 | --- | --- | --- |
-| LOOP+ / LOOP− | Петля 7.5-36 in from цехового БЖ! | Цеховий БЖ + датчик |
-| VIN / IRET | Вхід напруги / повернення струму | Дільник from сенсора + GND петлі |
-| VREF 2.5 in | Опора/збудження моста | Міст тензодатчика |
-| VREG 5 in | Живлення зовнішнього ОП | ОП/сенсор (ліміт ~10 мА!) |
+| LOOP+ / LOOP- | 7.5-36 V loop from workshop PSU! | Workshop PSU + sensor |
+| VIN / IRET | Voltage input / current return | Divider from sensor + loop GND |
+| VREF 2.5 V | Reference/bridge excitation | Strain-gauge bridge |
+| VREG 5 V | External op-amp power | Op-amp/sensor (~10 mA limit!) |
 
-| Прийом 4-20 мА (шунт 165 Ом!) | Призначення | Куди |
+| 4-20 mA reception (165 Ohm shunt!) | Purpose | Where |
 | --- | --- | --- |
-| LOOP+ → R165 → LOOP− | 4 мА→0.66 in, 20 мА→3.30 in | R165 прецизійний 0.1%! |
-| Середина R → RC → ADC | 1 кОм + 100 нФ + TVS 3.6 in | GPIO36 (ADC1!) via повторювач |
-| GND петлі → GND ESP32 | Тільки via ізоляцію/диф! | Краще AMC1301/ISO124! |
+| LOOP+ to R165 to LOOP- | 4 mA to 0.66 V, 20 mA to 3.30 V | R165 precision 0.1%! |
+| R middle to RC to ADC | 1 kOhm + 100 nF + 3.6 V TVS | GPIO36 (ADC1!) via follower |
+| Loop GND to ESP32 GND | Only via isolation/diff! | Better AMC1301/ISO124! |
 
-| 0-10 in димер | Призначення | Куди |
+| 0-10 V dimmer | Purpose | Where |
 | --- | --- | --- |
-| MCP4725 VOUT 0-3.3 in | ЦАП I2C 0x60 | GPIO21 / GPIO22 |
-| LM358 ×3 | Підсилення 0-3.3 → 0-10 in | Живлення ОП 12-15 in! |
-| OUT 0-10 in / GND | До баласта/драйвера | Екран, TVS 12 in |
+| MCP4725 VOUT 0-3.3 V | I2C DAC 0x60 | GPIO21 / GPIO22 |
+| LM358 x3 | Gain 0-3.3 to 0-10 V | Op-amp supply 12-15 V! |
+| OUT 0-10 V / GND | To ballast/driver | Shield, 12 V TVS |
 
-| TRIAC + zero-cross (220 in!) | Призначення | Куди |
+| TRIAC + zero-cross (220 V!) | Purpose | Where |
 | --- | --- | --- |
-| H11AA1 AC1/AC2 | 220 in via 2×100 кОм 0.5 Вт! | Мережа L/N + запобіжник! |
-| H11AA1 OUT | Імпульс 100 Гц (кожен нуль!) | GPIO34 (вхід!) + pull-up |
-| MOC3021 LED | Керування (10-15 мА!) | GPIO25 via 330 Ом |
-| MOC3021 TRIAC | Запалювання BT136 | Gate BT136 + снабер! |
-| BT136 A1/A2 | Силовий key 220 in | L → навантаження → N, радіатор! |
+| H11AA1 AC1/AC2 | 220 V via 2x100 kOhm 0.5 W! | Mains L/N + fuse! |
+| H11AA1 OUT | 100 Hz pulse (each zero!) | GPIO34 (input!) + pull-up |
+| MOC3021 LED | Control (10-15 mA!) | GPIO25 via 330 Ohm |
+| MOC3021 TRIAC | BT136 firing | BT136 gate + snubber! |
+| BT136 A1/A2 | 220 V power switch | L to load to N, heatsink! |
 
-| MCP2518FD / TCAN4550 (CAN-FD) | Призначення | Куди |
+| MCP2518FD / TCAN4550 (CAN-FD) | Purpose | Where |
 | --- | --- | --- |
-| VCC / GND | 3.3 in | 3V3 / GND + 100 нФ ×2 |
-| SCK/SI/SO/CS | SPI 10-20 МГц | GPIO18/23/19/5 ([[EN/04-Interfaces/02-SPI.en| SPI]]) |
-| INT | Переривання кадрів | GPIO27 |
-| CANH / CANL | Шина FD, 120 Ом! | Вита пара, TVS |
-| STBY (TCAN4550) | Режим трансивера | GPIO (HIGH = standby) |
+| VCC / GND | 3.3 V | 3V3 / GND + 2x 100 nF |
+| SCK/SI/SO/CS | SPI 10-20 MHz | GPIO18/23/19/5 ([[EN/04-Interfaces/02-SPI.en|SPI]]) |
+| INT | Frame interrupts | GPIO27 |
+| CANH / CANL | FD bus, 120 Ohm! | Twisted pair, TVS |
+| STBY (TCAN4550) | Transceiver mode | GPIO (HIGH = standby) |
 
-| Ізольований RS485 | Призначення | Куди |
+| Isolated RS485 | Purpose | Where |
 | --- | --- | --- |
 | VCC-logic / GND-logic | 3.3 in ESP32 | 3V3 / GND |
-| DI / RO / DE/RE | UART + керування | GPIO17 / GPIO16 / GPIO4 |
-| VCC-iso / GND-iso | Ізольовані 5 in (B0505S!) | Польова сторона, окремий GND! |
-| A / B | Польова пара + TVS | Вита пара + 120 Ом |
+| DI / RO / DE/RE | UART + control | GPIO17 / GPIO16 / GPIO4 |
+| VCC-iso / GND-iso | Isolated 5 V (B0505S!) | Field side, separate GND! |
+| A / B | Field pair + TVS | Twisted pair + 120 Ohm |
 
-## Схема підключення
+## Connection schematic
 
-| ESP32 | CAN/CAN-FD | DMX/RS485-iso | 4-20 мА / 0-10 in | TRIAC/zero | Примітка |
+| ESP32 | CAN/CAN-FD | DMX/RS485-iso | 4-20 mA / 0-10 V | TRIAC/zero | Note |
 | --- | --- | --- | --- | --- | --- |
-| 3V3 | MCP2518FD VCC | Logic VCC | MCP4725 VCC | MOC LED via 330 Ом | Логіка 3.3 in |
-| 5V-iso | - | ISO VCC (B0505S!) | ADS/ОП цифра | - | Ізольовані 5 in! |
-| GND | GND | Logic GND | GND | GND логіки | Польовий GND окремо! |
-| GPIO18/19/23/5 | SPI CAN-FD | - | SPI ADS1256 | - | Шина SPI |
-| GPIO27 | CAN-FD INT | - | ADS DRDY | - | Переривання |
-| GPIO16/17 | - | RO/DI UART2 | - | - | UART2: DMX 250к 8N2! |
+| 3V3 | MCP2518FD VCC | Logic VCC | MCP4725 VCC | MOC LED via 330 Ohm | 3.3 V logic |
+| 5V-iso | - | ISO VCC (B0505S!) | ADS/op-amp digital | - | Isolated 5 V! |
+| GND | GND | Logic GND | GND | Logic GND | Field GND separate! |
+| GPIO18/19/23/5 | SPI CAN-FD | - | SPI ADS1256 | - | SPI bus |
+| GPIO27 | CAN-FD INT | - | ADS DRDY | - | Interrupts |
+| GPIO16/17 | - | RO/DI UART2 | - | - | UART2: DMX 250k 8N2! |
 | GPIO4 | - | DE+RE | - | - | HIGH=TX |
-| GPIO21/22 | - | - | MCP4725 I2C | - | ЦАП 0-10 in |
-| GPIO36 | - | - | Шунт 165 Ом → ADC! | - | 0.66-3.3 in |
-| GPIO34 | - | - | - | H11AA1 zero | Вхід 100 Гц |
-| GPIO25 | - | - | - | MOC3021 LED | Фаза 0-10 мс! |
-| CANH/L, A/B | Вита пара 120 Ом | Вита пара 120 Ом | Петля цехова | 220 in L/N | TVS + запобіжники! |
+| GPIO21/22 | - | - | MCP4725 I2C | - | 0-10 V DAC |
+| GPIO36 | - | - | 165 Ohm shunt to ADC! | - | 0.66-3.3 V |
+| GPIO34 | - | - | - | H11AA1 zero | 100 Hz input |
+| GPIO25 | - | - | - | MOC3021 LED | Phase 0-10 ms! |
+| CANH/L, A/B | 120 Ohm twisted pair | 120 Ohm twisted pair | Workshop loop | 220 V L/N | TVS + fuses! |
 
 ### ASCII schematic
 
@@ -157,20 +157,20 @@ original: 12-Moduli-zvyazku/10-Industrial.md
 ```mermaid
 graph LR
     ESP32["ESP32 SPI/UART2<br/>I2C ADC INT"]
-    CANFD["MCP2518FD SPI<br/>TCAN4550<br/>CAN-FD 8Мбіт"]
+    CANFD["MCP2518FD SPI<br/>TCAN4550<br/>CAN-FD 8Mbps"]
     COPEN["CANopen<br/>OD SDO/PDO<br/>NMT SYNC"]
-    DMX["MAX485 250к 8N2<br/>DMX512 512 кан<br/>XLR"]
-    LOOP["XTR115 4-20мА<br/>шунт 165Ом<br/>0.66-3.3V"]
-    DIM["MCP4725+LM358<br/>0-10V<br/>баласт"]
-    TRIAC["H11AA1 zero<br/>MOC3021 BT136<br/>220V ФАЗА!"]
-    ISO["ISO-RS485<br/>B0505S<br/>TVS 120Ом"]
-    SCADA["BACnet/OPC-UA<br/>MQTT-SN/AMQP<br/>SCADA/хмара"]
+    DMX["MAX485 250k 8N2<br/>DMX512 512 ch<br/>XLR"]
+    LOOP["XTR115 4-20mA<br/>165 Ohm shunt<br/>0.66-3.3V"]
+    DIM["MCP4725+LM358<br/>0-10V<br/>ballast"]
+    TRIAC["H11AA1 zero<br/>MOC3021 BT136<br/>220V PHASE!"]
+    ISO["ISO-RS485<br/>B0505S<br/>TVS 120 Ohm"]
+    SCADA["BACnet/OPC-UA<br/>MQTT-SN/AMQP<br/>SCADA/cloud"]
     ESP32 ---|"SPI"| CANFD
     CANFD ---|"CAN"| COPEN
     ESP32 ---|"UART2"| DMX
-    ESP32 ---|"ADC шунт"| LOOP
-    ESP32 ---|"I2C+ОП"| DIM
-    ESP32 ---|"zero+фаза"| TRIAC
+    ESP32 ---|"ADC shunt"| LOOP
+    ESP32 ---|"I2C+op-amp"| DIM
+    ESP32 ---|"zero+phase"| TRIAC
     ESP32 ---|"UART iso"| ISO
     ESP32 ---|"Ethernet/WiFi"| SCADA
 ```
@@ -344,14 +344,14 @@ while True:
     time.sleep_ms(500)
 ```
 
-### EtherCAT / PROFINET: чому ESP32 там гість
+### EtherCAT / PROFINET: why ESP32 is a guest there
 
-| Параметр | EtherCAT | PROFINET IRT |
+| Parameter | EtherCAT | PROFINET IRT |
 | --- | --- | --- |
-| Цикл | До 100 мкс, кадри «on льоту» | 250 мкс - 1 мс, синхронізований |
-| PHY | Звичайний Ethernet, але спец-контролер (LAN9252!) | Звичайний Ethernet + стек |
-| ESP32-роль | ТІЛЬКИ шлюз: LAN9252 per SPI → Modbus/MQTT далі | Шлюз/diagnostics, not учасник реального часу |
-| Практика | ESP32 + LAN9252 = EtherCAT-slave for телеметрії (not for керування осями!) |
+| Cycle | Up to 100 us, frames "on the fly" | 250 us - 1 ms, synchronized |
+| PHY | Plain Ethernet, but a special controller (LAN9252!) | Plain Ethernet + stack |
+| ESP32 role | ONLY gateway: LAN9252 over SPI to Modbus/MQTT further | Gateway/diagnostics, not a real-time party |
+| Practice | ESP32 + LAN9252 = EtherCAT slave for telemetry (not for axis control!) |
 
 ```text
 Чесна межа: мікросекундні цикли вимагають апаратного контролера і RTOS-стека
@@ -359,14 +359,14 @@ while True:
 Для керування приводами з ESP32 — CANopen (див. вище) або Modbus TCP.
 ```
 
-### EL817 - другий оптрон після PC817
+### EL817 - second optocoupler after PC817
 
-| Параметр | PC817 (Sharp) | EL817 (Everlight) |
+| Parameter | PC817 (Sharp) | EL817 (Everlight) |
 | --- | --- | --- |
-| Призначення | Універсальна оптоізоляція цифра/аналог | Pin-to-pin аналог PC817 |
-| CTR | 50-600% (ранги A-D) | 50-600% (ранги A-D) |
-| Напруга ізоляції | 5 кВ | 5 кВ |
-| Коли брати | that є in наявності - взаємозамінні; ранг CTR дивитись in маркуванні (C/D for малих струмів) |
+| Purpose | Universal digital/analog optoisolation | Pin-to-pin PC817 analog |
+| CTR | 50-600% (ranks A-D) | 50-600% (ranks A-D) |
+| Isolation voltage | 5 kV | 5 kV |
+| When to take | whatever is available - interchangeable; check CTR rank in marking (C/D for small currents) |
 
 ```text
 ESP32 GPIO ──[R 220–1к]──► LED оптопари ──► GND
@@ -378,21 +378,21 @@ R розрахувати: If = 5–10 мА (не 20 «за звичкою» — 
 
 | № | error | Symptom | Solution |
 | --- | --- | --- | --- |
-| 1 | Робота with 220 in without ізоляції/автомата | Удар струмом, пожежа | Автомат + індикатор + оптопари + закритий корпус; N/PE not плутати! |
-| 2 | MOC3041 for димування | «Тільки вкл/викл» | MOC3041 - zero-cross (реле!), for фазового димера - тільки MOC3021 (random-phase!) |
-| 3 | TRIAC without снабера on вентиляторі | Самовключення, гул | Снабер 100 Ом + 100 нФ + варистор; L-навантаження - TDA1085C або частотник! |
-| 4 | Zero on кожен напівперіод without фільтра | Мерехтіння 100 Гц | Фільтр + гістерезис фази; затримка строго 0-10 мс; RMT-таймер замість delay in ISR! |
-| 5 | DMX on 115200 8N1 | Прилади мовчать | DMX строго 250 кбод 8N2 + BREAK! DE передавача завжди HIGH! |
-| 6 | DMX without термінатора / 64 прилади | Мерехтіння каналів | 120 Ом on кінцях, ≤32 прилади on сегмент, далі - сплітер/підсилювач! |
-| 7 | Шунт 250 Ом for 5 in АЦП | ADC ESP32 вмер | for 3.3 in - строго 165 Ом (20 мА→3.3 in)! TVS 3.6 in + RC on вході! |
-| 8 | Петля живиться from ESP32 | 0 мА, датчик мовчить | Петля - from цехового 24 in! ESP32 тільки приймає via шунт/ізоляцію! |
-| 9 | 0-10 in from GPIO безпосередньо | Баласт not реагує/смердить | GPIO 3.3 in ≠ 10 in! ЦАП + ОП with живленням 12 in, спільна GND! |
-| 10 | CAN without другого вузла/термінатора | bus-off | Мінімум 2 вузли + 2×120 Ом; вимкнена bus CANH-CANL ≈ 60 Ом! |
-| 11 | CAN-FD on TWAI ESP32 | Немає FD-кадрів | ESP32-TWAI - тільки classic! FD - тільки MCP2518FD/TCAN4550 per SPI! |
-| 12 | Неізольований RS485 in цеху | Згорілий MAX485 + ESP32 | ISO1410/ADM2587E + B0505S + TVS; екран до PE in одній точці! |
-| 13 | KNX/DALI безпосередньо до GPIO | Згоріло все | KNX 30 in / DALI 16 in - тільки сертифіковані трансивери/шлюзи! |
-| 14 | OPC-UA прямо on ESP32 without TLS | Злами/падіння | OPC-UA - on шлюзі (RPi/ПК), ESP32 - MQTT/Modbus до шлюзу! |
-| 15 | PC817/EL817 without розрахунку If | 20 мА «for звичкою», деградація LED | If 5-10 мА for CTR-рангом; ранг дивитись in маркуванні |
+| 1 | Work with 220 V without isolation/breaker | Shock, fire | Breaker + indicator + optocouplers + closed enclosure; do not mix N/PE! |
+| 2 | MOC3041 for dimming | "Only on/off" | MOC3041 is zero-cross (relay!), for phase dimmer - only MOC3021 (random-phase!) |
+| 3 | TRIAC without snubber on a fan | Self-firing, hum | 100 Ohm + 100 nF snubber + varistor; L-load - TDA1085C or VFD! |
+| 4 | Zero on each half-period without filter | 100 Hz flicker | Filter + phase hysteresis; delay strictly 0-10 ms; RMT timer instead of delay in ISR! |
+| 5 | DMX on 115200 8N1 | Devices silent | DMX strictly 250 kbaud 8N2 + BREAK! Transmitter DE always HIGH! |
+| 6 | DMX without terminator / 64 devices | Channel flicker | 120 Ohm on ends, max 32 devices per segment, then - splitter/amplifier! |
+| 7 | 250 Ohm shunt for 5 V ADC | ESP32 ADC dead | for 3.3 V - strictly 165 Ohm (20 mA to 3.3 V)! 3.6 V TVS + RC on input! |
+| 8 | Loop powered from ESP32 | 0 mA, sensor silent | Loop - from workshop 24 V! ESP32 only receives via shunt/isolation! |
+| 9 | 0-10 V from GPIO directly | Ballast does not react/smells | GPIO 3.3 V is not 10 V! DAC + op-amp with 12 V supply, common GND! |
+| 10 | CAN without second node/terminator | bus-off | Minimum 2 nodes + 2x120 Ohm; powered-off bus CANH-CANL ~= 60 Ohm! |
+| 11 | CAN-FD on ESP32 TWAI | No FD frames | ESP32-TWAI is classic only! FD - only MCP2518FD/TCAN4550 over SPI! |
+| 12 | Non-isolated RS485 in the workshop | Burnt MAX485 + ESP32 | ISO1410/ADM2587E + B0505S + TVS; shield to PE in one point! |
+| 13 | KNX/DALI straight to GPIO | Everything burnt | KNX 30 V / DALI 16 V - only certified transceivers/gateways! |
+| 14 | OPC-UA straight on ESP32 without TLS | Break-ins/falls | OPC-UA - on the gateway (RPi/PC), ESP32 - MQTT/Modbus to gateway! |
+| 15 | PC817/EL817 without If calculation | 20 mA "by habit", LED degradation | If 5-10 mA by CTR rank; check rank in marking |
 
 ## Common issues
 
@@ -405,12 +405,12 @@ R розрахувати: If = 5–10 мА (не 20 «за звичкою» — 
 | Mains work is unsafe | No breaker, no isolation, N/PE mixed | Breaker plus indicator, optocouplers, closed box, qualified person only |
 ## Official sources
 
-- [CANopen - база знань and специфікації (CAN in Automation, CiA)](https://www.can-cia.org/can-knowledge/canopen) - об'єктний словник, SDO/PDO, NMT, профілі.
-- [XTR115 - даташит передавача 4-20 мА (Texas Instruments)](https://www.ti.com/product/XTR115) - петля 7.5-36 in, Vref 2.5 in, IRET.
-- [CAN Bus BFF - гайд with кодом MCP2515 (Adafruit Learn)](https://learn.adafruit.com/adafruit-can-bus-bff) - SPI→CAN, термінатор 120 Ом, 1 Мбіт.
-- [W5500 - документація Ethernet-чіпа for шлюзів (WIZnet Docs)](https://docs.wiznet.io/Product/Chip/Ethernet/W5500) - TCP/IP-стек for BACnet/OPC-UA/MQTT-шлюзів.
+- [CANopen - knowledge base and specs (CAN in Automation, CiA)](https://www.can-cia.org/can-knowledge/canopen) - object dictionary, SDO/PDO, NMT, profiles.
+- [XTR115 - 4-20 mA transmitter datasheet (Texas Instruments)](https://www.ti.com/product/XTR115) - 7.5-36 V loop, Vref 2.5 V, IRET.
+- [CAN Bus BFF - guide with MCP2515 code (Adafruit Learn)](https://learn.adafruit.com/adafruit-can-bus-bff) - SPI to CAN, 120 Ohm terminator, 1 Mbps.
+- [W5500 - Ethernet chip docs for gateways (WIZnet Docs)](https://docs.wiznet.io/Product/Chip/Ethernet/W5500) - TCP/IP stack for BACnet/OPC-UA/MQTT gateways.
 
-### Ізольований вимір високої напруги: AMC1301 (example)
+### Isolated high-voltage measurement: AMC1301 (example)
 
 ```text
 Задача: міряти 0–400V DC шину без гальванічного зв'язку з ESP32.
@@ -423,15 +423,15 @@ R розрахувати: If = 5–10 мА (не 20 «за звичкою» — 
 
 ## See also
 
-- [[Home.en|Головна карта довідника]]
-- [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en|RS485/CAN/Ethernet/Камера]]
-- [[EN/04-Interfaces/05-CAN-TWAI-RS485.en|CAN/TWAI/RS485 шини]]
-- [[EN/02-Power-Supply/01-Power-Rails.en|Ланцюги живлення]]
+- [[Home.en|Home reference map]]
+- [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en|RS485/CAN/Ethernet/Camera]]
+- [[EN/04-Interfaces/05-CAN-TWAI-RS485.en|CAN/TWAI/RS485 buses]]
+- [[EN/02-Power-Supply/01-Power-Rails.en|Power rails]]
 - [[EN/04-Interfaces/01-UART.en|UART bus]]
 - [[EN/04-Interfaces/02-SPI.en|SPI bus]]
-- [[EN/10-Sensors/25-Mag-IMU-2.en|Магнітометри/IMU-2]]
-- [[EN/10-Sensors/26-Light-UV-IRArray-ToF.en|Світло/УФ/тепловізори/ToF]]
-- [[EN/10-Sensors/27-Time-Mem-IO-DAC.en|RTC/пам'ять/IO/ЦАП]]
-- [[EN/12-Comm-Modules/10-Industrial.en|Ця нота (якір графа)]]
+- [[EN/10-Sensors/25-Mag-IMU-2.en|Magnetometers/IMU-2]]
+- [[EN/10-Sensors/26-Light-UV-IRArray-ToF.en|Light/UV/therm imagers/ToF]]
+- [[EN/10-Sensors/27-Time-Mem-IO-DAC.en|RTC/memory/IO/DAC]]
+- [[EN/12-Comm-Modules/10-Industrial.en|This note (graph anchor)]]
 - [[EN/13-Power-Modules/02-Level-Shifters.en|Level-shifters]]
 - [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]]

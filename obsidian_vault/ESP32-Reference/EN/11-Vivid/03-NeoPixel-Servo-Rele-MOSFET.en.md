@@ -32,7 +32,7 @@ Basic ESP32 actuators: addressable WS2812B LEDs (NeoPixel) for indication/backli
 | WS2812 strip | Purpose |
 | --- | --- |
 | 5V (red) | 5 V from separate PSU (not from board at >5 LEDs!) |
-| DIN | DATA on GPIO through 330 Ом |
+| DIN | DATA from GPIO through 330 Ohm |
 | GND | Common GND with ESP32 and PSU |
 
 | SG90 | Color | Purpose |
@@ -41,9 +41,9 @@ Basic ESP32 actuators: addressable WS2812B LEDs (NeoPixel) for indication/backli
 | Red | 5 V | Separate PSU 5 V / 1 A+ |
 | Orange/yellow | Signal | PWM 50 Hz on GPIO |
 
-| Реле-module (low-level trigger) | Purpose |
+| Relay module (low-level trigger) | Purpose |
 | --- | --- |
-| VCC | 5 in котушки |
+| VCC | 5 V coil |
 | IN | GPIO (LOW = relay ON); better via transistor/inversion |
 | GND | ground |
 | JD-VCC (jumper) | Remove jumper → separate coil supply for isolation |
@@ -62,12 +62,12 @@ Basic ESP32 actuators: addressable WS2812B LEDs (NeoPixel) for indication/backli
 | --- | --- | --- |
 | GND | Servo GND | common ground |
 | 5V PSU | Servo VCC | Separate PSU; 470 uF capacitor in parallel |
-| GPIO14 | Signal | PWM 50 Гц, 500-2400 мкс |
+| GPIO14 | Signal | PWM 50 Hz, 500-2400 us |
 
-| ESP32 | Реле SRD-05V | Note |
+| ESP32 | SRD-05V relay | Note |
 | --- | --- | --- |
 | GPIO12 | IN | LOW turns on; at boot GPIO12 is strapping, better GPIO16/17 |
-| 5V | VCC (або JD-VCC) | Котушка 5 in |
+| 5V | VCC (or JD-VCC) | 5 V coil |
 | GND | GND | with JD-VCC isolation - separate grounds |
 
 | ESP32 | IRLZ44N (N-channel, low-side) | Note |
@@ -222,7 +222,7 @@ relay.value(1)                      # OFF
 
 ## Official sources
 
-- [NeoPixel strip - live photo (Adafruit)](https://www.adafruit.com/product/1426) - product page with photo; WS2812 datasheet (WorldSemi) - `check manually`.
+- [NeoPixel strip - live photo (Adafruit)](https://www.adafruit.com/product/1426) - product page with photo; WS2812 datasheet (WorldSemi) - see manufacturer page.
 - [NeoPixel Uberguide with code (Adafruit Learn)](https://learn.adafruit.com/adafruit-neopixel-uberguide) - power, timings, effects.
 - [Servo + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-servo-motor-web-server-arduino-ide/) - SG90, control.
 - [Relay + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-relay-module-ac-web-server/) - relay and MOSFET load switching.

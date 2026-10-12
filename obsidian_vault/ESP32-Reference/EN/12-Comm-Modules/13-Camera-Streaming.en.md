@@ -1,6 +1,6 @@
 ---
-description: ESP32-S3 with PSRAM + OV2640 - найдешевша WiFi-камера: MJPEG-стрим in браузері,; показує схеми, code and таблиці.; shows schematics, code and tables.
-title: Камера OV2640 - MJPEG-стрим, RTSP, QR-AprilTag, Timelapse, Telegram
+description: ESP32-S3 with PSRAM + OV2640 - the cheapest WiFi camera: MJPEG stream in the browser; shows schematics, code and tables.
+title: OV2640 camera - MJPEG stream, RTSP, QR-AprilTag, Timelapse, Telegram
 tags: [esp32, camera, ov2640, mjpeg, rtsp, qr, apriltag, telegram, timelapse, psram]
 category: Moduli
 lang: en
@@ -9,148 +9,148 @@ date: 2026-10-10
 original: 12-Moduli-zvyazku/13-Camera-Streaming.md
 ---
 
-# Камера OV2640 - MJPEG-стрим, RTSP, QR/AprilTag, Timelapse, Telegram
+# OV2640 camera - MJPEG stream, RTSP, QR/AprilTag, Timelapse, Telegram
 
 ## Purpose
 
-ESP32-S3 with PSRAM + OV2640 - найдешевша WiFi-камера: MJPEG-стрим in браузері,
-одиночні кадри `/capture`, RTSP for відеореєстраторів, розпізнавання QR and AprilTag
-прямо on борту, timelapse on SD-карту та відправка фото in Telegram. Нота покриває
-налаштування `esp32-camera`, різницю `/capture` vs `/stream`, вимоги до світла
-and фокуса та Ready коди стримера трьома мовами.
+ESP32-S3 with PSRAM + OV2640 is the cheapest WiFi camera: MJPEG stream in the browser,
+single frames `/capture`, RTSP for recorders, QR and AprilTag recognition
+right on board, timelapse to SD card and sending photos to Telegram. Note covers
+the `esp32-camera` setup, the `/capture` vs `/stream` difference, light requirements
+and focus plus ready streamer codes in three languages.
 
-## Характеристики
+## Characteristics
 
-| Режим | Шлях | Формат | PSRAM | Кадр/с | Застосування |
+| Mode | Path | Format | PSRAM | FPS | Application |
 | --- | --- | --- | --- | --- | --- |
-| Фото | `/capture` | JPEG | бажано | for запитом | Telegram, timelapse, детекція |
-| Стрим | `/stream` | MJPEG multipart | обов'язково | 5-25 | перегляд in браузері |
-| RTSP | `:8554/mjpeg/1` | RTP/JPEG | обов'язково | 5-15 | VLC, реєстратор, Home Assistant |
-| QR-скан | кадр in пам'яті | GRAYSCALE | бажано | 2-5 | коди доступу, маркування |
-| AprilTag | кадр in пам'яті | GRAYSCALE | бажано | 1-5 | навігація роботів |
-| Timelapse | JPEG on SD | JPEG | обов'язково | 1 / N с | будівництво, рослини |
+| Photo | `/capture` | JPEG | desirable | on request | Telegram, timelapse, detection |
+| Stream | `/stream` | MJPEG multipart | mandatory | 5-25 | viewing in browser |
+| RTSP | `:8554/mjpeg/1` | RTP/JPEG | mandatory | 5-15 | VLC, recorder, Home Assistant |
+| QR scan | frame in memory | GRAYSCALE | desirable | 2-5 | access codes, marking |
+| AprilTag | frame in memory | GRAYSCALE | desirable | 1-5 | robot navigation |
+| Timelapse | JPEG to SD | JPEG | mandatory | 1 / N s | construction, plants |
 
-Залізо-мінімум: плата ESP32-S3 with PSRAM (S3R8 and більше), OV2640 (2 Мп, 1600×1200),
-живлення 5 in / 1 but (стрим + WiFi їдять 300-500 мА піками), конденсатор 47-100 мкФ
-for живленням камери. without PSRAM - лише QQVGA and ніякого стримінгу, деталі пінів -
-див. [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]].
+Hardware minimum: an ESP32-S3 board with PSRAM (S3R8 and bigger), OV2640 (2 MP, 1600x1200),
+5 V / 1 A power supply (stream + WiFi eat 300-500 mA in peaks), a 47-100 uF capacitor
+for camera power. Without PSRAM - only QQVGA and no streaming, pin details -
+see [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]].
 
-> OV2640 має фіксований фокус with заводу: різкість on ~50 см-нескінченність.
-> for QR зблизька об'єктив треба ВИКРУТИТИ (проти годинникової on 1/4-1/2 оберта)
-> and зафіксувати краплею лаку. without цього коди with 10 см not читаються взагалі.
-> OV5640 (5 Мп, автофокусні версії) - апгрейд OV2640 on therefore самому DVP-сокеті,
-> але вимагає більше PSRAM and дає більший кадр (менший FPS on therefore самому WiFi).
+> OV2640 has factory fixed focus: sharpness at ~50 cm to infinity.
+> For close-up QR the lens must be UNSCREWED (counterclockwise by 1/4-1/2 turn)
+> and fixed with a drop of lacquer. Without this, codes from 10 cm are not read at all.
+> OV5640 (5 MP, autofocus versions) is an OV2640 upgrade on the same DVP socket,
+> but requires more PSRAM and gives a bigger frame (lower FPS on the same WiFi).
 
-## MJPEG-стрим with OV2640
+## MJPEG stream with OV2640
 
-Архітектура `esp32-camera` + `esp_httpd`:
+`esp32-camera` + `esp_httpd` architecture:
 
-- **part-асинхрон:** HTTP-сервер віддає `multipart/x-mixed-replace;boundary=...`,
-  кожен part - JPEG-кадр із заголовком `Content-Length`. Браузер малює кадри
-  per мірі надходження, окремий потік not потрібен.
-- **Буфер PSRAM:** `fb_count = 2` (подвійна буферизація: поки один кадр летить
-  in WiFi, сенсор пише наступний). `jpeg_quality = 10-12` (менше число = краща
-  якість = більший кадр = менше FPS). Роздільність стріму SVGA (800×600) -
-  золота середина між деталізацією and FPS; UXGA душить WiFi.
-- **`/capture` vs `/stream`:** `/capture` = один `esp_camera_fb_get()` + відповідь
-  `image/jpeg` (for Telegram/timelapse/детекції); `/stream` = нескінченний цикл
-  in хендлері (for очей). not смикати `/capture` під час активного `/stream` on
-  одному fb - буде `fb alloc failed`, беріть `fb_count = 2`.
-- **PSRAM DMA (S3):** `CONFIG_CAMERA_PSRAM_DMA` - прискорює запис кадрів in PSRAM;
-  without нього JPEG SVGA все одно працює, але RGB/GRAYSCALE великих розмірів рветься.
+- **part-async:** the HTTP server serves `multipart/x-mixed-replace;boundary=...`,
+  each part is a JPEG frame with a `Content-Length` header. The browser draws frames
+  as they arrive, no separate thread needed.
+- **PSRAM buffer:** `fb_count = 2` (double buffering: while one frame flies
+  to WiFi, the sensor writes the next). `jpeg_quality = 10-12` (lower number = better
+  quality = bigger frame = less FPS). Stream resolution SVGA (800x600) -
+  the golden middle between detail and FPS; UXGA chokes WiFi.
+- **`/capture` vs `/stream`:** `/capture` = one `esp_camera_fb_get()` + an
+  `image/jpeg` response (for Telegram/timelapse/detection); `/stream` = an endless loop
+  in the handler (for eyes). Do not pull `/capture` during an active `/stream` on
+  one fb - you get `fb alloc failed`, take `fb_count = 2`.
+- **PSRAM DMA (S3):** `CONFIG_CAMERA_PSRAM_DMA` - speeds frame writes to PSRAM;
+  without it SVGA JPEG still works, but RGB/GRAYSCALE of big sizes tears.
 
-### Pin legend камерної плати (ESP32-S3 + OV2640, типово Freenove)
+### Pin legend of camera board (ESP32-S3 + OV2640, typically Freenove)
 
-| Пін плати | Призначення | Тип | Куди / примітка |
+| Board pin | Purpose | Type | Where / note |
 | --- | --- | --- | --- |
-| 5V / 3V3 | Живлення камери | Силове | 5 in from USB/BEC + конденсатор 47-100 мкФ; 3V3-пін плати not тягне стрим |
-| GND | Земля | Земля | Коротка земля, спільна with WiFi-антеною (not різати полігон!) |
-| GPIO38/39 | SCCB SCL/SDA | I2C конфігурації | Регістри сенсора; швидкість 100 кГц достатньо |
-| GPIO40/41/42 | VSYNC/HREF/PCLK | Синхронізація DVP | Короткі доріжки, not вести поруч with антеною |
-| GPIO8-GPIO20 | D0-D7 дані DVP | Паралельна bus | Мапа залежить from плати - звіряти with `camera_pins.h`! |
-| GPIO45 | XCLK 20 МГц | Мастер-клок | Генерує S3; тремтіння = плаваючі кольори |
-| BOOT/USB | Прошивка | USB-Serial | Утримати BOOT at заливці, якщо немає auto-reset |
-| SD (SPI/SDIO) | Карта пам'яті | SD 1-біт/4-біт | Timelapse and буфер фото; див. [[EN/08-Memory/02-Filesystem.en| Файлові системи]] |
+| 5V / 3V3 | Camera power | Power | 5 V from USB/BEC + 47-100 uF capacitor; the 3V3 pin of the board does not pull the stream |
+| GND | Ground | Ground | Short ground, common with WiFi antenna (do not cut the polygon!) |
+| GPIO38/39 | SCCB SCL/SDA | I2C config | Sensor registers; 100 kHz speed is enough |
+| GPIO40/41/42 | VSYNC/HREF/PCLK | DVP sync | Short traces, do not route near the antenna |
+| GPIO8-GPIO20 | D0-D7 DVP data | Parallel bus | Map depends on the board - check against `camera_pins.h`! |
+| GPIO45 | XCLK 20 MHz | Master clock | S3 generates; jitter = floating colors |
+| BOOT/USB | Firmware | USB-Serial | Hold BOOT during flashing if there is no auto-reset |
+| SD (SPI/SDIO) | Memory card | SD 1-bit/4-bit | Timelapse and photo buffer; see [[EN/08-Memory/02-Filesystem.en|File systems]] |
 
-Пояснення:
+Explanation:
 
-- **Конденсатор for живленням:** пік струму сенсора + WiFi TX просаджує шину -
-  коричневий `brownout` and ребут саме in момент `/capture`. 100 мкФ біля роз'єму камери.
-- **Мапа DVP:** in різних вендорів (Freenove/Waveshare/Espressif) D0-D7 сидять on
-  різних GPIO - брати `CAMERA_MODEL_...` with прикладу CameraWebServer під СВОЮ плату.
-- **Антенна зона:** not класти камеру/дроти поверх керамічної антени S3 -
-  падає RSSI and рветься стрим.
+- **Power capacitor:** sensor current peak + WiFi TX sags the bus -
+  brown `brownout` and reboot exactly at `/capture`. 100 uF near the camera connector.
+- **DVP map:** different vendors (Freenove/Waveshare/Espressif) seat D0-D7 on
+  different GPIOs - take `CAMERA_MODEL_...` from the CameraWebServer example for YOUR board.
+- **Antenna zone:** do not place the camera/wires over the S3 ceramic antenna -
+  RSSI drops and the stream tears.
 
-## RTSP оглядово (Micro-RTSP)
+## RTSP overview (Micro-RTSP)
 
-MJPEG in браузері - for людей; for машин (VLC, motionEye, реєстратор) - RTSP.
-Бібліотека Micro-RTSP (geeksville) - RTSP-сервер for ESP32: слухає TCP 8554,
-on `broadcastCurrentFrame()` віддає JPEG-кадр how RTP-пак.wav потік.
+MJPEG in the browser is for people; for machines (VLC, motionEye, recorder) - RTSP.
+The Micro-RTSP library (geeksville) is an RTSP server for ESP32: listens on TCP 8554,
+on `broadcastCurrentFrame()` serves a JPEG frame like an RTP packet stream.
 
-- Один клієнт одночасно (обмеження бібліотеки) - for одного реєстратора ок.
-- Затримка VLC for замовчуванням ~1 с (буфер `--network-caching`); for «живого»
-  зменшити кеш клієнта, but not ганяти FPS.
-- RTSP and HTTP-стрим одночасно - тільки with `fb_count = 2` and SVGA або нижче,
-  інакше сторожа (`task watchdog`) вбиває цикл.
-- URL типово `rtsp://<ip>:8554/mjpeg/1`.
+- One client at a time (library limit) - OK for one recorder.
+- VLC delay by default ~1 s (the `--network-caching` buffer); for "live"
+  lower the client cache, but do not chase FPS.
+- RTSP and HTTP stream at once - only with `fb_count = 2` and SVGA or lower,
+  otherwise the watchdog (`task watchdog`) kills the loop.
+- URL typically `rtsp://<ip>:8554/mjpeg/1`.
 
-## QR / qrcode + AprilTag - кадри in GRAYSCALE
+## QR / qrcode + AprilTag - GRAYSCALE frames
 
-Детекція працює not with JPEG, but with розпакованим кадром in відтінках сірого:
+Detection works not with JPEG, but with an unpacked grayscale frame:
 
-1. `esp_camera_fb_get()` with `pixel_format = PIXFORMAT_GRAYSCALE`, роздільність
-   QVGA (320×240) - швидко and вистачає for кодів до 1-2 м.
-2. QR-декодер (quirc-порт / Nayuki-генератор for ПЕЧАТКИ кодів, декодер - quirc)
-   їсть буфер безпосередньо; JPEG-кадр спочатку `frame2jpg`→jpg2gray - повільно, уникати.
-3. AprilTag (бібліотека AprilTag, сімейство `tag36h11`): точне 3D-положення мітки
-   відносно камери - навігація роботів, посадка дрона. Працює on S3 ~1-5 FPS
-   in QVGA; більше роздільність = квадратичне зростання часу.
-4. Світло: детекторам потрібна рівномірна освітленість without відблисків;
-   in темряві вмикати підсвітний LED плати (GPIO, PWM-диммінг) або ІЧ-підсвітку.
+1. `esp_camera_fb_get()` with `pixel_format = PIXFORMAT_GRAYSCALE`, resolution
+   QVGA (320x240) - fast and enough for codes up to 1-2 m.
+2. QR decoder (quirc port / Nayuki generator for PRINTING codes, decoder is quirc)
+   eats the buffer directly; a JPEG frame first needs `frame2jpg` to jpg2gray - slow, avoid.
+3. AprilTag (AprilTag library, `tag36h11` family): exact 3D position of the tag
+   relative to the camera - robot navigation, drone landing. Works on S3 at ~1-5 FPS
+   in QVGA; bigger resolution = quadratic time growth.
+4. Light: detectors need even illumination without glare;
+   in darkness turn on the board backlight LED (GPIO, PWM dimming) or IR backlight.
 
-> not ганяйте детекцію on кожному кадрі стріму: окремий FreeRTOS-таск with періодом
-> 200-500 мс + останній доступний fb (`CAMERA_GRAB_LATEST`). Інакше стрим
-> перетвориться on слайд-шоу.
+> Do not chase detection on every stream frame: a separate FreeRTOS task with a
+> 200-500 ms period + the latest available fb (`CAMERA_GRAB_LATEST`). Otherwise the stream
+> turns into a slideshow.
 
 ## Timelapse on SD
 
-Цикл: глибокий сон (або `delay`) N секунд → пробудження → `/capture` →
-запис `/timelapse/IMG_xxxx.jpg` on SD → назад in сон. Нюанси:
+Loop: deep sleep (or `delay`) N seconds → wake up → `/capture` →
+write `/timelapse/IMG_xxxx.jpg` to SD → back to sleep. Nuances:
 
-- Імена файлів with інкрементом in NVS/EEPROM, щоб not перезаписувати після ребута.
-- SD in режимі 1-біт вистачає (JPEG ~50-150 кБ), живлення карти - стабільні 3.3 in.
-- Довгий timelapse (доба+) - живлення from павербанка via 5V-пін, USB-порт
-  комп'ютера not потягне піки WiFi (хоча timelapse зазвичай without WiFi).
-- Збірка відео: `ffmpeg -framerate 30 -i IMG_%04d.jpg out.mp4` вже on ПК.
-- Файлова система and знос карти - див. [[EN/08-Memory/02-Filesystem.en|Файлові системи]].
+- File names with increment in NVS/EEPROM to not overwrite after reboot.
+- SD in 1-bit mode is enough (JPEG ~50-150 KB), card power - stable 3.3 V.
+- Long timelapse (day+) - power from a powerbank via the 5V pin, a computer
+  USB port will not pull WiFi peaks (though timelapse is usually without WiFi).
+- Video assembly: `ffmpeg -framerate 30 -i IMG_%04d.jpg out.mp4` on the PC.
+- File system and card wear - see [[EN/08-Memory/02-Filesystem.en|File systems]].
 
-## Telegram-фото
+## Telegram photo
 
-ESP32 шле фото via Bot API `sendPhoto` (multipart/form-data, ліміт ~10 МБ,
-наші JPEG - сотні кБ): тригер (PIR/кнопка/команда `/photo` via `getUpdates`)
+ESP32 sends photos via Bot API `sendPhoto` (multipart/form-data, ~10 MB limit,
+our JPEGs are hundreds of KB): trigger (PIR/button/`/photo` command via `getUpdates`)
 → `/capture` → HTTPS POST on `https://api.telegram.org/bot<token>/sendPhoto`.
-Нюанси: потрібен коректний час (NTP, інакше TLS рветься), токен зберігати in NVS,
-but not in коді; for відео - `sendVideo` not тягне MJPEG, тільки MP4 (ESP32 not кодує -
-not використовувати). Сповіщення/голосові - див. [[EN/15-Protocols/02-Notify-Voice.en]].
+Nuances: correct time needed (NTP, otherwise TLS breaks), store the token in NVS,
+but not in code; for video - `sendVideo` does not pull MJPEG, only MP4 (ESP32 does not encode -
+do not use). Notifications/voice - see [[EN/15-Protocols/02-Notify-Voice.en]].
 
-## Вимоги освітлення and фокуса
+## Lighting and focus requirements
 
-- **Світло:** OV2640 without ІЧ-фільтра «бачить» in темряві погано; мінімум for кольору -
-  звичайне кімнатне освітлення. on вулиці вночі - ІЧ-прожектор 850 нм + зняти
-  ІЧ-фільтр (незворотно!) або чутливіший OV5640.
-- **Експозиція:** `sensor->set_exposure_ctrl(1)`, нічний режим `set_night_mode(1)`;
-  автоекспозиція «дихає» at timelapse - for рівних кадрів зафіксувати
-  `set_aec_value()` після прогріву 2 с.
-- **Фокус:** заводський - дальній; QR/макро - викрутити об'єктив and зафіксувати.
-  check: роздрукувати QR 5×5 см, дистанція 20 см, має читатися миттєво.
-- **Баланс білого:** авто (+сонячно/хмарно пресети) - for timelapse зафіксувати
-  `set_whitebal(1)` + `set_wb_mode()`, інакше кадри «стрибають» for кольором.
+- **Light:** OV2640 without an IR filter "sees" poorly in darkness; minimum for color -
+  plain room lighting. Outdoors at night - 850 nm IR spotlight + remove
+  the IR filter (irreversible!) or a more sensitive OV5640.
+- **Exposure:** `sensor->set_exposure_ctrl(1)`, night mode `set_night_mode(1)`;
+  auto exposure "breathes" in timelapse - for even frames fix
+  `set_aec_value()` after a 2 s warm-up.
+- **Focus:** factory - far; QR/macro - unscrew the lens and fix it.
+  Check: print a 5x5 cm QR, 20 cm distance, must read instantly.
+- **White balance:** auto (+sunny/cloudy presets) - for timelapse fix
+  `set_whitebal(1)` + `set_wb_mode()`, otherwise frames "jump" in color.
 
-## Схема
+## Schematic
 
 ![[assets/img/camera-streaming-mjpeg-scheme.png|600]]
-*Fig. S3-камера: MJPEG-стрим in браузер, RTSP in реєстратор, фото in Telegram and on SD.
-Місце під схему - див. [[assets/README]].*
+*Fig. S3 camera: MJPEG stream to browser, RTSP to recorder, photos to Telegram and SD.
+Space for schematic - see [[assets/README]].*
 
 ### ASCII schematic
 
@@ -174,16 +174,16 @@ WiFi STA ──► /capture (JPEG, один кадр)
 
 ```mermaid
 graph LR
-    OV[OV2640 DVP<br/>XCLK 20МГц] -->|GPIO DVP| S3[ESP32-S3<br/>PSRAM fb×2]
-    S3 -->|/stream MJPEG| BR((Браузер))
-    S3 -->|RTSP 8554| VLC((VLC/реєстратор))
+    OV[OV2640 DVP<br/>XCLK 20MHz] -->|GPIO DVP| S3[ESP32-S3<br/>PSRAM fbx2]
+    S3 -->|/stream MJPEG| BR((Browser))
+    S3 -->|RTSP 8554| VLC((VLC/recorder))
     S3 -->|sendPhoto HTTPS| TG((Telegram Bot API))
-    S3 -->|JPEG| SD[(SD-карта<br/>timelapse)]
-    PIR[PIR/кнопка] -->|тригер| S3
-    S3 -->|GRAYSCALE QVGA| DET{QR/AprilTag<br/>таск 2-5 Гц}
+    S3 -->|JPEG| SD[(SD card<br/>timelapse)]
+    PIR[PIR/button] -->|trigger| S3
+    S3 -->|GRAYSCALE QVGA| DET{QR/AprilTag<br/>task 2-5 Hz}
 ```
 
-## Code ESP-IDF - MJPEG-стример
+## Code ESP-IDF - MJPEG streamer
 
 ```c
 #include "esp_camera.h"
@@ -252,7 +252,7 @@ void app_main(void) {
 }
 ```
 
-## Code Arduino - стример + Telegram-фото
+## Code Arduino - streamer + Telegram photo
 
 ```cpp
 #include "esp_camera.h"
@@ -346,38 +346,38 @@ while True:
     time.sleep(30)
 ```
 
-### GC0328 - бюджетна VGA-камера
+### GC0328 - budget VGA camera
 
-| Параметр | GC0328 |
+| Parameter | GC0328 |
 | --- | --- |
-| Сенсор | GalaxyCore, 640×480 VGA, rolling shutter |
-| Інтерфейс | DVP (how OV2640, ті ж піни ESP32-CAM) |
-| Живлення | 2.8 in ядро (on платі свій LDO), I/O 1.8/2.8 in |
-| Коли брати | Заміна OV2640 там, де ціна важливіша for якість картинки; перед покупкою verify підтримку сенсора in поточній версії драйвера esp32-camera |
+| Sensor | GalaxyCore, 640x480 VGA, rolling shutter |
+| Interface | DVP (like OV2640, same ESP32-CAM pins) |
+| Power supply | 2.8 V core (own LDO on board), I/O 1.8/2.8 V |
+| When to take | OV2640 replacement where price matters more than picture quality; before buying verify sensor support in the current esp32-camera driver version |
 
-> GC0328 vs OV2640: дешевша, гірша чутливість in темряві, той же роз'єм - перепайка 1-in-1 on платах ESP32-CAM клонів.
+> GC0328 vs OV2640: cheaper, worse sensitivity in darkness, same connector - 1-to-1 re-soldering on ESP32-CAM clone boards.
 
 ## typical errors
 
-1. **`fb alloc failed` / ребут on UXGA** → немає PSRAM або він вимкнений in menuconfig.
-   Тільки плата S3R8+, PSRAM 80 МГц + конденсатор живлення.
-2. **Коричневий brownout at `/capture`** → пік WiFi+сенсор. Конденсатор 100 мкФ,
-   живлення 5 in / 1 but, короткі дроти.
-3. **Білий/рожевий кадр, смуги** → неправильна мапа D0-D7 (чужа плата in `CAMERA_MODEL`)
-   або довгі «соплі» DVP. Взяти мапу вендора плати.
-4. **GC0328 замість OV2640 without зміни драйвера** → чорний кадр. Сенсори not взаємозамінні прошивкою: SCCB-профіль and мапа пінів під конкретний сенсор.
-5. **Стрим 1 FPS** → UXGA + quality 5 + один fb. SVGA, quality 10-12, `fb_count = 2`.
-6. **`/capture` під час `/stream` вішає** → один fb on двох споживачів. `fb_count = 2`
+1. **`fb alloc failed` / reboot on UXGA** → no PSRAM or it is off in menuconfig.
+   Only an S3R8+ board, 80 MHz PSRAM + power capacitor.
+2. **Brown brownout on `/capture`** → WiFi+sensor peak. 100 uF capacitor,
+   5 V / 1 A power supply, short wires.
+3. **White/pink frame, stripes** → wrong D0-D7 map (foreign board in `CAMERA_MODEL`)
+   or long DVP "snot". Take the vendor map of the board.
+4. **GC0328 instead of OV2640 without driver change** → black frame. Sensors are not firmware-interchangeable: SCCB profile and pin map for the specific sensor.
+5. **1 FPS stream** → UXGA + quality 5 + one fb. SVGA, quality 10-12, `fb_count = 2`.
+6. **`/capture` during `/stream` hangs** → one fb for two consumers. `fb_count = 2`
    - `CAMERA_GRAB_LATEST`.
-7. **QR not читається зблизька** → заводський фокус on даль. Викрутити об'єктив,
-   зафіксувати лаком; кадри for детекції - GRAYSCALE QVGA, not JPEG!
-8. **Telegram: TLS handshake failed** → not виставлений час. Спочатку NTP-синхронізація,
-   потім HTTPS.
-9. **RTSP затримка секунди** → буфер VLC, not ESP32. Зменшити network-caching клієнта.
-10. **Timelapse «стрибає» for кольором** → авто-WB/експозиція. Зафіксувати WB and AEC
-   після прогріву.
-11. **Сторожевой task watchdog in стрим-циклі** → немає поступок планувальнику at RTSP +
-    детекція in одному ядрі. Детекцію - окремим таском with паузою, див. example вище.
+7. **QR not read up close** → factory focus at far. Unscrew the lens,
+   fix with lacquer; frames for detection - GRAYSCALE QVGA, not JPEG!
+8. **Telegram: TLS handshake failed** → time not set. First NTP sync,
+   then HTTPS.
+9. **RTSP seconds of delay** → VLC buffer, not ESP32. Lower the client network-caching.
+10. **Timelapse "jumps" in color** → auto-WB/exposure. Fix WB and AEC
+    after warm-up.
+11. **Watchdog task watchdog in the stream loop** → no scheduler yields with RTSP +
+     detection in one core. Detection - a separate task with a pause, see example above.
 
 ## Common issues
 
@@ -390,19 +390,19 @@ while True:
 | Telegram photo rejected | File over bot size limit or wrong format | Downscale to 1280 max, send JPEG under 10 MB |
 ## Official sources
 
-- [OV2640 - OmniVision](https://www.ovt.com/sensors/OV2640) - 2 Мп, DVP, формати виводу.
-- [OV5640 - OmniVision](https://www.ovt.com/sensors/OV5640) - 5 Мп, автофокус-версії.
-- [esp32-camera - драйвер and приклади (Espressif)](https://github.com/espressif/esp32-camera) - init, fb_count, PSRAM DMA, MJPEG-хендлери.
-- [Micro-RTSP - RTSP-сервер for ESP32](https://github.com/geeksville/Micro-RTSP) - OV2640Streamer, broadcastCurrentFrame.
-- [Telegram Bot API - sendPhoto](https://core.telegram.org/bots/api) - multipart-відправка фото, ліміти.
-- [AprilTag - візуальні мітки (UMich)](https://april.eecs.umich.edu/software/apriltag) - сімейства тегів, 3D-поза.
-- [QR-Code-generator - генерація QR (Nayuki)](https://github.com/nayuki/QR-Code-generator) - друк власних кодів (C/C++, MIT).
+- [OV2640 - OmniVision](https://www.ovt.com/sensors/OV2640) - 2 MP, DVP, output formats.
+- [OV5640 - OmniVision](https://www.ovt.com/sensors/OV5640) - 5 MP, autofocus versions.
+- [esp32-camera - driver and examples (Espressif)](https://github.com/espressif/esp32-camera) - init, fb_count, PSRAM DMA, MJPEG handlers.
+- [Micro-RTSP - RTSP server for ESP32](https://github.com/geeksville/Micro-RTSP) - OV2640Streamer, broadcastCurrentFrame.
+- [Telegram Bot API - sendPhoto](https://core.telegram.org/bots/api) - multipart photo sending, limits.
+- [AprilTag - visual tags (UMich)](https://april.eecs.umich.edu/software/apriltag) - tag families, 3D pose.
+- [QR-Code-generator - QR generation (Nayuki)](https://github.com/nayuki/QR-Code-generator) - print own codes (C/C++, MIT).
 
 ## See also
 
 - [[EN/Home.en]]
 - [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]]
-- [[EN/08-Memory/02-Filesystem.en|Файлові системи]]
+- [[EN/08-Memory/02-Filesystem.en|File systems]]
 - [[EN/15-Protocols/02-Notify-Voice.en]]
 - [[EN/12-Comm-Modules/12-RC-Protocols.en]]
 - [[EN/11-Vivid/12-LVGL-SquareLine.en]]

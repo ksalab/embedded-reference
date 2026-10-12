@@ -13,35 +13,35 @@ original: 12-Moduli-zvyazku/01-RC522-RFID.md
 
 ## Purpose
 
-RC522 RFID (MFRC522): contactless tags 13.56 МГц over SPI - reading UID, sector access, lock/account control.
+RC522 RFID (MFRC522): contactless tags 13.56 MHz over SPI - reading UID, sector access, lock/account control.
 
 > [!warning] Critical: 3.3V only! NOT 5V! 5V power kills the chip.
 
-Specifications: NXP MFRC522, 13.56 MHz, ISO14443A, SPI до 10 МГц. Applications - СКУД, мітки, оплата-прототипи; живлення строго 3.3V. Reading Mifare Classic card UIDs, working with sectors via KeyA/KeyB, range - a few centimeters. Libraries - MFRC522 for Arduino та and analogs for ESP-IDF/MicroPython.
+Specifications: NXP MFRC522, 13.56 MHz, ISO14443A, SPI up to 10 MHz. Applications - access control, tags, payment prototypes; power supply strictly 3.3V. Reading Mifare Classic card UIDs, working with sectors via KeyA/KeyB, range - a few centimeters. Libraries - MFRC522 for Arduino and analogs for ESP-IDF/MicroPython.
 
 ![[assets/img/rc522-scheme.png|500]]
-*Fig. RC522 - схема connection to ESP32 over VSPI, separate 3.3V power supply.*
+*Fig. RC522 - schematic of connection to ESP32 over VSPI, separate 3.3V power supply.*
 
 Links to [[EN/Home.en]], [[EN/04-Interfaces/02-SPI.en|SPI]], [[EN/02-Power-Supply/01-Power-Rails.en]], [[EN/03-GPIO/01-GPIO-Overview.en]], [[EN/99-Additions/02-Troubleshooting-FAQ.en]], [[EN/12-Comm-Modules/02-NRF24-LoRa.en]].
 
 ## Purpose
 
-RC522 RFID (MFRC522) - SPI 13.56 MHz - Module pin legend; ESP32 to RC522 connection; ASCII schematic. Critical: 3.3V only! NOT 5V! 5V power kills the chip. Specifications: NXP MFRC522, 13.56 MHz, ISO14443A, SPI до 10 МГц.
+RC522 RFID (MFRC522) - SPI 13.56 MHz - Module pin legend; ESP32 to RC522 connection; ASCII schematic. Critical: 3.3V only! NOT 5V! 5V power kills the chip. Specifications: NXP MFRC522, 13.56 MHz, ISO14443A, SPI up to 10 MHz.
 
-## Легенда пінів модуля
+## Module pin legend
 
 The RC522 module (board with MFRC522 chip) has 8 pins. Note: on some boards the first pin is labeled `SDA`, but in SPI mode this is `SS / NSS / CS` - do not confuse with I2C SDA.
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | Живлення вхід | 3V3 ESP32 (via окремий LDO for потреби) | 3.3V only! 5V kills the module instantly, logic also 3.3V |
-| 2 | RST | Вхід, active low | GPIO22 (будь-which GPIO) | Reset: hold HIGH in operation, LOW pulse = reset; pull-up 10k to 3.3V |
-| 3 | GND | Земля | GND | Common ground with ESP32, short wire |
-| 4 | IRQ | Вихід, open-drain | GPIO21 або not підключати | Interrupt "card in field"; open-drain - needs pull-up 10k to 3.3V; can be omitted and poll in loop |
-| 5 | MISO | Вихід SPI | GPIO19 (VSPI MISO) | Data from RC522 to ESP32 |
-| 6 | MOSI | Вхід SPI | GPIO23 (VSPI MOSI) | Data from ESP32 to RC522 |
-| 7 | SCK | Вхід SPI | GPIO18 (VSPI SCK) | SPI clock up to 10 MHz, wires <20 cm |
-| 8 | SDA / SS | Вхід CS | GPIO5 (будь-which GPIO how CS) | this Slave Select (NSS): LOW = вибрано; signature SDA - спадщина from I2C-режиму чипа |
+| 1 | VCC | Power input | 3V3 ESP32 (via separate LDO if needed) | 3.3V only! 5V kills the module instantly, logic also 3.3V |
+| 2 | RST | Input, active low | GPIO22 (any GPIO) | Reset: hold HIGH in operation, LOW pulse = reset; pull-up 10k to 3.3V |
+| 3 | GND | Ground | GND | Common ground with ESP32, short wire |
+| 4 | IRQ | Output, open-drain | GPIO21 or leave unconnected | Interrupt "card in field"; open-drain - needs pull-up 10k to 3.3V; can be omitted and poll in loop |
+| 5 | MISO | SPI output | GPIO19 (VSPI MISO) | Data from RC522 to ESP32 |
+| 6 | MOSI | SPI input | GPIO23 (VSPI MOSI) | Data from ESP32 to RC522 |
+| 7 | SCK | SPI input | GPIO18 (VSPI SCK) | SPI clock up to 10 MHz, wires <20 cm |
+| 8 | SDA / SS | CS input | GPIO5 (any GPIO as CS) | this Slave Select (NSS): LOW = selected; SDA marking - legacy from I2C mode of the chip |
 
 Pin details:
 
@@ -52,7 +52,7 @@ Pin details:
 - **MISO / MOSI / SCK:** classic SPI, see [[EN/04-Interfaces/02-SPI.en|SPI]]. Order `SPI.begin(SCK, MISO, MOSI, SS)` in Arduino - do not swap MISO/MOSI positions.
 - **SDA (SS):** in SPI mode this is Chip Select. When only RC522 on bus - any free GPIO works (typically GPIO5). When NRF24/LoRa/SD also on bus - each has its own CS, SCK/MOSI/MISO shared.
 
-## Підключення ESP32 до RC522
+## Connecting ESP32 to RC522
 
 | ESP32 | RC522 | Note |
 | --- | --- | --- |
@@ -91,17 +91,17 @@ Notes:
 
 ```mermaid
 graph LR
-    ESP32[ESP32 DevKit<br/>3V3 / GND / VSPI] -->|3V3| VCC[VCC RC522<br/>тільки 3.3V]
+    ESP32[ESP32 DevKit<br/>3V3 / GND / VSPI] -->|3V3| VCC[VCC RC522<br/>3.3V only]
     ESP32 -->|GND| GNDM[GND RC522]
     ESP32 -->|GPIO18 SCK| SCK[SCK]
     ESP32 -->|GPIO23 MOSI| MOSI[MOSI]
     MISO[MISO] -->|GPIO19 MISO| ESP32
     ESP32 -->|GPIO5 SS| SDA[SDA/SS]
     ESP32 -->|GPIO22| RST[RST]
-    IRQ[IRQ open-drain] -.->|GPIO21 опційно| ESP32
+    IRQ[IRQ open-drain] -.->|GPIO21 optional| ESP32
 ```
 
-## Code - читання UID
+## Code - reading UID
 
 ### Arduino
 
@@ -158,17 +158,17 @@ while True:
 | Symptom | Cause | Solution |
 | --- | --- | --- |
 | Version 0x00/0xFF | no SPI | check MOSI/MISO, wires <20cm |
-| Читає via раз | power sag | 3.3V only + caps 100nF+10µF |
-| Reboot at картці | weak LDO | separate LDO, see [[EN/02-Power-Supply/01-Power-Rails.en]] |
-| IRQ not спрацьовує | no pull-up | 10k resistor to 3.3V or poll without IRQ |
-| Плутанина SDA/SS | SDA label on board | SDA = SS/CS on GPIO5 |
+| Reads every other time | power sag | 3.3V only + caps 100nF+10µF |
+| Reboot on card tap | weak LDO | separate LDO, see [[EN/02-Power-Supply/01-Power-Rails.en]] |
+| IRQ does not trigger | no pull-up | 10k resistor to 3.3V or poll without IRQ |
+| SDA/SS confusion | SDA label on board | SDA = SS/CS on GPIO5 |
 
 ## Official sources
 
-- [MFRC522 - даташит (PDF, NXP)](https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf) - registers, 13.56 MHz antenna.
-- [MFRC522 - сторінка продукту with фото (NXP)](https://www.nxp.com/products/rfid-nfc/nfc-hf/nfc-readers/standard-performance-mifare-and-ntag-frontend:MFRC52202HN1) - specs, documents.
-- [ESP32 + MFRC522 - туторіал with кодом (RNT)](https://randomnerdtutorials.com/esp32-mfrc522-rfid-reader-arduino/) - UID, read/write blocks.
-- [RC522 - розбір модуля with фото (LME)](https://lastminuteengineers.com/how-rfid-works-rc522-arduino-tutorial/) - pins, Mifare 1K memory.
+- [MFRC522 - datasheet (PDF, NXP)](https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf) - registers, 13.56 MHz antenna.
+- [MFRC522 - product page with photo (NXP)](https://www.nxp.com/products/rfid-nfc/nfc-hf/nfc-readers/standard-performance-mifare-and-ntag-frontend:MFRC52202HN1) - specs, documents.
+- [ESP32 + MFRC522 - tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-mfrc522-rfid-reader-arduino/) - UID, read/write blocks.
+- [RC522 - module breakdown with photo (LME)](https://lastminuteengineers.com/how-rfid-works-rc522-arduino-tutorial/) - pins, Mifare 1K memory.
 
 ## See also
 

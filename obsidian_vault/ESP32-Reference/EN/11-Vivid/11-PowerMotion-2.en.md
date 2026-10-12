@@ -36,9 +36,9 @@ power switches BTS7960 - [[11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.en | BTS7960 
 > Why not L298N for steppers/BLDC: bipolar L298N is a stone age (2-4 V drop, heats,
 > no microstep or current limit), and BLDC generally needs a 3-phase bridge with 20+ kHz PWM and reverse feedback.
 
-## Легенда pinandin модуля
+## Module pin legend
 
-### DRV8825 (кар'єр Pololu, 16 pin)
+### DRV8825 (Pololu carrier, 16 pin)
 
 | Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
@@ -47,7 +47,7 @@ power switches BTS7960 - [[11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.en | BTS7960 
 | 3 | M1 | digital input | GPIO14 / jumper | Middle bit of microstep |
 | 4 | M2 | digital input | GPIO12 / jumper | MSB of microstep |
 | 5 | RESET | input, active low | to SLEEP (jumper) | Pull HIGH, else driver sleeps |
-| 6 | SLEEP | input, active low | at RESET (jumper) | HIGH = робота; LOW = sleep (current мкА) |
+| 6 | SLEEP | input, active low | to RESET (jumper) | HIGH = run; LOW = sleep (uA current) |
 | 7 | STEP | edge input | GPIO25 | One pulse >=1.9 us = one microstep |
 | 8 | DIR | digital input | GPIO33 | HIGH/LOW = direction |
 | 9 | FAULT | output, active low | GPIO32 or NC | Overheat/overcurrent; 1.5 k resistor on board |
@@ -91,7 +91,7 @@ Vref: `I_lim = Vref x 2` (Rsense 0.1 Ohm). 1 A motor → Vref = 0.5 V. Turn pot 
 | --- | --- | --- | --- | --- |
 | PUL+/PUL-, DIR+/DIR-, ENA+/ENA- | Signals | Opto inputs | as in TB6600 | 5 V logic via resistors; 3.3 V works |
 | VCC/GND | Power | input | 24-48 V PSU! | Note: 12 V gives weak torque at speed |
-| A+/A−, B+/B− | Обмотки | output | Мотор | current дипами SW1-SW3 up to 4.2 but |
+| A+/A−, B+/B− | Windings | output | Motor | Current via DIP SW1-SW3 up to 4.2 A |
 | SW5-SW8 | Microstep | DIP | up to 1/256 (depends on revision) | check table of your own revision |
 
 ### TMC5160 (module/BOB with SPI)
@@ -102,7 +102,7 @@ Vref: `I_lim = Vref x 2` (Rsense 0.1 Ohm). 1 A motor → Vref = 0.5 V. Turn pot 
 | VIO | Logic | input | 3V3 | 3.3 V from ESP32 |
 | STEP / DIR | Step/dir | input | GPIO25 / GPIO33 | Classic mode after SPI config |
 | SCK / SDI / SDO | SPI | SPI bus | GPIO18 / GPIO23 / GPIO19 | Register configuration |
-| CSN | Chip Select SPI | input CS | GPIO5 | Окремий CS at кожен TMC5160 |
+| CSN | Chip Select SPI | input CS | GPIO5 | Separate CS per TMC5160 |
 | ENN | Enable, active low | input | GPIO26 | LOW = bridge on |
 | DIAG0/DIAG1 | Diagnostics | output | GPIO32 or NC | StallGuard stop flag without limit switches! |
 | CLK | Clocking | input | NC (internal) or GPIO | Internal 12 MHz is enough |
@@ -135,13 +135,13 @@ Vref: `I_lim = Vref x 2` (Rsense 0.1 Ohm). 1 A motor → Vref = 0.5 V. Turn pot 
 | GPIO27/14/12 | M0/M1/M2 | - (DIP on case) | - (SPI registers) | - |
 | GPIO18/23/19/5 | - | - | SCK/SDI/SDO/CSN | - (SPI for AS5048 encoder) |
 | GPIO21/22 | - | - | - | AS5600 SDA/SCL |
-| PSU 8-45 in | VMOT (+47 мкФ!) | - | - | - |
-| PSU 24-48 in | - | VCC TB6600/DM542 | - | - |
-| PSU 8-60 in | - | - | VM | - |
-| PSU 8-35 in | - | - | - | VM моста |
+| 8-45 V PSU | VMOT (+47 uF!) | - | - | - |
+| 24-48 V PSU | - | VCC TB6600/DM542 | - | - |
+| 8-60 V PSU | - | - | VM | - |
+| 8-35 V PSU | - | - | - | Bridge VM |
 
 Common grounds everywhere mandatory; power ground as star to PSU, see [[02-Power-Supply/01-Power-Rails.en | Power Supply Rails]].
-ШІМ/таймери - [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]], UART for setup - [[04-Interfaces/01-UART.en | UART]].
+PWM/timers - [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]], UART for setup - [[04-Interfaces/01-UART.en | UART]].
 
 ### ASCII-schem
 
@@ -386,14 +386,14 @@ esc.duty_ns(1500000)  # середній газ для тесту без нав�
 ESP32 тут - верхній рівень (пульт/автопілот), FOC рахує сам VESC.
 ```
 
-### TMC2226 - тихий driver with UART
+### TMC2226 - quiet driver with UART
 
 | Parameter | TMC2226 |
 | --- | --- |
 | Current | up to 2 A RMS, low RDS(on) MOSFET |
-| Режими | StealthChop (тихо) + SpreadCycle (момент) |
+| Modes | StealthChop (quiet) + SpreadCycle (torque) |
 | Control | STEP/DIR + UART (current, microstep up to 1/256 with interpolation) |
-| power supply | VM 4.75-29 in, VIO 3.3 in |
+| power supply | VM 4.75-29 V, VIO 3.3 V |
 | When to use | Instead of TMC2209 where it overheats: same StepStick footprint, cooler key |
 
 > TMC2226 vs TMC2209: pin-compatible upgrade; UART address and StealthChop configure the same, no Vref trim needed with UART current control.

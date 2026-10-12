@@ -7,36 +7,35 @@ lang: en
 original: STM32-Reference/14-Devboards/04-Discovery.md
 date-created: 2026-10-01
 date: 2026-10-09
-date: 2026-10-09
 ---
 
 # Discovery - evaluation board with LCD, audio and USB
 
 ![[assets/img/stm32-discovery-board-scheme.png|600]]
-*Рис. Плата Discovery: дисплей, датчики руху, звуковий тракт and кнопки введення.*
+*Fig. Discovery board: display, motion sensors, audio path and input buttons.*
 
-> [!tip] Призначення ноти
-> Показати коли брати демо-плату замість універсальної: потрібен екран, звук або датчики with коробки for швидкої перевірки ідеї.
+> [!tip] Note purpose
+> Show when to take a demo board instead of a general one: you need a display, sound or sensors out of the box for a quick idea check.
 
-## 1. Призначення
+## 1. Purpose
 
-Демо-плата це вітрина можливостей контролера: дисплей, датчики руху, мікрофони, звуковий тракт and кнопки вже розпаяні. Ідея перевіряється без макетних дротів and пошуку модулів.
+A demo board is a showcase of controller features: display, motion sensors, microphones, audio path and buttons are already soldered. The idea is checked without breadboard wires and module hunting.
 
-Заводська прошивка одразу показує графіку, звук and сенсори in дії. Пакет драйверів плати дає прості виклики for екрана and звуку. Приклади виробника розкривають кожен вузол окремо.
+Factory firmware shows graphics, sound and sensors in action right away. The board driver package gives simple calls for the display and sound. Manufacturer examples open each node separately.
 
-for серії плата завелика and дорога, але for прототипа економить тижні. Після перевірки ідеї проєкт переносять on компактну плату.
+For series the board is too large and expensive, but for a prototype it saves weeks. After the idea check the project moves to a compact board.
 
-## 2. that є on платі
+## 2. What is on the board
 
-| Вузол | example | Навіщо |
+| Block | Example | Purpose |
 | --- | --- | --- |
-| Дисплей | Кольоровий with сенсором | Графіка and меню без модулів |
-| Датчик руху | Акселерометр and гіроскоп | Жести and нахил |
-| Мікрофони | Цифрові with інтерфейсом | Голос and рівень шуму |
-| Звуковий тракт | ЦАП and підсилювач | Мелодії and сигнали |
-| Кнопки | Скидання and користувача | Введення без дротів |
-| Дебагер | Вбудований with віртуальним портом | Прошивка with коробки |
-| Пам'ять | Зовнішня флеш for кадрів | Картинки and шрифти |
+| Display | Color with touch | Graphics and menus without modules |
+| Motion sensor | Accelerometer and gyroscope | Gestures and tilt |
+| Microphones | Digital with interface | Voice and noise level |
+| Audio path | DAC and amplifier | Melodies and signals |
+| Buttons | Reset and user | Input without wires |
+| Debugger | Built-in with virtual port | Flashing out of the box |
+| Memory | External flash for frames | Pictures and fonts |
 
 ```text
 Компонування демо-плати:
@@ -54,41 +53,41 @@ for серії плата завелика and дорога, але for прот
   +------------------------------------------+
 ```
 
-## 3. Популярні варіанти
+## 3. Popular variants
 
-| Плата | Контролер | Екран | Фішка |
+| Board | Controller | Display | Trick |
 | --- | --- | --- | --- |
-| F4 класика | F407 або F429 | Кольоровий | Дешева and тони прикладів |
-| F7 швидка | F746 або F769 | Великий with сенсором | Швидка графіка and кеш |
-| H7 флагман | H743 або H747 | Висока роздільність | Запас for складних інтерфейсів |
-| L4 економна | L476 | Малий | Низьке споживання with екраном |
+| F4 classic | F407 or F429 | Color | Cheap and tons of examples |
+| F7 fast | F746 or F769 | Large with touch | Fast graphics and cache |
+| H7 flagship | H743 or H747 | High resolution | Reserve for complex interfaces |
+| L4 thrifty | L476 | Small | Low consumption with display |
 
-Вибір залежить від задачі: звук тягне навіть класика, плавна графіка просить швидку, складна логіка with мережею просить флагман.
+Choice depends on the task: even the classic pulls sound, smooth graphics asks for the fast one, complex logic with network asks for the flagship.
 
-## 4. Заводська прошивка
+## 4. Factory firmware
 
-| Крок | Дія | Результат |
+| Step | Action | Result |
 | --- | --- | --- |
-| 1 | Живлення від кабелю | Екран світиться меню |
-| 2 | Гортання сенсором | Сторінки демо |
-| 3 | Нахил плати | Кулька або стрілка рухається |
-| 4 | Кнопка користувача | Зміна режиму |
-| 5 | Підключення навушників | Звукові приклади |
+| 1 | Power from cable | Display lights with menu |
+| 2 | Touch scrolling | Demo pages |
+| 3 | Board tilt | Ball or arrow moves |
+| 4 | User button | Mode change |
+| 5 | Headphone connection | Audio examples |
 
-Демо варто зберегти окремим файлом перед своєю прошивкою. Злитий образ дозволяє повернути вітрину for показу. Утиліта зчитує образ via дебагер.
+It is worth saving the demo as a separate file before your own firmware. A dumped image lets you bring the showcase back for display. The utility reads the image over the debugger.
 
-## 5. Пакет драйверів плати
+## 5. Board driver package
 
-| Виклик | that робить | Коли зручно |
+| Call | What it does | When handy |
 | --- | --- | --- |
-| Ініціалізація екрана | Налаштовує шину and підсвітку | Старт графіки одним рядком |
-| Очищення екрана | Заливка кольором | Новий кадр меню |
-| Вивід тексту | Шрифт on координати | Підписи and значення |
-| Малювання кола | Примітив for індикаторів | Стрілки and шкали |
-| Старт звуку | Налаштовує ЦАП and DMA | Мелодії без тріску |
-| Читання датчика | Опитує рух via шину | Жести кожні 20 мс |
+| Display init | Sets up the bus and backlight | Graphics start in one line |
+| Display clear | Fill with color | New menu frame |
+| Text output | Font at coordinates | Labels and values |
+| Circle drawing | Primitive for indicators | Arrows and scales |
+| Sound start | Sets up DAC and DMA | Melodies without crackle |
+| Sensor read | Polls motion over the bus | Gestures every 20 ms |
 
-Драйвери плати лежать окремо від рівня абстракції контролера. Вони знають адреси мікросхем and розводку саме цієї плати. Перенос on свою плату вимагає своїх адрес and пінів.
+Board drivers lie separately from the controller abstraction layer. They know the chip addresses and the routing of this exact board. Moving to your own board demands your own addresses and pins.
 
 ```text
 Шари коду для демо-плати:
@@ -101,19 +100,19 @@ for серії плата завелика and дорога, але for прот
   Залізо контролера
 ```
 
-## 6. Коли брати замість універсальної
+## 6. When to take it instead of a general board
 
-| Задача | Чому демо краще | Межа |
+| Task | Why demo is better | Limit |
 | --- | --- | --- |
-| check меню за день | Екран and сенсор вже є | Потім робити компактно |
-| Датчик руху in керуванні | Калібрований вузол on платі | Точність побутова |
-| Звукові сигнали | Тракт with підсилювачем | Гучність for столу |
-| Навчання графіці | Приклади with кадрами | Пам'ять під великі картинки |
-| Показ замовнику | Красива вітрина | Ціна for серії зависока |
+| Menu check in a day | Display and touch already there | Then build compact |
+| Motion sensor in control | Calibrated node on the board | Household accuracy |
+| Audio signals | Path with amplifier | Volume for the desk |
+| Graphics learning | Examples with frames | Memory for large pictures |
+| Customer demo | Beautiful showcase | Price too high for series |
 
-Універсальна плата дешевша and гнучкіша for серії. Демо виграє швидкістю старту: розпакував, увімкнув, бачиш результат.
+A general board is cheaper and more flexible for series. The demo wins on start speed: unpacked, powered, you see the result.
 
-## 7. code: екран via драйвери
+## 7. Code: display via drivers
 
 ```c
 #include "stm32f429i_discovery_lcd.h"
@@ -143,7 +142,7 @@ void demo_lcd_circle(uint16_t x, uint16_t y, uint16_t r)
 }
 ```
 
-Буфер кадру лежить у зовнішній пам'яті for великих роздільностей. Шар дозволяє малювати меню окремо від фону. Шрифти тримають кирилицю частково, перевіряти таблицею символів.
+The frame buffer lives in external memory for large resolutions. A layer lets you draw the menu separately from the background. Fonts hold Cyrillic partly, check with the symbol table.
 
 ```c
 #include "stm32f429i_discovery_gyroscope.h"
@@ -168,35 +167,35 @@ void demo_beep(void)
 }
 ```
 
-Опитування датчика кожні 20 мс дає плавні жести. Звук via прямий доступ not вантажить ядро. Гучність 70 це голосно for навушників, починати with меншої.
+Polling the sensor every 20 ms gives smooth gestures. Sound over direct access does not load the core. Volume 70 is loud for headphones, start with a smaller one.
 
-## 8. Mermaid: від ідеї до серії
+## 8. Mermaid: from idea to series
 
 ```mermaid
 flowchart TB
-    Start[Ідея з екраном або звуком]
-    Start --> Demo[Демо-плата для перевірки]
-    Demo --> Lcd[Екран через драйвери плати]
-    Demo --> Motion[Датчик руху через шину]
-    Demo --> Sound[Звук через ЦАП і DMA]
-    Lcd --> Show[Показ замовнику за дні]
+    Start[Idea with display or sound]
+    Start --> Demo[Demo board for check]
+    Demo --> Lcd[Display via board drivers]
+    Demo --> Motion[Motion sensor over the bus]
+    Demo --> Sound[Sound via DAC and DMA]
+    Lcd --> Show[Customer demo in days]
     Motion --> Show
     Sound --> Show
-    Show --> Series{Йдемо в серію}
-    Series --> Compact[Компактна плата без зайвого]
-    Series --> Stay[Лишити демо для стенда]
+    Show --> Series{Going to series}
+    Series --> Compact[Compact board without extras]
+    Series --> Stay[Keep the demo for the stand]
 ```
 
-## 9. Живлення and споживання
+## 9. Power and consumption
 
-| Режим | Споживання | Пояснення |
+| Mode | Consumption | Explanation |
 | --- | --- | --- |
-| Демо with підсвіткою | Сотні міліампер | Екран їсть найбільше |
-| Звук on динамік | Піки вище середнього | Підсилювач просить струму |
-| Сон with екраном вимк | Міліампери | Датчики можна приспати |
-| Живлення | Від роз'єму | Блок for стабільної картинки |
+| Demo with backlight | Hundreds of milliamps | Display eats the most |
+| Sound to speaker | Peaks above average | Amplifier asks for current |
+| Sleep with display off | Milliamps | Sensors can be put to sleep |
+| Power | From the connector | PSU for a stable picture |
 
-for батарейного вузла екран гасять між показами. Підсвітку керують широтно-імпульсною модуляцією for економії.
+For a battery node the display is blanked between shows. The backlight is driven with pulse-width modulation for economy.
 
 ## Common issues
 
@@ -218,7 +217,7 @@ for батарейного вузла екран гасять між показ�
 ## See also
 
 - [[Home.en]]
-- [[EN/14-Devboards/03-Nucleo.en|плати Nucleo]]
-- [[EN/01-Hardware/02-F3-F4.en|продуктивні F3 and F4]]
-- [[EN/04-Interfaces/02-SPI.en|шина SPI]]
-- [[EN/00-Start/04-Dev-Boards.en|огляд плат]]
+- [[EN/14-Devboards/03-Nucleo.en|Nucleo boards]]
+- [[EN/01-Hardware/02-F3-F4.en|performance F3 and F4]]
+- [[EN/04-Interfaces/02-SPI.en|SPI bus]]
+- [[EN/00-Start/04-Dev-Boards.en|board overview]]

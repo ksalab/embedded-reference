@@ -26,7 +26,7 @@ jumps); Vo contrast and PWM backlight; PCF8574 backpack bit mapping
 and 0x27 / 0x3F address conflicts (scan!); LiquidCrystal_I2C code;
 Cyrillic (missing in ROM - only own glyphs!).
 
-> Бачиш «кубики» in першому рядку - this not смерть,
+> Seeing "blocks" in first row - this is not death,
 > this is uninitialised HD44780 (power present, init not passed / wrong contrast).
 
 ## Characteristics
@@ -34,11 +34,11 @@ Cyrillic (missing in ROM - only own glyphs!).
 | Parameter | value |
 | --- | --- |
 | Controllers | HD44780 (Hitachi original), KS0066 (Samsung clone), ST7066 (Sitronix clone) - command compatible |
-| Формати | 1602 (16×2), 2004 (20×4), less often 0802 / 1604 / 4002 |
+| Formats | 1602 (16x2), 2004 (20x4), less often 0802 / 1604 / 4002 |
 | Symbol matrix | 5x8 dots (8th row - cursor), CGRAM - 8 slots 0-7 |
 | ROM font | A00 (Japanese katakana) or A02 (European with diacritics); NO CYRILLIC in either! |
 | Bare interface | 8-bit (DB0-DB7) or 4-bit (DB4-DB7) + RS + EN (+ RW to ground) |
-| Інтерфейс through бекпак | I2C PCF8574: SDA/SCL, адреси 0x27 / 0x3F (less often 0x20-0x26) |
+| Backpack interface | I2C PCF8574: SDA/SCL, addresses 0x27 / 0x3F (less often 0x20-0x26) |
 | Power | 5 V logic (some 3.3 V versions with ICL7660); LED backlight ~4.2 V / 20-120 mA |
 | Contrast | Vo (pin 3) via 10 k pot between VCC-GND; without it - blank or blocks |
 | Current | Logic ~1-2 mA + backlight 20-100 mA (via backpack transistor!) |
@@ -55,7 +55,7 @@ Cyrillic (missing in ROM - only own glyphs!).
 | I2C backpack | SDA + SCL | 2 | Combat option: 2 wires, addressing, backlight command |
 
 in 4-bit mode each byte goes as two nibbles (high → low),
-library LiquidCrystal робить this сама: `LiquidCrystal(rs, en, d4, d5, d6, d7)`.
+LiquidCrystal library does this itself: `LiquidCrystal(rs, en, d4, d5, d6, d7)`.
 RW pressed to GND (write only) - busy-flag read not needed,
 delays sewn into library.
 
@@ -72,7 +72,7 @@ Consequences:
 
 - 2004 rows go out of order: address order 0, 1, 2, 3 = 0x00, 0x40, 0x14, 0x54.
   therefore a 1602 library on 2004 writes 3rd row shifted by 4 symbols -
-  класичний bug with `setCursor(0,2)`.
+  classic bug with `setCursor(0,2)`.
 - Fix: pass correct geometry `LiquidCrystal_I2C(0x27, 20, 4)`,
   never `16, 2` on physical 2004!
 - 40-symbol controller trims row to window: symbols 16-39 exist
@@ -84,12 +84,12 @@ Each slot is 8 bytes (low 5 bits of each = row dots):
 
 | Slot | Glyph | Bytes (ex.) | Use |
 | --- | --- | --- | --- |
-| 0 | Градус `°` | 0x06,0x09,0x09,0x06,0x00,0x00,0x00,0x00 | `24°C` |
+| 0 | Degree `°` | 0x06,0x09,0x09,0x06,0x00,0x00,0x00,0x00 | `24°C` |
 | 1 | Battery frame | 0x0E,0x1B,0x11,0x11,0x11,0x11,0x11,0x1F | Charge indicator |
 | 2 | Up arrow | 0x04,0x0E,0x15,0x04,0x04,0x04,0x04,0x00 | Menu/trends |
 | 3 | Down arrow | 0x00,0x04,0x04,0x04,0x04,0x15,0x0E,0x04 | Menu/trends |
 | 4-6 | Progress 1/3, 2/3, 3/3 | Columns 0x10/0x18/0x1C… | 0-100% bar graph |
-| 7 | Галочка OK | 0x00,0x01,0x03,0x16,0x1C,0x08,0x00,0x00 | Статуси |
+| 7 | Checkmark OK | 0x00,0x01,0x03,0x16,0x1C,0x08,0x00,0x00 | Statuses |
 
 Limit: only 8! For Cyrillic + icons together not enough -
 reload CGRAM on screen change (`createChar` before each screen).
@@ -112,14 +112,14 @@ Alternate: clock screen (large digits) vs menu screen (Cyrillic).
 - **PWM dimming:** unsolder J (LED) jumper on backpack → cathode pin
   via N-MOSFET to GPIO with `ledc` 5 kHz. Or leave J and accept ON/OFF.
 
-## Легенда pinandin модуля
+## Module pin legend
 
-Голий HD44780 (16 pinandin) + that робить PCF8574-бекпак:
+Bare HD44780 (16 pins) + what the PCF8574 backpack does:
 
 | LCD pin | Value | Type | Where / via backpack | Note |
 | --- | --- | --- | --- | --- |
 | 1 | VSS | GND | GND | ground |
-| 2 | VDD | +5 in | 5V (VU/VIN!) | 5 in! on 3V3 - тьмяно/порожньо |
+| 2 | VDD | +5 V | 5V (VU/VIN!) | 5 V! On 3V3 - dim/blank |
 | 3 | Vo | Contrast | 10 k pot | 0-1 V; on backpack - blue trimmer |
 | 4 | RS | Register select | Backpack P0 | 0 = command, 1 = data |
 | 5 | RW | Read/write | GND (write) | on backpack pressed to GND |
@@ -135,11 +135,11 @@ PCF8574 → LCD mapping (standard backpack, memorise!):
 | --- | --- | --- |
 | P0 | RS | Register Select |
 | P1 | RW | in most backpacks - NC/GND logic (not RW!) |
-| P2 | EN | Enable-строб |
+| P2 | EN | Enable strobe |
 | P3 | LED | Backlight (1 = ON) |
 | P4-P7 | DB4-DB7 | 4 data bits |
 
-Адреси PCF8574/PCF8574A:
+PCF8574/PCF8574A addresses:
 
 | Microscheme | Range | Typical | how to tell |
 | --- | --- | --- | --- |
@@ -151,20 +151,20 @@ PCF8574 → LCD mapping (standard backpack, memorise!):
 
 ## Wiring diagram
 
-| ESP32 | LCD + PCF8574-бекпак | Note |
+| ESP32 | LCD + PCF8574 backpack | Note |
 | --- | --- | --- |
 | 5V (VU/VIN) | VCC | 5 V! Backlight and contrast want 5 V |
 | GND | GND | common ground |
 | GPIO22 | SCL | hardware I2C0 |
-| GPIO21 | SDA | hardware I2C0, pull-up 4.7 кОм (is at бекпаку) |
+| GPIO21 | SDA | hardware I2C0, 4.7 kOhm pull-up (present on backpack) |
 | - | Vo pot | Turn until symbols appear! |
 | GPIO16 (optional) | LED cathode via MOSFET | Only if J jumper removed (PWM dimming) |
 
 Bare LCD without backpack (4-bit, learning option):
 
-| ESP32 | HD44780 голий | Note |
+| ESP32 | bare HD44780 | Note |
 | --- | --- | --- |
-| 5V / GND | VDD / VSS | power supply 5 in |
+| 5V / GND | VDD / VSS | 5 V power supply |
 | 10 k pot | Vo (pin 3) | Middle pin → Vo |
 | GPIO4 | RS (pin 4) | |
 | GND | RW (pin 5) | Press to ground! |
@@ -415,7 +415,7 @@ goto(0, 1); puts("T=24.5"); putc(chr(0)); puts("C")
 ## Official sources
 
 - [RNT - I2C LCD with ESP32 in Arduino IDE](https://randomnerdtutorials.com/esp32-esp8266-I2C-lcd-arduino-ide/) - wiring, address scan, `LiquidCrystal_I2C`, custom symbols.
-- [LiquidCrystal_I2C - library Marco Schwartz (форк fdebrabander)](https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library) - API `init/backlight/createChar`.
+- [LiquidCrystal_I2C - library Marco Schwartz (fdebrabander fork)](https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library) - API `init/backlight/createChar`.
 - [LiquidCrystal_I2C - DFRobot library (johnrickman)](https://github.com/johnrickman/LiquidCrystal_I2C) - alternative fork, Hello World ex.
 - [Adafruit - Character LCDs (HD44780)](https://learn.adafruit.com/character-lcds) - 4-bit mode, bare LCD wiring, contrast.
 

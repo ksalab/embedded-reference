@@ -1,6 +1,6 @@
 ---
-description: Secure Elements - захищені елементи for ESP32: 1-Wire/I2C/OTA; shows schematics, code and tables.
-title: Secure Elements - захищені елементи for ESP32
+description: Secure elements for ESP32: 1-Wire/I2C/OTA; shows schematics, code and tables.
+title: Secure elements for ESP32
 tags: [esp32, secure-element, cryptography, authentication, i2c, spi]
 category: Moduli
 lang: en
@@ -9,67 +9,67 @@ date: 2026-10-10
 original: 12-Moduli-zvyazku/25-Secure-Elements.md
 ---
 
-# Secure Elements - захищені елементи for ESP32
+# Secure elements for ESP32
 
 ![[assets/img/secure-elements-atecc-scheme.png|600]]
 
-Secure elements (зберігальні елементи) - this спеціалізовані мікросхеми with захищеним сховищем, призначені for зберігання криптографічних ключів, підписів та виконання безпечних операцій. in проєктах ESP32 вони використовуються for автентифікації, шифрування даних, захисту firmwares та платіжних застосунків.
+Secure elements are specialized chips with protected storage, designed for storing cryptographic keys, signatures and performing secure operations. In ESP32 projects they are used for authentication, data encryption, firmware protection and payment applications.
 
-in цьому розділі розглядаємо теорію, піни, схеми та code for інтеграції популярних захищених елементів (наприклад, ATECC608A, ATECC508A) with платформою ESP32 (ESP-IDF, Arduino, MicroPython).
+In this section we cover theory, pins, schematics and code for integrating popular secure elements (for example, ATECC608A, ATECC508A) with the ESP32 platform (ESP-IDF, Arduino, MicroPython).
 
 ## Purpose
 
-Secure Elements - захищені елементи for ESP32: 1-Wire/I2C/OTA. Secure Firmware Updates (Безпечні оновлення): ECDSA або RSA підписи for перевірки оновлень per OTA. Вибір secure element залежить from інтерфейсу (I2C, SPI) та потреби in аппаратному підписанні. Найпопулярніші моделі: Microchip ATECC608A, ATECC508A.
+Secure elements for ESP32: 1-Wire/I2C/OTA. Secure firmware updates: ECDSA or RSA signatures for verifying OTA updates. The choice of secure element depends on the interface (I2C, SPI) and the need for hardware signing. Most popular models: Microchip ATECC608A, ATECC508A.
 
-## Опис
+## Description
 
-Secure element - this фізично ізольований довірені потужності чип, which надає аппаратне акселерування криптографічних операцій. Ключі усередині пристрою never покидають його межі (in режимі Secure Boot та Key Retention). Основні utilisation scenario'и:
+A secure element is a physically isolated trusted-capability chip that provides hardware acceleration of cryptographic operations. Keys inside the device never leave its boundaries (in Secure Boot and Key Retention modes). Main usage scenarios:
 
-- **Authentication (Автентифікація)**: УІD та ECDSA підписи for TLS/WTLS зв'язку.
-- **Secure Boot (Збереження firmwares)**: signature images firmwares for перевірки під час download.
-- **Secure Firmware Updates (Безпечні оновлення)**: ECDSA або RSA підписи for перевірки оновлень per OTA.
-- **Cryptographic Key Storage (Хранення ключів)**: Асимметричні ключі (RSA/ECDSA) та симметричні ключі (AES) in захищеному сховищі.
-- **Random Number Generation (Генерація випадкових чисел)**: Кваліфікований RNG (TRNG) for криптостійких nonce.
+- **Authentication**: UID and ECDSA signatures for TLS/WTLS links.
+- **Secure boot (firmware protection)**: firmware image signatures for verification during download.
+- **Secure firmware updates**: ECDSA or RSA signatures for verifying OTA updates.
+- **Cryptographic key storage**: asymmetric keys (RSA/ECDSA) and symmetric keys (AES) in protected storage.
+- **Random number generation**: qualified RNG (TRNG) for crypto-strong nonces.
 
-Вибір secure element залежить from інтерфейсу (I2C, SPI) та потреби in аппаратному підписанні. Найпопулярніші моделі: Microchip ATECC608A, ATECC508A.
+The choice of secure element depends on the interface (I2C, SPI) and the need for hardware signing. Most popular models: Microchip ATECC608A, ATECC508A.
 
-## Характеристики
+## Characteristics
 
-| Модель | Інтерфейс | Асортативна пам'ять | Крипто-операції | Напруга (VCC) | I2C Адреса | Package |
+| Model | Interface | Memory | Crypto operations | Voltage (VCC) | I2C address | Package |
 | --- | --- | --- | --- | --- | --- | --- |
-| **ATECC608A** | I2C / SPI | 64 Кбіт | ECDSA P-256, RSA-2048, AES-128/256, SHA-256, TRNG | 2.5-3.6 in | 0xC0 (7 біт) | CWFN, MLFN |
-| **ATECC508A** | I2C | 16 Кб (blocks) | ECDSA P-256, RSA-2048, AES-128/256, SHA-256, TRNG | 2.5-3.6 in | 0xC0 (7 біт) | CWFN, MLFN |
-| **Atecc608a-NRF** | SPI | 64 Кб | ECDSA, RSA, AES, TRNG | 2.5-3.6 in | N/A (SPI) | WLCSP |
-| **Microchip CryptoRF** | NFC/RFID | 2 Кб | ECDSA, AES, TRNG | 1.8-3.6 in | N/A (під час радіо) | SOIC-8, WLCSP |
+| **ATECC608A** | I2C / SPI | 64 Kbit | ECDSA P-256, RSA-2048, AES-128/256, SHA-256, TRNG | 2.5-3.6 V | 0xC0 (7-bit) | CWFN, MLFN |
+| **ATECC508A** | I2C | 16 KB (blocks) | ECDSA P-256, RSA-2048, AES-128/256, SHA-256, TRNG | 2.5-3.6 V | 0xC0 (7-bit) | CWFN, MLFN |
+| **Atecc608a-NRF** | SPI | 64 KB | ECDSA, RSA, AES, TRNG | 2.5-3.6 V | N/A (SPI) | WLCSP |
+| **Microchip CryptoRF** | NFC/RFID | 2 KB | ECDSA, AES, TRNG | 1.8-3.6 V | N/A (over radio) | SOIC-8, WLCSP |
 
-## Легенда пінів модуля
+## Module pin legend
 
 ### ATECC608A / ATECC508A (I2C/SPI)
 
-| Пін | Позначення | Тип | Опис |
+| Pin | Marking | Type | Description |
 | --- | --- | --- | --- |
-| 1 | NC | - | not використовується (залежно from пакету) |
-| 2 | I2C_DATA / SPI_MOSI | Вхід/Вихід | Дані I2C (SDA) / SPI (MOSI) |
-| 3 | I2C_CLOCK / SPI_CLK | Вхід | Тактильне I2C (SCK) / SPI (CLK) |
-| 4 | NC | - | not використовується |
-| 5 | GND | Земля | Спільна земля пристрою |
-| 6 | NC | - | not використовується |
-| 7 | VCC | Живлення | 2.5-3.6 in постійного струму |
-| 8 | NC | - | not використовується |
-| 9 | NC | - | not використовується |
-| 10 | NC | - | not використовується |
-| 11 | NC | - | not використовується |
-| 12 | NC | - | not використовується |
-| 13 | NC | - | not використовується |
-| 14 | NC | - | not використовується |
-| 15 | NC | - | not використовується |
-| 16 | NC | - | not використовується (for визначення адреси) |
-| **Reset** | RST | Вхід (активний високий) | Скидання пристрою (hard reset) |
-| **Chip Select** | CS / SA0 | Вхід (active-low) | Вибір чипа (SPI) або біт адреси I2C (SA0) |
+| 1 | NC | - | not used (depends on package) |
+| 2 | I2C_DATA / SPI_MOSI | Input/Output | I2C data (SDA) / SPI (MOSI) |
+| 3 | I2C_CLOCK / SPI_CLK | Input | I2C clock (SCK) / SPI (CLK) |
+| 4 | NC | - | not used |
+| 5 | GND | Ground | Common device ground |
+| 6 | NC | - | not used |
+| 7 | VCC | Power supply | 2.5-3.6 V DC |
+| 8 | NC | - | not used |
+| 9 | NC | - | not used |
+| 10 | NC | - | not used |
+| 11 | NC | - | not used |
+| 12 | NC | - | not used |
+| 13 | NC | - | not used |
+| 14 | NC | - | not used |
+| 15 | NC | - | not used |
+| 16 | NC | - | not used (for address detection) |
+| **Reset** | RST | Input (active high) | Device reset (hard reset) |
+| **Chip Select** | CS / SA0 | Input (active-low) | Chip select (SPI) or I2C address bit (SA0) |
 
-> Примітка: for I2C інтерфейсу пин SA0 встановлює MSB адреси, that дає адреси 0xC0 або 0xC1. for SPI використовується окремий CS pin.
+> Note: for the I2C interface the SA0 pin sets the MSB of the address, giving addresses 0xC0 or 0xC1. For SPI a separate CS pin is used.
 
-### ASCII schematic (зразок for ATECC608A + ESP32)
+### ASCII schematic (example for ATECC608A + ESP32)
 
 ```text
            +-------------------+       +-----------------+
@@ -92,7 +92,7 @@ Secure element - this фізично ізольований довірені п�
                 +-----------------------+
 ```
 
-### Mermaid graph LR (with'єднання ATECC608A with ESP32)
+### Mermaid graph LR (connecting ATECC608A with ESP32)
 
 ```mermaid
 graph LR
@@ -119,9 +119,9 @@ graph LR
     tls -.->|Use keys/signatures| atecc
 ```
 
-## Code інтеграції
+## Integration code
 
-### Arduino - ATECC608A базовий example
+### Arduino - ATECC608A basic example
 
 ```cpp
 #include <Wire.h>
@@ -205,7 +205,7 @@ void app_main(void) {
 }
 ```
 
-### MicroPython - ATECC608A сканер
+### MicroPython - ATECC608A scanner
 
 ```python
 from machine import Pin, I2C
@@ -233,101 +233,101 @@ chip_id = get_chip_id()
 print(f"Chip ID bytes: {list(chip_id)}")
 ```
 
-## 12+ типових помилок
+## 12+ common issues
 
 | # | Symptom | Cause | Solution |
 | --- | --- | --- | --- |
-| 1 | ATECC608A not відповідає on I2C | Відсутній pull-up on SDA/SCL лініях | Додайте 10kΩ pull-up резистори до 3.3V on обох лініях I2C |
-| 2 | Частота I2C занадто висока | Швидкість шини > 100 kHz without кваліфікованого режимів | Використайте 50 кГц або впровадьте fast-mode+ (340 кГц) with резисторами |
-| 3 | Невірний Chip ID після потушення | Енергозберігань втрачено (power cycle) | Після змін живлення потрібна переініціалізація та перезапис конфіденційних зон |
-| 4 | ECDSA-підписи невалідні | Невірний key або key not генерувався via ATECC | Використайте `atecc.generate_key()` for створення ключа всередині пристрою |
-| 5 | SPI інтерфейс not працює | CS pin not підтягнуто або неправильний режим SPI | Підтяніте CS до VCC або використовйте pulled внутрішній резистор ESP32 |
-| 6 | TRNG повердає статистично зайві значення | сторонні перешкоди або пристрій in too-близькому полю магнетизму | Держіть привід далеко from джерела помічного магнетизму; перевірте entropy |
-| 7 | Клієнт TLS руйнується помилкою handshake | Несумісні крипто-алгоритми (наприклад, P-256 проти P-384) | Переконайтеся, that сервер та клієнт мають спільний набір крипто-параметрів |
-| 8 | Перегрів ATECC608A під навантаженням | Неадекватне охолодження або надвищений струм | Перевірте максимальний струм VCC та додайте термічний резистор або конденсатори for стабілізації |
-| 9 | Adresa I2C змінена випадково | Апаратний пошкодження SA0 pine або живлення | Перевірйте схему with'єднання, перепрошийте адресу via fuse-біти |
-| 10 | MicroPython import ATECC падає | Встановлено невірну бібліотеку або версію | Використайте `upip install mpy-atecc` або вручну реєструйте I2C регістри |
-| 11 | Зворотній ток між ESP32 та ATECC | ESP32 GPIO виводить 3.3V at вимкненні | Додайте діоди ізоляції між VCC лініями або використовйте Power-Gate transistor |
-| 12 | Неможливість запису in конфіденційну зону | Зона заблокована флешем або пошкоджена | Перевірте стан зон Lock via `atecc.get_zone_status()` - однакза можливе лише reset |
-| 13 | NFC/RFID інтерфереція with ATECC | Антена занадто близько або неправильна частота | Підтримуйте відстань > 2cm між антени ATECC та NFC-Module |
-| 14 | Швидкість SPI занадто висока for ATECC | CLK > 8 MHz призводить до збит даних | Обмежте SPI до 2-4 MHz for надійної передачі |
+| 1 | ATECC608A does not answer on I2C | Missing pull-up on SDA/SCL lines | Add 10k pull-up resistors to 3.3V on both I2C lines |
+| 2 | I2C frequency too high | Bus speed > 100 kHz without qualified modes | Use 50 kHz or implement fast-mode+ (340 kHz) with resistors |
+| 3 | Wrong Chip ID after power-up | Energy saving lost (power cycle) | After power changes re-initialization and rewrite of confidential zones is needed |
+| 4 | ECDSA signatures invalid | Wrong key or key not generated via ATECC | Use `atecc.generate_key()` to create the key inside the device |
+| 5 | SPI interface does not work | CS pin not pulled up or wrong SPI mode | Pull CS to VCC or use the pulled internal ESP32 resistor |
+| 6 | TRNG returns statistically bad values | external interference or device in too-close magnetic field | Keep the drive away from sources of stray magnetism; check entropy |
+| 7 | TLS client breaks with handshake error | Incompatible crypto algorithms (e.g. P-256 vs P-384) | Make sure server and client share a common set of crypto parameters |
+| 8 | ATECC608A overheats under load | Inadequate cooling or excessive current | Check the maximum VCC current and add a thermal resistor or capacitors for stabilization |
+| 9 | I2C address changed accidentally | Hardware damage of SA0 pin or power supply | Check the connection schematic, reflash the address via fuse bits |
+| 10 | MicroPython ATECC import fails | Wrong library or version installed | Use `upip install mpy-atecc` or manually register I2C registers |
+| 11 | Reverse current between ESP32 and ATECC | ESP32 GPIO outputs 3.3V when off | Add isolation diodes between VCC lines or use a power-gate transistor |
+| 12 | Cannot write to confidential zone | Zone locked by flash or damaged | Check zone Lock status via `atecc.get_zone_status()` - only reset is possible |
+| 13 | NFC/RFID interference with ATECC | Antenna too close or wrong frequency | Keep distance > 2cm between ATECC and NFC-module antennas |
+| 14 | SPI speed too high for ATECC | CLK > 8 MHz leads to data loss | Limit SPI to 2-4 MHz for reliable transfer |
 
 ## Official sources (webfetch verfied)
 
-1. [Microchip ATECC608A Datasheet (PDF, Microchip)](https://www.microchip.com/wwwproducts/en/ATECC608A) - офіційний даташит with регістрами, протоколом та прикладами коду
-2. [Microchip ATECC508A Datasheet (PDF, Microchip)](https://www.microchip.com/wwwproducts/en/ATECC508A) - бюджетний варіант with меншим обсягом пам'яті
-3. [ATECC608A Secure Element Hookup Guide (Learn Microchip)](https://learn.microchip.com/view/atecc608a-hookup-guide) - підключення, приклади Arduino та MicroPython
-4. [AES-128/256 Hardware Acceleration in ATECC608A](https://www.microchip.com/en-us/products/security-encryption/cryptocoprocessors/atecc608e) - аппаратне ускорення
-5. [ECDSA P-256 Implementation Details (AN, Microchip)](https://www.microchip.com/en-us/application-notes/an-application-note-atecc608a-ecdsa) - детальне описання алгоритмів підписів
-6. [Secure Boot for ESP32 (Espressif Documentation)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/security/secure-boot.html) - інтеграція secure element with Secure Boot ESP-IDF
-7. [Atecc608a Arduino Library (GitHub, Microchip)](https://github.com/microchip-atecc/ATECC608_Arduino_Library) - відкрита бібліотека for Arduino/ESP32
-8. [SE050 Plug & Trust (NXP, пошук PDF)](https://www.alldatasheet.com/view.jsp?Searchword=SE050) - secure element I2C, аплети, SCP03.
-9. [MicroPython Secure Element Support (GitHub community)](https://github.com/micropython/micropython/tree/master/drivers/secure) - драйвери for MicroPython
-10. [Espressif Secure Enclave (ESP32 Technical Documentation)](https://docs.espressif.com/projects/esp-idf/en/latest/api-reference/security/secure-boot.html) - теорія Secure Enclave ESP32
-11. [NFC Tag Operations с secure element (NXP)](https://www.nxp.com/docs/en/application-note/AN12116) - операції with NFC та secure element
+1. [Microchip ATECC608A Datasheet (PDF, Microchip)](https://www.microchip.com/wwwproducts/en/ATECC608A) - official datasheet with registers, protocol and code examples
+2. [Microchip ATECC508A Datasheet (PDF, Microchip)](https://www.microchip.com/wwwproducts/en/ATECC508A) - budget option with smaller memory
+3. [ATECC608A Secure Element Hookup Guide (Learn Microchip)](https://learn.microchip.com/view/atecc608a-hookup-guide) - wiring, Arduino and MicroPython examples
+4. [AES-128/256 Hardware Acceleration in ATECC608A](https://www.microchip.com/en-us/products/security-encryption/cryptocoprocessors/atecc608e) - hardware acceleration
+5. [ECDSA P-256 Implementation Details (AN, Microchip)](https://www.microchip.com/en-us/application-notes/an-application-note-atecc608a-ecdsa) - detailed signature algorithm description
+6. [Secure Boot for ESP32 (Espressif Documentation)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/security/secure-boot.html) - secure element integration with ESP-IDF Secure Boot
+7. [Atecc608a Arduino Library (GitHub, Microchip)](https://github.com/microchip-atecc/ATECC608_Arduino_Library) - open library for Arduino/ESP32
+8. [SE050 Plug and Trust (NXP, search PDF)](https://www.alldatasheet.com/view.jsp?Searchword=SE050) - I2C secure element, applets, SCP03.
+9. [MicroPython Secure Element Support (GitHub community)](https://github.com/micropython/micropython/tree/master/drivers/secure) - drivers for MicroPython
+10. [Espressif Secure Enclave (ESP32 Technical Documentation)](https://docs.espressif.com/projects/esp-idf/en/latest/api-reference/security/secure-boot.html) - ESP32 Secure Enclave theory
+11. [NFC Tag Operations with secure element (NXP)](https://www.nxp.com/docs/en/application-note/AN12116) - operations with NFC and secure element
 
 > [!warning]
-> Всі посилання перевірено via webfetch on доступність on момент створення документу. URL змінюються - переконайтеся перед використанням in продакшн-коді.
+> All links verified via webfetch for availability at the time of document creation. URLs change - verify before use in production code.
 
-## Безпечні практики та поради
+## Secure practices and tips
 
-### Основні принципи інтеграції secure element with ESP32
+### Basic principles of secure element integration with ESP32
 
-1. **Окреме живлення**: in завжному використовуйте виділену лінію VCC for secure element with конденсатором 100μF біля пристрою for стабілізації напруги під крипто-операціями.
+1. **Separate power supply**: always use a dedicated VCC line for the secure element with a 100uF capacitor near the device for voltage stabilization during crypto operations.
 
-2. **Піні pull-up**: for I2C інтерфейсу обов'язкові 10kΩ pull-up резистори до 3.3V on лініях SDA та SCE without них ATECC608A буде часто повторювати адреси та повертати errors часу очікування.
+2. **Pull-up pins**: for the I2C interface 10k pull-up resistors to 3.3V on SDA and SCL lines are mandatory - without them ATECC608A will often repeat addresses and return timeout errors.
 
-3. **Reset схема**: Підключіть RST-пін до GPIO ESP32 with послідовним діодом for запобігання зворотному току, коли ESP32 переходить in режим глибокого сну (deep sleep).
+3. **Reset circuit**: connect the RST pin to ESP32 GPIO with a series diode to prevent reverse current when ESP32 enters deep sleep.
 
-4. **Lock зони**: Після першого запису ключів фіксуйте (lock) конфіденційні зони for допом команди `Lock`, інакше будь-хто згідно має SPI/I2C доступ може прочитати всі ключі.
+4. **Lock zones**: after the first key write lock the confidential zones with the `Lock` command, otherwise anyone with SPI/I2C access can read all keys.
 
-5. **Аркульнепокриття**: Використовйте конденсатори 100nF + 10μF біля VCC pine ATECC608A for фільтрування імпульсних завад at швидкій роботідких операціях ECDSA.
+5. **Decoupling**: use 100nF + 10uF capacitors near the ATECC608A VCC pin for filtering pulse noise during fast ECDSA operations.
 
-6. **Температурний діапазон**: Операційні температури ATECC608A -40°C до +85°C. at роботі in умовах перегріву перевірте керувений вентилятор або теплодіодну падуче пластину.
+6. **Temperature range**: ATECC608A operating temperatures -40C to +85C. When working in overheating conditions check a controlled fan or heatsink plate.
 
-7. **Зберігання ключів**: Ніколи not зберігайте відкриті ключі in EEPROM або Flash ESP32 - завжди використовуйте апаратне сховище secure element. Відкриті ключі ніколи not покидають чип.
+7. **Key storage**: never store public keys in ESP32 EEPROM or Flash - always use secure element hardware storage. Public keys never leave the chip.
 
-8. **Оновлення firmwares**: Завжди використовуйте Secure Boot із підписаними key secure element перед кожним оновленням firmwares OTA. this гарантує, that запуститься лише підписана версія firmwares.
+8. **Firmware updates**: always use Secure Boot with keys signed by the secure element before each OTA firmware update. This guarantees that only the signed firmware version runs.
 
-9. **Генерація випадкових чисел**: Використовуйте TRNG secure element for генерації nonce, but not програмний rand() ESP32, which є передбачуваним.
+9. **Random number generation**: use the secure element TRNG for nonce generation, not the ESP32 software rand(), which is predictable.
 
-10. **Часове очікування**: Будь-які операції ECDSE_sign in ATECC608A займають 10-50 мс залежно from частоти I2C. not блокуйте основний потік without тайм-ауту.
+10. **Timeout**: any ECDSA_sign operations in ATECC608A take 10-50 ms depending on I2C frequency. Do not block the main thread without a timeout.
 
-### Висновок
+### Conclusion
 
-Secure element - this найнадійніший спосіб забезпечити кісткість ключів та підписів in проєктах ESP32. Впроваджуйте їх згідно with рекомендаціями виробника, використовуйте приклади with цієї документації, and ваші проєкти будуть захищені навіть at фізичному отриманні пристрою.
+A secure element is the most reliable way to ensure key and signature integrity in ESP32 projects. Implement them according to manufacturer recommendations, use the examples from this documentation, and your projects will be protected even if the device is physically obtained.
 
-## Додаткові моделі secure element
+## Additional secure element models
 
-| Модель | Інтерфейс | Пам'ять | Ключові можливості | Напруга | Адреса |
+| Model | Interface | Memory | Key features | Voltage | Address |
 | --- | --- | --- | --- | --- | --- |
-| **ATECC608A** | I2C / SPI | 64 Кб | ECDSA P-256, RSA-2048, AES-128/256, SHA-256, TRNG | 2.5-3.6 in | 0xC0 |
-| **ATECC508A** | I2C | 16 Кб | ECDSA P-256, RSA-2048, AES-128/256, SHA-256, TRNG | 2.5-3.6 in | 0xC0 |
-| **ATECC608E** | I2C / SPI | 48 Кб | ECDSA P-256, RSA-3072, AES-128/256, SHA-256/384/512 | 2.5-3.6 in | 0xC0 |
-| **TEE ESP32** | Memory | 256 Кб | Secure Boot, Flash Encryption, Secure Enclave | 2.5-3.6 in | Н/A (всередині) |
-| **Atecc508e** | SPI | 32 Кб | Оптимізовані алгоритмі ECDSA, AES, TRNG | 1.8-3.6 in | 0xC0 |
-| **MAX32500** | 1-Wire | 2 Кб | Simple AES-128, presenza detection | 2.7-3.6 in | 1-Wire addr |
+| **ATECC608A** | I2C / SPI | 64 KB | ECDSA P-256, RSA-2048, AES-128/256, SHA-256, TRNG | 2.5-3.6 V | 0xC0 |
+| **ATECC508A** | I2C | 16 KB | ECDSA P-256, RSA-2048, AES-128/256, SHA-256, TRNG | 2.5-3.6 V | 0xC0 |
+| **ATECC608E** | I2C / SPI | 48 KB | ECDSA P-256, RSA-3072, AES-128/256, SHA-256/384/512 | 2.5-3.6 V | 0xC0 |
+| **TEE ESP32** | Memory | 256 KB | Secure Boot, Flash Encryption, Secure Enclave | 2.5-3.6 V | N/A (inside) |
+| **Atecc508e** | SPI | 32 KB | Optimized ECDSA, AES, TRNG algorithms | 1.8-3.6 V | 0xC0 |
+| **MAX32500** | 1-Wire | 2 KB | Simple AES-128, presence detection | 2.7-3.6 V | 1-Wire addr |
 
-## Розширення типових помилок (додаткові 6 штук)
+## Extended common issues (6 more)
 
 | # | Symptom | Cause | Solution |
 | --- | --- | --- | --- |
-| 15 | Невірна дата та час підпису | Невірна synchronisation часового pine RTC with основним процесором | Синхронізуйте RTC via NTP перед підписовою операцією, використовуйте TRNG for nonce |
-| 16 | Memory leak in фірмуванні ATECC | Забивання пам'яті at повторних операціях without очищення | Використовуйте `atecc.clear_fuse()` for очищення стану перед новим сеансом |
-| 17 | Інтерфереція між кількома ATECC | Два пристрої with однаковою I2C адресою on одній шині | Змініть адресу SA0 або використовуйте SPI режим for одного with пристроїв |
-| 17 | error валідації підпису in TLS | Несумісність кривого крипто (curve mismatch P-256/P-384/P-521) | Перевірте curve поле in конфігурації TLS та secure element |
-| 17 | error LOCK zон | Спроба записати in заблоковану зону | Перевірте стан зон Lock per `atecc.get_zone_status()`, lock одноразово |
-| 17 | Підключення via NFC | ATECC508A not відповідає at Near-field-зв'язку | Перевірте антени та частоту радіо, перевірте режим wake-up |
+| 15 | Wrong signature date and time | Wrong RTC time pin sync with main processor | Sync RTC via NTP before signing operation, use TRNG for nonce |
+| 16 | Memory leak in ATECC firmware | Memory clogging on repeated operations without cleanup | Use `atecc.clear_fuse()` to clear state before a new session |
+| 17 | Interference between several ATECC | Two devices with the same I2C address on one bus | Change the SA0 address or use SPI mode for one of the devices |
+| 17 | Signature validation error in TLS | Crypto curve mismatch (curve mismatch P-256/P-384/P-521) | Check the curve field in TLS and secure element configuration |
+| 17 | LOCK zone error | Attempt to write to a locked zone | Check zone Lock status via `atecc.get_zone_status()`, lock once |
+| 17 | Connection over NFC | ATECC508A does not answer on near-field link | Check antennas and radio frequency, check wake-up mode |
 
-## Підтримка версій MicroPython
+## MicroPython version support
 
-in MicroPython on ESP32 можна інтегрувати ATECC608A with використанням мільйонів бібліотек. Найпопулярніші варіанти:
+In MicroPython on ESP32 you can integrate ATECC608A using millions of libraries. Most popular options:
 
-1. **`mpy-atecc`** - необхідно встановити via `upip install mpy-atecc`, надає функції `init()`, `get_chip_id()`, `sign_ecdsa()`.
-2. **Ручна I2C реєстрна робота** - використовуйте `machine.I2C` та ручне читання реєстрів ATECC608A for його datasheet.
-3. **MicroPython ESP32 Secure Enclave** - використовуйте `machine.SecureElement` (доступно in нове версії MicroPython 1.20+) for безпосереднього доступу до Secure Enclave ESP32.
+1. **`mpy-atecc`** - install via `upip install mpy-atecc`, provides `init()`, `get_chip_id()`, `sign_ecdsa()` functions.
+2. **Manual I2C register work** - use `machine.I2C` and manual ATECC608A register reads per its datasheet.
+3. **MicroPython ESP32 Secure Enclave** - use `machine.SecureElement` (available in newer MicroPython 1.20+ versions) for direct access to the ESP32 Secure Enclave.
 
-example мінімального MicroPython скрипта:
+Minimal MicroPython script example:
 
 ```python
 try:

@@ -1,53 +1,52 @@
 ---
-title: Cloud-пайплайн ESP32 - MQTT, Node-RED, InfluxDB, Grafana
-description: Наскрізний example прикладного IoT: вузол ESP32 with DHT22/BME280 шле телеметрію per MQTT, Mosquitto приймає, Node-RED нормалізує, InfluxDB зберігає часові ряди, Grafana малює дашборд....
-tags: [esp32, mqtt, nodered, influxdb, grafana, cloud, iot, protokoli]
+title: ESP32 cloud pipeline - MQTT, Node-RED, InfluxDB, Grafana
+description: End-to-end applied IoT example: ESP32 node sends telemetry over MQTT to dashboards; shows schematics, code and tables.
+tags: [esp32, mqtt, nodered, influxdb, grafana, cloud, iot, protocols]
 category: Protokoli
 date-created: 2026-09-28
 date: 2026-09-28
 lang: en
 original: 15-Protocols/05-Cloud-Pipeline.md
-date: 2026-10-08
 ---
 
-# Cloud-пайплайн: ESP32 → MQTT → Node-RED → InfluxDB → Grafana
+# Cloud pipeline: ESP32 to MQTT to Node-RED to InfluxDB to Grafana
 
-> [!warning] without NTP-часу on вузлі InfluxDB запише точки with міткою 1970 - графіки «порожні»!
-> NTP-синк до першої публікації обов'язковий, див. [[EN/15-Protocols/03-mDNS-NTP-TLS.en]].
+> [!warning] Without NTP time on the node InfluxDB stores points stamped 1970 - charts look empty!
+> NTP sync before the first publish is mandatory, see [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS, NTP and TLS]].
 
-База: MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], час [[EN/15-Protocols/03-mDNS-NTP-TLS.en]], сон [[EN/07-Timers/03-Sleep-ULP.en]], WiFi [[EN/05-Radio/01-WiFi-STA-AP.en]], старт [[Home.en]].
+Base: MQTT [[EN/15-Protocols/01-MQTT.en|MQTT]], time [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS, NTP and TLS]], sleep [[EN/07-Timers/03-Sleep-ULP.en|Sleep and ULP]], WiFi [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]], start [[Home.en|Home]].
 
-## Призначення
+## Purpose
 
-Наскрізний example прикладного IoT: вузол ESP32 with DHT22/BME280 шле телеметрію per MQTT, Mosquitto приймає, Node-RED нормалізує, InfluxDB зберігає часові ряди, Grafana малює дашборд. Кожну ланку можна замінити, контракт між ними - JSON and MQTT-топіки with розділу [[EN/15-Protocols/01-MQTT.en|MQTT]].
+End-to-end applied IoT example: an ESP32 node with DHT22 or BME280 sends telemetry over MQTT, Mosquitto receives it, Node-RED normalizes, InfluxDB stores time series, Grafana draws the dashboard. Each link can be replaced, the contract between them is JSON and MQTT topics from [[EN/15-Protocols/01-MQTT.en|MQTT]].
 
-Коли брати такий стек:
+When to take this stack:
 
-- свій сервер (RPi 4 / VPS), дані нікуди not віддаємо;
-- десятки вузлів, потрібні графіки, алерти, історія for рік;
-- правила («якщо t > 30 - увімкнути вентилятор») пише нетехнар in Node-RED.
+- own server (RPi 4 or VPS), data never leaves home;
+- dozens of nodes, charts, alerts, and a year of history needed;
+- rules (if t is above 30 turn on the fan) written by a non-engineer in Node-RED.
 
-Альтернативи (оглядово, нижче): ThingsBoard замість Node-RED+InfluxDB+Grafana разом; AWS IoT Core замість свого Mosquitto - коли парку тисяч пристроїв замало одного брокера.
+Alternatives (overview below): ThingsBoard instead of Node-RED+InfluxDB+Grafana together; AWS IoT Core instead of own Mosquitto - when one broker is too small for thousands of devices.
 
-## Параметри
+## Parameters
 
-| Параметр | Значення | Примітка |
+| Parameter | Value | Note |
 | --- | --- | --- |
-| Вузол | ESP32 + DHT22/BME280, період 60 с | deep-sleep між вимірами |
-| Транспорт | MQTT QoS 0, топік `device/<id>/sensors` | without retain on потоці! |
-| broker | Mosquitto 2.x on RPi/VPS | 1883 локально, див. [[EN/15-Protocols/01-MQTT.en| MQTT]] |
-| Потік | Node-RED: mqtt-in → function → influxdb-out | JSON потоку нижче |
-| Сховище | InfluxDB 2.x bucket `iot`, measurement `climate` | retention 365 днів |
-| Дашборд | Grafana: Flux/SQL-запит, панель Time series | алерт in Telegram |
-| Batch | 1 точка = 1 запис; офлайн-буфер - пачками до 50 | більше - різати |
-| Час | NTP on вузлі + серверний timestamp how fallback | without часу - сміття in БД |
-| Альтернатива 1 | ThingsBoard (MQTT + свій UI) | швидкий старт, менше гнучкості |
-| Альтернатива 2 | AWS IoT Core (MQTT + rules → Timestream) | гроші for повідомлення |
+| Node | ESP32 + DHT22/BME280, 60 s period | deep-sleep between measurements |
+| Transport | MQTT QoS 0, topic `device/<id>/sensors` | no retain on the stream! |
+| Broker | Mosquitto 2.x on RPi or VPS | 1883 locally, see [[EN/15-Protocols/01-MQTT.en|MQTT]] |
+| Flow | Node-RED: mqtt-in to function to influxdb-out | stream JSON below |
+| Storage | InfluxDB 2.x bucket `iot`, measurement `climate` | 365-day retention |
+| Dashboard | Grafana: Flux or SQL query, Time series panel | alert to Telegram |
+| Batch | 1 point = 1 write; offline buffer in packs of up to 50 | more must be split |
+| Time | NTP on the node + server timestamp as fallback | without time - garbage in the database |
+| Alternative 1 | ThingsBoard (MQTT + own UI) | fast start, less flexible |
+| Alternative 2 | AWS IoT Core (MQTT + rules to Timestream) | money per message |
 
 ![[assets/img/cloud-pipeline-nodered-scheme.png|600]]
-*Рис. Пайплайн: сонний вузол прокидається, шле MQTT, Node-RED пише in InfluxDB, Grafana малює.*
+*Fig. Pipeline: sleepy node wakes, sends MQTT, Node-RED writes to InfluxDB, Grafana draws.*
 
-### ASCII-схема
+### ASCII diagram
 
 ```text
 ESP32-вузол (deep-sleep 60с)        Сервер RPi (192.168.1.10)
@@ -77,28 +76,28 @@ graph LR
     ESP[ESP32 deep-sleep<br/>BME280] -->|MQTT sensors| MQ[Mosquitto<br/>:1883]
     MQ -->|mqtt-in device/#| NR[Node-RED<br/>function]
     NR -->|line protocol| DB[(InfluxDB<br/>bucket iot)]
-    DB -->|Flux| GF[Grafana<br/>дашборд]
-    ESP -.->|офлайн-буфер 50| ESP
-    GF -.->|алерт t>30| TG[Telegram]
+    DB -->|Flux| GF[Grafana<br/>dashboard]
+    ESP -.->|offline buffer 50| ESP
+    GF -.->|alert t>30| TG[Telegram]
 ```
 
-## Ланка 1: вузол (коротко, деталі - 01-MQTT)
+## Link 1: node (short, details in 01-MQTT)
 
-Вузол робить мінімум: прокинувся → виміряв → підключився → опублікував → заснув. Повний MQTT-code with реконектом - in [[EN/15-Protocols/01-MQTT.en|MQTT]], тут лише каркас трьох стеків (нижче). Формат корисного навантаження фіксований:
+The node does the minimum: woke up to measured to connected to published to slept. Full MQTT code with reconnect is in [[EN/15-Protocols/01-MQTT.en|MQTT]], only three stack frames here (below). The payload format is fixed:
 
 ```json
 {"id": "esp32-01", "t": 24.5, "h": 55.1, "vbat": 4.02, "rssi": -67}
 ```
 
-Поле `ts` вузол not ставить (годинник може брехати) - timestamp проставляє Node-RED/InfluxDB at записі, but NTP on вузлі потрібен for TLS and порядку точок.
+The node never sets the `ts` field (its clock may lie) - Node-RED or InfluxDB stamps time at write, but NTP on the node is still needed for TLS and point order.
 
-## Ланка 2: Mosquitto
+## Link 2: Mosquitto
 
-broker with розділу [[EN/15-Protocols/01-MQTT.en|MQTT]]: користувач on вузол, ACL `device/<id>/#`, користувач `nodered` with `device/#` on читання. Жодної логіки in брокері - він тільки шина.
+Broker from [[EN/15-Protocols/01-MQTT.en|MQTT]]: one user per node, ACL `device/<id>/#`, user `nodered` with `device/#` for reading. No logic in the broker - it is only a bus.
 
-## Ланка 3: Node-RED flow (JSON потоку)
+## Link 3: Node-RED flow (flow JSON)
 
-Встановити: `sudo apt install -y nodejs npm`, далі Node-RED офіційним скриптом, палітра `node-red-contrib-influxdb`. Імпортувати потік (Menu → Import):
+Install: `sudo apt install -y nodejs npm`, then Node-RED with the official script, `node-red-contrib-influxdb` palette. Import the flow (Menu to Import):
 
 ```json
 [
@@ -130,22 +129,22 @@ broker with розділу [[EN/15-Protocols/01-MQTT.en|MQTT]]: користув
 ]
 ```
 
-Зв'язки: `mqtt-in-climate` → `fn-normalize` → `influx-out`; `mqtt-in-climate` → `fn-alert` → (telegram-sender). Функція нормалізації відкидає сміття (`NaN` from DHT22 - not писати in БД, лічильник бракованих per BME280 - окрема метрика).
+Links: `mqtt-in-climate` to `fn-normalize` to `influx-out`; `mqtt-in-climate` to `fn-alert` to (telegram-sender). The normalize function drops garbage (`NaN` from DHT22 never goes to the database, rejected BME280 samples go to a separate metric).
 
-## Ланка 4: InfluxDB (bucket, retention, запит)
+## Link 4: InfluxDB (bucket, retention, query)
 
 ```bash
 influx setup -b iot -o home -u admin -p '***' -r 365d --force
 influx bucket list
 ```
 
-Line protocol, that пише Node-RED:
+Line protocol that Node-RED writes:
 
 ```text
 climate,id=esp32-01 t=24.5,h=55.1,vbat=4.02,rssi=-67 1727486400
 ```
 
-check даних (Flux):
+Data check (Flux):
 
 ```flux
 from(bucket: "iot")
@@ -153,17 +152,17 @@ from(bucket: "iot")
   |> filter(fn: (r) => r._measurement == "climate" and r.id == "esp32-01")
 ```
 
-Batch-правило: пачка with офлайн-буфера - до 50 точок for запис; більше ріже пам'ять Node-RED and таймаути InfluxDB.
+Batch rule: a pack from the offline buffer holds up to 50 points per write; more cuts Node-RED memory and InfluxDB timeouts.
 
-## Ланка 5: Grafana-дашборд
+## Link 5: Grafana dashboard
 
-source: InfluxDB (Flux, URL `http://localhost:8086`, токен with правами read on `iot`). Панелі: Time series `t`/`h` for 24 год, Stat `vbat` (червоний < 3.3 in), Bar gauge `rssi`. Алерт: `t > 30` протягом 5 хв → контакт Telegram. Дашборд експортувати JSON in git - відновлення for хвилину.
+Source: InfluxDB (Flux, URL `http://localhost:8086`, token with read rights on `iot`). Panels: Time series `t` and `h` for 24 h, Stat `vbat` (red under 3.3 V), Bar gauge `rssi`. Alert: `t` above 30 for 5 min to a Telegram contact. Export the dashboard JSON to git - restore in a minute.
 
-## Deep-sleep вузол + буферизація at офлайні
+## Deep-sleep node + offline buffering
 
-Цикл: `wake → sensors → WiFi → NTP (рідко) → MQTT → sleep(60 с)`. Якщо WiFi/MQTT недоступні - точку складати in кільцевий буфер (RTC-пам'ять до ребуту, NVS - переживе ребут, до 50 записів). at наступному успіху - злити буфер пачкою QoS 1 and почистити. Ніколи not крутити реконект довше 20 с from батареї - краще заснути and спробувати наступного циклу.
+Cycle: `wake to sensors to WiFi to NTP (rarely) to MQTT to sleep(60 s)`. If WiFi or MQTT is down - store the point in a ring buffer (RTC memory until reboot, NVS survives reboot, up to 50 records). On the next success - flush the buffer as one QoS 1 pack and clear it. Never spin reconnect longer than 20 s on battery - better to sleep and try next cycle.
 
-## code вузла: ESP-IDF (каркас, деталі - 01-MQTT)
+## Node code: ESP-IDF (frame, details in 01-MQTT)
 
 ```c
 // wake → read BME280 → publish → sleep. MQTT-клієнт як у 01-MQTT.
@@ -180,7 +179,7 @@ void app_main(void) {
 }
 ```
 
-## code вузла: Arduino (каркас)
+## Node code: Arduino (frame)
 
 ```cpp
 #include <WiFi.h>
@@ -202,7 +201,7 @@ void setup() {
 void loop() {}
 ```
 
-## code вузла: MicroPython (каркас)
+## Node code: MicroPython (frame)
 
 ```python
 import network, time, json, machine
@@ -226,44 +225,44 @@ if sta.isconnected():
 machine.deepsleep(60_000)
 ```
 
-## Альтернативи: ThingsBoard, AWS IoT Core (оглядово)
+## Alternatives: ThingsBoard, AWS IoT Core (overview)
 
-- **ThingsBoard:** вузол шле MQTT on `v1/devices/me/telemetry` with токеном пристрою - and одразу має дашборди, rule engine, алерти without Node-RED/InfluxDB/Grafana. Швидкий старт, ціна - менша гнучкість запитів and прив'язка до однієї платформи.
-- **AWS IoT Core:** broker + rules (SQL) → Timestream/DynamoDB/S3, тінь пристрою (shadow), fleet provisioning for тисяч вузлів. Ціна - гроші for мільйон повідомлень and складніший IAM/TLS with клієнтськими сертифікатами. Виправдано from сотень пристроїв або коли замовник уже in AWS.
+- **ThingsBoard:** node sends MQTT to `v1/devices/me/telemetry` with the device token - and at once gets dashboards, rule engine, and alerts without Node-RED, InfluxDB, or Grafana. Fast start, price is less query flexibility and one-platform lock-in.
+- **AWS IoT Core:** broker + rules (SQL) to Timestream, DynamoDB, or S3, device shadow, fleet provisioning for thousands of nodes. Price is money per million messages and harder IAM and TLS with client certificates. Worth it from hundreds of devices or when the customer is already in AWS.
 
-## typical errors
+## Typical issues
 
-| Симптом | Причина | Рішення |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| Графіки порожні, точки with 1970 | немає NTP on вузлі | SNTP до першої публікації; fallback - серверний timestamp |
-| Дублі точок після реконекту | retained `sensors` + перепідписка | retain ТІЛЬКИ state/status, ніколи потік (див. 01-MQTT) |
-| `NaN` in БД, ламані графіки | DHT22 not встиг / CRC fail | відкидати `isnan` in Node-RED function |
-| Пачка 500 точок вішає запис | batch without ліміту | різати per 50, таймаут InfluxDB-клієнта |
-| retain-шторм: 1000 старих точок | вузол щоразу публікує retain | QoS 0 without retain on `sensors` |
-| Час стрибає після deep-sleep | RTC-дрейф, NTP раз on добу мало | синк кожного N-го wake або at дрейфі > 2 с |
-| Grafana `401` до InfluxDB | протух токен / not той bucket | токен read on `iot`, verify Organization |
+| Empty charts, points stamped 1970 | no NTP on the node | SNTP before the first publish; fallback is the server timestamp |
+| Duplicate points after reconnect | retained `sensors` + resubscribe | retain ONLY state and status, never the stream (see 01-MQTT) |
+| `NaN` in the database, broken charts | DHT22 too slow or CRC fail | drop `isnan` in the Node-RED function |
+| 500-point pack hangs the write | batch without a limit | split per 50, InfluxDB client timeout |
+| Retain storm: 1000 stale points | node publishes retain each time | QoS 0 without retain on `sensors` |
+| Time jumps after deep-sleep | RTC drift, daily NTP is too rare | sync every Nth wake or on drift above 2 s |
+| Grafana `401` to InfluxDB | token expired or wrong bucket | read token on `iot`, check Organization |
 
-## official джерела
+## Official sources
 
-- [Node-RED - документація](https://nodered.org/docs/) - потоки, mqtt-in, function-вузли.
-- [InfluxDB OSS v2 - документація](https://docs.influxdata.com/influxdb/v2/) - buckets, line protocol, Flux.
-- [Grafana - документація](https://grafana.com/docs/grafana/latest/) - джерела, панелі, алерти.
-- [ThingsBoard - документація](https://thingsboard.io/docs/) - MQTT telemetry API, rule engine.
-- [AWS IoT - What is AWS IoT](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) - Core, rules, протоколи.
+- [Node-RED - docs](https://nodered.org/docs/) - flows, mqtt-in, function nodes.
+- [InfluxDB OSS v2 - docs](https://docs.influxdata.com/influxdb/v2/) - buckets, line protocol, Flux.
+- [Grafana - docs](https://grafana.com/docs/grafana/latest/) - sources, panels, alerts.
+- [ThingsBoard - docs](https://thingsboard.io/docs/) - MQTT telemetry API, rule engine.
+- [AWS IoT - What is AWS IoT](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html) - Core, rules, protocols.
 
-## Див. також
+## See also
 
-- [[Home.en]]
-- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA/AP]] - транспорт вузла
-- [[EN/08-Memory/03-OTA.en|OTA]] - оновлення вузлів пайплайна
-- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - офлайн-буфер, ID вузла
-- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - діагностика ланок
-- [[EN/15-Protocols/01-MQTT.en|MQTT]] - повний code вузла with реконектом
-- [[EN/15-Protocols/03-HTTP-Client.en|HTTP/WebSocket]] - REST-альтернатива вузлу
-- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS/NTP/TLS]] - час for InfluxDB
-- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - entry WiFi on вузлах
+- [[Home.en|Home]]
+- [[EN/05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]] - node transport
+- [[EN/08-Memory/03-OTA.en|OTA]] - pipeline node updates
+- [[EN/08-Memory/01-Partitions-NVS.en|NVS]] - offline buffer, node ID
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - link diagnostics
+- [[EN/15-Protocols/01-MQTT.en|MQTT]] - full node code with reconnect
+- [[EN/15-Protocols/03-HTTP-Client.en|HTTP and WebSocket]] - REST alternative for the node
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|mDNS, NTP and TLS]] - time for InfluxDB
+- [[EN/15-Protocols/04-Provisioning.en|Provisioning]] - WiFi entry on nodes
 
-## Common issues
+## Appendix: checklist
 
 | Symptom | Cause | Fix |
 |---|---|---|

@@ -21,7 +21,7 @@ Overview of large displays for ESP32: ST7789 (IPS 240x240 / 240x320, fast SPI) -
 | Display | resolution | Interface | power supply | Feature |
 | --- | --- | --- | --- | --- |
 | ST7789 1.3-1.54″ | 240x240 | SPI 40-80 MHz | 3.3 V | IPS, bright; needs TFT_eSPI/LovyanGFX |
-| ST7789 2.0″ | 240×320 | SPI | 3.3 in | Той же driver, different offset |
+| ST7789 2.0″ | 240x320 | SPI | 3.3 V | Same driver, different offset |
 | ILI9341 2.4-2.8″ | 240x320 | SPI + XPT2046 touch (SPI) | 3.3 V (module with LDO → 5 V) | Touch on separate CS |
 | LCD1602 + PCF8574 | 16x2 text | I2C 0x27 (typically) / 0x3F | 5 V (backlight!) | Contrast with potentiometer |
 | E-paper 2.13-4.2″ | 250x122 … 400x300 | SPI (GxEPD/GxEPD2) | 3.3 V | Update 2-30 s, partial refresh; do not update more often than ~3 min |
@@ -32,10 +32,10 @@ Overview of large displays for ESP32: ST7789 (IPS 240x240 / 240x320, fast SPI) -
 
 | ST7789 (module) | Purpose |
 | --- | --- |
-| VCC / GND | 3.3 in / ground |
+| VCC / GND | 3.3 V / ground |
 | SCL (SCK) | SPI clock → GPIO18 |
 | SDA (MOSI) | SPI MOSI → GPIO23 |
-| RES (RST) | Reset → GPIO4 (або EN) |
+| RES (RST) | Reset → GPIO4 (or EN) |
 | DC | Data/Command → GPIO2 |
 | CS | Chip-select → GPIO5 |
 | BLK | Backlight → 3V3 or PWM-GPIO (brightness) |
@@ -44,7 +44,7 @@ Overview of large displays for ESP32: ST7789 (IPS 240x240 / 240x320, fast SPI) -
 | --- | --- |
 | T_CLK/T_DOUT/T_DIN/T_CS/T_IRQ | second SPI device: common SCK/MISO/MOSI, separate T_CS (GPIO14), IRQ optional |
 
-| LCD1602+I2C | I2C 0x27/0x3F, power supply 5 in (контраст!) |
+| LCD1602+I2C | I2C 0x27/0x3F, 5 V power supply (contrast!) |
 
 ## Wiring diagram
 
@@ -59,18 +59,18 @@ Overview of large displays for ESP32: ST7789 (IPS 240x240 / 240x320, fast SPI) -
 | GPIO2 | DC | Data/Command (no strapping issue after boot) |
 | GPIO4 | RES | Reset |
 | GPIO15 | BLK (ST7789) | through PWM - brightness control |
-| GPIO14 | T_CS (ILI9341) | Touch CS, окремий on TFT CS |
+| GPIO14 | T_CS (ILI9341) | Touch CS, separate from TFT CS |
 
 | ESP32 | LCD1602+I2C | Note |
 | --- | --- | --- |
 | 5V | VCC | Backlight needs 5 V |
 | GND | GND | ground |
 | GPIO22 | SCL | I2C |
-| GPIO21 | SDA | I2C, address 0x27 або 0x3F |
+| GPIO21 | SDA | I2C, address 0x27 or 0x3F |
 
 | ESP32 | E-paper (SPI) | Note |
 | --- | --- | --- |
-| 3V3/GND | VCC/GND | 3.3 in |
+| 3V3/GND | VCC/GND | 3.3 V |
 | GPIO18/23/5 | SCK/MOSI/CS | SPI |
 | GPIO2/4/15 | DC/RST/BUSY | BUSY - wait input |
 
@@ -110,7 +110,7 @@ graph LR
 
 ## Code ESP-IDF+Arduino+TFT_eSPI
 
-`TFT_eSPI` (Arduino/PlatformIO): in `User_Setup.h` або `platformio.ini` build_flags:
+`TFT_eSPI` (Arduino/PlatformIO): in `User_Setup.h` or `platformio.ini` build_flags:
 
 ```ini
 -DILI9341_DRIVER=1      ; або -DST7789_DRIVER=1
@@ -183,10 +183,10 @@ void loop() { delay(60000); } // НЕ частіше раз на кілька х
 
 ## Official sources
 
-- [TFT ST7789 - live photo (Adafruit)](https://www.adafruit.com/product/3787) - product page with photo; Sitronix datasheet - `check manually`.
+- [TFT ST7789 - live photo (Adafruit)](https://www.adafruit.com/product/3787) - product page with photo; Sitronix datasheet - see manufacturer page.
 - [I2C LCD + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-esp8266-I2C-lcd-arduino-ide/) - LCD1602/2004 via PCF8574.
 - [E-paper HAT - photo and wiki (Waveshare)](https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT) - schematics, code examples.
-- ILI9341 Datasheet (Ilitek) - `check manually`.
+- ILI9341 Datasheet (Ilitek) - see manufacturer page.
 
 ## See also
 

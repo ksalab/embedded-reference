@@ -29,9 +29,9 @@ Heavy power switching with ESP32: BTS7960 (43 A H-bridge) for large DC motors, w
 
 > SAFETY: 220 V kills. SSR and relays switch phase via fuse, all AC joints in closed enclosure with cable glands, metal parts grounded to PE. ESP32 and low-voltage parts galvanically isolated (SSR/relay opto gives this, but enclosure and fuse still mandatory).
 
-## Легенда pinandin модуля
+## Module pin legend
 
-| pin | Тип | Куди | Note |
+| Pin | Type | To | Note |
 | --- | --- | --- | --- |
 | BTS7960 VCC | 5 V logic | 5 V | Powers bridge logic |
 | BTS7960 GND | ground | GND ESP32 | common with logic |
@@ -42,7 +42,7 @@ Heavy power switching with ESP32: BTS7960 (43 A H-bridge) for large DC motors, w
 | BTS7960 R_IS / L_IS | Current analog | ADC (via divider!) | ~2500:1; voltage proportional to current |
 | L9110S VCC / GND | 2.5-12 V supply | Motor PSU | Common GND with ESP32 |
 | L9110S IA / IB (channel A) | Inputs | 2x GPIO | HIGH/LOW = direction; PWM on one = speed |
-| L9110S OA / OB | output | Мотор A | up to 800 мА |
+| L9110S OA / OB | output | Motor A | up to 800 mA |
 | SSR 3+ (DC+) / 4- (DC-) | Control | GPIO / GND | 3.3 V is enough; LED indicator inside |
 | SSR 1~ / 2~ (AC) | AC power | Phase via fuse → load | Zero-cross: switches at zero - no sparks |
 | Solenoid + | Power | 12/24 V PSU | via fuse per rating |
@@ -53,17 +53,17 @@ Heavy power switching with ESP32: BTS7960 (43 A H-bridge) for large DC motors, w
 
 | ESP32 | module | Note |
 | --- | --- | --- |
-| GPIO25 | BTS7960 RPWM | LEDC 20 кГц; inbefore |
+| GPIO25 | BTS7960 RPWM | LEDC 20 kHz; forward |
 | GPIO26 | BTS7960 LPWM | LEDC 20 kHz; backward |
 | GPIO27 | BTS7960 R_EN | HIGH = enabled; can jumper to 5 V |
 | GPIO14 | BTS7960 L_EN | HIGH = enabled |
 | GPIO34 | BTS7960 R_IS (via divider 2:1) | Current analog; do not exceed 3.3 V! |
 | 12/24 V + fuse | BTS7960 B+ | Battery/PSU, thick wires |
-| GPIO18/19 | L9110S IA/IB (мотор A) | DIR + PWM |
+| GPIO18/19 | L9110S IA/IB (motor A) | DIR + PWM |
 | GPIO21/22 | L9110S OA pair (motor B) | Optional second motor |
 | GPIO23 | SSR DC+ (3+) | HIGH = AC ON; DC− → GND |
 | Phase→fuse→SSR 1~ | SSR AC | SSR 2~ → lamp/heater → N |
-| GPIO13 | MOSFET Gate (соленоїд) | 100 Ом + pull-down 10 кОм |
+| GPIO13 | MOSFET Gate (solenoid) | 100 Ohm + pull-down 10 kOhm |
 | 12 V | Solenoid + | 1N4007 diode across coil |
 
 ### ASCII-schem
@@ -253,9 +253,9 @@ bts(0)
 ## Official sources
 
 - [BTS7960 + Arduino with code (DeepBlue)](https://deepbluembedded.com/arduino-bts7960-dc-motor-driver/) - 43 A H-bridge, PWM, ex.
-- BTS7960 Datasheet (Infineon) - `check manually`.
-- AQY212S Datasheet (Panasonic, пошук PDF): [AQY212S search](https://www.alldatasheet.com/view.jsp?Searchword=AQY212S) - PhotoMOS 60 in/1.1 but.
-- L9110S / SSR / solenoid - `check manually`.
+- BTS7960 Datasheet (Infineon) - see manufacturer page.
+- AQY212S Datasheet (Panasonic, PDF search): [AQY212S search](https://www.alldatasheet.com/view.jsp?Searchword=AQY212S) - PhotoMOS 60 V/1.1 A.
+- L9110S / SSR / solenoid - see manufacturer page.
 - [AC load control with code (RNT)](https://randomnerdtutorials.com/esp32-relay-module-ac-web-server/) - relay/SSR, safety.
 
 ## See also

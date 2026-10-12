@@ -44,7 +44,7 @@ temperature limits; proper deep-sleep with panel power switching.
 | Partial refresh | ~0.3-0.8 s (mono only and only where OTP/waveform supports!) |
 | Lifetime | ~1,000,000 updates ideally; in practice - keep from sun and frost |
 | Operating temp | 0…+40 C (mono), +15…+35 C (colour/7-colour); storage up to +30 C |
-| library | GxEPD2 (Arduino) + Adafruit_GFX; ESP-IDF - порт/ex. Waveshare або calepd |
+| Library | GxEPD2 (Arduino) + Adafruit_GFX; ESP-IDF - port/ex. Waveshare or calepd |
 | Image hold | Years without power (theory), recommended to refresh 3-colour once per 24 hours |
 
 ### Controllers - what goes with what
@@ -72,7 +72,7 @@ temperature limits; proper deep-sleep with panel power switching.
 
 > Waveshare V2 2.9″ boards (GDEM029T94 without partial waveform in OTP) need
 > `GxEPD2_290_T94_V2` class with waveform in registers - with ordinary class
-> partial not працює або бруднить!
+> partial fails or smears!
 
 ### Mono vs 3-colour
 
@@ -108,7 +108,7 @@ Rules against ghosting:
 - in heat - do not leave in direct sun: ink dries irreversibly;
   white tape/UV filter + shade mandatory for street boards.
 
-## Легенда pinandin модуля
+## Module pin legend
 
 Typical Waveshare HAT / DESPI-C02 (8-9 pins, SPI):
 
@@ -119,7 +119,7 @@ Typical Waveshare HAT / DESPI-C02 (8-9 pins, SPI):
 | 3 | DIN (MOSI) | SPI input | GPIO23 (VSPI MOSI) | data to panel |
 | 4 | CLK (SCK) | SPI input | GPIO18 (VSPI SCK) | 2-10 MHz (not 40 MHz like TFT!) |
 | 5 | CS | CS input | GPIO5 | Panel chip-select |
-| 6 | DC | input D/C | GPIO2 | data vs команда |
+| 6 | DC | input D/C | GPIO2 | data vs command |
 | 7 | RST | reset input | GPIO4 | Reset; on clever-reset boards - short 2-10 ms pulse! |
 | 8 | BUSY | busy output | GPIO15 (input!) | HIGH = busy (some invert, check board wiki!) |
 | 9 | PWR | power key | GPIO27 or VCC (Rev 2.3!) | on Driver HAT Rev 2.3 without HIGH on PWR panel is silent! |
@@ -134,7 +134,7 @@ Explanation:
   Old examples without PWR on new board - black screen!
 - **Clever-reset:** on new Waveshare - RC circuit, long LOW kills
   driver power. Cured by `init(115200, true, 2, false)` (2 ms reset)
-  або pull-up 1 кОм at RST.
+  or 1 kOhm pull-up on RST.
 - **Good Display DESPI modules:** same pinout, but 24-pin FPC connector;
   flex longer than 20 cm loses data, lower SPI to 2 MHz.
 
@@ -144,7 +144,7 @@ Explanation:
 | --- | --- | --- |
 | 3V3 | VCC (+ PWR → 3V3, if uncontrolled) | 3.3 V only! |
 | GND | GND | common ground |
-| GPIO18 | CLK | VSPI SCK, 4 МГц старт |
+| GPIO18 | CLK | VSPI SCK, 4 MHz start |
 | GPIO23 | DIN | VSPI MOSI |
 | GPIO5 | CS | Panel CS |
 | GPIO2 | DC | Data/Command |
@@ -380,7 +380,7 @@ print("buf ready:", len(buf), "bytes; допишіть init під свій ко
 
 | Parameter | GDEY075T7 |
 | --- | --- |
-| resolution | 800×480 (GDEW075T7 - 640×384, not переплутати!) |
+| Resolution | 800x480 (GDEW075T7 - 640x384, do not confuse!) |
 | Controller | Compatible with UC8179 chain (pick GxEPD2 class by exact marking!) |
 | Update | Full ~4-6 s; partial mono mode only |
 | Power | 3.3 V, current peak at refresh up to 100 mA |
@@ -406,7 +406,7 @@ print("buf ready:", len(buf), "bytes; допишіть init під свій ко
 ## Official sources
 
 - [GxEPD2 - E-Paper library for Arduino (ZinggJM)](https://github.com/ZinggJM/GxEPD2) - panel classes, `ConnectingHardware.md`, waveform notes, DESPI-PICO.
-- [Waveshare 2.13″ e-Paper HAT - wiki](https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT) - схеми, демо ESP32/Arduino, table pinandin.
+- [Waveshare 2.13″ e-Paper HAT - wiki](https://www.waveshare.com/wiki/2.13inch_e-Paper_HAT) - schematics, ESP32/Arduino demos, pin table.
 - [Waveshare E-Paper Driver HAT - wiki (Rev 2.3, PWR pin)](https://www.waveshare.com/wiki/E-Paper_Driver_HAT) - board revisions, Display Config, BUSY/sleep/180 s FAQ.
 - [Adafruit E-Ink Breakouts - tricolour panel overview](https://learn.adafruit.com/adafruit-eink-display-breakouts) - SRAM buffer, power, tricolour principle.
 

@@ -1,7 +1,7 @@
 ---
 lang: en
-description: Далекобійний зв'язок for ESP32 without WiFi: NB-IoT/Cat-M module SIM7080G with GNSS,; shows schematics, code and tables.
-title: SIM7080G/A7670/LoRa-UART-E32/SX1262/HC-11 - стільниковий та UART-зв'язок
+description: Long-range link for ESP32 without WiFi: SIM7080G NB-IoT/Cat-M module with GNSS,; shows schematics, code and tables.
+title: SIM7080G/A7670/LoRa-UART-E32/SX1262/HC-11 - cellular and UART link
 tags: [esp32, cellular, nbiot, cat-m, sim7080g, a7670, lora, e32, sx1262, uart, gnss]
 category: Zvyazok
 date-created: 2026-09-28
@@ -9,148 +9,148 @@ date: 2026-10-10
 original: 12-Moduli-zvyazku/09-Cellular-NBIoT-UARTLoRa.md
 ---
 
-# Стільниковий та UART-радіо - SIM7080G, A7670, LoRa-UART E32, SX1262, HC-11
+# Cellular and UART radio - SIM7080G, A7670, LoRa-UART E32, SX1262, HC-11
 
 ## Purpose
 
-Далекобійний зв'язок for ESP32 without WiFi: NB-IoT/Cat-M module SIM7080G with GNSS,
-4G-наступник SIM800 - A7670 (Cat-1, голос/SMS/дані),
-UART LoRa-модеми E32-TTL-100 / E22 / RYLR998 (AT-команди, режими M0/M1, адресація AT+ADDRESS),
-SPI-трансивери SX1262/LLCC68 with TCXO for точного LoRa,
-but також оглядово HC-11 / JDY-40 / CC1310 / nRF52840.
-База: SIM800L/GPS - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]], NRF24/LoRa SPI - [[EN/12-Comm-Modules/02-NRF24-LoRa.en]],
+Long-range link for ESP32 without WiFi: SIM7080G NB-IoT/Cat-M module with GNSS,
+4G successor of SIM800 - A7670 (Cat-1, voice/SMS/data),
+UART LoRa modems E32-TTL-100 / E22 / RYLR998 (AT commands, M0/M1 modes, AT+ADDRESS addressing),
+SX1262/LLCC68 SPI transceivers with TCXO for exact LoRa,
+but also HC-11 / JDY-40 / CC1310 / nRF52840 overview.
+Base: SIM800L/GPS - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]], NRF24/LoRa SPI - [[EN/12-Comm-Modules/02-NRF24-LoRa.en]],
 SIM7600/4G - [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], BT/Sub-GHz - [[EN/12-Comm-Modules/06-HC05-HM10-CC1101-HC12.en]].
 
-> ЗАСТЕРЕЖЕННЯ ПРО АНТЕНИ: антени LTE (700-2700 МГц, роз'єм IPEX/SMA) and LoRa (433/868 МГц)
-> not взаємозамінні! Передача in чужу антену = КСХ > 3, перегрів PA, вихід with ладу.
-> LoRa/SIM-module without антени not вмикати in TX!
+> ANTENNA WARNING: LTE antennas (700-2700 MHz, IPEX/SMA connector) and LoRa antennas (433/868 MHz)
+> are not interchangeable! Transmitting into a foreign antenna = VSWR > 3, PA overheating, failure.
+> Do not turn LoRa/SIM modules on in TX without antennas!
 
-## Характеристики
+## Characteristics
 
-| module | Мережа / діапазон | Інтерфейс | Живлення | Особливість |
+| Module | Network / band | Interface | Power supply | Feature |
 | --- | --- | --- | --- | --- |
 | SIM7080G | Cat-M1 + NB-IoT + GNSS, multiband LTE | UART (AT), USB | 2.7-4.8 V, typically 4 V! Peak 2 A | PSM/eDRX - 10 years on battery; PWRKEY for startup |
-| A7670 (A7670E/G/SA) | 4G LTE Cat-1 + 2G fallback, голос/SMS/GNSS (залежить from субверсії) | UART (AT), USB | 3.4-4.2 in, пік 2 but | Наступник SIM800: ті ж AT-команди, сучасні мережі (2G вимикають!) |
-| E32-TTL-100 (SX1276) | LoRa 410-441 МГц, 20 дБм | UART 1200-115200 + M0/M1 | 2.3-5.5 in (версії 3.3/5 in) | Прозорий/фіксований режими, адреса and канал per повітрю |
-| E22 (SX1262) | LoRa 410-493 / 850-930 МГц, 22 дБм | UART + M0/M1 + AUX | 2.3-5.5 in | Новіший for E32: менше споживання, далі зв'язок |
-| RYLR998 (RYLR896) | LoRa 868/915 МГц, AT-команди | UART 115200, AT+ADDRESS/AT+SEND | 3.3 in | Найпростіший start: адресована доставка with коробки |
-| SX1262 / LLCC68 | LoRa 150-960 МГц, +22 дБм, −148 дБм | SPI + DIO1/BUSY/RESET | 3.3 in, TCXO on модулі | Точна частота (TCXO), LoRaWAN-стек, потрібна бібліотека RadioLib |
-| HC-11 (CC1101) | FSK 433 МГц, −112 дБм | UART 9600-115200, AT | 3.3-5 in | Дешевий прозорий міст, without LoRa-модуляції |
-| JDY-40 | 2.4 ГГц, пропрієтарний | UART, AT | 3.3 in | Заміна дроту on короткі дистанції |
-| CC1310 / nRF52840 | Sub-1 ГГц (CC1310) / 2.4 ГГц + BLE + 802.15.4 (nRF52840) | SPI / UART, SoC | 3.3 in | SoC with радіо: прошивка замість AT-модему |
+| A7670 (A7670E/G/SA) | 4G LTE Cat-1 + 2G fallback, voice/SMS/GNSS (depends on subversion) | UART (AT), USB | 3.4-4.2 V, 2 A peak | SIM800 successor: same AT commands, modern networks (2G is turned off!) |
+| E32-TTL-100 (SX1276) | LoRa 410-441 MHz, 20 dBm | UART 1200-115200 + M0/M1 | 2.3-5.5 V (3.3/5 V versions) | Transparent/fixed modes, address and channel over the air |
+| E22 (SX1262) | LoRa 410-493 / 850-930 MHz, 22 dBm | UART + M0/M1 + AUX | 2.3-5.5 V | Newer than E32: less consumption, longer link |
+| RYLR998 (RYLR896) | LoRa 868/915 MHz, AT commands | UART 115200, AT+ADDRESS/AT+SEND | 3.3 V | Simplest start: addressed delivery out of the box |
+| SX1262 / LLCC68 | LoRa 150-960 MHz, +22 dBm, -148 dBm | SPI + DIO1/BUSY/RESET | 3.3 V, TCXO on module | Exact frequency (TCXO), LoRaWAN stack, RadioLib library needed |
+| HC-11 (CC1101) | FSK 433 MHz, -112 dBm | UART 9600-115200, AT | 3.3-5 V | Cheap transparent bridge, without LoRa modulation |
+| JDY-40 | 2.4 GHz, proprietary | UART, AT | 3.3 V | Wire replacement for short distances |
+| CC1310 / nRF52840 | Sub-1 GHz (CC1310) / 2.4 GHz + BLE + 802.15.4 (nRF52840) | SPI / UART, SoC | 3.3 V | SoC with radio: firmware instead of AT modem |
 
-## Легенда пінів модуля
+## Module pin legend
 
-### SIM7080G (плата розробника / breakout)
-
-| Pin | Label | Type | To ESP32 | Note |
-| --- | --- | --- | --- | --- |
-| 1 | VBAT | Живлення вхід | 4 in БЖ 2 but (DC-DC!) | not 3V3 DevKit! Пік 2 but at реєстрації in мережі |
-| 2 | GND | Земля | GND | Товстий провід, common ground |
-| 3 | TXD (модуля) | Вихід UART | GPIO16 (RX2 ESP32) | Перехресно TX→RX, 115200 |
-| 4 | RXD (модуля) | Вхід UART | GPIO17 (TX2 ESP32) | Перехресно RX←TX |
-| 5 | PWRKEY | Вхід, active low | GPIO27 | Імпульс LOW ≥1 с = увімкнення/вимкнення! |
-| 6 | RESET | Вхід, active low | GPIO14 або NC | Аварійний скид ≥100 мс |
-| 7 | STATUS | Вихід цифровий | GPIO34 (тільки вхід!) | HIGH = module увімкнено |
-| 8 | NETLIGHT | Вихід | LED або NC | Блимання = статус мережі (64 мс ON/300 мс = пошук) |
-| 9 | SIM_DATA/RST/CLK | SIM-картка | Тримач Nano-SIM on платі | NB-IoT SIM with підтримкою Cat-M/NB! |
-| 10 | ANT_LTE | ВЧ-вихід | LTE-антена IPEX/SMA | ТІЛЬКИ LTE-антена, not LoRa! |
-| 11 | ANT_GNSS | ВЧ-вихід | GNSS-антена (активна 3 in) | Окрема антена/комбо, вид on небо |
-
-### A7670 (плата розробника)
+### SIM7080G (developer board / breakout)
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VBAT | Живлення вхід | 5 in 2 but (свій DC-DC до 4 in) або 4 in | Пік 2 but! USB DevKit not тягне |
-| 2 | GND | Земля | GND | Спільна земля |
-| 3 | TXD | Вихід UART | GPIO16 (RX2) | Перехресно, 115200 |
-| 4 | RXD | Вхід UART | GPIO17 (TX2) | Перехресно |
+| 1 | VBAT | Power input | 4 V 2 A PSU (DC-DC!) | not DevKit 3V3! 2 A peak at network registration |
+| 2 | GND | Ground | GND | Thick wire, common ground |
+| 3 | TXD (of module) | UART output | GPIO16 (ESP32 RX2) | Crossed TX to RX, 115200 |
+| 4 | RXD (of module) | UART input | GPIO17 (ESP32 TX2) | Crossed RX from TX |
+| 5 | PWRKEY | Input, active low | GPIO27 | LOW pulse >=1 s = on/off! |
+| 6 | RESET | Input, active low | GPIO14 or NC | Emergency reset >=100 ms |
+| 7 | STATUS | Digital output | GPIO34 (input only!) | HIGH = module on |
+| 8 | NETLIGHT | Output | LED or NC | Blinking = network status (64 ms ON/300 ms = search) |
+| 9 | SIM_DATA/RST/CLK | SIM card | Nano-SIM holder on board | NB-IoT SIM with Cat-M/NB support! |
+| 10 | ANT_LTE | RF output | LTE IPEX/SMA antenna | LTE antenna ONLY, not LoRa! |
+| 11 | ANT_GNSS | RF output | GNSS antenna (active 3 V) | Separate/combo antenna, sky view |
+
+### A7670 (developer board)
+
+| Pin | Label | Type | To ESP32 | Note |
+| --- | --- | --- | --- | --- |
+| 1 | VBAT | Power input | 5 V 2 A (own DC-DC to 4 V) or 4 V | 2 A peak! DevKit USB does not pull |
+| 2 | GND | Ground | GND | Common ground |
+| 3 | TXD | UART output | GPIO16 (RX2) | Crossed, 115200 |
+| 4 | RXD | UART input | GPIO17 (TX2) | Crossed |
 | 5 | PWRKEY | Input | GPIO27 | LOW pulse ~1 s for startup (like SIM800!) |
-| 6 | RESET | Вхід | GPIO14 або NC | Аварійний скид |
-| 7 | STATUS | Вихід | GPIO34 | HIGH = увімкнено |
-| 8 | SIM-картка | Тримач | Nano-SIM 4G | Звичайна IoT/мобільна SIM |
-| 9 | ANT | ВЧ-вихід | LTE-антена 700-2700 МГц | not LoRa-антена! |
-| 10 | SPK/MIC | Аудіо | Динамік/мікрофон | Тільки версії with голосом (A7670E/SA) |
+| 6 | RESET | Input | GPIO14 or NC | Emergency reset |
+| 7 | STATUS | Output | GPIO34 | HIGH = on |
+| 8 | SIM card | Holder | Nano-SIM 4G | Plain IoT/mobile SIM |
+| 9 | ANT | RF output | LTE 700-2700 MHz antenna | not a LoRa antenna! |
+| 10 | SPK/MIC | Audio | Speaker/microphone | Only voice versions (A7670E/SA) |
 
-> A7670 - спадкоємець SIM800: AT-команди `AT+CPIN`, `AT+CSQ`, `AT+CGATT`, `AT+HTTP*` ті ж самі,
-> але мережа 4G Cat-1 (2G in Україні/ЄС вимикають - SIM800 помирає, A7670 живе).
+> A7670 is the SIM800 heir: `AT+CPIN`, `AT+CSQ`, `AT+CGATT`, `AT+HTTP*` AT commands are the same,
+> but the network is 4G Cat-1 (2G in Ukraine/EU is turned off - SIM800 dies, A7670 lives).
 
-### E32-TTL-100 / E22 (LoRa-UART, режими M0/M1)
+### E32-TTL-100 / E22 (LoRa-UART, M0/M1 modes)
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | Живлення вхід | 3V3 або 5V (for версією!) | verify маркування плати |
-| 2 | GND | Земля | GND | Спільна земля |
-| 3 | TXD (модуля) | Вихід UART | GPIO16 (RX2) | Перехресно |
-| 4 | RXD (модуля) | Вхід UART | GPIO17 (TX2) | Перехресно |
-| 5 | M0 | Вхід режиму | GPIO27 | M0/M1: 00 норма, 11 сон, 10 WOR, 01 конфіг |
-| 6 | M1 | Вхід режиму | GPIO14 | Перемикати тільки in сні! |
-| 7 | AUX | Вихід, open-drain | GPIO34 + pull-up | HIGH = готовий; LOW = зайнятий TX/RX |
-| 8 | ANT | ВЧ-вихід | LoRa-антена 433/868 МГц | Своя частота! not LTE-антена! |
+| 1 | VCC | Power input | 3V3 or 5V (by version!) | verify board marking |
+| 2 | GND | Ground | GND | Common ground |
+| 3 | TXD (of module) | UART output | GPIO16 (RX2) | Crossed |
+| 4 | RXD (of module) | UART input | GPIO17 (TX2) | Crossed |
+| 5 | M0 | Mode input | GPIO27 | M0/M1: 00 normal, 11 sleep, 10 WOR, 01 config |
+| 6 | M1 | Mode input | GPIO14 | Switch only in sleep! |
+| 7 | AUX | Open-drain output | GPIO34 + pull-up | HIGH = ready; LOW = busy TX/RX |
+| 8 | ANT | RF output | LoRa 433/868 MHz antenna | Own frequency! Not an LTE antenna! |
 
-Режими M0/M1:
+M0/M1 modes:
 
-| M1 | M0 | Режим | Призначення |
+| M1 | M0 | Mode | Purpose |
 | --- | --- | --- | --- |
-| 0 | 0 | Нормальний (Normal) | Прозора передача UART↔LoRa |
-| 0 | 1 | WOR (пробудження) | Економія: періодичне прокидання |
-| 1 | 0 | Енергозбереження (Power-saving) | Тільки прийом WOR-кадрів |
-| 1 | 1 | Сон/configuration (Sleep) | AT-налаштування адреси/каналу/потужності |
+| 0 | 0 | Normal | Transparent UART to LoRa transfer |
+| 0 | 1 | WOR (wake-up) | Economy: periodic wake-ups |
+| 1 | 0 | Power-saving | Only WOR-frame reception |
+| 1 | 1 | Sleep/config | AT setup of address/channel/power |
 
-`AT+ADDRESS`, `AT+NETWORKID`, `AT+BAND` - via UART in режимі Sleep; чекати AUX=HIGH після кожної команди!
+`AT+ADDRESS`, `AT+NETWORKID`, `AT+BAND` - over UART in Sleep mode; wait for AUX=HIGH after each command!
 
-### RYLR998 (LoRa AT-модем)
+### RYLR998 (LoRa AT modem)
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | Живлення вхід | 3V3 | Тільки 3.3 in! |
-| 2 | GND | Земля | GND | Спільна земля |
-| 3 | TX | Вихід UART | GPIO16 (RX2) | 115200 for замовчуванням |
-| 4 | RX | Вхід UART | GPIO17 (TX2) | `AT+SEND=<addr>,<len>,<data>` |
-| 5 | RESET | Вхід | GPIO14 або NC | Скид |
-| 6 | ANT | ВЧ-вихід | 868/915 МГц антена | Своя частота! |
+| 1 | VCC | Power input | 3V3 | 3.3 V only! |
+| 2 | GND | Ground | GND | Common ground |
+| 3 | TX | UART output | GPIO16 (RX2) | 115200 by default |
+| 4 | RX | UART input | GPIO17 (TX2) | `AT+SEND=<addr>,<len>,<data>` |
+| 5 | RESET | Input | GPIO14 or NC | Reset |
+| 6 | ANT | RF output | 868/915 MHz antenna | Own frequency! |
 
-`AT+ADDRESS=1`, `AT+NETWORKID=5`, `AT+BAND=868000000` - пара модулів with однаковим NETWORKID бачить одне одного.
+`AT+ADDRESS=1`, `AT+NETWORKID=5`, `AT+BAND=868000000` - a pair of modules with the same NETWORKID see each other.
 
 ### SX1262 / LLCC68 (SPI, TCXO)
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | Живлення вхід | 3V3 | Тільки 3.3 in, TX ~120 мА |
-| 2 | GND | Земля | GND | Земля + екран антени |
-| 3 | SCK | Вхід SPI | GPIO18 | До 8 МГц |
-| 4 | MOSI | Вхід SPI | GPIO23 | ESP32 → радіо |
-| 5 | MISO | Вихід SPI | GPIO19 | Радіо → ESP32 |
-| 6 | NSS | Вхід CS | GPIO5 | Chip Select |
-| 7 | RESET | Вхід reset | GPIO25 | Active low, імпульс at init |
-| 8 | BUSY | Вихід | GPIO26 | HIGH = чіп зайнятий, чекати! |
-| 9 | DIO1 | Вихід переривання | GPIO32 | RX Done / TX Done / CAD |
-| 10 | ANT | ВЧ-вихід | LoRa-антена своєї частоти | without АНТЕНИ not ВМИКАТИ TX! |
+| 1 | VCC | Power input | 3V3 | 3.3 V only, TX ~120 mA |
+| 2 | GND | Ground | GND | Ground + antenna shield |
+| 3 | SCK | SPI input | GPIO18 | Up to 8 MHz |
+| 4 | MOSI | SPI input | GPIO23 | ESP32 to radio |
+| 5 | MISO | SPI output | GPIO19 | Radio to ESP32 |
+| 6 | NSS | CS input | GPIO5 | Chip Select |
+| 7 | RESET | Reset input | GPIO25 | Active low, pulse at init |
+| 8 | BUSY | Output | GPIO26 | HIGH = chip busy, wait! |
+| 9 | DIO1 | Interrupt output | GPIO32 | RX Done / TX Done / CAD |
+| 10 | ANT | RF output | Own-frequency LoRa antenna | without ANTENNA do not TURN ON TX! |
 
-> LLCC68 = здешевлений SX1262 without LoRaWAN-сертифікації (регістри ті ж, бібліотека RadioLib та ж).
-> TCXO on модулі обов'язковий for LoRaWAN (дрейф without TCXO рве join).
+> LLCC68 is a cheapened SX1262 without LoRaWAN certification (same registers, same RadioLib library).
+> TCXO on the module is mandatory for LoRaWAN (drift without TCXO breaks join).
 
-## Схема підключення
+## Connection schematic
 
 | ESP32 | SIM7080G / A7670 | E32/E22/RYLR998 | SX1262/LLCC68 |
 | --- | --- | --- | --- |
-| GND | GND (товстий провід!) | GND | GND |
-| GPIO16 (RX2) | TXD модуля | TXD модуля | - |
-| GPIO17 (TX2) | RXD модуля | RXD модуля | - |
-| GPIO27 | PWRKEY (імпульс 1 с!) | M0 | - |
-| GPIO14 | RESET (опційно) | M1 | - |
-| GPIO34 (вхід) | STATUS | AUX (+pull-up) | - |
+| GND | GND (thick wire!) | GND | GND |
+| GPIO16 (RX2) | Module TXD | Module TXD | - |
+| GPIO17 (TX2) | Module RXD | Module RXD | - |
+| GPIO27 | PWRKEY (1 s pulse!) | M0 | - |
+| GPIO14 | RESET (optional) | M1 | - |
+| GPIO34 (input) | STATUS | AUX (+pull-up) | - |
 | GPIO18/23/19/5 | - | - | SCK/MOSI/MISO/NSS |
 | GPIO25 | - | - | RESET |
 | GPIO26 | - | - | BUSY |
 | GPIO32 | - | - | DIO1 |
-| БЖ 4 in 2 but | VBAT SIM7080G | - | - |
-| БЖ 5 in 2 but / 4 in | VBAT A7670 | - | - |
+| 4 V 2 A PSU | VBAT SIM7080G | - | - |
+| 5 V 2 A PSU / 4 V | VBAT A7670 | - | - |
 | 3V3/5V | - | VCC E32/E22 | - |
 | 3V3 | - | VCC RYLR998 | VCC SX1262 |
 
-Живлення стільникових - окремий DC-DC with запасом 2 but, див. [[EN/02-Power-Supply/01-Power-Rails.en]].
-UART - [[EN/04-Interfaces/01-UART.en|UART]], SPI - [[EN/04-Interfaces/02-SPI.en|SPI]]. Baud стільникових and RYLR998: 115200 8N1.
+Cellular power is a separate DC-DC with 2 A margin, see [[EN/02-Power-Supply/01-Power-Rails.en]].
+UART - [[EN/04-Interfaces/01-UART.en|UART]], SPI - [[EN/04-Interfaces/02-SPI.en|SPI]]. Baud of cellular and RYLR998: 115200 8N1.
 
 ### ASCII schematic
 
@@ -209,19 +209,19 @@ graph LR
   ESP32["ESP32<br/>UART2 + SPI"]
   ESP32 -->|GPIO17 TX2| CRX["SIM7080G/A7670 RXD"]
   CTX["SIM7080G/A7670 TXD"] -->|GPIO16 RX2| ESP32
-  ESP32 -->|GPIO27 1с| PWR["PWRKEY"]
-  PSU1(["БЖ 4-5В 2А"]) -->|VBAT| CELL["SIM7080G/A7670"]
-  CELL -->|IPEX| ANT1((LTE-антена))
+  ESP32 -->|GPIO27 1s| PWR["PWRKEY"]
+  PSU1(["4-5V 2A PSU"]) -->|VBAT| CELL["SIM7080G/A7670"]
+  CELL -->|IPEX| ANT1((LTE antenna))
   ESP32 -->|GPIO17| ERX["E32/E22 RXD"]
   ETX["E32/E22 TXD"] -->|GPIO16| ESP32
   ESP32 -->|M0/M1| E32["E32/E22"]
-  E32 -->|SMA| ANT2((LoRa-антена 433/868))
+  E32 -->|SMA| ANT2((LoRa antenna 433/868))
   ESP32 -->|GPIO18/23/5| SX["SX1262/LLCC68<br/>SPI+TCXO"]
-  SX -->|SMA| ANT3((LoRa-антена))
+  SX -->|SMA| ANT3((LoRa antenna))
 ```
 
 ![[assets/img/cellular-nbiot-uartlora-scheme.png|600]]
-*Fig. SIM7080G/A7670 per UART with окремим живленням, E32/E22 with M0/M1/AUX, SX1262 per SPI. Місце під схему - див. [[assets/README]].*
+*Fig. SIM7080G/A7670 over UART with separate power, E32/E22 with M0/M1/AUX, SX1262 over SPI. Space for schematic - see [[assets/README]].*
 
 ## Code ESP-IDF
 
@@ -370,19 +370,19 @@ m0.value(0); m1.value(0)  # назад у Normal
 
 ## typical errors
 
-AT-шпаргалки єдиного формату (команда → відповідь → зміст → error): зведена SIM800 - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]], базова 4G - [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], повна 35 команд - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]]. Нижче - специфічні граблі цієї ноти:
+Single-format AT cheat sheets (command to answer to meaning to error): summary SIM800 - [[EN/12-Comm-Modules/03-SIM800L-GPS.en]], basic 4G - [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]], full 35 commands - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]]. Below - the specific rakes of this note:
 
-1. **SIM7080G from 3V3 DevKit** → вічні ребути at attach. Пік 2 but! Окремий DC-DC 4 in 2 but + електроліт 470+ мкФ.
+1. **SIM7080G from DevKit 3V3** → eternal reboots at attach. 2 A peak! Separate 4 V 2 A DC-DC + 470+ uF electrolytic.
 2. **Without PWRKEY pulse** → silence on UART. SIM7080G/A7670 start only with a LOW pulse ~1 s, not on power-up.
-3. **Звичайна SIM without NB-IoT** → `+CGATT: 0`. for SIM7080G потрібен тариф/оператор with Cat-M/NB-IoT покриттям.
-4. **LTE-антена on LoRa and навпаки** → КСХ > 3, смерть PA. Антени маркуються частотою: LTE 700-2700 МГц, LoRa 433/868 МГц.
-5. **TX without антени** → перегрів вихідного каскаду. Правило: накрутив антену → живлення → AT → TX.
-6. **TX-TX / RX-RX** → тиша. UART перехресно: TX модуля → RX ESP32 (GPIO16).
-7. **E32 конфігурують in Normal-режимі** → AT ігноруються. M0=1/M1=1 (Sleep), чекати AUX=HIGH після кожної команди.
-8. **AUX not перевіряють** → обрізані кадри. AUX=LOW означає «зайнятий»: not слати наступну команду/пакет.
-9. **SIM800-code without змін on A7670** → частково працює, але HTTP/SMS-команди версійно відрізняються. Звірити AT Manual саме A7670.
-10. **SX1262 without очікування BUSY** → биті команди. Перед кожною SPI-командою чекати BUSY=LOW.
-11. **LLCC68 with LoRaWAN-стеком SX1262 without правок** → join not проходить. verify таблицю частот/TCXO in конфігу радіо.
+3. **Plain SIM without NB-IoT** → `+CGATT: 0`. For SIM7080G you need a tariff/operator with Cat-M/NB-IoT coverage.
+4. **LTE antenna on LoRa and vice versa** → VSWR > 3, PA death. Antennas are marked by frequency: LTE 700-2700 MHz, LoRa 433/868 MHz.
+5. **TX without antenna** → output stage overheating. Rule: screwed the antenna → power → AT → TX.
+6. **TX-TX / RX-RX** → silence. UART crossed: module TX to ESP32 RX (GPIO16).
+7. **E32 configured in Normal mode** → AT ignored. M0=1/M1=1 (Sleep), wait for AUX=HIGH after each command.
+8. **AUX not checked** → truncated frames. AUX=LOW means "busy": do not send the next command/packet.
+9. **SIM800 code unchanged on A7670** → partly works, but HTTP/SMS commands differ by version. Check the AT Manual of A7670 exactly.
+10. **SX1262 without BUSY wait** → broken commands. Before each SPI command wait for BUSY=LOW.
+11. **LLCC68 with SX1262 LoRaWAN stack unpatched** → join does not pass. Verify the frequency/TCXO table in the radio config.
 
 ## Common issues
 
@@ -395,11 +395,11 @@ AT-шпаргалки єдиного формату (команда → відп
 | SX1262 garbage replies | SPI command while BUSY high | Poll BUSY low before every command, slow SPI to 1 MHz first |
 ## Official sources
 
-- [SIM7080G - сторінка продукту with фото (SIMCom)](https://www.simcom.com/product/SIM7080G.html) - Cat-M/NB-IoT/GNSS, PSM/eDRX, AT Manual.
-- [SIM7600X-H - даташити 4G-сім'ї (SIMCom)](https://www.simcom.com/product/SIM7600X-H.html) - AT Manual, VBAT 3.4-4.2 in, той же AT-підхід, that in A7670.
-- [SX1262 - сторінка продукту (Semtech)](https://www.semtech.com/products/wireless-rf/lora-connect/sx1262) - +22 дБм, −148 дБм, даташит.
-- [ESP32 + LoRa - туторіал with кодом (RNT)](https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/) - Sender/Receiver, антена обов'язково.
-- [ESP-IDF UART - документація with кодом (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/uart.html) - uart_param_config, AT-обмін.
+- [SIM7080G - product page with photo (SIMCom)](https://www.simcom.com/product/SIM7080G.html) - Cat-M/NB-IoT/GNSS, PSM/eDRX, AT Manual.
+- [SIM7600X-H - 4G-family datasheets (SIMCom)](https://www.simcom.com/product/SIM7600X-H.html) - AT Manual, VBAT 3.4-4.2 V, same AT approach as in A7670.
+- [SX1262 - product page (Semtech)](https://www.semtech.com/products/wireless-rf/lora-connect/sx1262) - +22 dBm, -148 dBm, datasheet.
+- [ESP32 + LoRa - tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/) - Sender/Receiver, antenna mandatory.
+- [ESP-IDF UART - docs with code (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/uart.html) - uart_param_config, AT exchange.
 
 ## See also
 

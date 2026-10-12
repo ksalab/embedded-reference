@@ -1,6 +1,6 @@
 ---
-title: Marine-Time - NMEA2000, SeaTalk, DCF77-WWVB-MSF, GPSDO, морський корпус IP67, живлення 12-24V
-description: Ця нота - морський and часо-вимірювальний вузол ESP32: мережа NMEA2000; показує схеми, code and таблиці.; shows schematics, code and tables.
+title: Marine-Time - NMEA2000, SeaTalk, DCF77-WWVB-MSF, GPSDO, IP67 marine enclosure, 12-24V power
+description: This note is an ESP32 marine and time-measurement node: NMEA2000 network; shows schematics, code and tables.; shows schematics, code and tables.
 tags: [esp32, marine, nmea2000, pgn, can, seatalk, dcf77, wwvb, msf, gpsdo, holdover, ip67, 12v, 24v, timing, rtc]
 category: Moduli
 lang: en
@@ -9,65 +9,65 @@ date: 2026-10-10
 original: 12-Moduli-zvyazku/23-Marine-Time.md
 ---
 
-# Marine-Time - NMEA2000, SeaTalk, DCF77/WWVB/MSF, GPSDO, корпус IP67, живлення 12/24V
+# Marine-Time - NMEA2000, SeaTalk, DCF77/WWVB/MSF, GPSDO, IP67 enclosure, 12/24V power
 
 ## Purpose
 
-Ця нота - морський and часо-вимірювальний вузол ESP32: мережа **NMEA2000**
-(CAN **250 кбіт**, **PGN**, **термінатори 120 Ом**, **живлення шини**),
-огляд **SeaTalk** (легасі Raymarine and міст до NMEA2000),
-радіосинхронізація часу **DCF77 / WWVB / MSF** (феритова антена,
-декодування **секундних імпульсів**), **GPSDO** (дисциплінований
-генератор with **holdover**), морський **корпус IP67** and живлення **12/24V**
-(protection, розв'язка, резерв).
+This note is an ESP32 marine and time-measurement node: **NMEA2000** network
+(CAN **250 kbps**, **PGN**, **120 Ohm terminators**, **bus power**),
+**SeaTalk** overview (legacy Raymarine and bridge to NMEA2000),
+radio time sync **DCF77 / WWVB / MSF** (ferrite antenna,
+decoding **second pulses**), **GPSDO** (disciplined
+oscillator with **holdover**), marine **IP67 enclosure** and **12/24V** power
+(protection, isolation, backup).
 
 ![[assets/img/marine-time-nmea-scheme.png|600]]
-*Fig. ESP32 on яхті: NMEA2000-бекбон (термінатори, живлення шини), SeaTalk-міст, DCF77-приймач with феритом, GPSDO 10 МГц + 1PPS, IP67-корпус, живлення 12/24V via ізольований DC-DC.*
+*Fig. ESP32 on a yacht: NMEA2000 backbone (terminators, bus power), SeaTalk bridge, DCF77 receiver with ferrite, GPSDO 10 MHz + 1PPS, IP67 enclosure, 12/24V power via isolated DC-DC.*
 
 Links to [[EN/Home.en]], [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]], [[EN/04-Interfaces/01-UART.en|UART]],
 [[EN/12-Comm-Modules/19-Wired-2.en]], [[EN/12-Comm-Modules/17-GNSS-RTK.en]],
 [[EN/12-Comm-Modules/22-Automotive.en]], [[EN/12-Comm-Modules/21-Motion-Control.en]],
 [[EN/02-Power-Supply/01-Power-Rails.en]].
 
-> [!warning] Море not пробачає макетування
-> Солона вода + 12/24V + вібрація = корозія for тижні. Жодних «соплів» DuPont
-> in кокпіті: тільки гермовводи, обтискні наконечники, лак/заливка,
-> запобіжники on кожну гілку, IP67-корпус. Навігаційні дані (AIS, глибина,
-> автопілот) via ESP32 - тільки how **дублюючий індикатор**, головними
-> лишаються сертифіковані прилади. Штормова відповідальність - on шкіпері.
+> [!warning] The sea does not forgive breadboarding
+> Salt water + 12/24V + vibration = corrosion in weeks. No DuPont "snot"
+> in the cockpit: only cable glands, crimp lugs, lacquer/potting,
+> fuses on each branch, IP67 enclosure. Navigation data (AIS, depth,
+> autopilot) via ESP32 - only as a **duplicating indicator**, certified
+> instruments stay primary. Storm responsibility is on the skipper.
 
-## Характеристики
+## Characteristics
 
-| Вузол | Роль | Інтерфейс до ESP32 | Живлення | Швидкість / межа | Коли брати |
+| Node | Role | Interface to ESP32 | Power supply | Speed / limit | When to take |
 | --- | --- | --- | --- | --- | --- |
-| NMEA2000 (CAN 250 кбіт) | Морська магістраль даних (PGN) | TWAI + трансивер (ISO1050 for розв'язки) | Шина 12V (9-16V), LEN-ліміт | 250 кбіт, бекбон до 200 м (mini) / 100 м (micro) | Яхта: глибина, вітер, GPS, двигун in одну мережу |
-| SeaTalk (1 / NG) | Легасі-мережа Raymarine | UART 4800 (ST1) або міст ST-NG→N2K | 12V | 4800 бод (ST1), 250 кбіт (ST-NG=N2K) | Старі автопілоти/дисплеї Raymarine |
-| DCF77-приймач (77.5 кГц) | Точний час EU (атомний еталон PTB) | GPIO цифровий (1000/2000 мс імпульси) | 3.3-5V | 1 біт/с, точність ~1 мс | Європейський берег, RTC-синхронізація without GPS |
-| WWVB-приймач (60 кГц) | Точний час США (NIST) | GPIO цифровий | 3.3-5V | 1 біт/с (PWM + BPSK with 2012) | Америка, резерв до GPS |
-| MSF-приймач (60 кГц) | Точний час UK (NPL) | GPIO цифровий | 3.3-5V | 1 біт/с | Британія/Північне море |
-| GPSDO (напр. on ZED-F9T) | 10 МГц + 1PPS, прив'язані до GPS | UART-конфіг + 1PPS-вхід + 10 МГц-вихід | 3.3V + чисте живлення | дрейф holdover 1-10 мкс/добу (OCXO) | Маяк, SDR-база, наукові виміри |
-| Корпус IP67 | Вижити in бризках/дощі | гермовводи PG7/PG9, клеми | - | IP67 (30 хв під 1 м) | Будь-which installation on палубі |
+| NMEA2000 (CAN 250 kbps) | Marine data backbone (PGN) | TWAI + transceiver (ISO1050 for isolation) | 12V bus (9-16V), LEN limit | 250 kbps, backbone up to 200 m (mini) / 100 m (micro) | Yacht: depth, wind, GPS, engine in one network |
+| SeaTalk (1 / NG) | Legacy Raymarine network | UART 4800 (ST1) or ST-NG to N2K bridge | 12V | 4800 baud (ST1), 250 kbps (ST-NG=N2K) | Old Raymarine autopilots/displays |
+| DCF77 receiver (77.5 kHz) | Exact EU time (PTB atomic reference) | Digital GPIO (1000/2000 ms pulses) | 3.3-5V | 1 bit/s, ~1 ms accuracy | European shore, RTC sync without GPS |
+| WWVB receiver (60 kHz) | Exact US time (NIST) | Digital GPIO | 3.3-5V | 1 bit/s (PWM + BPSK since 2012) | America, backup to GPS |
+| MSF receiver (60 kHz) | Exact UK time (NPL) | Digital GPIO | 3.3-5V | 1 bit/s | Britain/North Sea |
+| GPSDO (e.g. on ZED-F9T) | 10 MHz + 1PPS tied to GPS | UART config + 1PPS input + 10 MHz output | 3.3V + clean power | holdover drift 1-10 us/day (OCXO) | Beacon, SDR base, science measurements |
+| IP67 enclosure | Survive spray/rain | PG7/PG9 glands, terminals | - | IP67 (30 min under 1 m) | Any deck installation |
 | Marine 12/24V power | Stable 5V/3.3V from 9-36V | Isolated DC-DC + TVS + filter | 12V (10-16V) / 24V (20-32V) | ESP32 node current 0.2-1A | Yacht with two buses, galvanics mandatory |
 
-## 1. NMEA2000 - CAN 250 кбіт, PGN, термінатори, живлення шини
+## 1. NMEA2000 - CAN 250 kbps, PGN, terminators, bus power
 
-**NMEA2000** (IEC 61162-3, роз'єм DeviceNet M12 5-пін) - this CAN 2.0B
-(**29-біт** ID, **250 кбіт/с**) + протокол верхнього рівня from SAE J1939:
-дані пакуються in **PGN** (Parameter Group Number). Фізично - **бекбон**
-(магістраль) with **дропами** до приладів (до 6 м кожен).
+**NMEA2000** (IEC 61162-3, DeviceNet M12 5-pin connector) is CAN 2.0B
+(**29-bit** ID, **250 kbps**) + upper-level protocol from SAE J1939:
+data packed in **PGN** (Parameter Group Number). Physically a **backbone**
+(trunk) with **drops** to instruments (up to 6 m each).
 
-### 1.1. Фізика шини - 4 залізні правила
+### 1.1. Bus physics - 4 iron rules
 
-1. **Два термінатори 120 Ом** - per одному on кожному кінці бекбона.
-   Паралельно дають 60 Ом між CANH/CANL (мірте омметром on знеструмленій шині!).
-2. **Довжини**: бекбон Micro - до **100 м**, Mini - до **200 м**;
-   сума дропів - до 78 м, один дроп - до **6 м**.
-3. **Живлення шини 12V** подається **in ОДНІЙ точці** via Power-Tee
-   with запобіжником (typical 3-8A on мережу, залежно from кабелю Micro/Mini).
-4. **Земля шини** (shield/drain) заземлюється **in одній точці** -
-   інакше петлі and «плаваючі» errors CRC.
+1. **Two 120 Ohm terminators** - one on each backbone end.
+   In parallel they give 60 Ohm between CANH/CANL (measure with an ohmmeter on a powered-off bus!).
+2. **Lengths**: Micro backbone - up to **100 m**, Mini - up to **200 m**;
+   drop sum - up to 78 m, one drop - up to **6 m**.
+3. **12V bus power** fed **at ONE point** via Power-Tee
+   with a fuse (typically 3-8A per network, depends on Micro/Mini cable).
+4. **Bus ground** (shield/drain) grounded **at one point** -
+   otherwise loops and "floating" CRC errors.
 
-Розпіновка M12 DeviceNet (вид on гніздо):
+M12 DeviceNet pinout (socket view):
 
 ```text
 пін 1 = Shield (екран/drain)
@@ -78,37 +78,37 @@ Links to [[EN/Home.en]], [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]], [[EN/04-Inte
 Кабель Micro (тонкий, до 3A) — малі яхти; Mini (товстий, до 8A) — бекбон великих суден.
 ```
 
-### 1.2. PGN - that this and how читати
+### 1.2. PGN - what it is and how to read
 
-29-бітний CAN-ID кодує пріоритет + PGN + адреси (див. J1939-розбір),
-but **PGN** каже, how тлумачити 8 байт даних (single-frame) або
-склейку Fast Packet / multi-packet (довгі: позиція, AIS).
+A 29-bit CAN ID encodes priority + PGN + addresses (see J1939 breakdown),
+while **PGN** tells how to interpret 8 data bytes (single-frame) or
+a Fast Packet / multi-packet assembly (long: position, AIS).
 
-| PGN | Назва | Період | Зміст (скорочено) |
+| PGN | Name | Period | Content (short) |
 | --- | --- | --- | --- |
 | 60928 | ISO Address Claim | at startup | Who I am (address, class, manufacturer) |
-| 126992 | System Time | 1 с | Дата/час UTC (source часу!) |
-| 127250 | Vessel Heading | 10 Гц | Курс HDG, девіація/варіація |
-| 127251 | Rate of Turn | 10 Гц | Кутова швидкість повороту |
-| 127258 | Magnetic Variation | 1 с | Магнітна варіація (WMM) |
-| 128259 | Speed (Water) | 1-10 Гц | Швидкість відносно води (лаг) |
-| 128267 | Water Depth | 1-10 Гц | Глибина під трансдюсером + offset |
-| 129025 | Position Rapid | 10 Гц | Широта/довгота (швидка!) |
-| 129026 | COG/SOG Rapid | 10 Гц | Курс/швидкість відносно ґрунту |
-| 129029 | GNSS Position | 1 с | Повна позиція + час + fix (ГНСС) |
-| 129033 | Time & Date | 1 с | UTC дата/час прецизійні |
-| 129540 | GNSS Sats in View | 1 с | Супутники, SNR, азимут/висота |
-| 129794 | AIS Class A Static | on подію | AIS статика судна (MMSI, назва) |
-| 129798 | AIS SAR | on подію | AIS-SART (рятувальний!) |
-| 130306 | Wind Data | 10 Гц | Швидкість/кут вітру (вимпельний!) |
-| 130310 | Environment | 1 с | Температура води/повітря, тиск |
-| 130311 | Environment (2) | 1 с | Вологість, розширені параметри |
-| 127488 | Engine Rapid | 10 Гц | RPM, тиск масла, температура |
-| 127505 | Fluid Level | 1 с | Паливо/вода/масло (%) |
-| 59904 | ISO Request | on подію | Запит PGN in пристрою |
-| 65240 | ISO Commanded Address | on подію | Призначення адреси |
+| 126992 | System Time | 1 s | UTC date/time (time source!) |
+| 127250 | Vessel Heading | 10 Hz | HDG heading, deviation/variation |
+| 127251 | Rate of Turn | 10 Hz | Turn angular speed |
+| 127258 | Magnetic Variation | 1 s | Magnetic variation (WMM) |
+| 128259 | Speed (Water) | 1-10 Hz | Water-relative speed (log) |
+| 128267 | Water Depth | 1-10 Hz | Depth under transducer + offset |
+| 129025 | Position Rapid | 10 Hz | Latitude/longitude (fast!) |
+| 129026 | COG/SOG Rapid | 10 Hz | Ground course/speed |
+| 129029 | GNSS Position | 1 s | Full position + time + fix (GNSS) |
+| 129033 | Time and Date | 1 s | Precise UTC date/time |
+| 129540 | GNSS Sats in View | 1 s | Satellites, SNR, azimuth/elevation |
+| 129794 | AIS Class A Static | on event | Vessel AIS statics (MMSI, name) |
+| 129798 | AIS SAR | on event | AIS-SART (rescue!) |
+| 130306 | Wind Data | 10 Hz | Wind speed/angle (apparent!) |
+| 130310 | Environment | 1 s | Water/air temperature, pressure |
+| 130311 | Environment (2) | 1 s | Humidity, extended parameters |
+| 127488 | Engine Rapid | 10 Hz | RPM, oil pressure, temperature |
+| 127505 | Fluid Level | 1 s | Fuel/water/oil (%) |
+| 59904 | ISO Request | on event | PGN request to a device |
+| 65240 | ISO Commanded Address | on event | Address assignment |
 
-example декодування **127488 Engine Rapid** (8 байт):
+Engine Rapid **127488** decoding example (8 bytes):
 
 ```text
 байт 0: екземпляр двигуна (0 = перший)
@@ -116,83 +116,83 @@ example декодування **127488 Engine Rapid** (8 байт):
 байт 3-4: тиск наддуву / тиск масла (за PGN-ревізією!)
 байт 5-6: температура (offset -273.15 / 0.01K — читати canboat-DB!)
 байт 7: статуси/резерв
-Правило: НЕ вгадувати масштаби з голови — звіряти з базою canboat (див. джерела)!
+Rule: do NOT guess scales from your head - check against the canboat base (see sources)!
 ```
 
-### 1.3. ESP32 on NMEA2000 - ролі
+### 1.3. ESP32 on NMEA2000 - roles
 
-| Роль ESP32 | that робить | Складність |
+| ESP32 role | What it does | Complexity |
 | --- | --- | --- |
-| Слухач (listen-only) | Логує PGN (вітер/глибина/GPS) on SD, шле in WiFi-планшет | Низька - тільки прийом, without Address Claim |
-| Дисплей-шлюз | N2K → SeaTalk/WiFi (Signal K), веб-приладова дошка | Середня - TCP/WebSocket + парсинг |
-| Датчик (новий вузол) | Віддає свій PGN (напр. 130310 with BME280) | Висока - Address Claim + Fast Packet + сертифікаційна обережність |
-| Міст NMEA0183↔N2K | Старі прилади (4800 бод) in нову мережу | Середня - два UART + TWAI |
+| Listener (listen-only) | Logs PGNs (wind/depth/GPS) to SD, sends to WiFi tablet | Low - receive only, without Address Claim |
+| Display gateway | N2K to SeaTalk/WiFi (Signal K), web dashboard | Medium - TCP/WebSocket + parsing |
+| Sensor (new node) | Gives its PGN (e.g. 130310 with BME280) | High - Address Claim + Fast Packet + certification care |
+| NMEA0183 to N2K bridge | Old instruments (4800 baud) into the new network | Medium - two UARTs + TWAI |
 
-> Address Claim (60928) - процедура «прописки»: новий пристрій заявляє
-> адресу; at конфлікті молодший NAME поступається. ESP32-датчик мусить
-> її реалізувати, інакше два однакові саморобні вузли покладуть мережу
-> суперечкою. Слухачу/дзеркалу - not заявлятися взагалі (listen-only).
+> Address Claim (60928) is a "registration" procedure: a new device claims
+> an address; on conflict the younger NAME yields. An ESP32 sensor must
+> implement it, otherwise two identical DIY nodes lay the network down
+> with an argument. Listener/mirror - never claim at all (listen-only).
 
-### 1.4. Ізоляція - ISO1050 або нічого
+### 1.4. Isolation - ISO1050 or nothing
 
-Морська земля ≠ земля ESP32 (гальваніка, берегове живлення, грозові
-наведення). Трансивер **тільки ізольований** (ISO1050/ISO1042 + DC-DC
-B0505S) або готовий ізольований module. НЕізольований SN65HVD230 - лише
-for настільного стенда with живленням from одного БЖ. Детальніше -
+Marine ground is not ESP32 ground (galvanics, shore power, storm
+pickup). Transceiver **only isolated** (ISO1050/ISO1042 + B0505S
+DC-DC) or a ready isolated module. Non-isolated SN65HVD230 - only
+for a bench rig powered from one PSU. More below -
 [[EN/12-Comm-Modules/19-Wired-2.en]] and [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]].
 
-## 2. SeaTalk - оглядово (that лишилось from Raymarine)
+## 2. SeaTalk - overview (what is left from Raymarine)
 
-| Версія | Фізика | Швидкість | Сумісність with N2K |
+| Version | Physics | Speed | N2K compatibility |
 | --- | --- | --- | --- |
-| SeaTalk 1 (класичний, 3 дроти: +12/GND/Data) | Однодротовий UART-подібний, колізії | 4800 бод | Немає - потрібен міст/конвертер |
-| SeaTalk 2 (рідкісний, NMEA2000-сумісний) | CAN | 250 кбіт | Так, пропрієтарні роз'єми |
-| SeaTalk NG (сучасний) | CAN = NMEA2000 під іншим роз'ємом | 250 кбіт | Так via кабель-перехідник ST-NG→DeviceNet |
+| SeaTalk 1 (classic, 3 wires: +12/GND/Data) | Single-wire UART-like, collisions | 4800 baud | None - a bridge/converter needed |
+| SeaTalk 2 (rare, NMEA2000-compatible) | CAN | 250 kbps | Yes, proprietary connectors |
+| SeaTalk NG (modern) | CAN = NMEA2000 under another connector | 250 kbps | Yes via ST-NG to DeviceNet adapter cable |
 
-Практика: старий автопілот ST4000 (SeaTalk 1) + нова мережа N2K -
-ставимо **міст ESP32**: читаємо ST1-кадри (курс/руль) per UART 4800
-and віддаємо PGN 127250/127251 in N2K (and навпаки - команди ST8002).
-Датировки ST1 відкриті ентузіастами (див. canboat-суміжні джерела);
-критичні команди автопілота - тільки via сертифікований шлюз
-(Raymarine E22158 або аналог), ESP32 - індикація/лог, not керування!
+Practice: an old ST4000 autopilot (SeaTalk 1) + a new N2K network -
+we place an **ESP32 bridge**: read ST1 frames (heading/rudder) over UART 4800
+and give PGNs 127250/127251 to N2K (and back - ST8002 commands).
+ST1 datagrams are open by enthusiasts (see canboat-adjacent sources);
+critical autopilot commands - only via a certified gateway
+(Raymarine E22158 or analog), ESP32 is indication/log, not control!
 
-## 3. DCF77 / WWVB / MSF - приймачі часу (ферит, секундні імпульси)
+## 3. DCF77 / WWVB / MSF - time receivers (ferrite, second pulses)
 
-Три станції - одна ідея: довгохвильовий передавач шле **1 біт/с**,
-модулюючи **довжину секундної мітки**; приймач with **феритовою антеною**
-ловить її for тисячі км. ESP32 декодує мітки GPIO-перериваннями and ставить
-свій RTC/NTP-незалежний час (цінно without GPS and without інтернету!).
+Three stations - one idea: a long-wave transmitter sends **1 bit/s**,
+modulating the **second-mark length**; a receiver with a **ferrite antenna**
+catches it for thousands of km. ESP32 decodes marks with GPIO interrupts and sets
+its RTC/NTP-independent time (valuable without GPS and without internet!).
 
-### 3.1. Порівняльна table станцій
+### 3.1. Station comparison table
 
-| Станція | Країна / оператор | Частота | Потужність | Формат секунди | Зона покриття |
+| Station | Country / operator | Frequency | Power | Second format | Coverage |
 | --- | --- | --- | --- | --- | --- |
-| DCF77 | Німеччина, PTB (Mainflingen) | 77.5 кГц | 50 кВт | AM: 100 мс = `0`, 200 мс = `1`, 59-та секунда - пауза (маркер хвилини) | EU + Україна (вночі стабільно!) |
-| WWVB | США, NIST (Fort Collins) | 60 кГц | 70 кВт ERP | AM PWM: 200 мс = `0`, 500 мс = `1`, 800 мс = маркер; + BPSK with 2012 | Північна Америка |
-| MSF | UK, NPL (Anthorn) | 60 кГц | 17 кВт | AM: 100 мс = `0`, 200 мс = `1`, 300 мс = маркери A/B; друга 59 - пауза | UK + Північне море |
+| DCF77 | Germany, PTB (Mainflingen) | 77.5 kHz | 50 kW | AM: 100 ms = `0`, 200 ms = `1`, 59th second - pause (minute marker) | EU + Ukraine (stable at night!) |
+| WWVB | USA, NIST (Fort Collins) | 60 kHz | 70 kW ERP | AM PWM: 200 ms = `0`, 500 ms = `1`, 800 ms = marker; + BPSK since 2012 | North America |
+| MSF | UK, NPL (Anthorn) | 60 kHz | 17 kW | AM: 100 ms = `0`, 200 ms = `1`, 300 ms = A/B markers; second 59 - pause | UK + North Sea |
 
-> in Україні реально ловиться **DCF77** (особливо вночі, on ферит 60-100 мм
-> або Ready модулі DCF77 with TCO-виходом). WWVB/MSF - for океанських
-> переходів під відповідним берегом. Діапазони близькі (60/77.5 кГц) -
-> антена-контур перестроюється, але фільтр приймача вузький: module
-> купувати **під конкретну частоту**.
+> In Ukraine **DCF77** is really caught (especially at night, on 60-100 mm ferrite
+> or ready DCF77 modules with TCO output). WWVB/MSF are for ocean
+> crossings under the respective shore. Bands are close (60/77.5 kHz) -
+> the loop antenna retunes, but the receiver filter is narrow: buy the module
+> **for the specific frequency**.
 
-### 3.2. Залізо приймача: ферит + module
+### 3.2. Receiver hardware: ferrite + module
 
-| Елемент | Вимога | example |
+| Element | Requirement | Example |
 | --- | --- | --- |
-| Феритова антена | Стрижень 60-100 мм, контур on 77.5 (або 60) кГц, Q високий | Штатна in модулях DCF77 (Conrad/Velleman-тип) |
-| module-приймач | AGC + детектор + TCO/PON вихід (активний LOW/HIGH for версією!) | DCF77-модулі with виходом open-collector |
-| Орієнтація | Вісь фериту - on передавач (Mainflingen for DCF77), далі from ESP32/WiFi! | Мінімум 1-2 м from імпульсних БЖ |
-| Живлення | Чисті 3.3V, ферит not любить пульсацій buck | Окремий LDO + 100 мкФ біля модуля |
-| Вихід до ESP32 | GPIO-переривання (front + back), pull-up for даташитом модуля | GPIO15/34, ISR міряє довжину LOW |
+| Ferrite antenna | 60-100 mm rod, loop at 77.5 (or 60) kHz, high Q | Stock in DCF77 modules (Conrad/Velleman type) |
+| Receiver module | AGC + detector + TCO/PON output (active LOW/HIGH by version!) | DCF77 modules with open-collector output |
+| Orientation | Ferrite axis - to the transmitter (Mainflingen for DCF77), away from ESP32/WiFi! | Minimum 1-2 m from switching PSUs |
+| Power supply | Clean 3.3V, ferrite dislikes buck ripple | Separate LDO + 100 uF near the module |
+| Output to ESP32 | GPIO interrupt (edge + back), pull-up per module datasheet | GPIO15/34, ISR measures LOW length |
 
-> WiFi ESP32 (2400 МГц) фериту not заважає безпосередньо, але **імпульсний buck**
-> on 100-500 кГц дає гармоніки in ДХ-діапазон! Приймач часу живити from
-> **лінійного LDO** and розносити with DC-DC мінімум on 30 см, інакше -
-> суцільні «погані» хвилини.
+> ESP32 WiFi (2400 MHz) does not bother ferrite directly, but a **switching buck**
+> at 100-500 kHz gives harmonics into the LW band! Power the time receiver from
+> a **linear LDO** and separate from DC-DC by at least 30 cm, otherwise -
+> solid "bad" minutes.
 
-### 3.3. Декодування секундних імпульсів (DCF77, детально)
+### 3.3. Second-pulse decoding (DCF77, in detail)
 
 ```text
 Хвилина = 59 секундних міток (секунда 59 — БЕЗ спаду, маркер кінця хвилини!).
@@ -212,68 +212,68 @@ and віддаємо PGN 127250/127251 in N2K (and навпаки - команд
 Час DCF77 = CET/CEST (Берлін!). UTC = мінус 1 (взимку) або 2 (влітку) години.
 ```
 
-Алгоритм ESP32: ISR фіксує спад/підйом → довжина → біт → масив 59 біт;
-маркер (немає спаду >1500 мс) → check P1/P2/P3 → BCD→час → ставимо RTC
-(тільки якщо 2 хвилини підряд збігаються!). Далі - глибокий сон до наступної
-синхронізації (година/доба). Див. code MicroPython/Arduino нижче.
+ESP32 algorithm: ISR fixes fall/rise to length to bit to a 59-bit array;
+marker (no fall >1500 ms) to check P1/P2/P3 to BCD to time to set RTC
+(only if 2 minutes in a row match!). Then - deep sleep until the next
+sync (hour/day). See MicroPython/Arduino code below.
 
-### 3.4. WWVB / MSF - відмінності декодера
+### 3.4. WWVB / MSF - decoder differences
 
-- **WWVB**: три довжини (200/500/800 мс) + позиційні маркери кожні 10 с;
-  with 2012 паралельно **BPSK** (фазова модуляція несучої) - старі AM-модулі
-  її ігнорують, новим - краща чутливість. Поля: хвилина/година/день/рік
-  BCD + DST/Leap-біти (див. NIST-формат in джерелах).
-- **MSF**: 4 типи секунд (00/01/10/11 via два маркерні біти A/B on секунду);
-  швидкий code часу + повільний DUT1-code. Декодер складніший for DCF77 -
-  брати готовий module with UART-виходом, якщо треба саме MSF.
+- **WWVB**: three lengths (200/500/800 ms) + position markers every 10 s;
+  since 2012 in parallel **BPSK** (carrier phase modulation) - old AM modules
+  ignore it, new ones get better sensitivity. Fields: minute/hour/day/year
+  BCD + DST/Leap bits (see NIST format in sources).
+- **MSF**: 4 second types (00/01/10/11 via two A/B marker bits per second);
+  fast time code + slow DUT1 code. Decoder is harder than DCF77 -
+  take a ready module with UART output if you need MSF exactly.
 
-## 4. GPSDO - дисциплінований генератор, holdover
+## 4. GPSDO - disciplined oscillator, holdover
 
-**GPSDO** (GPS-Disciplined Oscillator): OCXO/TCXO-генератор 10 МГц,
-which контролер постійно **підтягує** for фазою 1PPS from GNSS
-(див. таймінговий приймач **ZED-F9T** - джерела). Виходи: **10 МГц**
-(опора for SDR/вимірів) + **1PPS** (мітка секунди ±20-50 нс до UTC).
+**GPSDO** (GPS-Disciplined Oscillator): a 10 MHz OCXO/TCXO oscillator
+that a controller constantly **pulls** by GNSS 1PPS phase
+(see the **ZED-F9T** timing receiver - sources). Outputs: **10 MHz**
+(reference for SDR/measurements) + **1PPS** (second mark +-20-50 ns to UTC).
 
-| Стан | that відбувається | Точність 10 МГц |
+| State | What happens | 10 MHz accuracy |
 | --- | --- | --- |
-| Lock (є GPS) | PLL for 1PPS, калібрування OCXO | 1e-11..1e-12 (for добу усереднення) |
-| Holdover (GPS пропав) | Тримаємо останню калібровку, дрейф OCXO | OCXO: 1-10 мкс/добу; TCXO: 10-100 мкс/добу |
-| Free-run (ніколи not було GPS) | Звичайний генератор | 1e-8..1e-7 (how without GPSDO) |
+| Lock (GPS present) | PLL to 1PPS, OCXO calibration | 1e-11..1e-12 (per day of averaging) |
+| Holdover (GPS lost) | Hold last calibration, OCXO drift | OCXO: 1-10 us/day; TCXO: 10-100 us/day |
+| Free-run (never had GPS) | Plain oscillator | 1e-8..1e-7 (like without GPSDO) |
 
-Практика ESP32 + GPSDO:
+ESP32 + GPSDO practice:
 
-1. 1PPS from GPSDO → GPIO34 (захоплення таймера, мітка with точністю <1 мкс).
-2. 10 МГц → зовнішній лічильник/SDR-референс (ESP32 його not тактує - лише використовує how еталон for калібрування свого RTC!).
-3. UART from ZED-F9T → моніторинг lock/holdover (UBX-TIM-TP, NAV-CLOCK).
-4. Антена GNSS - with видом on небо (див. [[EN/12-Comm-Modules/17-GNSS-RTK.en]]!);
-   without неба GPSDO = дорогий OCXO.
-5. Живлення OCXO - чисте (окремий LDO, прогрів 5-10 хв до lock!).
+1. 1PPS from GPSDO to GPIO34 (timer capture, mark with <1 us accuracy).
+2. 10 MHz to an outdoor counter/SDR reference (ESP32 does not clock it - only uses it as a reference to calibrate its RTC!).
+3. UART from ZED-F9T to lock/holdover monitoring (UBX-TIM-TP, NAV-CLOCK).
+4. GNSS antenna - with sky view (see [[EN/12-Comm-Modules/17-GNSS-RTK.en]]!);
+   without sky GPSDO = an expensive OCXO.
+5. OCXO power - clean (separate LDO, 5-10 min warm-up to lock!).
 
-> Навіщо GPSDO on яхті: прецизійний час for SDR-прийому (AIS-декодер,
-> NAVTEX), синхронізація логерів, резерв UTC at глушінні/відмові GPS
-> (holdover тримає час добу with мікросекундами - вистачить дійти до порту).
+> Why GPSDO on a yacht: precise time for SDR reception (AIS decoder,
+> NAVTEX), logger sync, UTC backup when GPS is jammed/fails
+> (holdover holds time for a day with microseconds - enough to reach port).
 
-## 5. Морський корпус IP67 + роз'єми + антикор
+## 5. Marine IP67 enclosure + connectors + anticorrosion
 
-| Елемент | Вимога | Практика |
+| Element | Requirement | Practice |
 | --- | --- | --- |
-| Корпус | IP67 (полікарбонат/ABS with силіконовим ущільнювачем) | Bopla/OKW/китайські IP67-бокси 150×110×70 |
-| Гермовводи | PG7 (3-6.5 мм), PG9 (4-8 мм) під кожен кабель | Кабель with запасом-крапельником (U-петля ВНИЗ!) |
-| Клеми | Пружинні Wago 221 in боксі, обтискні наконечники on кінцях | Ніяких скруток and «синьої ізоленти»! |
-| Плата ESP32 | Лак (Plastik 70 / urethane) або силіконова заливка роз'ємів | USB-отвір закрити заглушкою після firmwares |
-| Вентиляція | Мембрана Gore (дихає, воду not пускає) проти конденсату | without мембрани - силікагель-пакетик + ревізія раз on сезон |
-| Монтаж | Нерж A4 (316) саморізи, віброгасники | Заземлення корпусу on шину at металевому боксі |
-| Маркування | Гравіювання/термоусадка with підписами жил | via рік ніхто not пам'ятає, that for «синій дріт» |
+| Enclosure | IP67 (polycarbonate/ABS with silicone seal) | Bopla/OKW/Chinese IP67 boxes 150x110x70 |
+| Cable glands | PG7 (3-6.5 mm), PG9 (4-8 mm) per each cable | Cable with drip slack (U-loop DOWN!) |
+| Terminals | Wago 221 spring in the box, crimp lugs on ends | No twists and "blue tape"! |
+| ESP32 board | Lacquer (Plastik 70 / urethane) or silicone potting of connectors | Close the USB hole with a plug after firmware |
+| Ventilation | Gore membrane (breathes, keeps water out) against condensate | without membrane - silica-gel bag + revision once a season |
+| Mounting | A4 (316) stainless screws, vibration dampers | Enclosure grounding to the bus with a metal box |
+| Marking | Engraving/heatshrink with lead signatures | in a year nobody remembers what the "blue wire" is for |
 
-> Крапельник: кабель входить in бокс **знизу** with U-петлею - крапля стікає
-> with петлі, but not тече всередину per ізоляції. Ввід зверху without козирка =
-> вода всередині після першого шторму.
+> Drip loop: cable enters the box **from below** with a U-loop - the drop runs
+> off the loop, not inside along insulation. Top entry without a visor =
+> water inside after the first storm.
 
-## 6. Живлення 12/24V морське - ізоляція, фільтри, резерв
+## 6. Marine 12/24V power - isolation, filters, backup
 
 Ship mains: **12V** (10-16V, starter dips down to 7V!) or **24V**
-(20-32V), загальна земля with двигуном, берегове зарядне дає пульсації,
-гроза - наведення in такелажі. Схема:
+(20-32V), common ground with the engine, shore charger gives ripple,
+storm - pickup in rigging. Schematic:
 
 ```text
 Шина 12/24V --[запобіжник 2A]--+--[TVS SMBJ28A (12V) / SMBJ36A (24V)]--+--[синфазний дросель + LC]--+
@@ -286,82 +286,82 @@ Ship mains: **12V** (10-16V, starter dips down to 7V!) or **24V**
 СОН: key high-side по ignition/solar-контролеру, ціль <2 мА в сні (deep-sleep ESP32 + DC-DC в standby)
 ```
 
-| Елемент | 12V-мережа | 24V-мережа |
+| Element | 12V grid | 24V grid |
 | --- | --- | --- |
 | TVS | SMBJ24A-SMBJ28A (Vrwm ≥ 18V) | SMBJ36A (Vrwm ≥ 30V) |
-| DC-DC | 9-36V вхід (перекриває обидві!), ізольований | той же 9-36V (універсально!) |
-| Запобіжник вузла | 1-2A | 1A (струм менший at тій же потужності) |
-| NMEA2000 Power-Tee | Свій запобіжник 5A (Micro-кабель) | Той же Tee - bus N2K завжди ~12V (регулятор мережі!) |
-| Блискавкозахист | Розрядник on антену VHF/GPS + TVS on кожен вхід | Те саме + рознесення кабелів |
+| DC-DC | 9-36V input (covers both!), isolated | same 9-36V (universal!) |
+| Node fuse | 1-2A | 1A (less current at the same power) |
+| NMEA2000 Power-Tee | Own 5A fuse (Micro cable) | Same Tee - the N2K bus is always ~12V (grid regulator!) |
+| Lightning protection | Arrester on VHF/GPS antenna + TVS on each input | Same + cable spacing |
 
-> NMEA2000-bus живиться **окремо** своїм Power-Tee with власним запобіжником -
-> not from 5V ESP32 and not from USB ноутбука! ESP32-вузол бере with N2K тільки
-> дані (CANH/L), but живлення - зі свого DC-DC. Виняток - крихітні датчики
-> with LEN ≤ 2, that живляться прямо with шини (тоді рахувати LEN-бюджет мережі!).
+> The NMEA2000 bus is powered **separately** by its own Power-Tee with its own fuse -
+> not from ESP32 5V and not from laptop USB! The ESP32 node takes from N2K only
+> data (CANH/L), while power comes from its own DC-DC. Exception - tiny sensors
+> with LEN <= 2 that feed straight from the bus (then count the network LEN budget!).
 
-## 7. NMEA 0183 - старі прилади not викидаємо
+## 7. NMEA 0183 - old instruments are not thrown away
 
-Більшість старих плоттерів/радіо говорять **NMEA 0183** (IEC 61162-1):
-UART **4800 8N1**, ASCII `$GPRMC,...*CHK`, один говорить - усі слухають.
-ESP32-міст: UART1 (4800) слухає 0183 → парсить RMC/GGA/DBT/MWV →
-віддає PGN 129029/128267/130306 in N2K (and навпаки).
-Контрольна сума 0183: XOR байтів між `$` and `*` (див. code + ноту GNSS-RTK).
-Швидкісний варіант AIS - **38400** (HS-порт плоттера!).
+Most old plotters/radios speak **NMEA 0183** (IEC 61162-1):
+UART **4800 8N1**, ASCII `$GPRMC,...*CHK`, one talks - all listen.
+ESP32 bridge: UART1 (4800) listens to 0183 to parse RMC/GGA/DBT/MWV to
+give PGNs 129029/128267/130306 to N2K (and back).
+0183 checksum: XOR of bytes between `$` and `*` (see code + GNSS-RTK note).
+High-speed AIS variant is **38400** (plotter HS port!).
 
-## Легенда пінів модуля
+## Module pin legend
 
-### NMEA2000-вузол (TWAI + ISO1050-плата)
-
-| Pin | Label | Type | To ESP32 | Note |
-| --- | --- | --- | --- | --- |
-| 1 | VCC1 3.3V | Живлення логіки | 3V3 ESP32 | Сторона ESP32! |
-| 2 | GND1 | Земля логіки | GND ESP32 | Тільки ESP32-сторона! |
-| 3 | CTX | Вхід цифровий | GPIO5 (CAN TX) | ESP32 TX → CTX |
-| 4 | CRX | Вихід цифровий | GPIO4 (CAN RX) | CRX → ESP32 RX |
-| 5 | VCC2 5V | Живлення шини | +5V ізольованого DC-DC (B0505S) | not from ESP32! |
-| 6 | GND2 | Земля шини | GND шини N2K (ізольована!) | not with'єднувати with GND1! |
-| 7 | CANH | Шина | Білий, пін 4 M12 | 120 Ом on кінцях бекбона! |
-| 8 | CANL | Шина | Синій, пін 5 M12 | 120 Ом on кінцях бекбона! |
-| 9 | 120R-джампер | Термінатор | замкнути ТІЛЬКИ on кінцях! | Всередині мережі - розімкнути! |
-
-### DCF77 / WWVB / MSF-module (TCO-вихід)
+### NMEA2000 node (TWAI + ISO1050 board)
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC 3.3V | Живлення | 3V3 via окремий LDO! | Чисте живлення, 100 мкФ поруч |
-| 2 | GND | Земля | GND | Спільна, далі from buck! |
-| 3 | DATA/TCO | Вихід цифровий | GPIO15 (переривання!) | Активний LOW або HIGH - читати даташит модуля! |
-| 4 | PON | Вхід керування | GPIO13 або VCC | Power-ON (деякі модулі - сплячий режим) |
-| ANT | Ферит 60-100 мм | RF | Вбудована, віссю on передавач | 1-2 м from ESP32/БЖ! |
+| 1 | VCC1 3.3V | Logic power | 3V3 ESP32 | ESP32 side! |
+| 2 | GND1 | Logic ground | ESP32 GND | ESP32 side only! |
+| 3 | CTX | Digital input | GPIO5 (CAN TX) | ESP32 TX to CTX |
+| 4 | CRX | Digital output | GPIO4 (CAN RX) | CRX to ESP32 RX |
+| 5 | VCC2 5V | Bus power | +5V of isolated DC-DC (B0505S) | not from ESP32! |
+| 6 | GND2 | Bus ground | N2K bus GND (isolated!) | do not join with GND1! |
+| 7 | CANH | Bus | White, M12 pin 4 | 120 Ohm on backbone ends! |
+| 8 | CANL | Bus | Blue, M12 pin 5 | 120 Ohm on backbone ends! |
+| 9 | 120R jumper | Terminator | close ONLY on ends! | Inside the network - open! |
 
-### GPSDO-вузол (ZED-F9T + OCXO)
+### DCF77 / WWVB / MSF module (TCO output)
+
+| Pin | Label | Type | To ESP32 | Note |
+| --- | --- | --- | --- | --- |
+| 1 | VCC 3.3V | Power supply | 3V3 via separate LDO! | Clean power, 100 uF nearby |
+| 2 | GND | Ground | GND | Common, away from buck! |
+| 3 | DATA/TCO | Digital output | GPIO15 (interrupt!) | Active LOW or HIGH - read the module datasheet! |
+| 4 | PON | Control input | GPIO13 or VCC | Power-ON (some modules have a sleep mode) |
+| ANT | 60-100 mm ferrite | RF | Built-in, axis to transmitter | 1-2 m from ESP32/PSU! |
+
+### GPSDO node (ZED-F9T + OCXO)
 
 | Pin | Label | Type | To | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC 3.3V | Живлення | Чистий LDO 500 мА | Прогрів OCXO 5-10 хв! |
-| 2 | GND | Земля | GND | Зірка земель |
-| 3 | TX (F9T) | Вихід UART | GPIO16 (RX2) | UBX-TIM-TP, NAV-CLOCK |
-| 4 | RX (F9T) | Вхід UART | GPIO17 (TX2) | configuration |
-| 5 | 1PPS | Вихід цифровий | GPIO34 (захоплення!) | ±20-50 нс, lock-індикатор |
-| 6 | 10 МГц | Вихід RF | SDR / частотомір | 50 Ом, короткий коаксіал! |
-| 7 | LOCK | Вихід цифровий | GPIO35 (LED) | HIGH = lock, LOW = holdover! |
-| 8 | RF_IN | ВЧ | GNSS-антена with небом | Активна антена + bias! |
+| 1 | VCC 3.3V | Power supply | Clean 500 mA LDO | OCXO warm-up 5-10 min! |
+| 2 | GND | Ground | GND | Ground star |
+| 3 | TX (F9T) | UART output | GPIO16 (RX2) | UBX-TIM-TP, NAV-CLOCK |
+| 4 | RX (F9T) | UART input | GPIO17 (TX2) | configuration |
+| 5 | 1PPS | Digital output | GPIO34 (capture!) | +-20-50 ns, lock indicator |
+| 6 | 10 MHz | RF output | SDR / frequency meter | 50 Ohm, short coax! |
+| 7 | LOCK | Digital output | GPIO35 (LED) | HIGH = lock, LOW = holdover! |
+| 8 | RF_IN | RF | GNSS antenna with sky | Active antenna + bias! |
 
-### Морське живлення (DC-DC вузол)
+### Marine power (DC-DC node)
 
 | Pin | Label | Type | To | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VIN 9-36V | Живлення вхід | Шина 12/24V via FUSE 2A + TVS | Діодний АБО at двох АКБ |
-| 2 | GND_IN | Земля шини | Земля судна | via синфазний дросель! |
-| 3 | +5V_OUT | Живлення вихід | ESP32 VIN + периферія 5V | Ізольована земля OUT! |
-| 4 | GND_OUT | Земля виходу | GND ESP32 | not with'єднувати with GND_IN! |
-| 5 | EN/STBY | Вхід керування | key/ignition | LOW = standby (<100 мкА) |
+| 1 | VIN 9-36V | Power input | 12/24V bus via 2A FUSE + TVS | Diode OR with two batteries |
+| 2 | GND_IN | Bus ground | Vessel ground | via common-mode choke! |
+| 3 | +5V_OUT | Power output | ESP32 VIN + 5V peripherals | Isolated OUT ground! |
+| 4 | GND_OUT | Output ground | ESP32 GND | do not join with GND_IN! |
+| 5 | EN/STBY | Control input | switch/ignition | LOW = standby (<100 uA) |
 
-## Схема
+## Schematic
 
-Загальна схема: бекбон NMEA2000 (Power-Tee + 2 термінатори), ESP32-вузол
-via ISO1050, SeaTalk-міст, 0183-слухач, DCF77-module with феритом,
-GPSDO (F9T + 1PPS/10 МГц), IP67-бокс, живлення 12/24V via ізольований DC-DC.
+Overall schematic: NMEA2000 backbone (Power-Tee + 2 terminators), ESP32 node
+via ISO1050, SeaTalk bridge, 0183 listener, DCF77 module with ferrite,
+GPSDO (F9T + 1PPS/10 MHz), IP67 box, 12/24V power via isolated DC-DC.
 
 ### ASCII schematic
 
@@ -389,27 +389,27 @@ ESP32-ВУЗОЛ (у IP67-боксі, вводи PG7 ЗНИЗУ з U-петля�
 
 ```mermaid
 graph LR
-    SHIP[Суднова bus<br/>12/24V + АКБ1/АКБ2] -->|FUSE + TVS + LC| DCDC[Ізольований DC-DC<br/>9-36→5V + LDO 3.3V]
-    DCDC --> ESP32[ESP32-вузол<br/>IP67-бокс]
-    PTEE[Power-Tee N2K<br/>12V FUSE 5A] --> BB((Бекбон NMEA2000<br/>250 кбіт))
-    T1[TERM 120 Ом<br/>кінець А] --- BB
-    BB --- T2[TERM 120 Ом<br/>кінець Б]
-    BB <-->|дропи ≤6м| PLOT[Плоттер]
-    BB <-->|дропи| WIND[Вітер/лаг<br/>130306/128259]
-    BB <-->|дропи| ENG[Двигун<br/>127488/127505]
-    BB <-->|CANH/L| ISO[ISO1050<br/>ізоляція]
+    SHIP[Ship bus<br/>12/24V + BAT1/BAT2] -->|FUSE + TVS + LC| DCDC[Isolated DC-DC<br/>9-36 to 5V + LDO 3.3V]
+    DCDC --> ESP32[ESP32 node<br/>IP67 box]
+    PTEE[N2K Power-Tee<br/>12V FUSE 5A] --> BB((NMEA2000 backbone<br/>250 kbps))
+    T1[TERM 120 Ohm<br/>end A] --- BB
+    BB --- T2[TERM 120 Ohm<br/>end B]
+    BB <-->|drops <=6m| PLOT[Plotter]
+    BB <-->|drops| WIND[Wind/log<br/>130306/128259]
+    BB <-->|drops| ENG[Engine<br/>127488/127505]
+    BB <-->|CANH/L| ISO[ISO1050<br/>isolation]
     ISO <-->|CTX GPIO5 / CRX GPIO4| ESP32
-    ST[SeaTalk1<br/>4800 бод] <-->|UART-міст| ESP32
+    ST[SeaTalk1<br/>4800 baud] <-->|UART bridge| ESP32
     N183[NMEA0183 4800<br/>RMC/GGA/DBT] <-->|UART| ESP32
-    DCF[DCF77-module<br/>ферит 77.5 кГц] -->|GPIO15 ISR<br/>100/200мс| ESP32
-    F9T[ZED-F9T + OCXO<br/>GPSDO] -->|1PPS GPIO34<br/>10МГц| ESP32
-    ESP32 -->|WiFi| TAB[Планшет Signal K<br/>веб-прилади]
-    ESP32 --> SD[(SD-лог PGN)]
+    DCF[DCF77 module<br/>ferrite 77.5 kHz] -->|GPIO15 ISR<br/>100/200ms| ESP32
+    F9T[ZED-F9T + OCXO<br/>GPSDO] -->|1PPS GPIO34<br/>10MHz| ESP32
+    ESP32 -->|WiFi| TAB[Tablet Signal K<br/>web instruments]
+    ESP32 --> SD[(SD PGN log)]
 ```
 
 ## Code
 
-### ESP-IDF - NMEA2000 слухач (TWAI 250 кбіт, PGN with 29-біт ID)
+### ESP-IDF - NMEA2000 listener (TWAI 250 kbps, PGN from 29-bit ID)
 
 ```c
 // ESP-IDF v5.x (новий TWAI API): listen-only слухач NMEA2000, 250 кбіт, extended ID.
@@ -450,7 +450,7 @@ void app_main(void) {
 }
 ```
 
-### ESP-IDF - віддача свого PGN 130310 (датчик середовища, ESP32-вузол)
+### ESP-IDF - giving own PGN 130310 (environment sensor, ESP32 node)
 
 ```c
 // ESP-IDF: ESP32 як повноцінний N2K-вузол: Address Claim 60928 + PGN 130310.
@@ -473,7 +473,7 @@ static void n2k_send_env(twai_node_handle_t h, uint16_t tWater_cK, uint16_t tAir
 }
 ```
 
-### Arduino - NMEA 0183 → PGN міст + DCF77-бітбенг (огляд)
+### Arduino - NMEA 0183 to PGN bridge + DCF77 bitbang (overview)
 
 ```cpp
 // Arduino-ESP32: слухаємо NMEA0183 4800 (Serial1), парсимо RMC; DCF77 DATA на GPIO15 (ISR).
@@ -523,7 +523,7 @@ void loop() {
 }
 ```
 
-### MicroPython - DCF77 повний декодер хвилини (BCD + парності P1/P2/P3)
+### MicroPython - DCF77 full minute decoder (BCD + P1/P2/P3 parity)
 
 ```python
 """MicroPython ESP32: DCF77-декодер. DATA-module на GPIO15 (переривання CHANGE).
@@ -586,7 +586,7 @@ while True:
     time.sleep_ms(20)
 ```
 
-### MicroPython - GPSDO-монітор (1PPS + LOCK)
+### MicroPython - GPSDO monitor (1PPS + LOCK)
 
 ```python
 """1PPS-мітка + LOCK-індикація GPSDO. PPS на GPIO34, LOCK на GPIO35."""
@@ -613,43 +613,43 @@ while True:
 
 ## typical errors
 
-| # | Symptom | Cause | Ліки |
+| # | Symptom | Cause | Fix |
 | --- | --- | --- | --- |
-| 1 | TWAI: тиша, error-passive | Швидкість not 250 кбіт або bus without живлення | 250000 бод, extended ID, verify 12V on Power-Tee |
-| 2 | Опір H/L not 60 Ом | Немає/зайві термінатори (0/1/3 замість 2) | Рівно 2×120 Ом on кінцях; всередині - джампер розімкнути! |
-| 3 | Мережа лягає at підключенні ESP32 | Два однакові адреси / немає Address Claim | Унікальна SA, реалізувати 60928, слухач - in listen-only |
-| 4 | SN65HVD230 згорів on борту | Неізольований трансивер in морській землі | Тільки ISO1050 + B0505S; GND2 ≠ GND1! |
-| 5 | PGN with чужою адресою перебиває плоттер | ESP32 шле with SA чужого приладу | Своя SA (напр. 0x50+), not чіпати 0-30 (двигуни/GPS заводські) |
-| 6 | Довгі PGN (129029/AIS) биті | Немає Fast Packet-склейки | Реалізувати sequence/counter with першого байта, таймаут 750 мс |
-| 7 | Масштаби PGN вгадуємо with голови | Невірні gain/offset (тиск/темп) | Звіряти ТІЛЬКИ with canboat-DB, not with форумів! |
-| 8 | SeaTalk1-каша on 4800 | Рівні 12V безпосередньо in GPIO | Дільник/оптопара, інверсія for потреби, common ground |
-| 9 | DCF77: суцільні погані хвилини | Buck-гармоніки / ферит біля ESP32 | LDO-живлення модуля, ферит ≥1 м from DC-DC, вісь on Mainflingen |
-| 10 | DCF77 ставить час on +1/+2 год | Забули CET/CEST→UTC | UTC = DCF − 1 (зима) / −2 (літо); перевіряти біти Z1/Z2! |
-| 11 | Парності P1/P2/P3 not сходяться | Завада in одній секунді псує хвилину | Викидати всю хвилину, чекати 2 збіги підряд |
-| 12 | GPSDO ніколи not lock | Антена without неба / холодний OCXO | Небо 360°, прогрів 10 хв, verify UBX NAV-CLOCK |
-| 13 | Holdover дрейфує сотні мкс | TCXO замість OCXO in теплій рубці | OCXO + термостабільне місце, калібрувати добу in lock |
-| 14 | Вода in IP67-боксі після шторму | Ввід зверху without U-петлі / мембрани немає | Вводи тільки знизу + U-петлі, Gore-мембрана, силікагель |
-| 15 | Вузол садить АКБ for тиждень | DC-DC without standby + ESP32 without сну | EN-key, deep-sleep, ціль <2 мА; N2K Tee - окремий запобіжник! |
+| 1 | TWAI: silence, error-passive | Speed not 250 kbps or bus without power | 250000 baud, extended ID, verify 12V on Power-Tee |
+| 2 | H/L resistance not 60 Ohm | Missing/extra terminators (0/1/3 instead of 2) | Exactly 2x120 Ohm on ends; inside - jumper open! |
+| 3 | Network falls when ESP32 connects | Two identical addresses / no Address Claim | Unique SA, implement 60928, listener to listen-only |
+| 4 | SN65HVD230 burnt on board | Non-isolated transceiver in marine ground | Only ISO1050 + B0505S; GND2 is not GND1! |
+| 5 | PGN with foreign address overrides plotter | ESP32 sends with foreign-device SA | Own SA (e.g. 0x50+), do not touch 0-30 (factory engines/GPS) |
+| 6 | Long PGNs (129029/AIS) broken | No Fast Packet assembly | Implement sequence/counter from first byte, 750 ms timeout |
+| 7 | PGN scales guessed from head | Wrong gain/offset (pressure/temp) | Check ONLY against canboat-DB, not forums! |
+| 8 | SeaTalk1 mush on 4800 | 12V levels straight into GPIO | Divider/optocoupler, inversion if needed, common ground |
+| 9 | DCF77: solid bad minutes | Buck harmonics / ferrite near ESP32 | Module LDO power, ferrite >=1 m from DC-DC, axis to Mainflingen |
+| 10 | DCF77 sets time +1/+2 h off | Forgot CET/CEST to UTC | UTC = DCF - 1 (winter) / -2 (summer); check Z1/Z2 bits! |
+| 11 | P1/P2/P3 parity does not converge | Interference in one second spoils the minute | Drop the whole minute, wait for 2 matches in a row |
+| 12 | GPSDO never locks | Antenna without sky / cold OCXO | 360-degree sky, 10 min warm-up, verify UBX NAV-CLOCK |
+| 13 | Holdover drifts hundreds of us | TCXO instead of OCXO in a warm wheelhouse | OCXO + thermostable place, calibrate a day in lock |
+| 14 | Water in IP67 box after storm | Top entry without U-loop / no membrane | Entries only from below + U-loops, Gore membrane, silica gel |
+| 15 | Node drains battery in a week | DC-DC without standby + ESP32 without sleep | EN switch, deep-sleep, target <2 mA; N2K Tee - separate fuse! |
 
 ## Official sources
 
-> Усі посилання нижче перевірені завантаженням (webfetch, 2026-09-29). Вгаданих URL немає.
+> All links below verified by download (webfetch, 2026-09-29). No guessed URLs.
 
-- NMEA 2000 (CAN 250 кбіт, бекбон, термінатори, PGN) - <https://en.wikipedia.org/wiki/NMEA_2000>
-- CANboat (відкриті N2K/PGN-утиліти, декодер, база PGN) - <https://github.com/canboat/canboat>
-- PTB DCF77 (77.5 кГц, емісія еталонного часу Німеччини) - <https://www.ptb.de/cms/en/ptb/fachabteilungen/abt4/fb-44/ag-442/dissemination-of-legal-time/dcf77.html>
-- NIST WWVB (60 кГц, формати PWM + BPSK, Fort Collins) - <https://www.nist.gov/pml/time-and-frequency-division/time-distribution/radio-station-wwvb>
-- NPL MSF (60 кГц, еталонний час UK, Anthorn) - <https://www.npl.co.uk/msf-signal>
-- u-blox ZED-F9T (таймінговий GNSS for GPSDO: 1PPS, 10 МГц опційно) - <https://www.u-blox.com/en/product/zed-f9t-module>
-- ESP-IDF TWAI (CAN-контролер ESP32 for NMEA2000: 250 кбіт, фільтри) - <https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/twai.html>
+- NMEA 2000 (CAN 250 kbps, backbone, terminators, PGN) - <https://en.wikipedia.org/wiki/NMEA_2000>
+- CANboat (open N2K/PGN utilities, decoder, PGN base) - <https://github.com/canboat/canboat>
+- PTB DCF77 (77.5 kHz, German legal-time emission) - <https://www.ptb.de/cms/en/ptb/fachabteilungen/abt4/fb-44/ag-442/dissemination-of-legal-time/dcf77.html>
+- NIST WWVB (60 kHz, PWM + BPSK formats, Fort Collins) - <https://www.nist.gov/pml/time-and-frequency-division/time-distribution/radio-station-wwvb>
+- NPL MSF (60 kHz, UK reference time, Anthorn) - <https://www.npl.co.uk/msf-signal>
+- u-blox ZED-F9T (timing GNSS for GPSDO: 1PPS, 10 MHz optional) - <https://www.u-blox.com/en/product/zed-f9t-module>
+- ESP-IDF TWAI (ESP32 CAN controller for NMEA2000: 250 kbps, filters) - <https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/twai.html>
 
 ## See also
 
 - [[EN/Home.en]]
-- [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]] - TWAI/CAN-база for NMEA2000-вузла
-- [[EN/04-Interfaces/01-UART.en|UART]] - UART for NMEA 0183 (4800) and SeaTalk-моста
-- [[EN/12-Comm-Modules/19-Wired-2.en]] - ISO1050-ізоляція, CANable, Wireshark for налагодження шини
-- [[EN/12-Comm-Modules/17-GNSS-RTK.en]] - GNSS-антени, NMEA-речення, ZED-серія (база for GPSDO)
-- [[EN/12-Comm-Modules/22-Automotive.en]] - сусідня нота (CAN-трансивери, живлення 12V buck+TVS)
-- [[EN/12-Comm-Modules/21-Motion-Control.en]] - автопілот/рульові приводи (споживачі PGN курсу)
-- [[EN/02-Power-Supply/01-Power-Rails.en]] - ланцюги живлення, DC-DC, TVS, protection
+- [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]] - TWAI/CAN base for the NMEA2000 node
+- [[EN/04-Interfaces/01-UART.en|UART]] - UART for NMEA 0183 (4800) and SeaTalk bridge
+- [[EN/12-Comm-Modules/19-Wired-2.en]] - ISO1050 isolation, CANable, Wireshark for bus debugging
+- [[EN/12-Comm-Modules/17-GNSS-RTK.en]] - GNSS antennas, NMEA sentences, ZED series (GPSDO base)
+- [[EN/12-Comm-Modules/22-Automotive.en]] - neighbor note (CAN transceivers, 12V buck+TVS power)
+- [[EN/12-Comm-Modules/21-Motion-Control.en]] - autopilot/steering drives (heading-PGN consumers)
+- [[EN/02-Power-Supply/01-Power-Rails.en]] - power rails, DC-DC, TVS, protection

@@ -48,7 +48,7 @@ Three things without which LVGL will not run:
 2. **`tick`:** millisecond counter for animations and timers: `lv_tick_inc(5)`
    with `esp_timer` every 5 ms or with loop timer. Without tick buttons are dead,
    animations stop.
-3. **Буфери:** `lv_disp_draw_buf_init(&buf, buf1, buf2, size)`:
+3. **Buffers:** `lv_disp_draw_buf_init(&buf, buf1, buf2, size)`:
    - Single buffer - minimum RAM, drawing waits for flush.
    - Two buffers (double/full-double) - LVGL draws to one, DMA sends second:
      max FPS at RAM cost.
@@ -61,20 +61,20 @@ from loop or separate FreeRTOS task on second core (S3) - then GUI stays smooth
 under WiFi. Partial refresh: LVGL repaints only dirty rectangles -
 do not call `lv_obj_invalidate(full_screen)` needlessly.
 
-### Легенда pinandin TFT-модуля with тачем (ILI9341 2.4″ + XPT2046)
+### TFT module pin legend with touch (ILI9341 2.4 in + XPT2046)
 
 | Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
 | 1 | VCC | power supply | 3V3 (module with LDO - 5V) | Check J1 jumper on module: 3V3 vs 5V! |
 | 2 | GND | ground | GND | Short ground + 100 nF on power near module |
-| 3 | CS (TFT) | input CS | GPIO5 | Chip-select дисплея |
-| 4 | RESET | input reset | GPIO4 | Скидання controller's |
-| 5 | DC/RS | input D/C | GPIO2 | data vs команда |
+| 3 | CS (TFT) | input CS | GPIO5 | Display chip-select |
+| 4 | RESET | input reset | GPIO4 | Controller reset |
+| 5 | DC/RS | input D/C | GPIO2 | data vs command |
 | 6 | MOSI/SDI | SPI input | GPIO23 (VSPI MOSI) | Pixel stream |
 | 7 | SCK | SPI input | GPIO18 (VSPI SCK) | 40 MHz typically, 80 on short wires |
 | 8 | LED/BLK | Backlight | 3V3 or GPIO15 (PWM) | via PWM - brightness/dimming of GUI theme |
-| 9 | MISO/SDO | output SPI | GPIO19 (VSPI MISO) | common with тачем! |
-| 10 | T_CS | input CS тача | GPIO14 | ОКРЕМИЙ on TFT-CS! |
+| 9 | MISO/SDO | output SPI | GPIO19 (VSPI MISO) | shared with touch! |
+| 10 | T_CS | touch CS input | GPIO14 | SEPARATE from TFT-CS! |
 | 11 | T_IRQ | interrupt output | GPIO27 (optional) | Wake on touch; without it - polling |
 | 12 | T_CLK/T_DIN | touch SPI | GPIO18/23 (shared!) | Touch is second device on same bus |
 
@@ -88,7 +88,7 @@ Explanation:
 - **Calibration:** raw XPT2046 ADC (0-4095) → pixels via 2-3 points;
   SquareLine does no calibration - code in firmware (see ex. below).
 
-## SquareLine Studio workflow - ui-файли → export → PlatformIO
+## SquareLine Studio workflow - ui-files → export → PlatformIO
 
 1. **New project:** Board = `Arduino + TFT_eSPI` (or Custom for LovyanGFX),
    resolution of your panel (240x320), 16-bit colour depth, LVGL version =
@@ -96,11 +96,11 @@ Explanation:
 2. **Drawing:** Screens (Screen1: dashboard, Screen2: setup) → widgets
    (arc/bar/chart/keyboard) → Styles (colours/fonts) → Events (click → switch
    screen via `lv_scr_load_anim`, call own function via `call function`).
-3. **Export UI Files:** button Export → папка `ui/` (`ui.c`, `ui.h`,
+3. **Export UI Files:** button Export → `ui/` folder (`ui.c`, `ui.h`,
    `screens/ui_Screen1.c`, `components/`, `images/`, `fonts/`).
 4. **PlatformIO:** copy `ui/` into `src/` (or `lib/`), add to `platformio.ini`:
-   `lib_deps = lvgl/lvgl@^8.3.11` (або `^9.1.0`), `build_flags` under driver TFT.
-   in `main.cpp`: `lv_init()` → `tft.begin()` → `ui_init()` → цикл `lv_timer_handler()`.
+   `lib_deps = lvgl/lvgl@^8.3.11` (or `^9.1.0`), `build_flags` under driver TFT.
+   in `main.cpp`: `lv_init()` → `tft.begin()` → `ui_init()` → `lv_timer_handler()` loop.
 5. **Iteration:** changes in SquareLine → Export → rewrites `ui/` (keep own handlers
    SEPARATE in `ui_events.c`, else export wipes them - classic loss!.
 
@@ -136,20 +136,20 @@ same LVGL (8.x/9.x support) plus Flow scenarios for automation
 - Events everywhere: `lv_obj_add_event_cb(obj, handler, LV_EVENT_VALUE_CHANGED, NULL)` -
   in SquareLine this is the Events button without manual code.
 
-## Шрифти and теми
+## Fonts and themes
 
 - **Built-in:** `lv_font_montserrat_14/20/28...` - enable needed ones in `lv_conf.h`
   (`LV_FONT_MONTSERRAT_20 1`), drop unused - flash saving.
 - **Cyrillic:** stock montserrat has no Cyrillic! Converter
   (LVGL Font Converter, online): TTF → `my_ukr_font.c` with range
-  `0x0400-0x04FF` + латиниця; connect `LV_FONT_CUSTOM_DECLARE`.
+  `0x0400-0x04FF` + Latin; connect `LV_FONT_CUSTOM_DECLARE`.
 - **Themes:** `lv_theme_default_init()` + `lv_disp_set_theme()`; dark/light -
   two styles and a switch on Settings screen. Brand colours via
   `lv_color_hex(0x...)` in one `theme.h`, no magic numbers scattered.
 - **Icons:** `lv_img_dsc_t` via PNG→C converter (SquareLine Images do this
   automatically); large backgrounds in PSRAM/flash with `LV_IMG_CF_TRUE_COLOR`.
 
-## Тактиль through XPT2046
+## Touch through XPT2046
 
 LVGL input driver (`lv_indev_drv_t`, `LV_INDEV_TYPE_POINTER` type): callback
 `read_cb` reads XPT2046 over SPI (command + 12-bit ADC), maps to pixels,
@@ -160,7 +160,7 @@ wake from light-sleep; in active mode 30 Hz polling is enough.
 
 ## Performance - FPS vs SPI speed, partial refresh
 
-- **Математика SPI:** кадр 320×240×2 байти = 153 600 байт; at 40 МГц (~4 МБ/с
+- **SPI math:** 320x240x2-byte frame = 153,600 bytes; at 40 MHz (~4 MB/s
   in practice) - ~26 FPS bus limit; at 80 MHz - ~50 FPS, but only short wires
   and quality module. No more from bus - next only parallel 8/16-bit
   or RGB panel.
@@ -216,7 +216,7 @@ graph LR
     APP -->|GPIO15 PWM| BL((Підсвітка<br/>диммінг теми))
 ```
 
-## Code ESP-IDF - LVGL v9: flush + tick + дашборд
+## Code ESP-IDF - LVGL v9: flush + tick + dashboard
 
 ```c
 #include "lvgl.h"
@@ -282,7 +282,7 @@ void app_main(void) {
 }
 ```
 
-## Code Arduino - LVGL v8 + SquareLine-експорт + XPT2046
+## Code Arduino - LVGL v8 + SquareLine export + XPT2046
 
 ```cpp
 #include <lvgl.h>

@@ -7,32 +7,31 @@ lang: en
 original: STM32-Reference/14-Devboards/02-Black-Pill.md
 date-created: 2026-10-01
 date: 2026-10-09
-date: 2026-10-09
 ---
 
 # Black Pill - board with built-in debugger and USB
 
 ![[assets/img/stm32-blackpill-board-scheme.png|600]]
-*Рис. Карта Black Pill: продуктивне ядро, роз'єм даних, кнопки керування and запас живлення.*
+*Fig. Black Pill map: performance core, data connector, control buttons and power reserve.*
 
-> [!tip] Призначення ноти
-> Показати наступний крок після простої плати: ті ж розміри, але швидше ядро, апаратна кома and справжній порт даних без зовнішніх перетворювачів.
+> [!tip] Note purpose
+> Show the next step after a simple board: the same size, but a faster core, hardware FPU and a real data port without external converters.
 
-## 1. Призначення
+## 1. Purpose
 
-Плата лишається маленькою for макетів, але контролер вже with продуктивної родини. Апаратна кома прискорює фільтри and регулятори. Вища частота дає запас for дисплеїв and обміну.
+The board stays small for breadboards, but the controller is already from the performance family. Hardware FPU speeds up filters and regulators. Higher frequency gives reserve for displays and exchange.
 
-Сучасний роз'єм несе дані, therefore консоль and прошивка йдуть одним кабелем. Кнопки скидання, режиму and користувача спрощують роботу без перемичок. Стабілізатор with запасом тримає датчики and карти пам'яті.
+A modern connector carries data, so console and firmware go over one cable. Reset, mode and user buttons simplify work without jumpers. A regulator with reserve holds sensors and memory cards.
 
-Плата підходить for навчання with прицілом on звук, графіку and швидкий обмін. Ціна трохи вища, але економить on перетворювачах and програматорі.
+The board fits learning focused on sound, graphics and fast exchange. The price is slightly higher, but it saves on converters and the programmer.
 
-## 2. Варіанти контролера
+## 2. Controller variants
 
-| Плата | Контролер | Пам'ять | Особливість |
+| Board | Controller | Memory | Feature |
 | --- | --- | --- | --- |
-| Базова | F401CC | 256 КБ and 64 КБ | Апаратна кома and швидкість 84 МГц |
-| Старша | F411CE | 512 КБ and 128 КБ | 100 МГц and більше інтерфейсів |
-| Обидві | Корпус малий | Порти виведені on гребінки | Сумісні за пінами частково |
+| Base | F401CC | 256 KB and 64 KB | Hardware FPU and 84 MHz speed |
+| Senior | F411CE | 512 KB and 128 KB | 100 MHz and more interfaces |
+| Both | Small package | Ports routed to pin headers | Partly pin compatible |
 
 ```text
 Карта плати вид зверху:
@@ -51,49 +50,49 @@ date: 2026-10-09
   +----------------------------------+
 ```
 
-## 3. Кнопки and керування
+## 3. Buttons and control
 
-| Кнопка | Позначення | how тиснути |
+| Button | Marking | How to press |
 | --- | --- | --- |
-| Скидання | NRST | Коротке натискання перезапускає |
-| Режим | BOOT0 | Тримати at ввімкненні for завантажувача |
-| Користувача | USER on PA0 | Читати програмою how вхід |
+| Reset | NRST | Short press restarts |
+| Mode | BOOT0 | Hold at power-on for the bootloader |
+| User | USER on PA0 | Read by program as an input |
 
-Кнопка режиму замінює перемичку зі старої плати. not треба пінцета and загублених ковпачків. Користувацька кнопка дає вхід for меню без макетних дротів.
+The mode button replaces the jumper from the old board. No tweezers and lost caps needed. The user button gives an input for menus without breadboard wires.
 
-## 4. Порт даних via роз'єм
+## 4. Data port over the connector
 
-| Режим | that дає | Коли брати |
+| Mode | What it gives | When to take |
 | --- | --- | --- |
-| Віртуальний порт | Консоль via кабель | Налагоджувальні повідомлення |
-| Завантажувач | Прошивка без програматора | Поле без інструментів |
-| Пристрій свій | Клавіатура або флешка | Готові вироби |
+| Virtual port | Console over cable | Debug messages |
+| Bootloader | Flashing without programmer | Field without tools |
+| Own device | Keyboard or flash drive | Finished products |
 
-Лінії даних виведені прямо on роз'єм via узгоджувальні резистори. Стара плата такого not мала and вимагала перетворювач. Тут один кабель закриває живлення, консоль and заливку.
+Data lines are routed straight to the connector over matching resistors. The old board had nothing like that and demanded a converter. Here one cable covers power, console and flashing.
 
-## 5. Живлення із запасом
+## 5. Power with reserve
 
-| source | Напруга | Можливість |
+| Source | Voltage | Capability |
 | --- | --- | --- |
-| Роз'єм | 5 in | Живлення and дані разом |
-| Вивід 5 in | 5 in | Зовнішній блок |
-| Вивід 3.3 in | 3.3 in | Вхід від лабораторного джерела |
-| Стабілізатор | 3.3 in до 500 мА | Датчики and карта пам'яті |
+| Connector | 5 V | Power and data together |
+| 5 V pin | 5 V | External PSU |
+| 3.3 V pin | 3.3 V | Input from a lab source |
+| Regulator | 3.3 V up to 500 mA | Sensors and memory card |
 
-Запас струму тримає дисплей and датчики одночасно. Все одно радіо with піками краще живити окремо. Конденсатори біля контролера вже стоять достатні.
+The current reserve holds a display and sensors at the same time. Still, it is better to power radio with peaks separately. Capacitors near the controller are already sufficient.
 
-## 6. Кварц 25 МГц and тактування
+## 6. 25 MHz crystal and clocking
 
-| Параметр | Значення | Пояснення |
+| Parameter | Value | Explanation |
 | --- | --- | --- |
-| Кварц | 25 МГц | Базова точна частота |
-| Максимум ядра | 84 або 100 МГц | Залежить від контролера |
-| Порт даних | 48 МГц від множника | Точність критична for зв'язку |
-| Внутрішній | 16 МГц | for старту без кварца |
+| Crystal | 25 MHz | Base accurate frequency |
+| Core maximum | 84 or 100 MHz | Depends on the controller |
+| Data port | 48 MHz from the multiplier | Accuracy is critical for link |
+| Internal | 16 MHz | For start without crystal |
 
-Графічний конфігуратор сам рахує множники під 48 МГц for порту. error in налаштуванні дає непрацюючий порт at живому ядрі. check це поява віртуального порту in системі.
+The graphic configurator calculates the multipliers for 48 MHz for the port by itself. A setup error gives a dead port with a live core. The check is the virtual port appearing in the system.
 
-## 7. Прошивка без програматора
+## 7. Flashing without a programmer
 
 ```text
 Заливка через заводський завантажувач:
@@ -105,26 +104,26 @@ date: 2026-10-09
   6. Натисни NRST для старту з пам'яті.
 ```
 
-| Утиліта | Команда example |
+| Utility | Example command |
 | --- | --- |
-| check | dfu-util -l показує пристрій |
-| Заливка | dfu-util -a 0 -D firmware.bin -s 0x08000000 |
-| Скидання | Натисни NRST руками |
+| Check | dfu-util -l shows the device |
+| Flashing | dfu-util -a 0 -D firmware.bin -s 0x08000000 |
+| Reset | Press NRST by hand |
 
-## 8. Порівняння зі старою платою
+## 8. Comparison with the old board
 
-| Параметр | Проста плата | Ця плата |
+| Parameter | Simple board | This board |
 | --- | --- | --- |
-| Ядро | 72 МГц без коми | 84-100 МГц with комою |
-| Пам'ять програм | 64 КБ | 256-512 КБ |
-| Оперативна | 20 КБ | 64-128 КБ |
-| Роз'єм | Тільки живлення | Живлення плюс дані |
-| Кнопки | Скидання and перемичка | Три кнопки без перемичок |
-| Кварц | 8 МГц | 25 МГц |
-| Стабілізатор | Слабкий | Із запасом |
-| Прошивка | Тільки програматор або порт | Плюс режим via роз'єм |
+| Core | 72 MHz without FPU | 84-100 MHz with FPU |
+| Program memory | 64 KB | 256-512 KB |
+| RAM | 20 KB | 64-128 KB |
+| Connector | Power only | Power plus data |
+| Buttons | Reset and jumper | Three buttons without jumpers |
+| Crystal | 8 MHz | 25 MHz |
+| Regulator | Weak | With reserve |
+| Flashing | Programmer or port only | Plus mode over connector |
 
-## 9. code: перший віртуальний порт
+## 9. Code: first virtual port
 
 ```c
 #include "usbd_cdc_if.h"
@@ -148,7 +147,7 @@ int main_loop_cdc(void)
 }
 ```
 
-Прийом реалізує колбек in стеку пристрою: байти with хоста приходять у буфер, програма відлунює назад. Передача це виклик відправки with копіюванням у кінцеву точку. Черги роблять for стабільного потоку.
+Reception is implemented by a callback in the device stack: bytes from the host arrive into a buffer, the program echoes them back. Transmission is a send call with copying into the endpoint. Queues are made for a stable stream.
 
 ```c
 #include "stm32f4xx_hal.h"
@@ -187,31 +186,31 @@ void blackpill_poll(void)
 }
 ```
 
-## 10. Mermaid: перехід on нову плату
+## 10. Mermaid: move to the new board
 
 ```mermaid
 flowchart TB
-    Start[Проста плата стала тісною]
-    Start --> Need{Що тисне}
-    Need --> Mem[Мало памяті під буфери]
-    Need --> Usb[Треба порт даних]
-    Need --> Math[Треба швидка математика]
-    Mem --> New[Ця плата з запасом памяті]
-    Usb --> Cdc[Віртуальний порт одним кабелем]
-    Math --> Fpu[Апаратна кома для фільтрів]
-    New --> Dfu[Прошивка без програматора]
+    Start[Simple board became tight]
+    Start --> Need{What is the limit}
+    Need --> Mem[Little memory for buffers]
+    Need --> Usb[Need a data port]
+    Need --> Math[Need fast math]
+    Mem --> New[This board with memory reserve]
+    Usb --> Cdc[Virtual port over one cable]
+    Math --> Fpu[Hardware FPU for filters]
+    New --> Dfu[Flashing without programmer]
     Cdc --> Dfu
     Fpu --> Dfu
 ```
 
-## 11. Налагодження порту
+## 11. Port debugging
 
-| Симптом | Причина | Лікування |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| Порт not with'являється | Множник not дає 48 МГц | verify дерево тактування |
-| Пристрій невідомий | Немає резистора підтяжки | Дивитись схему конкретної плати |
-| Обриви on швидкості | Довгий кабель | Короткий якісний кабель |
-| Скидання at передачі | Слабке живлення | Живити від блока, not від хаба |
+| Port does not appear | Multiplier does not give 48 MHz | Check the clock tree |
+| Unknown device | No pull-up resistor | See the schematic of your board |
+| Breaks at speed | Long cable | Short quality cable |
+| Reset during transfer | Weak power | Power from a PSU, not from a hub |
 
 ## Common issues
 
@@ -233,7 +232,7 @@ flowchart TB
 ## See also
 
 - [[Home.en]]
-- [[EN/14-Devboards/01-Blue-Pill.en|плата Blue Pill]]
-- [[EN/09-Firmware/03-ST-Link-Flashing.en|прошивка via ST-Link]]
-- [[EN/04-Interfaces/01-UART.en|послідовний порт UART]]
-- [[EN/00-Start/04-Dev-Boards.en|огляд плат]]
+- [[EN/14-Devboards/01-Blue-Pill.en|Blue Pill board]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|flashing via ST-Link]]
+- [[EN/04-Interfaces/01-UART.en|UART serial port]]
+- [[EN/00-Start/04-Dev-Boards.en|board overview]]

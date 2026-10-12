@@ -1,6 +1,6 @@
 ---
-description: ESP32 - повноцінний контролер руху: він рахує кроки with частотою до 120 кГц,; shows schematics, code and tables.
-title: Motion Control on ESP32 - FluidNC, grbl_ESP32, Klipper, micro-ROS, ESP-Drone, CRSF-телеметрія
+description: ESP32 is a full motion controller: it counts steps at up to 120 kHz,; shows schematics, code and tables.
+title: Motion Control on ESP32 - FluidNC, grbl_ESP32, Klipper, micro-ROS, ESP-Drone, CRSF telemetry
 tags: [esp32, motion, fluidnc, grbl-esp32, klipper, micro-ros, esp-drone, cnc, tmc2209, crsf, telemetry, yaml, step-dir]
 category: Moduli
 lang: en
@@ -13,97 +13,97 @@ original: 12-Moduli-zvyazku/21-Motion-Control.md
 
 ## Purpose
 
-ESP32 - повноцінний контролер руху: він рахує кроки with частотою до 120 кГц,
-тримає WebUI ЧПК-верстата, працює вторинним MCU 3D-принтера під Klipper,
-крутить вузол ROS 2 via micro-ROS, літає how міні-квадрокоптер під ESP-Drone
-або сидить другим бортом поруч із польотником Betaflight/INAV how GPS-логер
-and CRSF-міст телеметрії. Нота зводить усі шість екосистем in одну карту:
-де ESP32 - головний (FluidNC, grbl_ESP32, ESP-Drone), де - підлеглий
-(Klipper secondary MCU, micro-ROS node), but де - чесний «другий пілот»
-поряд із STM32F4/F7/H7-польотником, which він ніколи not замінює.
+ESP32 is a full motion controller: it counts steps at up to 120 kHz,
+holds a CNC-machine WebUI, works as a 3D-printer secondary MCU under Klipper,
+spins a ROS 2 node via micro-ROS, flies as a mini-quadcopter under ESP-Drone
+or sits as a second board next to a Betaflight/INAV flight controller as a GPS logger
+and CRSF telemetry bridge. Note brings all six ecosystems into one map:
+where ESP32 is primary (FluidNC, grbl_ESP32, ESP-Drone), where subordinate
+(Klipper secondary MCU, micro-ROS node), and where an honest "second pilot"
+next to an STM32F4/F7/H7 flight controller that it never replaces.
 
-Нота покриває: конфіг FluidNC `config.yaml` with нуля, WebUI + SD-карту,
-TMC-драйвери per UART/SPI, піни step/dir grbl_ESP32 and `$`-налаштування,
+Note covers: FluidNC `config.yaml` from zero, WebUI + SD card,
+TMC drivers over UART/SPI, grbl_ESP32 step/dir pins and `$` settings,
 Klipper on ESP32 how secondary MCU (menuconfig + printer.cfg),
-micro-ROS (agent, publisher/subscriber, транспорт UART/WiFi, executor),
-ESP-Drone (режими stabilize/height-hold/position-hold, flow-deck),
-чесну межу INAV/Betaflight on ESP32, три Ready коди
-(FluidNC-config, micro-ROS publisher, CRSF-телеметрія) and 14 типових помилок.
+micro-ROS (agent, publisher/subscriber, UART/WiFi transport, executor),
+ESP-Drone (stabilize/height-hold/position-hold modes, flow-deck),
+the honest INAV/Betaflight on ESP32 limit, three ready codes
+(FluidNC-config, micro-ROS publisher, CRSF telemetry) and 14 common issues.
 
 ![[assets/img/motion-control-fluidnc-scheme.png|600]]
-*Fig. ESP32 how контролер руху FluidNC: step/dir до TMC2209, кінцевики, шпиндель, SD-карта, WebUI per WiFi.*
+*Fig. ESP32 as a FluidNC motion controller: step/dir to TMC2209, limit switches, spindle, SD card, WebUI over WiFi.*
 
-## Overview екосистем - хто головний, хто підлеглий
+## Ecosystem overview - who is primary, who is subordinate
 
-| Прошивка | Роль ESP32 | Залізо | Конфіг | Транспорт | Коли брати |
+| Firmware | ESP32 role | Hardware | Config | Transport | When to take |
 | --- | --- | --- | --- | --- | --- |
-| FluidNC | головний контролер ЧПК/лазера | ESP32 + зовнішні драйвери (TMC2209/DM542) | `config.yaml` on флеш/SD, without перекомпіляції | WiFi WebUI, Telnet, USB-Serial, SD | новий верстат, фрезер, лазер, plotter |
-| grbl_ESP32 | головний контролер ЧПК (legacy) | ESP32 + драйвери | перекомпіляція + `$`-команди in EEPROM | USB-Serial, BT-Serial, WiFi | старий проєкт, which вже живе on grbl_ESP32 |
-| grblHAL | наступник grbl_ESP32 (активна гілка) | ESP32 + драйвери, WebUI | `$`-команди сумісні, конфіг via WebUI | USB-Serial, WiFi, Ethernet (with платами розширення) | нові ЧПК-проєкти замість замороженого grbl_ESP32 |
-| Klipper | вторинний MCU (secondary) | RPi-хост + ESP32 how виконавчий вузол | `printer.cfg` on хості + `make menuconfig` for ESP32 | USB-UART до хоста | 3D-принтер: ESP32 читає ADXL345, керує вентилятором/світлодіодом |
-| micro-ROS | ROS 2-вузол on мікроконтролері | ESP32 + агент on ПК/RPi | `colcon.meta` + `idf.py menuconfig` | UDP/WiFi або UART-serial до агента | мобільний робот, маніпулятор, рій |
-| ESP-Drone | головний польотник міні-дрона | ESP32 + плата керування моторами + IMU | `sdkconfig`, параметри Crazyflie | WiFi-APP, ESP-NOW-джойстик, cfclient | STEAM-освіта, кімнатні польоти |
-| Betaflight / INAV | ESP32 - not польотник! | STM32-польотник + ESP32 другим бортом | Betaflight Configurator / INAV Configurator | CRSF/SBUS/MAVLink міст | GPS-логер, CRSF-телеметрія, WiFi-шлюз до GCS |
+| FluidNC | primary CNC/laser controller | ESP32 + outdoor drivers (TMC2209/DM542) | `config.yaml` on flash/SD, without recompilation | WiFi WebUI, Telnet, USB-Serial, SD | new machine, mill, laser, plotter |
+| grbl_ESP32 | primary CNC controller (legacy) | ESP32 + drivers | recompilation + `$` commands in EEPROM | USB-Serial, BT-Serial, WiFi | old project that already lives on grbl_ESP32 |
+| grblHAL | grbl_ESP32 successor (active branch) | ESP32 + drivers, WebUI | `$` commands compatible, config via WebUI | USB-Serial, WiFi, Ethernet (with expansion boards) | new CNC projects instead of frozen grbl_ESP32 |
+| Klipper | secondary MCU | RPi host + ESP32 as executive node | `printer.cfg` on host + `make menuconfig` for ESP32 | USB-UART to host | 3D printer: ESP32 reads ADXL345, drives fan/LED |
+| micro-ROS | ROS 2 node on microcontroller | ESP32 + agent on PC/RPi | `colcon.meta` + `idf.py menuconfig` | UDP/WiFi or UART-serial to agent | mobile robot, manipulator, swarm |
+| ESP-Drone | mini-drone primary flight controller | ESP32 + motor-driver board + IMU | `sdkconfig`, Crazyflie parameters | WiFi-APP, ESP-NOW joystick, cfclient | STEAM education, room flights |
+| Betaflight / INAV | ESP32 is not a flight controller! | STM32 flight controller + ESP32 as second board | Betaflight Configurator / INAV Configurator | CRSF/SBUS/MAVLink bridge | GPS logger, CRSF telemetry, WiFi gateway to GCS |
 
-> Чесне правило: Betaflight and INAV not працюють on ESP32 how польотники -
-> цикл стабілізації 8 кГц + DShot + gyro-DMA заточений під STM32F4/F7/H7/AT32.
-> ESP32 поруч із ними - this телеметрійний міст, логер and наземний шлюз,
-> див. розділ нижче and [[EN/12-Comm-Modules/12-RC-Protocols.en]].
+> Honest rule: Betaflight and INAV do not work on ESP32 as flight controllers -
+> the 8 kHz stabilization loop + DShot + gyro-DMA is sharpened for STM32F4/F7/H7/AT32.
+> ESP32 next to them is a telemetry bridge, logger and ground gateway,
+> see the section below and [[EN/12-Comm-Modules/12-RC-Protocols.en]].
 
-## FluidNC - головний контролер ЧПК
+## FluidNC - primary CNC controller
 
-FluidNC - наступник grbl_ESP32 from того ж автора (bdring). Архітектура
+FluidNC is the grbl_ESP32 successor from the same author (bdring). Architecture
 Object-oriented: the machine is described by a text `config.yaml`, one firmware for all -
-перекомпіляція not потрібна. Підтримує до 6 координованих осей, подвійні
-мотори on вісь with авто-вирівнюванням порталу (auto-squaring), шпиндель PWM /
-RS485 Modbus / DAC 0-10 in / реле, лазер with компенсацією потужності from швидкості,
-зміну інструменту, SD-карту with запуском G-коду per WiFi, WebUI in браузері,
-Telnet-подачу G-коду, OTA-оновлення and push-сповіщення.
+no recompilation needed. Supports up to 6 coordinated axes, dual
+motors per axis with portal auto-squaring, PWM spindle /
+RS485 Modbus / DAC 0-10 V / relay, laser with power compensation from speed,
+tool change, SD card with G-code launch over WiFi, WebUI in browser,
+Telnet G-code feed, OTA updates and push notifications.
 
-### that вміє FluidNC with коробки
+### What FluidNC can do out of the box
 
-| Підсистема | Можливості | Де лежить in YAML |
+| Subsystem | Features | Where in YAML |
 | --- | --- | --- |
-| Осі | до 6 осей XYZABC, до 12 моторів, dual-motor Y with двома кінцевиками | `axes:` |
-| Драйвери | Step/Dir, TMC2209/TMC5160 per UART/SPI (StealthChop, CoolStep, StallGuard) | `axes: → motor0: → tmc_2209:` |
-| Кінцевики | limit/homing with дебаунсом, sensorless-homing via StallGuard | `axes: → homing:` |
-| Зонди | Z-probe on будь-яку вісь, safety-door, hold/resume/reset кнопки | `probe:`, `control:` |
-| Шпиндель | PWM, лазер, RS485-VFD (Huanyang), 10V-DAC, BESC for безколекторників | `spindle:` |
-| Охолодження | Mist, Flood | `coolant:` |
-| Зв'язок | USB-Serial, WiFi AP/STA, WebUI, Telnet, BT-Serial | `wifi:`, `telnet:` |
-| Файли | SD-карта, launch with WebUI, кілька `*.yaml` + `$Config/Filename=` | `sdcard:` |
-| Макроси | кнопки-скрипти, start/кінець завдання, tool-change послідовності | `macros:`, `start:` |
+| Axes | up to 6 XYZABC axes, up to 12 motors, dual-motor Y with two limit switches | `axes:` |
+| Drivers | Step/Dir, TMC2209/TMC5160 over UART/SPI (StealthChop, CoolStep, StallGuard) | `axes: to motor0: to tmc_2209:` |
+| Limit switches | limit/homing with debounce, sensorless-homing via StallGuard | `axes: to homing:` |
+| Probes | Z-probe on any axis, safety-door, hold/resume/reset buttons | `probe:`, `control:` |
+| Spindle | PWM, laser, RS485-VFD (Huanyang), 10V-DAC, BESC for brushless | `spindle:` |
+| Cooling | Mist, Flood | `coolant:` |
+| Link | USB-Serial, WiFi AP/STA, WebUI, Telnet, BT-Serial | `wifi:`, `telnet:` |
+| Files | SD card, launch from WebUI, several `*.yaml` + `$Config/Filename=` | `sdcard:` |
+| Macros | script buttons, job start/end, tool-change sequences | `macros:`, `start:` |
 
-### Pin legend типової плати FluidNC (6-pack / generic DevKit)
+### Pin legend of a typical FluidNC board (6-pack / generic DevKit)
 
-| Пін ESP32 | Функція FluidNC | Куди | Примітка |
+| ESP32 pin | FluidNC function | Where | Note |
 | --- | --- | --- | --- |
-| GPIO14 | X.step | STEP драйвера X | крок 50% шпаруватість, частота до 120 кГц |
-| GPIO25 | X.dir | DIR драйвера X | напрям, встановити до фронту step ≥ 1 мкс |
-| GPIO26 | Y.step | STEP драйвера Y | кручена пара зі землею, < 30 см |
-| GPIO33 | Y.dir | DIR драйвера Y | - |
-| GPIO17 | Z.step | STEP драйвера Z | - |
-| GPIO16 | Z.dir | DIR драйвера Z | - |
-| GPIO4 | UART TX до TMC2209 | RX драйверів (ланцюжок) | один TX on всіх: адреси 0/1/2 перемичками MS1/MS2 |
-| GPIO15 | UART RX from TMC2209 | TX драйверів via 1 кОм | резистор-суматор обов'язковий at ланцюжку! |
-| GPIO34 | X.limit | кінцевик X, NO до GND | вхід only-input, тільки pull-up, without виходу! |
-| GPIO35 | Y.limit | кінцевик Y | only-input, див. [[EN/03-GPIO/01-GPIO-Overview.en]] |
-| GPIO32 | Z.probe | щуп Z | підтяжка до 3V3, екран from шпинделя |
-| GPIO27 | spindle PWM | MOSFET/лазер TTL | via [[EN/11-Vivid/11-PowerMotion-2.en]] |
-| GPIO13, GPIO5, GPIO23, GPIO19, GPIO18 | SD SPI | SD-карта | SCK/MOSI/MISO/CS how in [[EN/04-Interfaces/07-SD-SDIO.en]] |
-| EN, GPIO0 | reset/feed-hold кнопки | кнопки до GND | - |
+| GPIO14 | X.step | Driver X STEP | 50% duty step, up to 120 kHz |
+| GPIO25 | X.dir | Driver X DIR | direction, set >= 1 us before step edge |
+| GPIO26 | Y.step | Driver Y STEP | twisted pair with ground, < 30 cm |
+| GPIO33 | Y.dir | Driver Y DIR | - |
+| GPIO17 | Z.step | Driver Z STEP | - |
+| GPIO16 | Z.dir | Driver Z DIR | - |
+| GPIO4 | UART TX to TMC2209 | Driver RX (chain) | one TX for all: addresses 0/1/2 by MS1/MS2 jumpers |
+| GPIO15 | UART RX from TMC2209 | Driver TX via 1 kOhm | summing resistor mandatory in a chain! |
+| GPIO34 | X.limit | X limit switch, NO to GND | input-only pin, pull-up only, without output! |
+| GPIO35 | Y.limit | Y limit switch | input-only, see [[EN/03-GPIO/01-GPIO-Overview.en]] |
+| GPIO32 | Z.probe | Z probe | pull-up to 3V3, shield from spindle |
+| GPIO27 | spindle PWM | MOSFET/laser TTL | via [[EN/11-Vivid/11-PowerMotion-2.en]] |
+| GPIO13, GPIO5, GPIO23, GPIO19, GPIO18 | SD SPI | SD card | SCK/MOSI/MISO/CS like in [[EN/04-Interfaces/07-SD-SDIO.en]] |
+| EN, GPIO0 | reset/feed-hold buttons | buttons to GND | - |
 
-Пояснення:
+Explanation:
 
-- **Step/dir - окремі GPIO on мотор:** кожен драйвер хоче свою пару
-  step+dir; землю кроку вести поруч із сигналом, not уздовж силових 24 in.
-- **TMC UART - один провід-bus:** TX контролера віялом on RX усіх драйверів,
-  назад - via резистори 1 кОм with кожного TX in спільну точку RX контролера,
-  інакше драйвери «сперечаються» on лінії.
-- **GPIO34/35 - тільки входи:** on них немає внутрішнього pull-up, which можна
-  ввімкнути програмно коректно for кінцевика - став зовнішній 4.7-10 кОм до 3V3.
-- **Шпиндель - ніколи безпосередньо:** GPIO27 дає 3.3 in логіку, but далі MOSFET-module,
-  реле або TTL-драйвер лазера with опторозв'язкою.
+- **Step/dir - separate GPIOs per motor:** each driver wants its own
+  step+dir pair; run step ground next to the signal, not along 24 V power.
+- **TMC UART - one wire bus:** controller TX fan-out to RX of all drivers,
+  back - via 1 kOhm resistors from each TX to the common controller RX point,
+  otherwise drivers "argue" on the line.
+- **GPIO34/35 - inputs only:** they have no internal pull-up that can be
+  correctly enabled by software for a limit switch - put an outdoor 4.7-10 kOhm to 3V3.
+- **Spindle - never directly:** GPIO27 gives 3.3 V logic, then a MOSFET module,
+  relay or laser TTL driver with optoisolation.
 
 ### ASCII schematic
 
@@ -153,24 +153,24 @@ Telnet-подачу G-коду, OTA-оновлення and push-сповіщен
 graph LR
     subgraph ESP32_FluidNC[ESP32 FluidNC]
         CPU[Motion planner<br/>+ WebUI + Telnet]
-        STEP[Step/dir генератор<br/>до 120 кГц]
+        STEP[Step/dir generator<br/>up to 120 kHz]
         TMC[TMC-UART<br/>GPIO4/GPIO15]
-        SD[SD SPI<br/>G-code файли]
+        SD[SD SPI<br/>G-code files]
         SP[Spindle PWM<br/>GPIO27]
     end
-    subgraph DRIVERS[Драйвери]
+        DRIVERS[Drivers]
         DX[TMC2209 X<br/>addr 0]
         DY[TMC2209 Y<br/>addr 1]
         DZ[TMC2209 Z<br/>addr 2]
     end
-    subgraph MECH[Механіка]
-        MX[Вісь X<br/>гвинт/ремінь]
-        MY[Вісь Y<br/>dual / портал]
-        MZ[Вісь Z<br/>+ щуп]
-        LIM[Кінцевики<br/>X/Y/Z]
+        MECH[Mechanics]
+        MX[X axis<br/>screw/belt]
+        MY[Y axis<br/>dual / portal]
+        MZ[Z axis<br/>+ probe]
+        LIM[Limit switches<br/>X/Y/Z]
     end
-    subgraph USER[Користувач]
-        PC[Браузер WebUI<br/>+ Telnet + USB]
+        USER[User]
+        PC[Browser WebUI<br/>+ Telnet + USB]
     end
     CPU --> STEP
     CPU --> TMC
@@ -186,43 +186,43 @@ graph LR
     PC <-->|WiFi / USB| CPU
 ```
 
-### FluidNC: WebUI, SD, TMC-драйвери детально
+### FluidNC: WebUI, SD, TMC drivers in detail
 
-- **WebUI:** вбудований Esp32_WebUI - після firmwares плата піднімає AP
-  `FluidNC` або чіпляється до домашнього WiFi (STA, задається in YAML).
-  in браузері: jog-кнопки, DRO-координати, download `.nc/.gcode` on SD,
-  launch/пауза, консоль `$`-команд, редактор `config.yaml` прямо in WebUI.
-- **SD-карта:** G-code ллється per WiFi in WebUI → пишеться on SD → виконується
-  with SD without прив'язі до ПК (джиттер USB not рве дугу лазера). Два CS - під другу
-  карту або резерв, частота SPI SD до 20 МГц, доріжки короткі.
-- **TMC2209 per UART:** StealthChop (тихо), CoolStep (менше гріється),
-  StallGuard (бездатчикове homing). Струм `run_current`, мікрокрок
-  `microsteps`, адреса `uart_num` задаються in YAML on мотор, but not перемичками
-  струму Vref - Vref-потенціометр on UART-версії ігнорується!
-- **Кілька конфігів:** on флеш лягає `config.yaml` for замовчуванням;
-  `$Config/Filename=/моя.yaml` перемикає on інший файл - зручно тримати
-  «фрезер.yaml» and «лазер.yaml» on одній платі.
-- **Діагностика:** `$SS` (system status), `$LD` (list directories SD),
-  `$Config/Dump` - роздрук активного YAML, `$Motors/Disable` - зняти струм.
+- **WebUI:** built-in Esp32_WebUI - after firmware the board raises the
+  `FluidNC` AP or hooks to home WiFi (STA, set in YAML).
+  In browser: jog buttons, DRO coordinates, `.nc/.gcode` download to SD,
+  launch/pause, `$` command console, `config.yaml` editor right in WebUI.
+- **SD card:** G-code pours over WiFi in WebUI to be written to SD to run
+  from SD without PC tie (USB jitter does not tear the laser arc). Two CS pins for a second
+  card or backup, SD SPI frequency up to 20 MHz, short traces.
+- **TMC2209 over UART:** StealthChop (quiet), CoolStep (heats less),
+  StallGuard (sensorless homing). Current `run_current`, microstep
+`microsteps`, address `uart_num` set in YAML per motor, not by current
+  jumpers Vref - the Vref pot on the UART version is ignored!
+- **Several configs:** `config.yaml` by default lands on flash;
+  `$Config/Filename=/mine.yaml` switches to another file - handy to keep
+  "mill.yaml" and "laser.yaml" on one board.
+- **Diagnostics:** `$SS` (system status), `$LD` (list SD directories),
+  `$Config/Dump` - print of active YAML, `$Motors/Disable` - drop current.
 
-## grbl_ESP32 - попередник (legacy, але живий)
+## grbl_ESP32 - predecessor (legacy but alive)
 
-grbl_ESP32 - порт класичного grbl під ESP32, заморожений on користь FluidNC
-(автор прямо радить нові проєкти робити on FluidNC). Відмінності:
+grbl_ESP32 is a classic grbl port for ESP32, frozen in favor of FluidNC
+(the author directly advises new projects on FluidNC). Differences:
 
-| Риса | grbl_ESP32 | FluidNC |
+| Feature | grbl_ESP32 | FluidNC |
 | --- | --- | --- |
-| Опис машини | `#define` пінів + перекомпіляція | `config.yaml`, without перекомпіляції |
-| Налаштування | `$0..$132` in EEPROM | пункти YAML + частина `$` on льоту |
-| Осей/моторів | до 6 осей, до 12 моторів | так само, але гнучкіше маплення |
-| TMC | SPI-версії, StealthChop/StallGuard | UART + SPI, повніший набір |
-| WebUI | є (той же Esp32_WebUI) | новіший, редактор YAML |
-| Статус | maintenance only | активна розробка |
+| Machine description | pin `#define` + recompilation | `config.yaml`, without recompilation |
+| Settings | `$0..$132` in EEPROM | YAML items + some `$` on the fly |
+| Axes/motors | up to 6 axes, up to 12 motors | same but more flexible mapping |
+| TMC | SPI versions, StealthChop/StallGuard | UART + SPI, fuller set |
+| WebUI | exists (same Esp32_WebUI) | newer, YAML editor |
+| Status | maintenance only | active development |
 
-### Піни step/dir in grbl_ESP32 (example `machine.h`)
+### grbl_ESP32 step/dir pins (example `machine.h`)
 
-Типовий мапінг 3-осьового фрезера: step-пини поруч, dir-пини поруч,
-enable - спільний. in коді машини:
+Typical 3-axis mill mapping: step pins nearby, dir pins nearby,
+enable shared. In machine code:
 
 ```cpp
 // Grbl_ESP32: CPU_MAP, приклад кастомної машини
@@ -238,44 +238,44 @@ enable - спільний. in коді машини:
 #define SPINDLE_PWM_PIN  GPIO_NUM_27
 ```
 
-### `$`-налаштування grbl_ESP32 (that крутити першим)
+### grbl_ESP32 `$` settings (what to turn first)
 
-| Команда | Зміст | Типове |
+| Command | Content | Typical |
 | --- | --- | --- |
-| `$100`, `$101`, `$102` | кроків/мм X/Y/Z | 80 (GT2-20T), 400 (гвинт 8 мм + 1/8) |
-| `$110`, `$111`, `$112` | макс. швидкість мм/хв | 3000 / 3000 / 1000 |
-| `$120`, `$121`, `$122` | прискорення мм/с² | 200 / 200 / 100 |
-| `$130`-`$132` | хід осей мм (soft limits) | 300 / 300 / 80 |
+| `$100`, `$101`, `$102` | steps/mm X/Y/Z | 80 (GT2-20T), 400 (8 mm screw + 1/8) |
+| `$110`, `$111`, `$112` | max speed mm/min | 3000 / 3000 / 1000 |
+| `$120`, `$121`, `$122` | acceleration mm/s2 | 200 / 200 / 100 |
+| `$130`-`$132` | axis travel mm (soft limits) | 300 / 300 / 80 |
 | `$20`, `$21`, `$22` | soft/hard limits, homing enable | 1 / 1 / 1 |
-| `$23` | інверсія безпосередньо homing | маска бітів |
-| `$3` | інверсія dir | маска, якщо вісь їде not туди |
-| `$5` | інверсія limit-щупів | 0 = NO, 1 = NC |
-| `$32` | режим лазера | 1 for лазера, 0 for шпинделя |
-| `$$` | роздрук усіх | check перед першим пуском |
-| `$H` | homing усіх осей | тільки після кінцевиків! |
-| `$X` | зняти alarm-lock | після аварії, with перевіркою причини |
+| `$23` | homing direction inversion | bit mask |
+| `$3` | dir inversion | mask, if an axis goes the wrong way |
+| `$5` | limit-probe inversion | 0 = NO, 1 = NC |
+| `$32` | laser mode | 1 for laser, 0 for spindle |
+| `$$` | print of all | check before first start |
+| `$H` | homing of all axes | only after limit switches! |
+| `$X` | drop alarm-lock | after an accident, with cause check |
 
-> Міграція grbl_ESP32 → FluidNC: `$100` стає
+> grbl_ESP32 to FluidNC migration: `$100` becomes
 > `axes: → x: → motor0: → steps_per_mm:`, `$110` - `max_rate_mm_per_min:`,
-> `$120` - `acceleration_mm_per_sec2:`. Піни with `machine.h` переїжджають
-> in `step_pin:` / `direction_pin:` / `limit_all_pin:` відповідних секцій YAML.
+> `$120` is `acceleration_mm_per_sec2:`. Pins from `machine.h` move
+> to `step_pin:` / `direction_pin:` / `limit_all_pin:` of matching YAML sections.
 
 ## Klipper - ESP32 how secondary MCU
 
-Klipper ділить роботу: Raspberry Pi рахує траєкторію (Python), but мікроконтролери
-виконують кроки for розкладом (C). ESP32 тут - ідеальний другий/третій MCU:
-рідний WiFi not потрібен (зв'язок - дротовий USB-UART with хостом!), зате багато
-GPIO, АЦП, RMT for NeoPixel, I2C for ADXL345-виміру резонансів.
+Klipper splits work: Raspberry Pi counts the trajectory (Python), while microcontrollers
+do steps on schedule (C). ESP32 here is an ideal second/third MCU:
+native WiFi is not needed (link is wired USB-UART with the host!), but many
+GPIOs, ADC, RMT for NeoPixel, I2C for ADXL345 resonance measurement.
 
-### Архітектура with ESP32-довеском
+### Architecture with ESP32 add-on
 
-| Вузол | Роль | that on ньому |
+| Node | Role | What on it |
 | --- | --- | --- |
-| RPi-хост | Klipper host + Moonraker + Fluidd/Mainsail | `printer.cfg`, кінематика, pressure advance, input shaping |
-| Main MCU (SKR/Manta) | primary `[mcu]` | кроки XYZ/E, нагрів, вентилятори |
-| ESP32 | secondary `[mcu esp32]` | ADXL345 per SPI, NeoPixel, додатковий вентилятор, кнопка, термопара |
+| RPi host | Klipper host + Moonraker + Fluidd/Mainsail | `printer.cfg`, kinematics, pressure advance, input shaping |
+| Main MCU (SKR/Manta) | primary `[mcu]` | XYZ/E steps, heating, fans |
+| ESP32 | secondary `[mcu esp32]` | ADXL345 over SPI, NeoPixel, extra fan, button, thermocouple |
 
-### Прошивка ESP32 під Klipper (menuconfig)
+### Flashing ESP32 for Klipper (menuconfig)
 
 ```text
 cd ~/klipper && make menuconfig
@@ -288,7 +288,7 @@ make flash FLASH_DEVICE=/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0
 ls /dev/serial/by-id/*   # <- цей ID піде в printer.cfg
 ```
 
-### `printer.cfg` - ESP32 how другий MCU
+### `printer.cfg` - ESP32 as second MCU
 
 ```ini
 [mcu esp32]
@@ -321,36 +321,36 @@ pause_on_runout: True
 switch_pin: ^!esp32:gpio34
 ```
 
-Пояснення:
+Explanation:
 
-- **Префікс `esp32:`** in кожному піні каже Klipper, якому MCU належить пін.
-  without префікса - пін шукається on primary `[mcu]` and буде error.
-- **`^` and `!`** - pull-up та інверсія: `^!esp32:gpio34` = підтяжка + NC-датчик.
-- **ADXL345 - тільки per SPI ESP32:** I2C-режим ADXL345 Klipper not калібрує
-  резонанси коректно; SPI 5 МГц, дроти < 15 см, див. резонанси in Klipper-доках.
-- **USB-serial, not WiFi:** Klipper not говорить with MCU per WiFi-TCP in стабільному
-  режимі - тільки дротовий serial. WiFi ESP32 in Klipper-режимі not використовується.
-- **Multi-MCU homing:** кінцевик має висіти on therefore ж MCU, that й відповідний мотор,
-  інакше - error `multi-mcu homing` під час `$H`/G28.
+- **`esp32:` prefix** in each pin tells Klipper which MCU owns the pin.
+  Without prefix the pin is looked up on the primary `[mcu]` and errors.
+- **`^` and `!`** are pull-up and inversion: `^!esp32:gpio34` = pull-up + NC sensor.
+- **ADXL345 - only over ESP32 SPI:** Klipper does not calibrate resonances correctly in
+  ADXL345 I2C mode; SPI 5 MHz, wires < 15 cm, see resonances in Klipper docs.
+- **USB-serial, not WiFi:** Klipper does not talk to an MCU over WiFi-TCP in stable
+  mode - only wired serial. ESP32 WiFi in Klipper mode is not used.
+- **Multi-MCU homing:** a limit switch must hang on the same MCU as its motor,
+  otherwise a `multi-mcu homing` error during `$H`/G28.
 
-## micro-ROS - ESP32 how ROS 2-вузол
+## micro-ROS - ESP32 as a ROS 2 node
 
-micro-ROS садить клієнтський API ROS 2 (rclc + Micro XRCE-DDS) прямо on ESP32.
-ESP32 говорить with micro-ROS-агентом (програма on ПК/RPi), but агент вже розмовляє
-with рештою ROS 2-графа per DDS. Транспортів два: UDP per WiFi (зручно) або UART-serial
-(надійно, without джиттера WiFi). Виконавча модель - executor: один потік крутить
-таймери, сабскрайбери and сервіси per колу.
+micro-ROS plants the ROS 2 client API (rclc + Micro XRCE-DDS) straight on ESP32.
+ESP32 talks to a micro-ROS agent (program on PC/RPi), while the agent already talks
+to the rest of the ROS 2 graph over DDS. Two transports: UDP over WiFi (handy) or UART-serial
+(reliable, without WiFi jitter). Execution model is executor: one thread spins
+timers, subscribers and services in a loop.
 
-### Архітектура
+### Architecture
 
-| Шар | Де живе | that робить |
+| Layer | Where it lives | What it does |
 | --- | --- | --- |
-| ROS 2-граф (Humble/Jazzy) | ПК / RPi | `rviz`, `ros2 topic echo`, навігація Nav2 |
-| micro-ROS Agent | ПК / RPi, Docker `microros/micro-ros-agent` | міст XRCE-DDS ↔ DDS: `udp4 --port 8888` або `serial --dev /dev/ttyUSB0` |
-| micro-ROS node | ESP32 (ESP-IDF + компонент) | паблішить одометрію, слухає `cmd_vel`, крутить мотори |
-| Транспорт | WiFi-UDP або UART | UDP - мобільність, UART - детермінізм |
+| ROS 2 graph (Humble/Jazzy) | PC / RPi | `rviz`, `ros2 topic echo`, Nav2 navigation |
+| micro-ROS Agent | PC / RPi, Docker `microros/micro-ros-agent` | XRCE-DDS to DDS bridge: `udp4 --port 8888` or `serial --dev /dev/ttyUSB0` |
+| micro-ROS node | ESP32 (ESP-IDF + component) | publishes odometry, listens to `cmd_vel`, spins motors |
+| Transport | WiFi-UDP or UART | UDP for mobility, UART for determinism |
 
-### Налаштування ESP-IDF компонента
+### ESP-IDF component setup
 
 ```text
 . $IDF_PATH/export.sh
@@ -366,7 +366,7 @@ idf.py menuconfig
 idf.py build && idf.py flash && idf.py monitor
 ```
 
-Агент on хості:
+Agent on host:
 
 ```bash
 # UDP-агент (ESP32 по WiFi стукає на порт 8888):
@@ -376,52 +376,52 @@ docker run -it --rm -v /dev:/dev --privileged --net=host \
   microros/micro-ros-agent:rolling serial --dev /dev/ttyUSB0 -v6
 ```
 
-### Executor - серце вузла (патерни)
+### Executor - the node heart (patterns)
 
-| Патерн | Коли | example |
+| Pattern | When | Example |
 | --- | --- | --- |
-| Один таймер + один паблішер | маяк одометрії 20 Гц | `rclc_timer_init_default` + `rclc_executor_spin` |
-| Сабскрайбер `cmd_vel` + PWM | диференціальний робот | колбек Twist → MCPWM on два мотори |
-| Сервіс + екшен | калібрування / захват | `rclc_service_init_default`, стани in колбеку |
-| Static executor + `sleep 10 мс` | батарейний вузол | менше прокидань, економія заряду |
+| One timer + one publisher | 20 Hz odometry beacon | `rclc_timer_init_default` + `rclc_executor_spin` |
+| `cmd_vel` subscriber + PWM | differential robot | Twist callback to MCPWM on two motors |
+| Service + action | calibration / grip | `rclc_service_init_default`, states in callback |
+| Static executor + `10 ms sleep` | battery node | fewer wake-ups, charge economy |
 
-> Пам'ять: тримай `rmw` буфери маленькими (`colcon.meta` - MTU 512 at UART),
-> інакше ESP32 with'їсть купу PSRAM під фрагментацію XRCE.
+> Memory: keep `rmw` buffers small (`colcon.meta` - MTU 512 on UART),
+> otherwise ESP32 eats a pile of PSRAM for XRCE fragmentation.
 
-## ESP-Drone - міні-квадрокоптер on ESP32
+## ESP-Drone - mini-quadcopter on ESP32
 
-ESP-Drone (Espressif, порт Crazyflie) - повноцінний польотник for кімнатного
-квадрика on ESP32/S2/S3 під ESP-IDF v5. code стабілізації - with Crazyflie (GPL-3.0),
-плата - проста: ESP32 + драйвер колекторних моторів + IMU MPU9250/BMI088.
+ESP-Drone (Espressif, Crazyflie port) is a full flight controller for a room
+quad on ESP32/S2/S3 under ESP-IDF v5. Stabilization code is from Crazyflie (GPL-3.0),
+board is simple: ESP32 + brushed-motor driver + MPU9250/BMI088 IMU.
 
-### Режими and плати розширення
+### Modes and expansion boards
 
-| Режим | that стабілізує | that треба |
+| Mode | What it stabilizes | What is needed |
 | --- | --- | --- |
-| Stabilize (attitude) | кути roll/pitch, yaw-rate | базова плата + IMU |
-| Height-hold (flapper/altitude) | + висота for тиском | плата висотоміра (BMP388/LPS22) |
-| Position-hold (positioning) | + XY for оптичним потоком | flow-deck: PMW3901 (optic-flow) + VL53L1x (ToF-далекомір) |
-| APP control | керування зі смартфона | WiFi AP дрона + ESP-Drone APP (iOS/Android) |
-| Joystick / cfclient | керування with ПК | `crazyflie-clients-python`, ESP-NOW-джойстик via ESP-BOX3 |
+| Stabilize (attitude) | roll/pitch angles, yaw-rate | base board + IMU |
+| Height-hold (flapper/altitude) | + pressure height | altimeter board (BMP388/LPS22) |
+| Position-hold (positioning) | + XY by optic flow | flow-deck: PMW3901 (optic-flow) + VL53L1x (ToF rangefinder) |
+| APP control | smartphone control | drone WiFi AP + ESP-Drone APP (iOS/Android) |
+| Joystick / cfclient | PC control | `crazyflie-clients-python`, ESP-NOW joystick via ESP-BOX3 |
 
-### Зв'язок керування
+### Control link
 
-| Канал | Транспорт | Затримка | Коли |
+| Channel | Transport | Delay | When |
 | --- | --- | --- | --- |
-| WiFi APP | UDP до AP дрона | ~20-50 мс | навчання, STEAM-демо |
-| ESP-NOW джойстик | ESP-NOW 2.4 ГГц | ~5-10 мс | точніші польоти without роутера |
-| cfclient (Crazyradio-сумісний) | USB-dongle → Crazyflie-протокол | ~10 мс | логи, параметри PID, телеметрія |
+| WiFi APP | UDP to drone AP | ~20-50 ms | learning, STEAM demo |
+| ESP-NOW joystick | ESP-NOW 2.4 GHz | ~5-10 ms | more exact flights without router |
+| cfclient (Crazyradio-compatible) | USB dongle to Crazyflie protocol | ~10 ms | logs, PID parameters, telemetry |
 
-> Flow-deck - key до position-hold in кімнаті without GPS: PMW3901 дивиться вниз
-> and міряє оптичний потік (зсув картинки підлоги), VL53L1x дає висоту ToF.
-> without flow-deck кімнатний дрон тримає тільки кути й висоту - XY пливе for вітром.
+> Flow-deck is the key to room position-hold without GPS: PMW3901 looks down
+> and measures optic flow (floor-picture shift), VL53L1x gives ToF height.
+> Without flow-deck a room drone holds only angles and height - XY drifts with wind.
 
-## INAV / Betaflight on ESP32 - чесна межа
+## INAV / Betaflight on ESP32 - honest limit
 
-Ні INAV, ні Betaflight not збираються під ESP32 how ціль польотника:
-цілі - STM32F4/F7/H7 and AT32, цикл ПІД 8 кГц, DMA-читання gyro, DShot with точним
-таймінгом. ESP32 not має потрібних DMA-ланцюжків під їхній scheduler and not
-пройде жоден CI-таргет цих проєктів. therefore правильна топологія - два борти:
+Neither INAV nor Betaflight builds for ESP32 as a flight-controller target:
+targets are STM32F4/F7/H7 and AT32, an 8 kHz PID loop, DMA gyro reads, DShot with exact
+timing. ESP32 lacks the needed DMA chains for their scheduler and
+passes no CI target of these projects. So the correct topology is two boards:
 
 ```text
 STM32-польотник (Betaflight/INAV)  <──CRS F/SBUS/MAVLink──>  ESP32 (другий борт)
@@ -430,19 +430,19 @@ STM32-польотник (Betaflight/INAV)  <──CRS F/SBUS/MAVLink──>  ES
   CRSF-приймач ELRS ──TX/RX── ESP32-перехоплювач ──TX/RX── FC   CRSF-міст + LTM-ретранслятор
 ```
 
-| Роль ESP32 поруч із FC | Протокол | UART | Навіщо |
+| ESP32 role next to FC | Protocol | UART | Why |
 | --- | --- | --- | --- |
-| CRSF-міст / сніфер | CRSF 420000 8N1 | UART2 | логи каналів, ретрансляція телеметрії on землю |
-| GPS-логер | NMEA/UBX 115200 | UART1 | писати трек on SD незалежно from blackbox FC |
-| MAVLink-шлюз | MAVLink 57600 | UART1 + WiFi | FC → ESP32 → QGroundControl per WiFi |
-| S.Port/F.Port вузол | 57600/115200 інв. | UART + інверсія | віддати напругу/струм in FrSky-приймач |
-| DShot-стенд (without польоту!) | DShot via RMT | RMT TX | покрутити мотор on столі, див. MCPWM/RMT-ноту |
+| CRSF bridge / sniffer | CRSF 420000 8N1 | UART2 | channel logs, telemetry relay to ground |
+| GPS logger | NMEA/UBX 115200 | UART1 | write track to SD independently of FC blackbox |
+| MAVLink gateway | MAVLink 57600 | UART1 + WiFi | FC to ESP32 to QGroundControl over WiFi |
+| S.Port/F.Port node | 57600/115200 inv. | UART + inversion | give voltage/current to a FrSky receiver |
+| DShot bench (without flight!) | DShot via RMT | RMT TX | spin a motor on the bench, see MCPWM/RMT note |
 
-Деталі CRSF-парсингу, інверсії SBUS and MAVLink-heartbeat - in ноті
-[[EN/12-Comm-Modules/12-RC-Protocols.en]], таймінг DShot via RMT -
+CRSF-parsing details, SBUS inversion and MAVLink-heartbeat are in the
+[[EN/12-Comm-Modules/12-RC-Protocols.en]], RMT DShot timing is in section 4 of file
 in [[EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]].
 
-## Code 1 - FluidNC `config.yaml` (3 осі + TMC2209 + лазер/шпиндель)
+## Code 1 - FluidNC `config.yaml` (3 axes + TMC2209 + laser/spindle)
 
 ```yaml
 # FluidNC config.yaml — 3-осьовий фрезер/лазер на ESP32 DevKit + 3x TMC2209
@@ -596,21 +596,21 @@ start:
   check_limits: true
 ```
 
-Коментарі до конфігу:
+Config comments:
 
-- `engine: RMT` - кроки via RMT-периферію ESP32, найстабільніший таймінг;
-  `pulse_us: 2` тримає сумісність із TMC2209 and зовнішніми DM542.
-- `uart1 → 115200` - bus TMC; усі три драйвери on одному UART with різними
-  `addr` (перемички MS1/MS2 on платі драйвера задають 0/1/2).
-- `r_sense_ohms: 0.110` - звірити with написом Rsense on конкретному модулі
-  (буває 0.110 або 0.220!); неправильне значення = вдвічі хибний струм.
-- `limit_all_pin: gpio.34:low:pu` - кінцевик NO до землі with підтяжкою;
-  for NC-датчиків - `:high`, див. GPIO-ноту.
-- `must_home: true` - верстат not поїде without `$H` після вмикання; безпека перша.
-- Лазерний режим окремо: `$32=1` in консолі або `laser:`-секція in новіших
-  збірках FluidNC - verify `$I` (build info) перед гравіюванням.
+- `engine: RMT` - steps via ESP32 RMT peripheral, most stable timing;
+  `pulse_us: 2` keeps compatibility with TMC2209 and outdoor DM542.
+- `uart1 to 115200` - TMC bus; all three drivers on one UART with different
+  `addr` (MS1/MS2 jumpers on the driver board set 0/1/2).
+- `r_sense_ohms: 0.110` - check against the Rsense marking on the specific module
+  (may be 0.110 or 0.220!); wrong value = twice-wrong current.
+- `limit_all_pin: gpio.34:low:pu` - NO limit switch to ground with pull-up;
+  for NC sensors - `:high`, see GPIO note.
+- `must_home: true` - the machine will not go without `$H` after power-on; safety first.
+- Laser mode separately: `$32=1` in console or a `laser:` section in newer
+  FluidNC builds - verify `$I` (build info) before engraving.
 
-## Code 2 - micro-ROS publisher on ESP-IDF (одометрія + cmd_vel)
+## Code 2 - micro-ROS publisher on ESP-IDF (odometry + cmd_vel)
 
 ```c
 // micro-ROS ESP32: паблішер одометрії 20 Гц + сабскрайбер cmd_vel -> MCPWM
@@ -690,12 +690,12 @@ void app_main(void) {
 }
 ```
 
-> Робочий мінімум without скорочень - in репозиторії компонента:
-> `examples/int32_publisher` (паблішер) and `examples/int32_subscriber`.
-> code вище - каркас під твій робот: підстав реальний `rcl_publish(&pub, …)`
-> in таймері, PCNT-енкодери and MCPWM-мости with [[EN/11-Vivid/11-PowerMotion-2.en]].
+> Working minimum without cuts is in the component repo:
+> `examples/int32_publisher` (publisher) and `examples/int32_subscriber`.
+> Code above is a frame for your robot: substitute a real `rcl_publish(&pub, ...)`
+> in the timer, PCNT encoders and MCPWM bridges from [[EN/11-Vivid/11-PowerMotion-2.en]].
 
-Кроки запуску зв'язки:
+Launch steps of the link:
 
 ```bash
 # 1. Агент на хості (RPi/ПК), ROS 2 Humble/Jazzy:
@@ -708,7 +708,7 @@ ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
   "{linear: {x: 0.2}, angular: {z: 0.0}}" --once
 ```
 
-## Code 3 - CRSF-телеметрія with ESP32 до ELRS-приймача (батарея + GPS)
+## Code 3 - ESP32 CRSF telemetry to ELRS receiver (battery + GPS)
 
 ```cpp
 // ESP32 -> ELRS-приймач: CRSF-телеметрія (Battery 0x08 + GPS 0x02), 420000 8N1
@@ -781,63 +781,63 @@ void loop() {
 }
 ```
 
-Пояснення до коду:
+Code explanation:
 
-- **Адреса `0xC8`** - «польотник»: приймач ELRS приймає телеметрію тільки
-  with цієї адреси; `0xEE` - адреса самого передавача, її not використовувати.
-- **Big-endian:** багатобайтові поля CRSF - старший байт першим
-  (on відміну from MAVLink/SBUS LSB), переплутаєш - висота 1123 м стане 253 м.
-- **Темп 4 Гц:** батарею and GPS слати per черзі not частіше 10 Гц сумарно,
-  інакше заб'єш аплінк and канали почнуть лагати.
-- **Перехрест:** TX приймача → GPIO16, RX приймача → GPIO17 (how звичайний UART).
+- **`0xC8` address** is "flight controller": the ELRS receiver takes telemetry only
+  from this address; `0xEE` is the transmitter address itself, do not use it.
+- **Big-endian:** multi-byte CRSF fields go senior byte first
+  (unlike MAVLink/SBUS LSB), mix up and 1123 m height becomes 253 m.
+- **4 Hz rate:** send battery and GPS in turn no more often than 10 Hz total,
+  otherwise you clog the uplink and channels start lagging.
+- **Cross:** receiver TX to GPIO16, receiver RX to GPIO17 (like a plain UART).
 
-## Живлення, землі and безпека верстата/друкарки
+## Machine/dryer power, grounds and safety
 
-| Вузол | Вимога | Чому |
+| Node | Requirement | Why |
 | --- | --- | --- |
-| Логіка ESP32 | 3.3 in, окремий LDO with запасом 500 мА | просідання = зрив кроків and перезапуск WebUI |
-| Драйвери кроку | 12-24 in, електроліт 470+ мкФ біля кожного | гасіння зворотних викидів мотора |
-| Спільна земля | одна зірка: ESP32 − драйвери − БЖ − корпус | петлі землі = хибні кінцевики and «танцюючі» координати |
-| Сигнальні джгути | step/dir < 30 см, кручена пара with GND | перехресні наведення from 24 in and шпинделя |
-| Шпиндель/нагрів | тільки via MOSFET/реле-module | GPIO дає 12 мА - мосфет without драйвера not відкриється |
-| E-stop | фізична кнопка рве 24 in/220 in, not GPIO! | софтовий стоп not рятує at зависанні |
-| Кінцевики | екран, NC-ланцюжок послідовно on довгих осях | обрив NC-ланцюга = аварія, but not in'їзд in раму |
-| USB + 24 in одночасно | спочатку земля, потім USB; або ізольований USB-UART | різниця потенціалів палить CP2102 |
+| ESP32 logic | 3.3 V, separate LDO with 500 mA margin | sag = step tearing and WebUI restart |
+| Step drivers | 12-24 V, 470+ uF electrolytic near each | damping motor back-kicks |
+| Common ground | one star: ESP32 - drivers - PSU - enclosure | ground loops = false limit switches and "dancing" coordinates |
+| Signal harnesses | step/dir < 30 cm, twisted pair with GND | cross pickup from 24 V and spindle |
+| Spindle/heating | only via MOSFET/relay module | GPIO gives 12 mA - a MOSFET without driver will not open |
+| E-stop | physical button tears 24 V/220 V, not GPIO! | software stop does not save on hang |
+| Limit switches | shield, NC chain in series on long axes | NC-chain break = accident, not a frame crash |
+| USB + 24 V at once | ground first, then USB; or isolated USB-UART | potential difference burns CP2102 |
 
-> E-stop ніколи not заводити тільки in ESP32: червоний гриб має рвати силову
-> лінію контактором. GPIO-стоп - другий рубіж, not перший.
+> Never bring E-stop only into ESP32: the red mushroom must tear the power
+> line with a contactor. GPIO stop is the second frontier, not the first.
 
 ## typical errors
 
-| № | Symptom | Cause | Виправлення |
+| No. | Symptom | Cause | Fix |
 | --- | --- | --- | --- |
-| 1 | FluidNC: `config.yaml not found` після заливки | файл залили not in ту ФС або with BOM/табами | перезалити via WebUI → Config; YAML - тільки пробіли, UTF-8 without BOM, verify `$Config/Filename=` |
-| 2 | FluidNC мовчить, WebUI немає | STA SSID/пароль хибні, плата not in мережі | тимчасово `access_point: true`, зайти on AP `FluidNC`, виправити STA-креденшали |
-| 3 | Мотори тремтять on місці / їдуть вдвічі менше | `r_sense_ohms` not той (0.110 vs 0.220) або `microsteps` not ті | звірити Rsense on модулі, перерахувати `steps_per_mm = microsteps × кроків_мотора / мм_оберта` |
-| 4 | TMC2209 not відповідає per UART | усі `addr` однакові або немає резисторів 1 кОм on зворотній лінії | роздати addr 0/1/2 перемичками MS1/MS2, впаяти 1 кОм with кожного TX драйвера in RX ESP32 |
-| 5 | Кінцевик спрацьовує сам | наведення from шпинделя/24 in, немає дебаунсу | кручена пара + екран, конденсатор 10-100 нФ біля входу, NC-логіка, подалі from силових |
-| 6 | GPIO34/35 «not тримають» pull-up | this only-input піни without коректного внутрішнього pull-up | зовнішній резистор 4.7-10 кОм до 3V3, див. GPIO-ноту |
-| 7 | Вісь їде not туди / homing in стіну | інверсія `direction_pin` або `homing:mpos_mm` not with того краю | інвертувати пін (`gpio.25:low` ↔ `:high`) або `$3` in grbl_ESP32, verify `$H` on малій подачі |
-| 8 | grbl_ESP32: `$H` б'ється in раму | `$23` (маска homing) або `$5` (інверсія щупів) хибні | виставити `$23` під розташування кінцевиків, `$5` під NO/NC, тестити with рукою on E-stop |
-| 9 | Klipper: `Unable to connect to MCU esp32` | not той `/dev/serial/by-id/*` або плата in download-режимі | `ls /dev/serial/by-id/*` після reflashing, вписати свіжий ID in `[mcu esp32]`, `restart` |
-| 10 | Klipper: `multi-mcu homing` / піни not тієї плати | кінцевик and мотор on різних MCU або забутий префікс `esp32:` | кінцевик пересадити on той же MCU, that й мотор; кожен пін ESP32 писати how `esp32:gpioN` |
-| 11 | micro-ROS: топики not видно in `ros2 topic list` | агент not запущений або ESP32 стукає not on той IP/порт | підняти `micro-ros-agent udp4 --port 8888`, звірити IP агента and WiFi-креденшали in `menuconfig`, `-v6` логи агента |
-| 12 | micro-ROS: `fragmentation` / падіння per пам'яті | MTU XRCE завеликий під UDP/WiFi або забагато паблішерів | зменшити MTU in `colcon.meta` (512 for UART), скоротити черги, static executor замість динаміки |
-| 13 | ESP-Drone not тримає позицію in кімнаті | немає flow-deck або глянцева підлога without текстури | поставити PMW3901+VL53L1x deck, літати над килимом/газетою, калібрувати IMU перед вильотом |
-| 14 | CRSF-телеметрія мовчить on пульті | інверсія увімкнена, переплутані TX/RX або адреса not `0xC8` | вимкнути інверсію (CRSF - пряма логіка!), перехрестити TX→RX, адреса `0xC8`, бод 420000 8N1, темп ≤ 10 Гц |
+| 1 | FluidNC: `config.yaml not found` after flashing | file flashed not to that FS or with BOM/tabs | reflash via WebUI to Config; YAML - spaces only, UTF-8 without BOM, verify `$Config/Filename=` |
+| 2 | FluidNC silent, no WebUI | STA SSID/password wrong, board not on network | temporarily `access_point: true`, enter AP `FluidNC`, fix STA credentials |
+| 3 | Motors tremble in place / go half distance | `r_sense_ohms` wrong (0.110 vs 0.220) or wrong `microsteps` | check Rsense on module, recount `steps_per_mm = microsteps x motor_steps / mm_per_rev` |
+| 4 | TMC2209 does not answer over UART | all `addr` identical or no 1 kOhm resistors on return line | give addr 0/1/2 with MS1/MS2 jumpers, solder 1 kOhm from each driver TX to ESP32 RX |
+| 5 | Limit switch triggers by itself | spindle/24 V pickup, no debounce | twisted pair + shield, 10-100 nF capacitor near input, NC logic, away from power |
+| 6 | GPIO34/35 "do not hold" pull-up | these are input-only pins without a correct internal pull-up | outdoor 4.7-10 kOhm resistor to 3V3, see GPIO note |
+| 7 | Axis goes the wrong way / homing into wall | `direction_pin` inversion or `homing:mpos_mm` from the wrong edge | invert pin (`gpio.25:low` to `:high`) or `$3` in grbl_ESP32, verify `$H` at low feed |
+| 8 | grbl_ESP32: `$H` hits the frame | `$23` (homing mask) or `$5` (probe inversion) wrong | set `$23` per limit-switch placement, `$5` per NO/NC, test with hand on E-stop |
+| 9 | Klipper: `Unable to connect to MCU esp32` | wrong `/dev/serial/by-id/*` or board in download mode | `ls /dev/serial/by-id/*` after reflash, write fresh ID into `[mcu esp32]`, `restart` |
+| 10 | Klipper: `multi-mcu homing` / pins of wrong board | limit switch and motor on different MCUs or forgotten `esp32:` prefix | move limit switch to the same MCU as its motor; write each ESP32 pin as `esp32:gpioN` |
+| 11 | micro-ROS: topics not seen in `ros2 topic list` | agent not started or ESP32 knocks on wrong IP/port | raise `micro-ros-agent udp4 --port 8888`, check agent IP and WiFi credentials in `menuconfig`, `-v6` agent logs |
+| 12 | micro-ROS: `fragmentation` / memory falls | XRCE MTU too big for UDP/WiFi or too many publishers | lower MTU in `colcon.meta` (512 for UART), cut queues, static executor instead of dynamics |
+| 13 | ESP-Drone does not hold room position | no flow-deck or glossy textureless floor | put PMW3901+VL53L1x deck, fly over carpet/newspaper, calibrate IMU before takeoff |
+| 14 | CRSF telemetry silent on radio | inversion on, TX/RX swapped or address not `0xC8` | turn inversion off (CRSF is straight logic!), cross TX to RX, `0xC8` address, 420000 8N1 baud, rate <= 10 Hz |
 
 ## Official sources
 
-- [FluidNC - GitHub (прошивка, приклади config.yaml, WebUI)](https://github.com/bdring/FluidNC) - YAML-машини, RMT-степпер, TMC-драйвери, SD/Telnet/WebUI, міграція with grbl_ESP32.
-- [Grbl_ESP32 - GitHub (попередник FluidNC, machine.h, $settings)](https://github.com/bdring/Grbl_Esp32) - step/dir-мапінг, 6 осей, TMC-SPI, BT/WiFi-конективіті, заява про перехід on FluidNC.
-- [Klipper overview](https://www.klipper3d.org/Overview.html) - хост+MCU архітектура, `make menuconfig`, `printer.cfg`, secondary-MCU підхід.
-- [Klipper - Installation (menuconfig, flash, serial by-id)](https://www.klipper3d.org/Installation.html) - покрокова прошивка MCU, визначення serial-порту, структура `printer.cfg`.
-- [micro-ROS overview docs](https://micro.vulcanexus.org/docs/overview/) - XRCE-DDS міст, UDP/serial-транспорти, executor-модель, список підтриманого заліза.
-- [micro_ros_espidf_component - GitHub (ESP-IDF компонент, приклади)](https://github.com/micro-ROS/micro_ros_espidf_component) - `int32_publisher`, `menuconfig`, UDP/UART-транспорти, Docker-агент.
-- [ESP-Drone - GitHub (прошивка міні-дрона, flow-deck)](https://github.com/espressif/esp-drone) - stabilize/height-hold/position-hold, PMW3901+ToF deck, WiFi APP, ESP-IDF v5.
-- [Betaflight setup guide](https://betaflight.com/docs/wiki/getting-started/setup-guide) - чому польотник - STM32, but ESP32 поруч - тільки міст/логер.
-- [INAV - GitHub (навігаційний польотник, телеметрія)](https://github.com/iNavFlight/inav) - position-hold/RTH/waypoints on F4/F7/H7, CRSF/MAVLink/LTM-телеметрія for ESP32-моста.
-- [ESP-IDF Programming Guide - ESP32](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/index.html) - RMT/MCPWM/PCNT/UART-база під усі motion-коди цієї ноти.
+- [FluidNC - GitHub (firmware, config.yaml examples, WebUI)](https://github.com/bdring/FluidNC) - YAML machines, RMT stepper, TMC drivers, SD/Telnet/WebUI, migration from grbl_ESP32.
+- [Grbl_ESP32 - GitHub (FluidNC predecessor, machine.h, $settings)](https://github.com/bdring/Grbl_Esp32) - step/dir mapping, 6 axes, TMC-SPI, BT/WiFi connectivity, transition-to-FluidNC statement.
+- [Klipper overview](https://www.klipper3d.org/Overview.html) - host+MCU architecture, `make menuconfig`, `printer.cfg`, secondary-MCU approach.
+- [Klipper - Installation (menuconfig, flash, serial by-id)](https://www.klipper3d.org/Installation.html) - step-by-step MCU flashing, serial-port detection, `printer.cfg` structure.
+- [micro-ROS overview docs](https://micro.vulcanexus.org/docs/overview/) - XRCE-DDS bridge, UDP/serial transports, executor model, supported-hardware list.
+- [micro_ros_espidf_component - GitHub (ESP-IDF component, examples)](https://github.com/micro-ROS/micro_ros_espidf_component) - `int32_publisher`, `menuconfig`, UDP/UART transports, Docker agent.
+- [ESP-Drone - GitHub (mini-drone firmware, flow-deck)](https://github.com/espressif/esp-drone) - stabilize/height-hold/position-hold, PMW3901+ToF deck, WiFi APP, ESP-IDF v5.
+- [Betaflight setup guide](https://betaflight.com/docs/wiki/getting-started/setup-guide) - why the flight controller is STM32, while ESP32 nearby is only a bridge/logger.
+- [INAV - GitHub (navigation flight controller, telemetry)](https://github.com/iNavFlight/inav) - position-hold/RTH/waypoints on F4/F7/H7, CRSF/MAVLink/LTM telemetry for the ESP32 bridge.
+- [ESP-IDF Programming Guide - ESP32](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/index.html) - RMT/MCPWM/PCNT/UART base for all motion codes of this note.
 
 ## See also
 

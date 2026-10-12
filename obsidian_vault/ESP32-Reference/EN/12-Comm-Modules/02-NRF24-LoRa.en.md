@@ -1,48 +1,48 @@
 ---
 category: Moduli
 lang: en
-title: NRF24L01 та LoRa SX1276 Ra-02
-description: NRF24L01+ та LoRa SX1276 (Ra-02) - NRF24L01+PA+LNA; Легенда пінів модуля NRF24L01; Підключення ESP32 до NRF24; shows schematics, code and tables.
+title: NRF24L01 and LoRa SX1276 Ra-02
+description: NRF24L01+ and LoRa SX1276 (Ra-02) - NRF24L01+PA+LNA; NRF24L01 module pin legend; connecting ESP32 to NRF24; shows schematics, code and tables.
 tags: [esp32, nrf24, lora, sx1276, spi, radio]
 date: 2026-10-08
 original: 12-Moduli-zvyazku/02-NRF24-LoRa.md
 ---
 
-# NRF24L01+ та LoRa SX1276 (Ra-02)
+# NRF24L01+ and LoRa SX1276 (Ra-02)
 
 > [!warning] Both modules - 3.3V only! NRF24 with PA+LNA draws up to 250 mA in TX - needs 10 µF capacitor. LoRa without antenna DO NOT turn on - output stage will burn!
 
-Radio overview: [[EN/05-Radio/01-WiFi-STA-AP.en]], bus [[EN/04-Interfaces/02-SPI.en|SPI]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], піни [[EN/03-GPIO/01-GPIO-Overview.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start [[EN/Home.en]].
+Radio overview: [[EN/05-Radio/01-WiFi-STA-AP.en]], bus [[EN/04-Interfaces/02-SPI.en|SPI]], power supply [[EN/02-Power-Supply/01-Power-Rails.en]], pins [[EN/03-GPIO/01-GPIO-Overview.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start [[EN/Home.en]].
 
 ## Purpose
 
-NRF24L01+ та LoRa SX1276 (Ra-02) - NRF24L01+PA+LNA; Легенда пінів модуля NRF24L01; Підключення ESP32 до NRF24. Both modules - 3.3V only! NRF24 with PA+LNA draws up to 250 mA in TX - needs 10 µF capacitor. LoRa without antenna DO NOT turn on - output stage will burn! Radio overview: [[EN/05-Radio/01-WiFi-STA-AP.en]], bus [[EN/04-Interfaces/02-SPI.en|SPI]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], піни [[EN/03-GPIO/01-GPIO-Overview.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start Home.
+NRF24L01+ and LoRa SX1276 (Ra-02) - NRF24L01+PA+LNA; NRF24L01 module pin legend; connecting ESP32 to NRF24. Both modules - 3.3V only! NRF24 with PA+LNA draws up to 250 mA in TX - needs 10 uF capacitor. LoRa without antenna DO NOT turn on - output stage will burn! Radio overview: [[EN/05-Radio/01-WiFi-STA-AP.en]], bus [[EN/04-Interfaces/02-SPI.en|SPI]], power supply [[EN/02-Power-Supply/01-Power-Rails.en]], pins [[EN/03-GPIO/01-GPIO-Overview.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start Home.
 
 ## 1. NRF24L01+PA+LNA
 
-Specifications: 2.4 ГГц, Enhanced ShockBurst, 250 кбіт/1M/2M, PA+LNA + external antenna, range up to 1 km at 250 kbps in line of sight.
+Specifications: 2.4 GHz, Enhanced ShockBurst, 250 kbps/1M/2M, PA+LNA + external antenna, range up to 1 km at 250 kbps in line of sight.
 Power: 1.9-3.6V, peak 250 mA (PA+LNA). DevKit regulator cannot handle peaks - place electrolytic 10-47 µF + ceramic 100 nF directly on VCC/GND pins of module. Adapter board with AMS1117-3.3 for NRF24 - recommended solution.
 
 ![[assets/img/nrf24-wiring.png|500]]
-*Fig. NRF24L01+PA+LNA - connection over SPI, конденсатор 10-100 мкФ прямо on VCC/GND.*
+*Fig. NRF24L01+PA+LNA - connection over SPI, 10-100 uF capacitor directly on VCC/GND.*
 
 ### Module pin legend NRF24L01
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | Живлення вхід | 3V3 (краще via адаптер AMS1117-3.3 from 5V) | Тільки 3.3V! Пік 250 мА in PA+LNA - вбудований LDO DevKit просідає without конденсатора |
-| 2 | GND | Земля | GND | Спільна земля, короткі товсті дроти |
-| 3 | CE | Вхід цифровий | GPIO21 (будь-which GPIO) | Chip Enable: HIGH = TX/RX режим, LOW = standby; this not Chip Select |
-| 4 | CSN | Вхід CS, active low | GPIO5 (CS) | Chip Select Not: LOW on час SPI-транзакції; `RF24(CE, CSN)` |
-| 5 | SCK | Вхід SPI | GPIO18 (VSPI SCK) | Тактування SPI до 10 МГц |
-| 6 | MOSI | Вхід SPI | GPIO23 (VSPI MOSI) | ESP32 → NRF24 |
-| 7 | MISO | Вихід SPI | GPIO19 (VSPI MISO) | NRF24 → ESP32 |
-| 8 | IRQ | Вихід, active low | GPIO22 або not підключати | Переривання TX_DS / RX_DR / MAX_RT; можна опитувати without нього |
+| 1 | VCC | Power input | 3V3 (better via AMS1117-3.3 adapter from 5V) | 3.3V only! 250 mA peak in PA+LNA - built-in DevKit LDO sags without capacitor |
+| 2 | GND | Ground | GND | Common ground, short thick wires |
+| 3 | CE | Digital input | GPIO21 (any GPIO) | Chip Enable: HIGH = TX/RX mode, LOW = standby; this is not Chip Select |
+| 4 | CSN | CS input, active low | GPIO5 (CS) | Chip Select Not: LOW during SPI transaction; `RF24(CE, CSN)` |
+| 5 | SCK | SPI input | GPIO18 (VSPI SCK) | SPI clock up to 10 MHz |
+| 6 | MOSI | SPI input | GPIO23 (VSPI MOSI) | ESP32 to NRF24 |
+| 7 | MISO | SPI output | GPIO19 (VSPI MISO) | NRF24 to ESP32 |
+| 8 | IRQ | Output, active low | GPIO22 or leave unconnected | TX_DS / RX_DR / MAX_RT interrupt; can poll without it |
 
 CE vs CSN - what's the difference:
 
-- **CSN (Chip Select Not)** - стандартний CS шини SPI, див. [[EN/04-Interfaces/02-SPI.en|SPI]]. Активний LOW лише on час байтів `SPI.transfer()`. Один on кожен пристрій шини.
-- **CE (Chip Enable)** - керування радіо-автоматом Nordic: `LOW` = standby/sleep, імпульс `HIGH >10 мкс` = start TX, постійний `HIGH` = режим RX. therefore бібліотека приймає два піни: `RF24 radio(CE, CSN)`.
+- **CSN (Chip Select Not)** - standard SPI bus CS, see [[EN/04-Interfaces/02-SPI.en|SPI]]. Active LOW only during `SPI.transfer()` bytes. One per device on the bus.
+- **CE (Chip Enable)** - Nordic radio state machine control: `LOW` = standby/sleep, `HIGH >10 us` pulse = start TX, steady `HIGH` = RX mode. That is why the library takes two pins: `RF24 radio(CE, CSN)`.
 - Typical error - swap them: then initialization passes, but `write()` always `false`.
 
 Why a 10-100 µF capacitor is needed:
@@ -62,14 +62,14 @@ Standard NRF24 vs PA+LNA:
 
 | ESP32 | NRF24L01 | Note |
 | --- | --- | --- |
-| 3V3 | VCC | 3.3V + конд. 10 мкФ, not 5V |
+| 3V3 | VCC | 3.3V + 10 uF cap, not 5V |
 | GND | GND | common ground |
 | GPIO18 | SCK | VSPI SCK |
 | GPIO23 | MOSI | VSPI MOSI |
 | GPIO19 | MISO | VSPI MISO |
 | GPIO5 | CSN | Chip Select |
-| GPIO21 | CE | Chip Enable, будь-which GPIO |
-| GPIO22 | IRQ | опційно, active low |
+| GPIO21 | CE | Chip Enable, any GPIO |
+| GPIO22 | IRQ | optional, active low |
 
 ### ASCII schematic (NRF24)
 
@@ -94,69 +94,69 @@ RF24 radio(21, 5); SPI.begin(18, 19, 23, 5);
 
 ```mermaid
 graph LR
-    ESP32[ESP32 DevKit<br/>VSPI + GPIO] -->|3V3 + 47мкФ| VCC[VCC NRF24<br/>250мА пік]
+    ESP32[ESP32 DevKit<br/>VSPI + GPIO] -->|3V3 + 47uF| VCC[VCC NRF24<br/>250mA peak]
     ESP32 -->|GND| GNDM[GND NRF24]
     ESP32 -->|GPIO18| SCK[SCK]
     ESP32 -->|GPIO23| MOSI[MOSI]
     MISO[MISO] -->|GPIO19| ESP32
     ESP32 -->|GPIO5| CSN[CSN Chip Select]
     ESP32 -->|GPIO21| CE[CE Chip Enable]
-    IRQ[IRQ] -.->|GPIO22 опційно| ESP32
+    IRQ[IRQ] -.->|GPIO22 optional| ESP32
 ```
 
 ## 2. LoRa SX1276 Ra-02
 
-Specifications: SX1276, частоти 433 / 868 / 915 МГц (версія плати фіксована!), потужність до +20 дБм, чутливість -148 дБм, LoRa + FSK/OOK.
-Антана обов'язкова перед TX! without антени або with антеною not on ту частоту - КСХ > 3, перегрів PA. Живлення 3.3V, TX ~120 мА, RX ~12 мА.
-Частоти in Україні: 433.05-434.79 МГц without ліцензії (10 мВт), 868 МГц - EU 863-870 МГц. not плутати версії Ra-02 433 vs 868.
+Specifications: SX1276, frequencies 433 / 868 / 915 MHz (board version is fixed!), power up to +20 dBm, sensitivity -148 dBm, LoRa + FSK/OOK.
+Antenna is mandatory before TX! Without an antenna or with an antenna for the wrong frequency - VSWR > 3, PA overheating. Power supply 3.3V, TX ~120 mA, RX ~12 mA.
+Frequencies in Ukraine: 433.05-434.79 MHz license-free (10 mW), 868 MHz - EU 863-870 MHz. Do not confuse Ra-02 433 vs 868 versions.
 
-### SX1278 / E32 / E22 - UART-модулі with прошивкою
+### SX1278 / E32 / E22 - UART modules with firmware
 
-| Позиція | that this | Відмінність from голої Ra-02 |
+| Item | What it is | Difference from bare Ra-02 |
 | --- | --- | --- |
-| SX1278 | Той же кристал, that SX1276, але лише 433 МГц версія | Дешевший; for нових проєктів різниці with 1276 немає - беріть that є |
-| E32-433T20D / E22-900T22S (Ebyte) | LoRa-модем with UART and AT-подібними командами | not треба писати LoRa-стек: шлеш байти in UART - вилітають in ефір; режими M0-M3 перемичкою |
-| Коли брати Ebyte | Точка-точка without LoRaWAN: два модулі with однаковими параметрами (частота/канал/адреса) бачать один одного with коробки |
+| SX1278 | Same die as SX1276, but 433 MHz version only | Cheaper; for new projects there is no difference with 1276 - take whatever is available |
+| E32-433T20D / E22-900T22S (Ebyte) | LoRa modem with UART and AT-like commands | No need to write a LoRa stack: bytes sent into UART fly out into the air; M0-M3 modes by jumper |
+| When to take Ebyte | Point-to-point without LoRaWAN: two modules with identical parameters (frequency/channel/address) see each other out of the box |
 
 ![[assets/img/lora-ra02-scheme.png|500]]
-*Fig. LoRa Ra-02 - підключення SPI + DIO0/RST, антена on свою частоту обов'язкова до вмикання TX.*
+*Fig. LoRa Ra-02 - SPI connection + DIO0/RST, antenna for your frequency mandatory before enabling TX.*
 
 ### Module pin legend LoRa Ra-02
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | Живлення | 3V3 ESP32 | Тільки 3.3V, TX ~120 мА - бажано 10 мкФ on живленні |
-| 2 | GND | Земля | GND | Земля + екран антени, спільна with ESP32 |
-| 3 | SCK | Вхід SPI | GPIO18 | SPI SCK |
-| 4 | MOSI | Вхід SPI | GPIO23 | SPI MOSI |
-| 5 | MISO | Вихід SPI | GPIO19 | SPI MISO |
-| 6 | NSS | Вхід CS | GPIO5 | Chip Select LoRa (аналог CSN in NRF24) |
-| 7 | RST | Вхід reset | GPIO25 | Скидання SX1276, active low |
-| 8 | DIO0 | Вихід цифра | GPIO26 | Переривання RX Done / TX Done - обов'язкове for бібліотеки LoRa |
-| 9 | DIO1 | Вихід цифра | NC або GPIO | FIFO Level / CadDetected - for базового прикладу not потрібне |
-| 10 | DIO2 | Вихід цифра | NC або GPIO | FHSS / CadDone - for базового прикладу not потрібне |
-| 11 | ANT | ВЧ-вихід | Антена 433 або 868 МГц | Підключати ДО першого `LoRa.begin()`! without антени TX спалить PA |
+| 1 | VCC | Power supply | 3V3 ESP32 | 3.3V only, TX ~120 mA - 10 uF on power rail recommended |
+| 2 | GND | Ground | GND | Ground + antenna shield, common with ESP32 |
+| 3 | SCK | SPI input | GPIO18 | SPI SCK |
+| 4 | MOSI | SPI input | GPIO23 | SPI MOSI |
+| 5 | MISO | SPI output | GPIO19 | SPI MISO |
+| 6 | NSS | CS input | GPIO5 | LoRa Chip Select (analog of CSN in NRF24) |
+| 7 | RST | Reset input | GPIO25 | SX1276 reset, active low |
+| 8 | DIO0 | Digital output | GPIO26 | RX Done / TX Done interrupt - mandatory for the LoRa library |
+| 9 | DIO1 | Digital output | NC or GPIO | FIFO Level / CadDetected - not needed for the basic example |
+| 10 | DIO2 | Digital output | NC or GPIO | FHSS / CadDone - not needed for the basic example |
+| 11 | ANT | RF output | 433 or 868 MHz antenna | Connect BEFORE the first `LoRa.begin()`! TX without antenna burns the PA |
 
-Пояснення DIO and антени:
+Explanation of DIO and antenna:
 
-- **NSS vs DIO0:** NSS вибирає чип on SPI (how CSN), but DIO0 сигналізує «пакет прийнято/передано». without DIO0 бібліотека Sandeep Mistry висить in `endPacket()`. therefore DIO0 обов'язковий, but DIO1/DIO2 - опційні.
-- **RST:** SX1276 скидається низьким імпульсом at `LoRa.setPins(NSS, RST, DIO0)`. not вішати RST on strap-піни ESP32 (GPIO0/2/12/15).
-- **Антена обов'язкова:** передавач +20 дБм (100 мВт) without навантаження відбиває потужність назад in PA - перегрів and деградація. Правило: накрутив антену → потім живлення → потім TX. Антена строго on частоту плати: 433 МГц антена on 868 МГц платі = дальність метри and КСХ > 3.
-- **Живлення:** 3.3V стабільне, піки TX 120 мА - вистачає DevKit, але електроліт 10-47 мкФ not завадить. Логіка 3.3V безпосередньо до ESP32, див. [[EN/03-GPIO/01-GPIO-Overview.en]].
+- **NSS vs DIO0:** NSS selects the chip on SPI (like CSN), while DIO0 signals "packet received/transmitted". Without DIO0 the Sandeep Mistry library hangs in `endPacket()`. So DIO0 is mandatory, while DIO1/DIO2 are optional.
+- **RST:** SX1276 resets on a low pulse in `LoRa.setPins(NSS, RST, DIO0)`. Do not hang RST on ESP32 strapping pins (GPIO0/2/12/15).
+- **Antenna is mandatory:** a +20 dBm (100 mW) transmitter without load reflects power back into the PA - overheating and degradation. Rule: screw on the antenna, then power, then TX. Antenna strictly for the board frequency: a 433 MHz antenna on an 868 MHz board = meters of range and VSWR > 3.
+- **Power supply:** stable 3.3V, TX peaks 120 mA - DevKit is enough, but a 10-47 uF electrolytic will not hurt. 3.3V logic directly to ESP32, see [[EN/03-GPIO/01-GPIO-Overview.en]].
 
 ### Connecting ESP32 to Ra-02
 
-| ESP32 | Ra-02 SX1276 | Примітка |
+| ESP32 | Ra-02 SX1276 | Note |
 | --- | --- | --- |
-| 3V3 | 3.3V | тільки 3.3V |
-| GND | GND | земля + екран антени |
+| 3V3 | 3.3V | 3.3V only |
+| GND | GND | ground + antenna shield |
 | GPIO18 | SCK | SPI SCK |
 | GPIO23 | MOSI | SPI MOSI |
 | GPIO19 | MISO | SPI MISO |
 | GPIO5 | NSS | CS |
-| GPIO26 | DIO0 | переривання RX/TX done |
+| GPIO26 | DIO0 | RX/TX done interrupt |
 | GPIO25 | RST | reset |
-| - | ANT | антена 433 або 868 МГц, обов'язково! |
+| - | ANT | 433 or 868 MHz antenna, mandatory! |
 
 ### ASCII schematic (LoRa Ra-02)
 
@@ -190,7 +190,7 @@ graph LR
     ESP32 -->|GPIO5| NSS[NSS]
     ESP32 -->|GPIO25| RST[RST]
     DIO0[DIO0] -->|GPIO26| ESP32
-    RA[ANT] -->|433/868 МГц| ANTENA((Антена обов'язково))
+    RA[ANT] -->|433/868 MHz| ANTENA((Antenna mandatory))
 ```
 
 ## Code
@@ -269,28 +269,28 @@ lora.send(b"hello")
 // LoRa: lora_init({spi_host=VSPI_HOST, nss=5, rst=25, dio0=26, freq=433e6})
 ```
 
-### Поради with дальності and стабільності
+### Range and stability tips
 
-1. NRF24: почати with `RF24_PA_MIN`, канал подалі from WiFi (напр. 108-й), швидкість 250 кбіт for дальності.
-2. NRF24 PA+LNA: антена закручена до упору, блок живлення with запасом, `setPALevel(HIGH/MAX)` лише після конденсатора.
-3. LoRa: SF9/BW125 for балансу, SF12 for максимуму дальності; антена вертикально, подалі from металу.
-4. Обидва модулі - SPI, див. [[EN/04-Interfaces/02-SPI.en|SPI]]; not ділити один CS між NRF24 and LoRa; живлення - [[EN/02-Power-Supply/01-Power-Rails.en]].
-5. Два радіо on одній платі: рознести антени мінімум on 10 см, not вмикати TX одночасно.
+1. NRF24: start with `RF24_PA_MIN`, a channel away from WiFi (e.g. 108), 250 kbps speed for range.
+2. NRF24 PA+LNA: antenna screwed in fully, PSU with margin, `setPALevel(HIGH/MAX)` only after the capacitor.
+3. LoRa: SF9/BW125 for balance, SF12 for maximum range; antenna vertical, away from metal.
+4. Both modules - SPI, see [[EN/04-Interfaces/02-SPI.en|SPI]]; do not share one CS between NRF24 and LoRa; power supply - [[EN/02-Power-Supply/01-Power-Rails.en]].
+5. Two radios on one board: keep antennas at least 10 cm apart, do not enable TX at the same time.
 
 | Symptom | Cause | Solution |
 | --- | --- | --- |
-| NRF24 TX fail завжди | немає конд. / слабке 3.3V | 10-47 мкФ on модулі, PA_LOW спочатку |
-| LoRa init fail | переплутані NSS/RST/DIO0, not та частота | verify розпіновку, Ra-02 маркування 433/868 |
-| Мала дальність | антена 2.4 ГГц on 433 МГц and навпаки | антена on свою частоту, земляний противаг |
-| NRF24 гріється / ребутить ESP32 | PA+LNA without адаптера | адаптер AMS1117-3.3 from 5V 1A |
-| LoRa зависає on endPacket | немає DIO0 | підключити DIO0 on GPIO26 |
+| NRF24 TX always fails | no cap / weak 3.3V | 10-47 uF on module, PA_LOW first |
+| LoRa init fail | swapped NSS/RST/DIO0, wrong frequency | verify pinout, Ra-02 433/868 marking |
+| Short range | 2.4 GHz antenna on 433 MHz and vice versa | antenna for its frequency, ground counterpoise |
+| NRF24 heats up / reboots ESP32 | PA+LNA without adapter | AMS1117-3.3 adapter from 5V 1A |
+| LoRa hangs on endPacket | no DIO0 | connect DIO0 to GPIO26 |
 
 ## Official sources
 
-- [SX1276 - даташит and документи (Semtech)](https://www.semtech.com/products/wireless-rf/lora-connect/sx1276) - LoRa-модем, link budget, фото.
-- [ESP32 + LoRa - туторіал with кодом (RNT)](https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/) - Sender/Receiver, антена обов'язково.
-- [nRF24L01+ - розбір with фото and кодом (LME)](https://lastminuteengineers.com/nrf24l01-arduino-wireless-communication/) - Multiceiver, конденсатор on живлення.
-- nRF24L01 (nordicsemi.com) - *verify вручну*: сайт блокує автозапити, шукати «nRF24L01 Product Specification».
+- [SX1276 - datasheet and documents (Semtech)](https://www.semtech.com/products/wireless-rf/lora-connect/sx1276) - LoRa modem, link budget, photo.
+- [ESP32 + LoRa - tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/) - Sender/Receiver, antenna mandatory.
+- [nRF24L01+ - breakdown with photo and code (LME)](https://lastminuteengineers.com/nrf24l01-arduino-wireless-communication/) - Multiceiver, capacitor on power supply.
+- nRF24L01 (nordicsemi.com) - *verify manually*: site blocks automated requests, search "nRF24L01 Product Specification".
 
 ## See also
 

@@ -30,15 +30,15 @@ Power and control of addressable strips without magic smoke: current calc (60 mA
 
 > White current at full: 30 LEDs = 1.8 A, 60 LEDs = 3.6 A, 144 LED/m x 5 m = 43 A - this is a welder, not USB. PSU with 20-30% margin, wires per current (1.5 mm2 at 10 A), fuse per branch.
 
-## Легенда pinandin модуля
+## Module pin legend
 
-| pin | Тип | Куди | Note |
+| Pin | Type | To | Note |
 | --- | --- | --- | --- |
 | Strip 5V (red) | Power | 5 V PSU (not board!) | Injection every 2-3 m; fuse per branch |
 | Strip GND (white/black) | ground | GND PSU + GND ESP32 | common point; thick wires! |
 | WS2812/SK6812 DIN | data input | GPIO via 74AHCT125 + 330 Ohm | Resistor near FIRST LED |
 | WS2812/SK6812 DOUT | output | DIN of next segment | up to 500+ LEDs in one chain (RAM!) |
-| APA102 DI (MOSI) | input даних | GPIO23 / through shifter | SPI up to 20 МГц |
+| APA102 DI (MOSI) | data input | GPIO23 / through shifter | SPI up to 20 MHz |
 | APA102 CI (SCK) | clock input | GPIO18 / via shifter | Separate clock = jitter immunity |
 | 74AHCT125 A (1A) | 3.3 V input | GPIO ESP32 | Fast buffer, 8 mA drive |
 | 74AHCT125 Y (1Y) | 5 V output | Strip DIN via 330 Ohm | Buffer powered at 5 V! OE to GND |
@@ -56,7 +56,7 @@ Power and control of addressable strips without magic smoke: current calc (60 mA
 | GND | Strip GND + PSU GND | common ground mandatory |
 | 5 V PSU (Nx60 mA + 25%) | Strip 5V + 1000 uF | Injection every 2-3 m |
 | GPIO23 | APA102 DI (through shifter) | MOSI |
-| GPIO18 | APA102 CI (through shifter) | SCK up to 20 МГц |
+| GPIO18 | APA102 CI (through shifter) | SCK up to 20 MHz |
 | GPIO13 (RMT) | WS2812/SK6812 chain | One RMT channel per strip |
 
 ### ASCII-schem
@@ -286,7 +286,7 @@ GND спільна обов'язково!
 
 ## Official sources
 
-- [DotStar APA102 strip - live photo (Adafruit)](https://www.adafruit.com/product/2343) - product page with photo; SK6812/APA102 datasheets (WorldSemi) - `check manually`.
+- [DotStar APA102 strip - live photo (Adafruit)](https://www.adafruit.com/product/2343) - product page with photo; SK6812/APA102 datasheets (WorldSemi) - see manufacturer page.
 - [NeoPixel Uberguide with code (Adafruit Learn)](https://learn.adafruit.com/adafruit-neopixel-uberguide) - power, levels, effects.
 - [ESP-IDF RMT - official documentation (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/rmt.html) - signal generation for addressable strips.
 

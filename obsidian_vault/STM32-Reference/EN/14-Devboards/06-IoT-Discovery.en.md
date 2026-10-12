@@ -11,30 +11,30 @@ date: 2026-10-09
 # IoT Discovery - board with BLE, Sub-GHz, NFC and sensors
 
 ![[assets/img/stm32-iot-discovery-scheme.png|600]]
-*Рис. B-L475E-IOT01A: L475 + WiFi/BLE/Sub-GHz/NFC and повний набір сенсорів - готовий IoT-вузол with коробки.*
+*Fig. B-L475E-IOT01A: L475 + WiFi/BLE/Sub-GHz/NFC and a full sensor set - a ready IoT node out of the box.*
 
-> [!tip] that це за нота
-> Одна плата замість макетки with десятком модулів: тут уже розпаяні WiFi, BLE, Sub-GHz, NFC and шість сенсорів. Ідеальна відповідь on питання «with чого почати STM32+хмара». База: [[EN/14-Devboards/04-Discovery.en|лінійка Discovery]], [[EN/01-Hardware/05-L0-L4-U5.en|родини L0/L4/U5]].
+> [!tip] What this note is
+> One board instead of a breadboard with a dozen modules: WiFi, BLE, Sub-GHz, NFC and six sensors already soldered here. The ideal answer to the question of where to start with STM32+cloud. Base: [[EN/14-Devboards/04-Discovery.en|Discovery line]], [[EN/01-Hardware/05-L0-L4-U5.en|L0/L4/U5 families]].
 
-## 1. Мета
+## 1. Goal
 
-Показати плату how готовий IoT-вузол без паяння:
+Show the board as a ready IoT node without soldering:
 
-- that вже on борту and за that відповідає кожен чип;
-- how прошити демо WiFi/BLE за 15 хвилин;
-- куди підключати свої датчики (Arduino-роз'єм, PMOD);
-- скільки живе від батарейки in різних режимах.
+- what is already on board and what each chip is responsible for;
+- how to flash the WiFi/BLE demo in 15 minutes;
+- where to connect your own sensors (Arduino header, PMOD);
+- how long it lives on battery in different modes.
 
-| Блок | Чип on платі | Навіщо |
+| Block | Chip on board | Purpose |
 | --- | --- | --- |
-| MCU | STM32L475VG, M4 80 МГц, 1 МБ flash | ядро вузла |
-| WiFi | Inventek ISM43362-M3G-L44 | хмара по SPI |
-| BLE | SPBTLE-RF (BlueNRG) | телефон, маячки |
-| Sub-GHz | SPSGRF-868/915 | дальній радіоканал |
-| NFC | M24SR, друкована антена | спарювання дотиком |
-| Сенсори | HTS221, LPS22HB, LSM6DSL, LIS3MDL, VL53L0X, MP34DT01 ×2 | клімат, рух, дальність, звук |
+| MCU | STM32L475VG, M4 80 MHz, 1 MB flash | node core |
+| WiFi | Inventek ISM43362-M3G-L44 | cloud over SPI |
+| BLE | SPBTLE-RF (BlueNRG) | phone, beacons |
+| Sub-GHz | SPSGRF-868/915 | long-range radio channel |
+| NFC | M24SR, printed antenna | touch pairing |
+| Sensors | HTS221, LPS22HB, LSM6DSL, LIS3MDL, VL53L0X, MP34DT01 ×2 | climate, motion, ranging, sound |
 
-## 2. Архітектура плати
+## 2. Board architecture
 
 ```mermaid
 flowchart TB
@@ -45,36 +45,36 @@ flowchart TB
   MCU <-->|I2C| NFC[M24SR NFC]
   MCU <-->|I2C| SENS[HTS221+LPS22HB+LSM6DSL+LIS3MDL+VL53L0X]
   MCU <-->|PDM| MIC[MP34DT01 x2]
-  MCU <-->|ST-Link V2-1| USB[USB: прошивка + VCP]
+  MCU <-->|ST-Link V2-1| USB[USB: flashing + VCP]
   ARD[Arduino Uno V3 + PMOD] <--> MCU
 ```
 
-ST-Link V2-1 on платі - прошивка по USB без зовнішнього програматора, плюс віртуальний COM-порт for логів.
+ST-Link V2-1 on the board - flashing over USB without an external programmer, plus a virtual COM port for logs.
 
-## 3. Перший запуск
+## 3. First start
 
-- драйвери ST-Link, STM32CubeProgrammer або прямо with CubeIDE;
-- example `B-L475E-IOT01A/Demonstration` зі STM32CubeL4 - WiFi + датчики + хмара;
-- WiFi-креденшали - via VCP-термінал командами демо;
-- BLE-демо - маячок + сервіси, видно in nRF Connect;
-- NFC - запис WiFi-пароля in тег, телефон читає дотиком.
+- ST-Link drivers, STM32CubeProgrammer or directly from CubeIDE;
+- the `B-L475E-IOT01A/Demonstration` example from STM32CubeL4 - WiFi + sensors + cloud;
+- WiFi credentials - via the VCP terminal with demo commands;
+- BLE demo - beacon + services, visible in nRF Connect;
+- NFC - writing the WiFi password into the tag, the phone reads it by touch.
 
-## 4. Сенсори on борту детально
+## 4. On-board sensors in detail
 
-| Сенсор | that міряє | Шина |
+| Sensor | What it measures | Bus |
 | --- | --- | --- |
-| HTS221 | вологість + температура | I2C |
-| LPS22HB | тиск 260-1260 гПа | I2C |
-| LSM6DSL | акселерометр + гіроскоп | I2C/SPI, переривання руху |
-| LIS3MDL | магнітометр 3 осі | I2C |
-| VL53L0X | дальність ToF | I2C 0x29 |
-| MP34DT01 ×2 | звук, PDM | DFSDM/SAI |
+| HTS221 | humidity + temperature | I2C |
+| LPS22HB | pressure 260-1260 hPa | I2C |
+| LSM6DSL | accelerometer + gyroscope | I2C/SPI, motion interrupt |
+| LIS3MDL | 3-axis magnetometer | I2C |
+| VL53L0X | ToF ranging | I2C 0x29 |
+| MP34DT01 ×2 | sound, PDM | DFSDM/SAI |
 
-Це готовий набір for метеостанції with компасом and детектором руху - див. [[EN/16-Projects/01-Weather-Station.en|метеостанцію]] and [[EN/10-Sensors/14-Mag-Gesture-RTC.en|магнітометри]].
+This is a ready set for a weather station with a compass and a motion detector - see [[EN/16-Projects/01-Weather-Station.en|weather station]] and [[EN/10-Sensors/14-Mag-Gesture-RTC.en|magnetometers]].
 
-## 5. Робочий code HAL
+## 5. Working HAL code
 
-Читання HTS221 (типовий I2C-сенсор плати):
+Reading the HTS221 (a typical I2C sensor of the board):
 
 ```c
 float hts_read_temp(void) {
@@ -93,38 +93,38 @@ void iot_sensors_poll(float *t, float *h, float *p) {
 }
 ```
 
-Адреса HTS221 - 0x5F (зсунута 0xBE/0xBF), автоінкремент - біт 0x80 in адресі регістра. Калібрувальні коефіцієнти лежать in OTP самого HTS221 - читаємо один раз at старті.
+The HTS221 address is 0x5F (shifted 0xBE/0xBF), auto-increment is bit 0x80 in the register address. Calibration coefficients live in the OTP of the HTS221 itself - read once at startup.
 
-## 6. Живлення and енергоспоживання
+## 6. Power and energy consumption
 
-| Режим | Струм | Час від 2×AA (2000 мАг) |
+| Mode | Current | Time on 2×AA (2000 mAh) |
 | --- | --- | --- |
-| Run 80 МГц + WiFi TX | ~120 мА | години (демо) |
-| Run + BLE реклама | ~15 мА | ~5 діб |
-| Stop 2 + RTC | ~2 мкА + сенсори | місяці |
-| Будильник руху LSM6DSL | переривання | роки in очікуванні |
+| Run 80 MHz + WiFi TX | ~120 mA | hours (demo) |
+| Run + BLE advertising | ~15 mA | ~5 days |
+| Stop 2 + RTC | ~2 uA + sensors | months |
+| LSM6DSL motion wake-up | interrupt | years waiting |
 
-for батарейного вузла: Stop 2 між вимірами, WiFi - раз on годину пакетом, BLE-реклама - рідко. Деталі: [[EN/07-Timers/03-Sleep-Stop-Standby.en|режими сну]].
+For a battery node: Stop 2 between measurements, WiFi - once an hour in a burst, BLE advertising - rarely. Details: [[EN/07-Timers/03-Sleep-Stop-Standby.en|sleep modes]].
 
-## 6.1 Хмара за 15 хвилин: шлях даних
+## 6.1 Cloud in 15 minutes: data path
 
 ```mermaid
 flowchart LR
-  SENS[Сенсори плати] -->|I2C| FW[Демо CubeL4]
+  SENS[Board sensors] -->|I2C| FW[CubeL4 demo]
   FW -->|SPI AT| WIFI[ISM43362]
-  WIFI -->|MQTT| CLOUD[Дашборд]
-  NFC[NFC-мітка] -->|пароль WiFi| PHONE[Телефон]
+  WIFI -->|MQTT| CLOUD[Dashboard]
+  NFC[NFC tag] -->|WiFi password| PHONE[Phone]
   PHONE -->|BLE| BLE2[SPBTLE-RF]
 ```
 
-Порядок: прошиваємо демо, правимо SSID/пароль у `wifi_config.h`, дивимось телеметрію у VCP-терміналі, лише потім правимо під себе. BLE-маячок видно одразу після старту - check одним поглядом у nRF Connect.
+Order: flash the demo, edit SSID/password in `wifi_config.h`, watch telemetry in the VCP terminal, only then change it for yourself. The BLE beacon is visible right after start - check with one glance in nRF Connect.
 
-## 7. Розширення
+## 7. Expansion
 
-- Arduino Uno V3 - шилди реле, дисплеїв, моторів;
-- PMOD - модулі Digilent (BT, дисплей, датчики);
-- власні датчики - вільні I2C/SPI/UART on гребінках;
-- Sub-GHz антена - U.FL роз'єм, not забути антену (див. [[EN/05-Radio/03-Antenna-50ohm.en|узгодження антен]]).
+- Arduino Uno V3 - shields for relays, displays, motors;
+- PMOD - Digilent modules (BT, display, sensors);
+- own sensors - free I2C/SPI/UART on pin headers;
+- Sub-GHz antenna - U.FL connector, do not forget the antenna (see [[EN/05-Radio/03-Antenna-50ohm.en|antenna matching]]).
 
 ## 8. Common issues
 
@@ -139,11 +139,11 @@ flowchart LR
 
 ## 9. Related notes
 
-- [[EN/14-Devboards/04-Discovery.en|лінійка Discovery]] - огляд усіх плат.
-- [[EN/14-Devboards/03-Nucleo.en|лінійка Nucleo]] - альтернатива без радіо.
-- [[EN/01-Hardware/05-L0-L4-U5.en|родини L0/L4/U5]] - low-power лінійка.
-- [[EN/10-Sensors/14-Mag-Gesture-RTC.en|магнітометри and RTC]] - сенсори плати детально.
-- [[EN/16-Projects/01-Weather-Station.en|метеостанція]] - перший проєкт on платі.
+- [[EN/14-Devboards/04-Discovery.en|Discovery line]] - overview of all boards.
+- [[EN/14-Devboards/03-Nucleo.en|Nucleo line]] - alternative without radio.
+- [[EN/01-Hardware/05-L0-L4-U5.en|L0/L4/U5 families]] - low-power line.
+- [[EN/10-Sensors/14-Mag-Gesture-RTC.en|magnetometers and RTC]] - board sensors in detail.
+- [[EN/16-Projects/01-Weather-Station.en|weather station]] - first project on the board.
 
 ## Official sources
 

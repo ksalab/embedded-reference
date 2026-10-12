@@ -1,75 +1,75 @@
 ---
 lang: en
-title: ESP32 Ethernet глибоко - W5500, PoE and провідний шлюз
-description: Будує провідний вузол on ESP32 - W5500 per SPI, PoE-живлення, Ethernet+WiFi резервування and MQTT-шлюз with кодом.; shows schematics, code and tables.
+title: ESP32 Ethernet deep - W5500, PoE and wired gateway
+description: Build a wired node on ESP32 - W5500 over SPI, PoE power, Ethernet+WiFi redundancy and MQTT gateway with code.; shows schematics, code and tables.
 tags: [esp32, ethernet, w5500, poe, spi, gateway, mqtt, wired]
 category: Moduli-zvyazku
 date: 2026-10-06
 original: 12-Moduli-zvyazku/31-Ethernet-PoE-Deep.md
 ---
 
-# ESP32 Ethernet глибоко - W5500, PoE and провідний шлюз
+# ESP32 Ethernet deep - W5500, PoE and wired gateway
 
 ![[assets/img/esp32-ethernet-poe-deep-scheme.png|600]]
-*Fig. Провідний вузол: W5500 per SPI дає TCP/IP, PoE-спліттер - вати, WiFi лишається резервом.*
+*Fig. Wired node: W5500 over SPI gives TCP/IP, PoE splitter - watts, WiFi stays as backup.*
 
-> [!tip] that this for нота
-> Коли радіо not варіант: цех, підвал, серверна. Апаратний TCP/IP in W5500 розвантажує кристал, PoE прибирає БЖ. База: [[EN/04-Interfaces/02-SPI.en|bus SPI]], [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|модулі SIM/W5500]].
+> [!tip] What this note is about
+> When radio is not an option: workshop, basement, server room. Hardware TCP/IP in the W5500 offloads the die, PoE removes the PSU. Base: [[EN/04-Interfaces/02-SPI.en|SPI bus]], [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|SIM/W5500 modules]].
 
-## 1. Мета
+## 1. Goal
 
-Побудувати вузол, якому not потрібен ефір:
+Build a node that does not need the air:
 
-- W5500 per SPI: сокети, швидкості, ліміти;
-- PoE: спліттер vs PoE-HAT for ESP32;
-- резервування Ethernet+WiFi with автоперемиканням;
-- шлюз RS485→Ethernet→MQTT.
+- W5500 over SPI: sockets, speeds, limits;
+- PoE: splitter vs PoE-HAT for ESP32;
+- Ethernet+WiFi redundancy with auto-switching;
+- RS485→Ethernet→MQTT gateway.
 
-| Варіант | Швидкість | Коли |
+| Option | Speed | When |
 | --- | --- | --- |
-| W5500 module | 10/100, SPI 80 МГц | універсально |
-| Вбудований MAC+PHY (рідкісні плати) | 10/100 | якщо є on платі |
-| PoE-спліттер 5V | + вати per кабелю | стеля/шафа |
-| WiFi-бекап | - | резерв каналу |
+| W5500 module | 10/100, SPI 80 MHz | universal |
+| Built-in MAC+PHY (rare boards) | 10/100 | if present on the board |
+| PoE splitter 5V | + watts over cable | ceiling/cabinet |
+| WiFi backup | - | channel reserve |
 
-## 2. Архітектура
+## 2. Architecture
 
 ```mermaid
 flowchart TB
-  ESP[ESP32] <-->|SPI 40 МГц| W5[W5500]
-  W5 <-->|RJ45| LAN[Мережа]
-  POE[PoE-інжектор] -->|вати| SPL[Спліттер 5V]
+  ESP[ESP32] <-->|SPI 40 MHz| W5[W5500]
+  W5 <-->|RJ45| LAN[Network]
+  POE[PoE injector] -->|watts| SPL[Splitter 5V]
   SPL --> ESP
-  ESP <-->|UART| RS[RS485-пристрої]
+  ESP <-->|UART| RS[RS485 devices]
   ESP -->|MQTT| BRK[broker]
-  ESP -.->|резерв| WIFI[WiFi]
+  ESP -.->|backup| WIFI[WiFi]
 ```
 
-W5500 тримає 8 сокетів апаратно: TCP/IP not їсть CPU. SPI on 40 МГц - межа стабільності on довгих дротах.
+W5500 holds 8 sockets in hardware: TCP/IP does not eat CPU. SPI at 40 MHz - the stability limit on long wires.
 
-## 3. Розпіновка модуля W5500
+## 3. W5500 module pinout
 
-| Пін ESP32 | Пін W5500 | Примітка |
+| ESP32 pin | W5500 pin | Note |
 | --- | --- | --- |
-| GPIO18 | SCK | такт до 80 МГц |
-| GPIO23 | MOSI | дані in module |
-| GPIO19 | MISO | дані with модуля |
-| GPIO5 | CS | вибір кристала |
-| GPIO4 | INT | переривання сокетів |
-| GPIO2 | RST | апаратний ресет |
-| 3V3/GND | VCC/GND | 200 мА запас |
+| GPIO18 | SCK | clock up to 80 MHz |
+| GPIO23 | MOSI | data into the module |
+| GPIO19 | MISO | data from the module |
+| GPIO5 | CS | chip select |
+| GPIO4 | INT | socket interrupts |
+| GPIO2 | RST | hardware reset |
+| 3V3/GND | VCC/GND | 200 mA margin |
 
-Довжина SPI-шлейфа до 10 см on 40 МГц. Довше - опускати до 20 МГц або буфери.
+SPI ribbon length up to 10 cm at 40 MHz. Longer - drop to 20 MHz or buffers.
 
-## 4. PoE-практика
+## 4. PoE practice
 
-- спліттер 5V 2A: стандартний 802.3af вхід, USB-C/гребінка вихід;
-- гальванічна розв'язка всередині - земля мережі not йде in плату;
-- бюджет: плата + датчики + запас 30%;
-- грозозахист on вуличних прольотах;
-- тестер PoE показує клас пристрою до вмикання.
+- 5V 2A splitter: standard 802.3af input, USB-C/pin-header output;
+- galvanic isolation inside - network ground does not go into the board;
+- budget: board + sensors + 30% margin;
+- surge protection on outdoor spans;
+- PoE tester shows the device class before power-on.
 
-## 5. Робочий code (C, Arduino)
+## 5. Working code (C, Arduino)
 
 ```cpp
 #include <SPI.h>
@@ -102,9 +102,9 @@ void loop() {
 }
 ```
 
-`Ethernet.maintain()` - продовження DHCP-оренди. Статика надійніша for 24/7: менше точок відмови.
+`Ethernet.maintain()` - DHCP lease renewal. Static is more reliable for 24/7: fewer points of failure.
 
-## 6. Робочий code (MicroPython)
+## 6. Working code (MicroPython)
 
 ```python
 # MicroPython + W5500 (драйвер wiznet5k)
@@ -130,45 +130,45 @@ while True:
     time.sleep(5)
 ```
 
-WIZNET5K-драйвер є in прошивках with мережевою підтримкою. Немає - збираємо свою with модулем `wiznet5k`.
+WIZNET5K driver is in firmware with network support. Missing - build your own with the `wiznet5k` module.
 
-## 7. Резервування каналів
+## 7. Channel redundancy
 
-- основний Ethernet, WiFi - `reconnect` at втраті лінка;
-- check: ping шлюзу кожні 30 с;
-- MQTT-брокерів два (локальний + хмара) - клієнт перебирає;
-- статичні IP обом інтерфейсам - without DHCP-залежності;
-- журнал перемикань - for розбору нестабільності.
+- primary Ethernet, WiFi - `reconnect` on link loss;
+- check: ping the gateway every 30 s;
+- two MQTT brokers (local + cloud) - the client iterates;
+- static IPs for both interfaces - without DHCP dependency;
+- switching log - for instability analysis.
 
 ## 8. typical errors
 
-| Symptom | Cause | Лікування |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| DHCP 0.0.0.0 | лінка немає/кабель | verify LED Link/Act, інший кабель |
-| Рветься on 40 МГц SPI | довгий шлейф | 20 МГц або коротше 10 см |
-| Працює хвилину and висне | немає `maintain()` | викликати in циклі або статика |
-| PoE not живить | пасивний інжектор | тільки 802.3af/at активний |
-| Сокети закінчились | not закриваємо with'єднання | `stop()` + таймаути |
-| Повільно після WiFi | обидва стеки активні | пріоритет Ethernet, WiFi in сон |
+| DHCP 0.0.0.0 | no link/cable | verify Link/Act LEDs, another cable |
+| Tears at 40 MHz SPI | long ribbon | 20 MHz or shorter than 10 cm |
+| Works a minute and hangs | no `maintain()` | call in loop or static |
+| PoE does not power | passive injector | only active 802.3af/at |
+| Sockets exhausted | connections not closed | `stop()` + timeouts |
+| Slow after WiFi | both stacks active | Ethernet priority, WiFi to sleep |
 
-## 9. Швидка шпаргалка Ethernet
+## 9. Ethernet quick cheat sheet
 
-- SPI 40 МГц, шлейф до 10 см;
-- статика замість DHCP for 24/7;
-- PoE - тільки активний стандарт;
-- сокети закривати with таймаутом;
-- WiFi - резерв, not основа.
+- SPI 40 MHz, ribbon up to 10 cm;
+- static instead of DHCP for 24/7;
+- PoE - only the active standard;
+- close sockets with a timeout;
+- WiFi - backup, not the base.
 
-## 10. Суміжні ноти
+## 10. Adjacent notes
 
-- [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|модулі SIM/W5500]] - огляд модуля.
-- [[EN/04-Interfaces/02-SPI.en|bus SPI]] - швидкості and CS.
-- [[EN/15-Protocols/01-MQTT.en|протокол MQTT]] - телеметрія.
-- [[EN/02-Power-Supply/02-LDO-DC-DC.en|живлення]] - стабільні 3.3V.
-- [[Home.en|головна карта]] - повна навігація.
+- [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en|SIM/W5500 modules]] - module overview.
+- [[EN/04-Interfaces/02-SPI.en|SPI bus]] - speeds and CS.
+- [[EN/15-Protocols/01-MQTT.en|MQTT protocol]] - telemetry.
+- [[EN/02-Power-Supply/02-LDO-DC-DC.en|power supply]] - stable 3.3V.
+- [[Home.en|Home map]] - full navigation.
 
 ## Official sources
 
-- [W5500 (WIZnet Docs)](https://docs.wiznet.io/Product/Chip/Ethernet/W5500) - регістри, сокети, SPI.
-- [Ethernet examples (Espressif, GitHub)](https://github.com/espressif/esp-idf/tree/master/examples/ethernet) - драйвери and події.
-- [MQTT Specification (OASIS)](https://mqtt.org/mqtt-specification/) - протокол поверх TCP.
+- [W5500 (WIZnet Docs)](https://docs.wiznet.io/Product/Chip/Ethernet/W5500) - registers, sockets, SPI.
+- [Ethernet examples (Espressif, GitHub)](https://github.com/espressif/esp-idf/tree/master/examples/ethernet) - drivers and events.
+- [MQTT Specification (OASIS)](https://mqtt.org/mqtt-specification/) - protocol over TCP.

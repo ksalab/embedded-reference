@@ -29,25 +29,25 @@ Sound and HMI for ESP32: DFPlayer Mini - standalone MP3 player with microSD (UAR
 
 > DFPlayer RX is 5 V logic: ESP32 TX (3.3 V) usually reads fine, but DFPlayer TX (5 V) → ESP32 RX needs a 2 k/1 k divider or at least 1 k in series. Most reliable - TXS0108E, but 1 k works on short wires.
 
-## Легенда pinandin модуля
+## Module pin legend
 
-| pin | Тип | Куди | Note |
+| Pin | Type | To | Note |
 | --- | --- | --- | --- |
 | DFPlayer VCC | power supply | 5 V | Peak at track start; 100 uF nearby |
 | DFPlayer GND | ground | GND | common |
-| DFPlayer RX | input UART 5 in | ESP32 TX through 1 кОм | 9600 бод; кадри 0x7E…0xEF |
+| DFPlayer RX | 5 V UART input | ESP32 TX through 1 kOhm | 9600 baud; frames 0x7E…0xEF |
 | DFPlayer TX | 5 V UART output | ESP32 RX via divider | Replies/statuses |
 | DFPlayer SPK_1 / SPK_2 | speaker output | 4-8 Ohm / 3 W speaker | not to ground! Differential output |
 | DFPlayer BUSY | output, LOW=playing | GPIO (input) | Track end = HIGH edge |
 | DFPlayer IO_1/IO_2 (ADKEY) | button input | Buttons to GND via resistors | Hardware control without UART |
-| MAX98357A VIN / GND | power supply | 5 in / GND | 3 Вт in 4 Ом; at хрипах - окремий PSU |
+| MAX98357A VIN / GND | power supply | 5 V / GND | 3 W into 4 Ohm; if rattling - separate PSU |
 | MAX98357A BCLK | input | GPIO26 | I2S bit clock |
 | MAX98357A LRCK (WS) | input | GPIO25 | Channel select |
 | MAX98357A DIN | input | GPIO22 | data |
 | MAX98357A GAIN | Config | GND/VIN/NC | 12/15/9 dB respectively |
 | MAX98357A SD | input | 3V3 (HIGH) | Shutdown; LOW = mute |
 | Nextion 5V / GND | power supply | 5 V / GND | 500 mA margin (large diagonals!) |
-| Nextion TX | output 5 in | ESP32 RX (Serial2) | through divider/1 кОм |
+| Nextion TX | 5 V output | ESP32 RX (Serial2) | through divider/1 kOhm |
 | Nextion RX | 5 V input | ESP32 TX | 3.3 V usually reads fine |
 | LCD backpack SDA/SCL | I2C | GPIO21/22 | address via scanner: 0x27 or 0x3F |
 | LCD backpack VCC/GND | power supply | 5 V / GND | Contrast - blue trimmer |
@@ -57,13 +57,13 @@ Sound and HMI for ESP32: DFPlayer Mini - standalone MP3 player with microSD (UAR
 | ESP32 | module | Note |
 | --- | --- | --- |
 | GPIO17 (TX2) via 1 k | DFPlayer RX | 5 V logic limit |
-| GPIO16 (RX2) | DFPlayer TX (through divider 2к/1к) | Serial2 9600 |
+| GPIO16 (RX2) | DFPlayer TX (through divider 2k/1k) | Serial2 9600 |
 | GPIO4 | DFPlayer BUSY | input; LOW = playing |
 | 4 Ohm speaker | DFPlayer SPK_1/SPK_2 | No common ground! |
 | GPIO26 | MAX98357A BCLK | I2S |
 | GPIO25 | MAX98357A LRCK | I2S |
 | GPIO22 | MAX98357A DIN | I2S (note: conflict with LCD SCL - split!) |
-| 3V3 | MAX98357A SD | HIGH = працює |
+| 3V3 | MAX98357A SD | HIGH = running |
 | Speaker | MAX98357A OUT± | 4 Ohm / 3 W |
 | GPIO16/17 or separate UART | Nextion TX/RX crossed | do not share one UART with DFPlayer! (see ASCII) |
 | GPIO21 | LCD SDA | I2C 100 kHz is enough |

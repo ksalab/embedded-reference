@@ -1,133 +1,133 @@
 ---
 category: Moduli
 lang: en
-title: TinyML та голос on ESP32 - Edge Impulse, TFLite-Micro, ESP-DL, ESP-WHO, ESP-SR
-description: Коротко: запускати нейромережі on мікроконтролері - звук (ключові слова, команди), зір (людина, обличчя), сенсори (аномалії вібрації/струму). typical задачі: Voice вимикач «Hi ESP -...; shows schematics, code and tables.
+title: TinyML and voice on ESP32 - Edge Impulse, TFLite-Micro, ESP-DL, ESP-WHO, ESP-SR
+description: In short: run neural networks on a microcontroller - sound (keywords, commands), vision (person, face), sensors (vibration/current anomalies). Typical tasks: a voice switch "Hi ESP -...; shows schematics, code and tables.
 tags: [esp32, esp32-s3, tinyml, edge-impulse, tflite-micro, esp-dl, esp-who, esp-sr, wakenet, inmp441, i2s, psram]
 date: 2026-09-28
 original: 12-Moduli-zvyazku/11-TinyML-Voice.md
 ---
 
-# TinyML та голос on ESP32 - Edge Impulse, TFLite-Micro, ESP-DL, ESP-WHO, ESP-SR
+# TinyML and voice on ESP32 - Edge Impulse, TFLite-Micro, ESP-DL, ESP-WHO, ESP-SR
 
-> [!info] Призначення
-> Нотатка про машинне навчання прямо on ESP32: **Edge Impulse** (збір даних → impulse → deploy), **TFLite-Micro** (person detection, micro_speech, арена пам'яті), **ESP-DL** (EfficientNet-розпізнавання), **ESP-WHO** (детекція облич on камері), **ESP-SR** (wake word «Hi ESP» + офлайн-команди, мікрофонна матриця INMP441, AEC/VAD). Все працює офлайн, without хмари - критично for приватності та затримки.
+> [!info] Purpose
+> A note on machine learning right on ESP32: **Edge Impulse** (data collection to impulse to deploy), **TFLite-Micro** (person detection, micro_speech, memory arena), **ESP-DL** (EfficientNet recognition), **ESP-WHO** (face detection on camera), **ESP-SR** (wake word "Hi ESP" + offline commands, INMP441 mic matrix, AEC/VAD). Everything works offline, without cloud - critical for privacy and latency.
 
 ## Purpose
 
-Коротко: запускати нейромережі on мікроконтролері - звук (ключові слова, команди), зір (людина, обличчя), сенсори (аномалії вібрації/струму). typical задачі: Voice вимикач «Hi ESP - увімкни світло», камера-дзвінок with детекцією людини, предиктивне обслуговування насоса for вібрацією.
+In short: run neural networks on a microcontroller - sound (keywords, commands), vision (person, face), sensors (vibration/current anomalies). Typical tasks: a voice switch "Hi ESP - turn on the light", a doorbell camera with person detection, predictive pump maintenance by vibration.
 
-| Параметр | Значення |
+| Parameter | Value |
 | --- | --- |
-| Інтерфейс | I2S (мікрофон INMP441), DVP/SPI (камера OV2640), UART - результат |
-| Живлення модуля | 3.3V (мікрофон, камера), ESP32-S3 плата via USB 5V |
-| Рівень сигналів | 3.3V (обов'язково for ESP32) |
-| Сумісність | ESP32 / S3 / P4 (S3 - основний for TinyML: векторні інструкції, PSRAM) |
+| Interface | I2S (INMP441 microphone), DVP/SPI (OV2640 camera), UART - result |
+| Module power | 3.3V (microphone, camera), ESP32-S3 board via USB 5V |
+| Signal level | 3.3V (mandatory for ESP32) |
+| Compatibility | ESP32 / S3 / P4 (S3 is the main one for TinyML: vector instructions, PSRAM) |
 
-Навігація: I2S [[EN/04-Interfaces/04-I2S.en|I2S]], ADC [[EN/06-Analog/01-ADC.en|ADC]], залізо S3 [[EN/01-Hardware/03-ESP32-S3.en]], Voice module [[EN/12-Comm-Modules/08-LD2410-UWB-IR-Voice.en]], start [[EN/Home.en]].
+Navigation: I2S [[EN/04-Interfaces/04-I2S.en|I2S]], ADC [[EN/06-Analog/01-ADC.en|ADC]], S3 hardware [[EN/01-Hardware/03-ESP32-S3.en]], voice module [[EN/12-Comm-Modules/08-LD2410-UWB-IR-Voice.en]], start [[EN/Home.en]].
 
-## Характеристики
+## Characteristics
 
-| Фреймворк / модель | that робить | Пам'ять (типово) | Залізо | Примітка |
+| Framework / model | What it does | Memory (typically) | Hardware | Note |
 | --- | --- | --- | --- | --- |
-| Edge Impulse (impulse) | Конвеєр: дані → DSP-блок → нейроблок → deploy | Залежить from impulse (100-500 КБ flash) | ESP32 / S3 + PSRAM | Deploy how Arduino-lib або IDF-компонент |
-| TFLite-Micro micro_speech | Ключові слова «yes/no» for MFCC | Арена ~50-100 КБ, модель ~20-40 КБ int8 | Будь-which ESP32 | example-еталон TinyML |
-| TFLite-Micro person detection | Людина in кадрі 96×96 grayscale | Арена ~200-300 КБ, модель ~250 КБ int8 | ESP32-S3 + камера + PSRAM | Потрібна камера OV2640/GC0308 |
-| ESP-DL EfficientNet-розпізнавання | Класифікація/детекція (cat, YOLO) | 300 КБ - 2 МБ (PSRAM) | S3 / P4 | Квантування w8a8/w8a16, прискорення SIMD |
-| ESP-WHO | Детекція + розпізнавання облич on камері | ~500 КБ - 1.5 МБ (PSRAM обов'язково) | S3 / S3-EYE / P4 | Камера + дисплей, асинхронний пайплайн |
-| ESP-SR WakeNet (Hi ESP) | Wake word «Hi ESP» завжди слухає | ~200-400 КБ (PSRAM рекомендовано) | S3 / P4 (частково C3/C6 спрощено) | WakeNet9/10, моделі `_hiesp` |
-| ESP-SR MultiNet | До 300 офлайн-команд (EN/CN) | ~500 КБ - 1 МБ | S3 / P4 | without перенавчання - список команд |
-| ESP-SR AFE (AEC/VAD) | Ехопригнічення, детектор голосу, шумопригнічення | +100-200 КБ | S3 / P4, 1-2 мікрофони | AFE обов'язковий with динаміком поруч |
+| Edge Impulse (impulse) | Pipeline: data to DSP block to neuro block to deploy | Depends on impulse (100-500 KB flash) | ESP32 / S3 + PSRAM | Deploy as Arduino-lib or IDF component |
+| TFLite-Micro micro_speech | Keywords "yes/no" by MFCC | Arena ~50-100 KB, model ~20-40 KB int8 | Any ESP32 | reference TinyML example |
+| TFLite-Micro person detection | Person in 96x96 grayscale frame | Arena ~200-300 KB, model ~250 KB int8 | ESP32-S3 + camera + PSRAM | OV2640/GC0308 camera needed |
+| ESP-DL EfficientNet recognition | Classification/detection (cat, YOLO) | 300 KB - 2 MB (PSRAM) | S3 / P4 | w8a8/w8a16 quantization, SIMD acceleration |
+| ESP-WHO | Face detection + recognition on camera | ~500 KB - 1.5 MB (PSRAM mandatory) | S3 / S3-EYE / P4 | Camera + display, async pipeline |
+| ESP-SR WakeNet (Hi ESP) | Wake word "Hi ESP" always listens | ~200-400 KB (PSRAM recommended) | S3 / P4 (partly C3/C6 simplified) | WakeNet9/10, `_hiesp` models |
+| ESP-SR MultiNet | Up to 300 offline commands (EN/CN) | ~500 KB - 1 MB | S3 / P4 | without retraining - command list |
+| ESP-SR AFE (AEC/VAD) | Echo cancellation, voice detector, noise suppression | +100-200 KB | S3 / P4, 1-2 microphones | AFE mandatory with a speaker nearby |
 
-> [!warning] Вимоги PSRAM
-> without PSRAM TinyML-зір майже неможливий: кадр 640×480 займає ~300 КБ, арена моделі - ще 200-500 КБ, but внутрішніх ~320 КБ SRAM not вистачить. Беріть **ESP32-S3 with Octal PSRAM 8 МБ** (S3-EYE, S3-Korvo-2, DevKitC-S3 + PSRAM). in `menuconfig` увімкніть `PSRAM → Octal`, `Tensor arena in PSRAM`, `Camera frame buffer in PSRAM`. check: `heap_caps_get_free_size(MALLOC_CAP_SPIRAM)` має показати мегабайти.
+> [!warning] PSRAM requirements
+> Without PSRAM TinyML vision is almost impossible: a 640x480 frame takes ~300 KB, the model arena another 200-500 KB, but the internal ~320 KB SRAM is not enough. Take an **ESP32-S3 with 8 MB Octal PSRAM** (S3-EYE, S3-Korvo-2, DevKitC-S3 + PSRAM). In `menuconfig` enable `PSRAM to Octal`, `Tensor arena in PSRAM`, `Camera frame buffer in PSRAM`. Check: `heap_caps_get_free_size(MALLOC_CAP_SPIRAM)` must show megabytes.
 
 ![[assets/img/tinyml-voice-scheme.png|600]]
-*Fig. TinyML-стенд: мікрофон INMP441 per I2S + камера OV2640 + ESP32-S3 with PSRAM → wake word / команди / детекція людини.*
+*Fig. TinyML bench: INMP441 microphone over I2S + OV2640 camera + ESP32-S3 with PSRAM gives wake word / commands / person detection.*
 
-## 1. Edge Impulse workflow (збір даних → impulse → deploy)
+## 1. Edge Impulse workflow (data collection to impulse to deploy)
 
-Edge Impulse - веб-платформа, that ховає складність навчання: завантажуєте семпли, будуєте impulse (DSP + NN), натискаєте Deploy.
+Edge Impulse is a web platform that hides training complexity: you upload samples, build an impulse (DSP + NN), press Deploy.
 
-Кроки:
+Steps:
 
-1. **Збір даних:** телефоном (аудіо 1 с @16 кГц) або тим же ESP32 (`edge-impulse-daemon`, example `esp32-microphone-continuous`). Класи: `hiesp`, `noise`, `unknown`. Мінімум 20-30 хв сумарно, різні диктори, різні кімнати + шум!
-2. **Impulse:** Input (MFCC/MFE: frame 0.02/0.01, 40 фільтрів) → Neural Network (2×conv1d 8/16 нейронів + dropout 0.25) → Output (класи). for ESP32 тримайте модель <100 КБ.
-3. **EON Tuner:** автоматичний пошук компромісу точність/RAM/латентність під S3.
-4. **Deploy:** `Arduino library` (ZIP → `ei-<project>-arduino-1.0.zip`) або `Espressif ESP-IDF component` (клон + `idf.py add-dependency`). Отримуєте `run_classifier()` + example `esp32_microphone`.
+1. **Data collection:** by phone (1 s audio @16 kHz) or the same ESP32 (`edge-impulse-daemon`, `esp32-microphone-continuous` example). Classes: `hiesp`, `noise`, `unknown`. Minimum 20-30 min total, different speakers, different rooms + noise!
+2. **Impulse:** Input (MFCC/MFE: frame 0.02/0.01, 40 filters) to Neural Network (2xconv1d 8/16 neurons + dropout 0.25) to Output (classes). For ESP32 keep the model <100 KB.
+3. **EON Tuner:** automatic accuracy/RAM/latency tradeoff search for S3.
+4. **Deploy:** `Arduino library` (ZIP to `ei-<project>-arduino-1.0.zip`) or `Espressif ESP-IDF component` (clone + `idf.py add-dependency`). You get `run_classifier()` + `esp32_microphone` example.
 
-> [!tip] Датасет - 80% успіху
-> Шум вбиває точність швидше for будь-яку архітектуру: записуйте негативний клас `noise` (кухня, вулиця, телевізор, дитячий плач), інакше кожен шурхіт буде «Hi ESP». Додайте unknown-клас with 10+ слів-схожих («hi nest», «his»). Баланс класів ±20%.
+> [!tip] Dataset is 80% of success
+> Noise kills accuracy faster than any architecture: record the negative `noise` class (kitchen, street, TV, baby crying), otherwise every rustle is "Hi ESP". Add an unknown class with 10+ similar words ("hi nest", "his"). Class balance +-20%.
 
-## 2. TFLite-Micro (person detection, micro_speech, пам'ять арени!)
+## 2. TFLite-Micro (person detection, micro_speech, arena memory!)
 
-TFLite-Micro (тепер LiteRT for Microcontrollers) - інференс without ОС: модель how C-масив, один статичний буфер-арена on все.
+TFLite-Micro (now LiteRT for Microcontrollers) is inference without an OS: the model as a C array, one static arena buffer for everything.
 
-Ключове поняття - **арена**: `constexpr int kArenaSize = 100 * 1024; uint8_t arena[kArenaSize];`. Усередині живуть вхідні/вихідні/проміжні тензори. Мало - `AllocateTensors() failed / Didn't find op`. Багато - немає де жити камері. Правило: почніть with прикладу (micro_speech 50 КБ, person_detection 300 КБ), додайте 20% запасу, покладіть арену in PSRAM (`EXT_RAM_ATTR` або `heap_caps_malloc(MALLOC_CAP_SPIRAM)`).
+The key concept is the **arena**: `constexpr int kArenaSize = 100 * 1024; uint8_t arena[kArenaSize];`. Input/output/intermediate tensors live inside. Too small - `AllocateTensors() failed / Didn't find op`. Too big - no room for the camera. Rule: start with the example (micro_speech 50 KB, person_detection 300 KB), add 20% margin, put the arena in PSRAM (`EXT_RAM_ATTR` or `heap_caps_malloc(MALLOC_CAP_SPIRAM)`).
 
-Приклади with коробки (`tensorflow/lite/micro/examples`):
+Examples out of the box (`tensorflow/lite/micro/examples`):
 
-- **micro_speech** - мікрофон → MFCC → детект «yes/no», вихід - ймовірності класів;
-- **person_detection** - камера 96×96 grayscale → person_score 0-255, поріг ~200;
-- **hello_world** - синус for нейромережею (check тулчейну).
+- **micro_speech** - microphone to MFCC to "yes/no" detect, output - class probabilities;
+- **person_detection** - 96x96 grayscale camera to person_score 0-255, threshold ~200;
+- **hello_world** - sine by neural network (toolchain check).
 
-Квантування обов'язкове: float32-модель 1 МБ → int8 ~250 КБ + прискорення ×2-4 on S3 (SIMD). Конвертація TFLiteConverter with `optimizations = [Optimize.DEFAULT]`, репрезентативний датасет 100+ семплів.
+Quantization is mandatory: a 1 MB float32 model becomes ~250 KB int8 + x2-4 speedup on S3 (SIMD). TFLiteConverter conversion with `optimizations = [Optimize.DEFAULT]`, a representative dataset of 100+ samples.
 
-## 3. ESP-DL (EfficientNet-розпізнавання)
+## 3. ESP-DL (EfficientNet recognition)
 
-ESP-DL - нативний фреймворк Espressif: download/квантування/launch моделей in форматі `.espdl` (FlatBuffers, zero-copy). Підтримує змішане квантування w8a8/w16a16/w8a16 (комбінувати шари - точність + швидкість), статичний планувальник пам'яті (сам розкладає шари per internal/PSRAM), dual-core Conv2D.
+ESP-DL is the native Espressif framework: download/quantize/launch models in `.espdl` format (FlatBuffers, zero-copy). Supports mixed w8a8/w16a16/w8a16 quantization (combine layers - accuracy + speed), a static memory planner (lays layers out over internal/PSRAM itself), dual-core Conv2D.
 
 Model Zoo (`esp-dl/models`): MobileNetV2, EfficientNet, YOLO11n/YOLO26, ESPDet-Pico (cat detection 224x224 - starter example!), PP-OCRv6. Each model is a ready IDF component.
 
-Конвеєр своєї моделі: PyTorch/TF → ONNX → `esp-ppq` квантування (verify підтримку операторів in `operator_support_state.md`!) → `.espdl` → `dl::Model` + `dl::Tensor` → `model->run()`.
+Own-model pipeline: PyTorch/TF to ONNX to `esp-ppq` quantization (verify operator support in `operator_support_state.md`!) to `.espdl` to `dl::Model` + `dl::Tensor` to `model->run()`.
 
 > [!tip] ESP-DL vs TFLite-Micro
-> Нова розробка під S3/P4 - беріть ESP-DL (швидше, менше RAM, підтримка Espressif). TFLite-Micro - for портованості (Arduino-приклади, крос-платформа) and навчання.
+> New development for S3/P4 - take ESP-DL (faster, less RAM, Espressif support). TFLite-Micro - for portability (Arduino examples, cross-platform) and learning.
 
-## 4. ESP-WHO (детекція облич on камері)
+## 4. ESP-WHO (face detection on camera)
 
-ESP-WHO - прикладна платформа поверх ESP-DL: детекція облич, розпізнавання облич, детекція пішохода, QR. Камера and нейромережа працюють **асинхронно** (поки модель рахує кадр N, драйвер вже знімає N+1) - звідси fps ×1.5-2 проти послідовного коду.
+ESP-WHO is an application platform over ESP-DL: face detection, face recognition, pedestrian detection, QR. The camera and neural network work **asynchronously** (while the model counts frame N, the driver already shoots N+1) - hence x1.5-2 fps vs sequential code.
 
-Плати: ESP32-S3-EYE (камера + мікрофон + дисплей ST7789), S3-Korvo-2 (мікрофонна матриця + динамік), P4-Function-EV (LCD + SD). Збірка: `export IDF_EXTRA_ACTIONS_PATH=.../esp-who/tools`, `idf.py -DSDKCONFIG_DEFAULTS=sdkconfig.bsp.esp32_s3_eye set-target esp32s3`, `flash monitor`.
+Boards: ESP32-S3-EYE (camera + microphone + ST7789 display), S3-Korvo-2 (mic matrix + speaker), P4-Function-EV (LCD + SD). Build: `export IDF_EXTRA_ACTIONS_PATH=.../esp-who/tools`, `idf.py -DSDKCONFIG_DEFAULTS=sdkconfig.bsp.esp32_s3_eye set-target esp32s3`, `flash monitor`.
 
-Практичний сценарій: детекція людини → зберегти JPEG on SD → MQTT-сповіщення; розпізнавання облич - реєстрація 3-5 ракурсів on людину at рівному світлі, інакше false reject.
+Practical scenario: person detection to save JPEG to SD to MQTT notification; face recognition - register 3-5 angles per person in even light, otherwise false reject.
 
-## 5. ESP-SR (wake word «Hi ESP» + офлайн-команди, INMP441, AEC/VAD)
+## 5. ESP-SR (wake word "Hi ESP" + offline commands, INMP441, AEC/VAD)
 
-ESP-SR - мовний стек: Audio Front-End (AFE) → WakeNet → MultiNet → (опційно) синтез відповіді.
+ESP-SR is a speech stack: Audio Front-End (AFE) to WakeNet to MultiNet to (optionally) answer synthesis.
 
-- **WakeNet:** завжди слухає «Hi ESP» (`wn9_hiesp` / `wn10_hiesp`). WakeNet9s - полегшена версія without PSRAM (C3/C5). Кастомний wake word - via TTS Pipeline v3 (наговорити 100+ варіантів темп/голос/шум) або замовлення in Espressif.
-- **MultiNet:** після пробудження слухає команду зі списку (до 300: «увімкни світло», «відкрий ворота»). Моделі `mn7_en` / `mn7_cn` під S3/P4.
-- **AFE:** AEC (acoustic echo cancellation - віднімає свій же динамік, критично for full-duplex), VAD/VADNet (детектор голосової активності - відсікає тишу/шум), BSS (розділення джерел for 2 мікрофонів), NS/NSNet (нейропригнічення шуму). without AFE in кімнаті with телевізором точність падає in 2-3 рази.
-- **Мікрофонна матриця INMP441:** цифровий MEMS with I2S-виходом (not аналоговий MAX9814 - менше шуму!). Один - команди до 3-5 м; два - beamforming + DOA (напрямок on голосника). Лінія WS/LRCLK/BCK - коротка (<10 см), земля - зіркою.
+- **WakeNet:** always listens for "Hi ESP" (`wn9_hiesp` / `wn10_hiesp`). WakeNet9s is a light version without PSRAM (C3/C5). Custom wake word - via TTS Pipeline v3 (speak 100+ temp/voice/noise variants) or order from Espressif.
+- **MultiNet:** after wake-up listens for a command from the list (up to 300: "turn on the light", "open the gate"). `mn7_en` / `mn7_cn` models for S3/P4.
+- **AFE:** AEC (acoustic echo cancellation - subtracts its own speaker, critical for full-duplex), VAD/VADNet (voice activity detector - cuts silence/noise), BSS (source separation for 2 microphones), NS/NSNet (neural noise suppression). Without AFE in a room with a TV accuracy drops 2-3x.
+- **INMP441 mic matrix:** digital MEMS with I2S output (not analog MAX9814 - less noise!). One - commands up to 3-5 m; two - beamforming + DOA (direction to the speaker). WS/LRCLK/BCK line - short (<10 cm), ground - star.
 
-## Легенда пінів модуля INMP441 (I2S-мікрофон)
+## INMP441 module pin legend (I2S microphone)
 
-| Пін INMP441 | Тип | Куди on ESP32-S3 | Примітка |
+| INMP441 pin | Type | Where on ESP32-S3 | Note |
 | --- | --- | --- | --- |
-| VDD | Живлення вхід | 3V3 | Тільки 3.3V! Струм ~2 мА; 100 нФ до GND біля модуля |
-| GND | Земля | GND | Коротка, спільна with ESP32; not вести повз DC-DC |
-| SD (DOUT) | Вихід дані I2S | GPIO4 (I2S DIN) | Цифровий потік 16 кГц/24 біт; підтяжка not потрібна |
-| WS (LRCL) | Вхід кадр | GPIO5 (I2S WS) | 16 кГц; довжина <10 см |
-| SCK (BCK) | Вхід біт-клок | GPIO6 (I2S BCK) | ~1 МГц; кручена пара with GND at довжині >5 см |
-| L/R | Вибір каналу | GND = Left, 3V3 = Right | Два мікрофони: один on GND, другий on 3V3 → стерео-матриця |
+| VDD | Power input | 3V3 | 3.3V only! Current ~2 mA; 100 nF to GND near the module |
+| GND | Ground | GND | Short, common with ESP32; do not route past DC-DC |
+| SD (DOUT) | I2S data output | GPIO4 (I2S DIN) | Digital stream 16 kHz/24 bit; no pull-up needed |
+| WS (LRCL) | Frame input | GPIO5 (I2S WS) | 16 kHz; length <10 cm |
+| SCK (BCK) | Bit-clock input | GPIO6 (I2S BCK) | ~1 MHz; twisted pair with GND at length >5 cm |
+| L/R | Channel select | GND = Left, 3V3 = Right | Two microphones: one to GND, other to 3V3 for a stereo matrix |
 
-Камера OV2640 (for ESP-WHO/person detection) підключається окремим шлейфом DVP (XCLK GPIO10, PCLK GPIO13, D0-D7, SIOD/SIOC) - див. нотатку камери [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]].
+The OV2640 camera (for ESP-WHO/person detection) connects over a separate DVP ribbon (XCLK GPIO10, PCLK GPIO13, D0-D7, SIOD/SIOC) - see the camera note [[EN/12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera.en]].
 
-## Схема підключення
+## Connection schematic
 
-| ESP32-S3 DevKit | INMP441 | Камера OV2640 | Примітка |
+| ESP32-S3 DevKit | INMP441 | OV2640 camera | Note |
 | --- | --- | --- | --- |
-| 3V3 | VDD | DVDD (via LDO камери) | Загальний струм <500 мА with USB |
-| GND | GND | GND | Спільна земля, зірка |
+| 3V3 | VDD | DVDD (via camera LDO) | Total current <500 mA with USB |
+| GND | GND | GND | Common ground, star |
 | GPIO4 | SD | - | I2S DIN |
 | GPIO5 | WS | - | I2S WS |
 | GPIO6 | SCK | - | I2S BCK |
-| DVP-роз'єм | - | XCLK/PCLK/D0-D7 | Шлейф коротко, without перегинів |
-| GPIO16 (RX2) | - | - | Лог UART for Edge Impulse `daemon` |
+| DVP connector | - | XCLK/PCLK/D0-D7 | Ribbon short, without bends |
+| GPIO16 (RX2) | - | - | UART log for Edge Impulse `daemon` |
 
-> [!warning] 3.3V логіка!
-> INMP441 живиться тільки from 3.3V. L/R on 3V3 - via резистор 10к (not безпосередньо on 5V!). I2S-лінії 5V-входу not переживуть.
+> [!warning] 3.3V logic!
+> INMP441 is powered only from 3.3V. L/R to 3V3 - via a 10k resistor (not directly to 5V!). I2S lines do not survive a 5V input.
 
 ### ASCII schematic
 
@@ -152,18 +152,18 @@ L/R: мік1→GND (Left), мік2→3V3 (Right) → beamforming+DOA.
 
 ```mermaid
 graph LR
-    ESP32[ESP32-S3<br/>I2S + DVP + PSRAM 8МБ] -->|3V3| VDD[VDD INMP441]
+    ESP32[ESP32-S3<br/>I2S + DVP + PSRAM 8MB] -->|3V3| VDD[VDD INMP441]
     ESP32 -->|GND| GNDM[GND]
     SD[SD/DOUT] -->|GPIO4 DIN| ESP32
     ESP32 -->|GPIO5 WS| WS[WS]
     ESP32 -->|GPIO6 BCK| SCK[SCK]
     LR[L/R<br/>GND=Left 3V3=Right] --- MIC[INMP441]
-    CAM[(OV2640<br/>DVP-шлейф)] -->|кадр у PSRAM| ESP32
-    ESP32 -->|USB 115200| PC[ПК<br/>Edge Impulse daemon]
-    ESP32 -->|MQTT/UART| ACT[Реле/світло<br/>команда]
+    CAM[(OV2640<br/>DVP ribbon)] -->|frame to PSRAM| ESP32
+    ESP32 -->|USB 115200| PC[PC<br/>Edge Impulse daemon]
+    ESP32 -->|MQTT/UART| ACT[Relay/light<br/>command]
 ```
 
-## Code ESP-IDF (ESP-SR wake word + команда, концепт)
+## Code ESP-IDF (ESP-SR wake word + command, concept)
 
 ```c
 #include "esp_err.h"
@@ -226,7 +226,7 @@ void loop() {
 }
 ```
 
-## Code MicroPython (збір семплів 16 кГц + інференс-заглушка)
+## Code MicroPython (16 kHz sample collection + inference stub)
 
 ```python
 # MicroPython: повноцінний інференс НЕ тягне — збираємо датасет для Edge Impulse
@@ -246,35 +246,35 @@ for i in range(10):
 print("Готово: скопіюйте .raw на ПК → Edge Impulse Data Acquisition → Upload")
 ```
 
-Детальніше про середовища: [[EN/00-Start/05-Environment-Choice.en|Вибір середовища]].
+More on environments: [[EN/00-Start/05-Environment-Choice.en|Environment choice]].
 
 ## typical errors
 
-| # | Symptom | Cause | Виправлення |
+| # | Symptom | Cause | Fix |
 | --- | --- | --- | --- |
-| 1 | `AllocateTensors() failed` / `Didn't find op` | Арена not влізла (модель більша for буфер); PSRAM not підключено | Збільшити `kArenaSize` (+20%), покласти арену in PSRAM (`EXT_RAM_ATTR`), увімкнути Octal PSRAM in menuconfig |
-| 2 | Модель вчить 99%, in кімнаті - сміття | Немає класу шуму; квантування without репрезентативного набору | Додати `noise` 30% датасету; квантування int8 with 100+ реальними семплами (not синусом!) |
-| 3 | Wake word спрацьовує on телевізор | AFE вимкнено, один мікрофон without AEC, поріг WakeNet низький | Увімкнути AEC+VAD+NS; поріг 0.7+; другий мікрофон for beamforming; вимкнути динамік on час тесту |
+| 1 | `AllocateTensors() failed` / `Didn't find op` | Arena did not fit (model bigger than buffer); PSRAM not connected | Increase `kArenaSize` (+20%), put the arena in PSRAM (`EXT_RAM_ATTR`), enable Octal PSRAM in menuconfig |
+| 2 | Model learns 99%, garbage in the room | No noise class; quantization without representative set | Add `noise` 30% of dataset; int8 quantization with 100+ real samples (not a sine!) |
+| 3 | Wake word triggers on TV | AFE off, one microphone without AEC, low WakeNet threshold | Enable AEC+VAD+NS; threshold 0.7+; second microphone for beamforming; turn off the speaker during test |
 | 4 | ESP-WHO crashes with `out of memory` on frame | Frame buffer in internal SRAM instead of PSRAM | `Camera frame buffer in PSRAM`, QVGA resolution for start, `heap_caps_get_free_size(MALLOC_CAP_SPIRAM)` before launch |
-| 5 | Шум/фон вбиває точність (мікрофон) | Довгі I2S-дроти біля DC-DC, спільний шлейф with камерою, L/R висить | I2S <10 см, 100 нФ біля VDD, L/R чітко on GND/3V3, земля зіркою; тест in тиші vs шум - різниця має бути <15% |
-| 6 | Edge Impulse deploy not компілюється in IDF | Старий IDF (<5.3), not той deploy-таргет | IDF ≥5.3, deploy саме `ESP-IDF component` (not Arduino-lib!), `idf.py add-dependency` + чистий build |
-| 7 | Person detection бачить людину in шпалерах | Поріг score низький, камера without ІЧ-фільтра вночі | Поріг ≥200/255, QVGA + grayscale 96×96, ІЧ-підсвіт 850 нм + фільтр вночі |
-| 8 | Гальма: інференс 2-3 с, WDT ребутить | Модель on одному ядрі, кадр копіюється туди-сюди | ESP-DL dual-core Conv2D, асинхронний пайплайн WHO, інференс in окремому task on core 1, WDT timeout 10 с+ |
+| 5 | Noise kills accuracy (microphone) | Long I2S wires near DC-DC, shared ribbon with camera, L/R floating | I2S <10 cm, 100 nF near VDD, L/R firmly to GND/3V3, star ground; quiet-vs-noise test - difference must be <15% |
+| 6 | Edge Impulse deploy does not compile in IDF | Old IDF (<5.3), wrong deploy target | IDF >=5.3, deploy exactly `ESP-IDF component` (not Arduino-lib!), `idf.py add-dependency` + clean build |
+| 7 | Person detection sees a person in wallpaper | Low score threshold, camera without IR filter at night | Threshold >=200/255, QVGA + grayscale 96x96, 850 nm IR backlight + filter at night |
+| 8 | Brakes: 2-3 s inference, WDT reboots | Model on one core, frame copied back and forth | ESP-DL dual-core Conv2D, async WHO pipeline, inference in a separate task on core 1, WDT timeout 10 s+ |
 
 ## Official sources
 
-- [Edge Impulse - документація (датасет → impulse → deploy)](https://docs.edgeimpulse.com/docs/) - гайди збору даних, EON Tuner, deploy how Arduino-lib/IDF-компонент.
-- [LiteRT for Microcontrollers (ex-TFLite-Micro) - micro_speech / person detection](https://www.tensorflow.org/lite/microcontrollers) - арена пам'яті, квантування int8, приклади.
-- [ESP-DL - нейроінференс Espressif (EfficientNet, YOLO,.espdl)](https://github.com/espressif/esp-dl) - квантування esp-ppq, Model Zoo, dual-core.
-- [ESP-WHO - детекція/розпізнавання облич on камері](https://github.com/espressif/esp-who) - асинхронний пайплайн, плати S3-EYE/Korvo-2.
-- [ESP-SR - WakeNet «Hi ESP», MultiNet-команди, AFE (AEC/VAD)](https://github.com/espressif/esp-sr) - моделі wn10_hiesp/mn7, мікрофонні матриці.
+- [Edge Impulse - docs (dataset to impulse to deploy)](https://docs.edgeimpulse.com/docs/) - data collection guides, EON Tuner, deploy as Arduino-lib/IDF component.
+- [LiteRT for Microcontrollers (ex-TFLite-Micro) - micro_speech / person detection](https://www.tensorflow.org/lite/microcontrollers) - memory arena, int8 quantization, examples.
+- [ESP-DL - Espressif neuroinference (EfficientNet, YOLO,.espdl)](https://github.com/espressif/esp-dl) - esp-ppq quantization, Model Zoo, dual-core.
+- [ESP-WHO - face detection/recognition on camera](https://github.com/espressif/esp-who) - async pipeline, S3-EYE/Korvo-2 boards.
+- [ESP-SR - WakeNet "Hi ESP", MultiNet commands, AFE (AEC/VAD)](https://github.com/espressif/esp-sr) - wn10_hiesp/mn7 models, mic matrices.
 
-- GC0308 Datasheet (GalaxyCore, пошук PDF): [GC0308 search](https://www.alldatasheet.com/view.jsp?Searchword=GC0308) - VGA-камера.
+- GC0308 Datasheet (GalaxyCore, search PDF): [GC0308 search](https://www.alldatasheet.com/view.jsp?Searchword=GC0308) - VGA camera.
 
 ## See also
 
 - [[EN/Home.en]] - start page of the reference
-- [[EN/01-Hardware/03-ESP32-S3.en]] - ESP32-S3, PSRAM, векторні інструкції for ML
-- [[EN/04-Interfaces/04-I2S.en|I2S]] - bus I2S for мікрофонів INMP441
-- [[EN/06-Analog/01-ADC.en|ADC]] - АЦП for аналогових сенсорів датасету
-- [[EN/12-Comm-Modules/08-LD2410-UWB-IR-Voice.en]] - радар/IR/SU-03T: альтернативи голосовому керуванню
+- [[EN/01-Hardware/03-ESP32-S3.en]] - ESP32-S3, PSRAM, vector instructions for ML
+- [[EN/04-Interfaces/04-I2S.en|I2S]] - I2S bus for INMP441 microphones
+- [[EN/06-Analog/01-ADC.en|ADC]] - ADC for dataset analog sensors
+- [[EN/12-Comm-Modules/08-LD2410-UWB-IR-Voice.en]] - radar/IR/SU-03T: voice control alternatives

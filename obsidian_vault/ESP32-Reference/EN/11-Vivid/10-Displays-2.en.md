@@ -36,16 +36,16 @@ Basic OLED SSD1306 - see [[11-Vivid/01-OLED-SSD1306.en | OLED SSD1306]], TFT/EPa
 > SH1106 is not SSD1306: SH1106 has page addressing 132x64, so SSD1306 driver shifts image by 2 px.
 > SSD1309 is a separate controller for large 2.42" OLEDs, no SSD1306 compat at init level.
 
-## Легенда pinandin модуля
+## Module pin legend
 
 ### ST7735 1.8" TFT (SPI, typical module with microSD)
 
 | Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | power supply input | 3V3 (або 5V if is LDO) | recommended 3.3 in |
+| 1 | VCC | power supply input | 3V3 (or 5V if LDO present) | 3.3 V recommended |
 | 2 | GND | ground | GND | common ground |
-| 3 | CS (TFT_CS) | input CS, active low | GPIO5 | Chip Select дисплея |
-| 4 | RESET (RST) | input reset | GPIO4 (будь-which GPIO) | hardware скид, active low |
+| 3 | CS (TFT_CS) | input CS, active low | GPIO5 | Display chip select |
+| 4 | RESET (RST) | input reset | GPIO4 (any GPIO) | hardware reset, active low |
 | 5 | A0 / DC | digital input | GPIO2 (any GPIO) | Data/Command: HIGH = data, LOW = command |
 | 6 | SDA / MOSI | input SPI | GPIO23 (VSPI MOSI) | ESP32 → display |
 | 7 | SCK | SPI input | GPIO18 (VSPI SCK) | Clocking up to 40 MHz |
@@ -62,21 +62,21 @@ Basic OLED SSD1306 - see [[11-Vivid/01-OLED-SSD1306.en | OLED SSD1306]], TFT/EPa
 | 4 | SDA | I2C input/output | GPIO21 | 400 kHz, pull-up on module |
 
 > Difference from SSD1306 - page addressing: GDDRAM 132x64, visible 128x64 with 2-column shift.
-> driver: `U8G2_SH1106_128X64_NONAME_F_HW_I2C`, `Adafruit_SH110X`. address та ж: 0x3C (SA0=0) / 0x3D (SA0=1).
+> Driver: `U8G2_SH1106_128X64_NONAME_F_HW_I2C`, `Adafruit_SH110X`. Same address: 0x3C (SA0=0) / 0x3D (SA0=1).
 
-### SSD1309 2.42" OLED (SPI/I2C, перемички BS1/BS2)
+### SSD1309 2.42" OLED (SPI/I2C, BS1/BS2 jumpers)
 
 | Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
 | 1 | VCC | power supply input | 3V3 | Logic and panel 3.3 V |
 | 2 | GND | ground | GND | common ground |
-| 3 | SCL / SCK | input | GPIO22 (I2C) або GPIO18 (SPI) | depends on BS1/BS2 |
-| 4 | SDA / MOSI | input/output | GPIO21 (I2C) або GPIO23 (SPI) | I2C-address 0x3C |
+| 3 | SCL / SCK | input | GPIO22 (I2C) or GPIO18 (SPI) | depends on BS1/BS2 |
+| 4 | SDA / MOSI | input/output | GPIO21 (I2C) or GPIO23 (SPI) | I2C-address 0x3C |
 | 5 | RES | input reset | GPIO4 | Active low |
 | 6 | DC | digital input | GPIO2 | Only in SPI mode |
 | 7 | CS | CS input | GPIO5 | Only in SPI mode, in I2C - to GND |
 
-### HX8357 3.5" TFT 320×480 (SPI-version)
+### HX8357 3.5" TFT 320x480 (SPI version)
 
 | Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
@@ -86,13 +86,13 @@ Basic OLED SSD1306 - see [[11-Vivid/01-OLED-SSD1306.en | OLED SSD1306]], TFT/EPa
 | 4 | RESET | input reset | GPIO4 | Active low |
 | 5 | DC/RS | digital input | GPIO2 | Data/Command |
 | 6 | MOSI | input SPI | GPIO23 | data ESP32 → display |
-| 7 | SCK | input SPI | GPIO18 | SPI 20-40 МГц |
+| 7 | SCK | input SPI | GPIO18 | SPI 20-40 MHz |
 | 8 | LED/BL | input | 3V3 or PWM GPIO | Backlight, can do PWM dimming |
 | 9 | MISO | SPI output | GPIO19 | GRAM read (optional) |
 | 10 | T_CS | touch CS input | GPIO15 | XPT2046, optional |
 | 11 | T_IRQ | interrupt output | GPIO27 or NC | Touch, optional |
 
-### TM1638 (module with кнопками, LED and 7-сегментами)
+### TM1638 (module with buttons, LED and 7-segments)
 
 | Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
@@ -108,8 +108,8 @@ Basic OLED SSD1306 - see [[11-Vivid/01-OLED-SSD1306.en | OLED SSD1306]], TFT/EPa
 | --- | --- | --- | --- | --- |
 | 1 | VCC | power supply input | 3V3 or 5V | depends on LED matrix |
 | 2 | GND | ground | GND | common ground |
-| 3 | SCL | input I2C | GPIO22 | 400 кГц |
-| 4 | SDA | input/output I2C | GPIO21 | Адреси 0x70-0x77 (перемички A0-A2) |
+| 3 | SCL | input I2C | GPIO22 | 400 kHz |
+| 4 | SDA | input/output I2C | GPIO21 | Addresses 0x70-0x77 (A0-A2 jumpers) |
 | 5 | INT | output, active low | GPIO26 or NC | keyscan interrupt (only versions with keyboard) |
 
 ### Smart display DWIN / TJC / Stone (UART HMI)
@@ -118,8 +118,8 @@ Basic OLED SSD1306 - see [[11-Vivid/01-OLED-SSD1306.en | OLED SSD1306]], TFT/EPa
 | --- | --- | --- | --- | --- |
 | 1 | VCC | power supply input | 5V separate 1-2 A PSU | not from DevKit 5V pin for 5"+! |
 | 2 | GND | ground | GND | common with ESP32 mandatory |
-| 3 | TX (дисплея) | output UART | GPIO16 (RX2 ESP32) | Перехресно: TX→RX |
-| 4 | RX (дисплея) | input UART | GPIO17 (TX2 ESP32) | Перехресно: RX→TX, level 3.3 in OK |
+| 3 | TX (display) | output UART | GPIO16 (RX2 ESP32) | Crossed: TX→RX |
+| 4 | RX (display) | input UART | GPIO17 (TX2 ESP32) | Crossed: RX→TX, 3.3 V level OK |
 
 > TJC is a compatible Nextion clone (same editor and protocol). Stone/DWIN have own editors,
 > protocol differs. ESP32 does not draw GUI - only sends/receives commands over UART 115200.
@@ -128,7 +128,7 @@ Basic OLED SSD1306 - see [[11-Vivid/01-OLED-SSD1306.en | OLED SSD1306]], TFT/EPa
 
 | ESP32 | ST7735 (main ex.) | SH1106 | TM1638 | HT16K33 | HMI-UART |
 | --- | --- | --- | --- | --- | --- |
-| 3V3 | VCC | VCC | VCC | VCC | - (display on 5 in PSU) |
+| 3V3 | VCC | VCC | VCC | VCC | - (display on 5 V PSU) |
 | GND | GND | GND | GND | GND | GND (common!) |
 | GPIO18 | SCK | - | CLK | - | - |
 | GPIO23 | SDA/MOSI | - | DIO | - | - |
@@ -137,8 +137,8 @@ Basic OLED SSD1306 - see [[11-Vivid/01-OLED-SSD1306.en | OLED SSD1306]], TFT/EPa
 | GPIO4 | RESET | - | - | - | - |
 | GPIO22 | - | SCL | - | SCL | - |
 | GPIO21 | - | SDA | - | SDA | - |
-| GPIO16 | - | - | - | - | TX дисплея |
-| GPIO17 | - | - | - | - | RX дисплея |
+| GPIO16 | - | - | - | - | Display TX |
+| GPIO17 | - | - | - | - | Display RX |
 
 Power: ST7735 backlight ~50 mA, HX8357 ~100-150 mA - DevKit 3V3 is enough;
 smart 5"+ HMI (up to 1-2 A) - separate 5 V PSU only, see [[02-Power-Supply/01-Power-Rails.en | Power Supply Rails]].
@@ -405,7 +405,7 @@ if hmi.any():
 6. **HT16K33 does not start** → forgot `0x21` (oscillator on). Without it display silent at correct address.
 7. **HMI without `FF FF FF` terminator** → command ignored. Every TJC/Nextion command ends with three 0xFF.
 8. **HMI powered from DevKit** → reboot on backlight. 5"+ screens eat 1-2 A - separate 5 V PSU + common GND.
-9. **TX-TX / RX-RX in HMI** → тиша. UART перехресно: TX дисплея → RX ESP32 (GPIO16), RX дисплея ← TX ESP32 (GPIO17).
+9. **TX-TX / RX-RX in HMI** → silence. UART crossed: display TX → RX ESP32 (GPIO16), display RX ← TX ESP32 (GPIO17).
 10. **TFT flex cables near WiFi antenna** → stripes on screen. Move flex away from ESP32 antenna, add 100 nF on power.
 
 ## Official sources

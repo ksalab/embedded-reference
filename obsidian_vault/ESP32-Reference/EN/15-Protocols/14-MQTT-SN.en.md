@@ -1,6 +1,6 @@
 ---
-title: MQTT-SN - MQTT for сенсорних мереж (UDP, сплячі вузли, шлюз)
-description: Класичний MQTT - this TCP + довгі імена топіків: важко for LoRa/Zigbee (маленькі MTU, сплячі вузли, немає TCP). MQTT-SN (Sensor Networks) - той же pub/sub, але поверх UDP, with короткими...
+title: MQTT-SN - MQTT for sensor networks (UDP, sleepy nodes, gateway)
+description: Classic MQTT needs TCP and long topic names, too heavy for LoRa and Zigbee; MQTT-SN runs over UDP with short IDs; shows schematics, code and tables.
 tags: [esp32, mqtt-sn, udp, gateway, sleepy, qos, lora, zigbee, sensor-network]
 category: Protokoli
 date-created: 2026-09-30
@@ -10,32 +10,32 @@ original: 15-Protocols/14-MQTT-SN.md
 date: 2026-10-08
 ---
 
-# MQTT-SN: MQTT for сенсорних мереж
+# MQTT-SN: MQTT for sensor networks
 
-## Призначення
+## Purpose
 
-Класичний MQTT - this TCP + довгі імена топіків: важко for LoRa/Zigbee (маленькі MTU, сплячі вузли, немає TCP). MQTT-SN (Sensor Networks) - той же pub/sub, але поверх UDP, with короткими topic-id and процедурою сну. ESP32 виступає шлюзом: with одного боку LoRa/Zigbee-вузли, with іншого - звичайний broker.
+Classic MQTT means TCP + long topic names: too heavy for LoRa and Zigbee (small MTUs, sleepy nodes, no TCP). MQTT-SN (Sensor Networks) is the same pub/sub but over UDP, with short topic IDs and a sleep procedure. ESP32 acts as a gateway: LoRa/Zigbee nodes on one side, a plain broker on the other.
 
-База: старт - [[Home.en]], MQTT - [[EN/15-Protocols/01-MQTT.en|MQTT]], LoRa - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]], Zigbee - [[EN/15-Protocols/09-Matter-Thread-Zigbee.en]], офлайн-буфер - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1]].
+Base: start - [[Home.en|Home]], MQTT - [[EN/15-Protocols/01-MQTT.en|MQTT]], LoRa - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]], Zigbee - [[EN/15-Protocols/09-Matter-Thread-Zigbee.en|Matter and Zigbee]], offline buffer - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1]].
 
-> MQTT-SN ≠ MQTT: різні дроти! Безпосередньо до Mosquitto not підключитись - потрібен SN-шлюз (прозорий або агрегуючий). Шлюз - this and є робота ESP32 тут.
+> MQTT-SN is not MQTT: different wire format! It cannot connect to Mosquitto directly - an SN gateway is needed (transparent or aggregating). The gateway is the ESP32 job here.
 
 ![[assets/img/mqtt-sn-gateway-scheme.png|600]]
-*Рис. LoRa/Zigbee-вузли говорять MQTT-SN/UDP зі шлюзом ESP32, шлюз - класичним MQTT/TCP with брокером.*
+*Fig. LoRa/Zigbee nodes speak MQTT-SN/UDP with the ESP32 gateway, the gateway speaks classic MQTT/TCP with the broker.*
 
-## Характеристики
+## Specifications
 
-| Параметр | MQTT-SN | Класичний MQTT |
+| Parameter | MQTT-SN | Classic MQTT |
 | --- | --- | --- |
-| Транспорт | UDP (TCP - опційно) | TCP |
-| Топіки | 2-байтні topic-id / predefined / short-name (2 символи!) | Довгі рядки |
-| CONNECT | Короткий, with `.../sleep` процедурою | Довгий + will |
-| QoS | −1 (fire-and-forget!), 0, 1, 2 | 0, 1, 2 |
-| Сплячі | PINGREQ with `...` + буфер шлюзу | Тільки LWT |
-| MTU-дружність | Пакети ~10-30 байт | CONNECT ~100+ байт |
-| Шлюз | Обов'язковий (transparent/aggregating) | not потрібен |
+| Transport | UDP (TCP optional) | TCP |
+| Topics | 2-byte topic IDs / predefined / short-name (2 chars!) | Long strings |
+| CONNECT | Short, with sleep procedure | Long + will |
+| QoS | -1 (fire-and-forget!), 0, 1, 2 |
+| Sleepy nodes | PINGREQ with sleep + gateway buffer | LWT only |
+| MTU fit | Packets about 10-30 bytes | CONNECT about 100+ bytes |
+| Gateway | Mandatory (transparent/aggregating) | Not needed |
 
-## 1. Топіки: id замість рядків
+## 1. Topics: IDs instead of strings
 
 ```text
 Реєстрація: PUBLISH з довгим ім'ям → шлюз повертає REGISTER + topic-id (2 байти).
@@ -44,7 +44,7 @@ Predefined topic-id: зашиті в прошивку обох сторін (0x0
 Short topic name: рівно 2 ASCII-символи ("t1") — для найбідніших.
 ```
 
-## 2. Сплячий вузол: процедура SLEEP
+## 2. Sleepy node: SLEEP procedure
 
 ```text
 Вузол: CONNECT (clean, duration=600) → REGISTER/SUB → ... → PINGREQ з полем Sleep!
@@ -53,25 +53,25 @@ Short topic name: рівно 2 ASCII-символи ("t1") — для найбі
 DISCONNECT з duration: «спатиму N с, тримай буфер» — офіційний механізм, не хак!
 ```
 
-### Mermaid: сон with буфером шлюзу
+### Mermaid: sleep with gateway buffer
 
 ```mermaid
 flowchart TB
     C[CONNECT duration=600] --> REG[REGISTER topic-id]
     REG --> SUB[SUBSCRIBE cmd/#]
-    SUB --> SLP[PINGREQ Sleep → радіо OFF]
-    SLP -->|Хмара шле команду| GBUF[Шлюз буферизує QoS1]
-    SLP -->|Таймер/датчик| WAKE[PINGREQ — прокинувся]
-    WAKE --> GET[Забрати буфер + PUBLISH дані]
+    SUB --> SLP[PINGREQ Sleep to radio OFF]
+    SLP -->|Cloud sends a command| GBUF[Gateway buffers QoS1]
+    SLP -->|Timer or sensor| WAKE[PINGREQ - awake]
+    WAKE --> GET[Take buffer + PUBLISH data]
     GET --> SLP
 ```
 
-## 3. Шлюз on ESP32: прозорий vs агрегуючий
+## 3. Gateway on ESP32: transparent vs aggregating
 
-| Тип | how працює | Плюс | Мінус |
+| Type | How it works | Plus | Minus |
 | --- | --- | --- | --- |
-| Transparent | 1 SN-with'єднання = 1 MQTT-with'єднання with брокером | Простота, LWT наскрізний | 100 вузлів = 100 TCP-сесій (RAM!) |
-| Aggregating | ОДНЕ MQTT-with'єднання on всіх, префікси топіків | Масштаб: сотні вузлів | Складніший code, LWT емулювати |
+| Transparent | 1 SN connection = 1 MQTT connection with the broker | Simple, end-to-end LWT | 100 nodes = 100 TCP sessions (RAM!) |
+| Aggregating | ONE MQTT connection for all, topic prefixes | Scale: hundreds of nodes | More complex code, emulate LWT |
 
 ```text
 Архітектура шлюзу (ESP32-S3 з PSRAM!):
@@ -81,7 +81,7 @@ flowchart TB
   або свій міні-шлюз під 10–20 вузлів (простіше, ніж здається!).
 ```
 
-## 4. QoS −1: publish without with'єднання (for маяків!)
+## 4. QoS -1: publish without a connection (for beacons!)
 
 ```text
 QoS −1 = вузол шле PUBLISH з predefined topic-id БЕЗ CONNECT взагалі.
@@ -89,26 +89,26 @@ QoS −1 = вузол шле PUBLISH з predefined topic-id БЕЗ CONNECT вз�
 Ціна: без підтверджень і без шифрування на цьому рівні — для критичного додати лічильник + HMAC у payload!
 ```
 
-## typical errors
+## Typical issues
 
-| # | error | Чому погано | how правильно |
+| # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
-| 1 | MQTT-SN безпосередньо in Mosquitto | Різні протоколи! | Тільки via SN-шлюз |
-| 2 | Довгі топіки in ефірі | Їсть MTU LoRa | topic-id / predefined |
-| 3 | TCP замість UDP on LoRa | Handshake not пролізе | UDP for замовчуванням |
-| 4 | without duration in CONNECT | Шлюз викидає буфер | Duration = період сну + запас |
-| 5 | 100 TCP-сесій on ESP32 | Немає RAM | Агрегуючий шлюз |
-| 6 | QoS −1 for команд | Команди губляться мовчки | −1 тільки for телеметрії |
-| 7 | without лічильника in payload | Replay-атаки | seq + HMAC |
-| 8 | Один topic-id on всіх | Колізії | Реєстрація on вузол |
+| 1 | MQTT-SN directly to Mosquitto | Different protocols! | Only through an SN gateway |
+| 2 | Long topics on air | Eats LoRa MTU | topic-id / predefined |
+| 3 | TCP instead of UDP on LoRa | Handshake will not pass | UDP by default |
+| 4 | No duration in CONNECT | Gateway drops the buffer | Duration = sleep period + margin |
+| 5 | 100 TCP sessions on ESP32 | No RAM | Aggregating gateway |
+| 6 | QoS -1 for commands | Commands silently lost | -1 for telemetry only |
+| 7 | No counter in payload | Replay attacks | seq + HMAC |
+| 8 | One topic-id for all | Collisions | Registration per node |
 
-## official джерела
+## Official sources
 
-- [MQTT-SN specification (OASIS)](https://www.oasis-open.org/committees/mqtt-sn/) - пакети, процедури, шлюзи.
-- [Eclipse Paho MQTT-SN Gateway](https://github.com/eclipse-paho/paho.mqtt-sn.embedded-c) - embedded-C клієнт + шлюз.
-- [RSMB (Really Small Message Broker)](https://github.com/eclipse-mosquitto/mosquitto.rsmb) - broker with SN-підтримкою.
+- [MQTT-SN specification (OASIS)](https://www.oasis-open.org/committees/mqtt-sn/) - packets, procedures, gateways.
+- [Eclipse Paho MQTT-SN Gateway](https://github.com/eclipse-paho/paho.mqtt-sn.embedded-c) - embedded-C client + gateway.
+- [RSMB (Really Small Message Broker)](https://github.com/eclipse-mosquitto/mosquitto.rsmb) - broker with SN support.
 
-### Мінімальний SN-клієнт (псевдокод вузла)
+### Minimal SN client (node pseudocode)
 
 ```text
 LOOP (прокинувся раз на 10 хв):
@@ -119,7 +119,7 @@ LOOP (прокинувся раз на 10 хв):
 Перший цикл: duration з запасом +20% (дрейф годинника вузла!).
 ```
 
-### SN + LoRa: розрахунок ефіру
+### SN + LoRa: airtime estimate
 
 ```text
 Пакет PUBLISH QoS1: ~15–25 байт (замість 60+ у класичного MQTT!).
@@ -129,7 +129,7 @@ Sleep duration: період + 20% запас (дрейф RC-генератор�
 Шлюз на ESP32-S3: SN-UDP-сокет + esp-mqtt + LittleFS-буфер (див. 18-Cellular-LoRa-2).
 ```
 
-### RSMB-шлюз on сервері (коли ESP32-шлюз замалий)
+### RSMB gateway on a server (when the ESP32 gateway is too small)
 
 ```text
 Eclipse RSMB (Really Small Message Broker): приймає MQTT-SN/UDP :1883
@@ -141,18 +141,18 @@ Eclipse RSMB (Really Small Message Broker): приймає MQTT-SN/UDP :1883
 Paho Gateway або ChirpStack + MQTT-інтеграцію.
 ```
 
-## Див. також
+## See also
 
-- [[Home.en|Головна]]
+- [[Home.en|Home]]
 - [[EN/15-Protocols/01-MQTT.en|MQTT]]
-- [[EN/15-Protocols/05-Cloud-2.en|MQTT-клієнт]]
-- [[EN/15-Protocols/09-Matter-Thread-Zigbee.en|Matter/Thread/Zigbee]]
+- [[EN/15-Protocols/05-Cloud-2.en|MQTT client]]
+- [[EN/15-Protocols/09-Matter-Thread-Zigbee.en|Matter, Thread and Zigbee]]
 - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]]
-- [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1 (буфер)]]
-- [[EN/10-Sensors/39-Wireless-Sensors.en|Бездротові сенсори]]
+- [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1 (buffer)]]
+- [[EN/10-Sensors/39-Wireless-Sensors.en|Wireless sensors]]
 
 
-## Common issues
+## Appendix: checklist
 
 | Symptom | Cause | Fix |
 |---|---|---|

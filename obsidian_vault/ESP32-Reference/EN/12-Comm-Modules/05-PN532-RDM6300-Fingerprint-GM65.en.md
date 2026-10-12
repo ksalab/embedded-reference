@@ -1,70 +1,70 @@
 ---
 category: Moduli
 lang: en
-title: PN532 NFC, RDM6300 125кГц, Fingerprint R307, GM65 сканер
-description: PN532 NFC / RDM6300 125 кГц / Fingerprint R307 / GM65 сканер - PN532 NFC (I2C / SPI / UART); Легенда пінів модуля PN532; Схема підключення (I2C-режим - рекомендований); shows schematics, code and tables.
+title: PN532 NFC, RDM6300 125kHz, R307 Fingerprint, GM65 scanner
+description: PN532 NFC / RDM6300 125 kHz / R307 Fingerprint / GM65 scanner - PN532 NFC (I2C / SPI / UART); PN532 module pin legend; connection schematic (I2C mode recommended); shows schematics, code and tables.
 tags: [esp32, nfc, pn532, rfid, rdm6300, fingerprint, as608, r307, gm65, barcode, uart, i2c, spi]
 date: 2026-10-08
 original: 12-Moduli-zvyazku/05-PN532-RDM6300-Fingerprint-GM65.md
 ---
 
-# PN532 NFC / RDM6300 125 кГц / Fingerprint R307 / GM65 сканер
+# PN532 NFC / RDM6300 125 kHz / R307 Fingerprint / GM65 scanner
 
-> [!info] Призначення
-> Ця нотатка покриває модулі ідентифікації: **PN532** (NFC 13.56 МГц, NDEF/UID, три інтерфейси), **RDM6300** (дешевий RFID 125 кГц EM4100, тільки читання), **R307 / AS608** (оптичний сканер відбитків пальців, UART), **GM65** (сканер штрих- and QR-кодів, UART/USB-HID). Спільне: усі віддають «ID» per UART/I2C/SPI, логіка ESP32 - порівняти with білим списком and відкрити замок / залогувати подію.
+> [!info] Purpose
+> This note covers identification modules: **PN532** (NFC 13.56 MHz, NDEF/UID, three interfaces), **RDM6300** (cheap 125 kHz EM4100 RFID, read-only), **R307 / AS608** (optical fingerprint scanner, UART), **GM65** (barcode and QR scanner, UART/USB-HID). Common: all give an "ID" over UART/I2C/SPI, ESP32 logic - compare with a whitelist and open the lock / log the event.
 
-Характеристики (порівняльна table):
+Characteristics (comparison table):
 
-| module | Частота / тип | Інтерфейс | Живлення | Дальність | that вміє |
+| Module | Frequency / type | Interface | Power supply | Range | What it can |
 | --- | --- | --- | --- | --- | --- |
-| PN532 | 13.56 МГц ISO14443A/B, FeliCa | I2C / SPI / HSU-UART (перемикачі SEL0/SEL1) | 3.3V (VCC 3.3V, 5V-версії плати мають LDO) | 3-7 см | Читання/запис Mifare, NDEF, P2P, емуляція картки |
-| RDM6300 | 125 кГц EM4100 | UART 9600 8N1 (TX) | 5V (стабільно! 3.3V not працює) | 2-5 см (зі штатною антеною) | Тільки читання UID 10 hex-символів + контрольна сума |
-| R307 / AS608 | Оптичний сенсор 500 dpi | UART 57600 (завод.) / можна 9600-115200 | 3.3-6V (всередині LDO 3.3V) | Палець on склі | Зберігання до 1000 шаблонів, порівняння 1:N on модулі |
-| GM65 | CMOS 640×480 + червона підсвітка | UART 9600 / USB-HID (перемикається) | 5V (піки струму підсвітки ~200 мА) | 5-30 см from коду | EAN-13, Code128, QR, DataMatrix; режим тригера / автосканування |
+| PN532 | 13.56 MHz ISO14443A/B, FeliCa | I2C / SPI / HSU-UART (SEL0/SEL1 switches) | 3.3V (VCC 3.3V, 5V board versions have an LDO) | 3-7 cm | Mifare read/write, NDEF, P2P, card emulation |
+| RDM6300 | 125 kHz EM4100 | UART 9600 8N1 (TX) | 5V (stable! 3.3V does not work) | 2-5 cm (with stock antenna) | UID read-only, 10 hex chars + checksum |
+| R307 / AS608 | 500 dpi optical sensor | UART 57600 (factory) / 9600-115200 possible | 3.3-6V (3.3V LDO inside) | Finger on glass | Up to 1000 templates stored, 1:N match on module |
+| GM65 | CMOS 640x480 + red backlight | UART 9600 / USB-HID (switchable) | 5V (backlight current peaks ~200 mA) | 5-30 cm from code | EAN-13, Code128, QR, DataMatrix; trigger / autoscan mode |
 
-Links to buses: I2C [[EN/04-Interfaces/03-I2C.en|I2C]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], UART [[EN/04-Interfaces/01-UART.en|UART]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], базовий RFID [[EN/12-Comm-Modules/01-RC522-RFID.en]], start [[EN/Home.en]].
+Links to buses: I2C [[EN/04-Interfaces/03-I2C.en|I2C]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], UART [[EN/04-Interfaces/01-UART.en|UART]], power supply [[EN/02-Power-Supply/01-Power-Rails.en]], basic RFID [[EN/12-Comm-Modules/01-RC522-RFID.en]], start [[EN/Home.en]].
 
 ## Purpose
 
-PN532 NFC / RDM6300 125 кГц / Fingerprint R307 / GM65 сканер - PN532 NFC (I2C / SPI / UART); Легенда пінів модуля PN532; Схема підключення (I2C-режим - рекомендований). Links to buses: I2C [[EN/04-Interfaces/03-I2C.en|I2C]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], UART [[EN/04-Interfaces/01-UART.en|UART]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]], базовий RFID 12-Comm-Modules/01-RC522-RFID, start Home. 1. PN532 NFC (I2C / SPI / UART).
+PN532 NFC / RDM6300 125 kHz / R307 Fingerprint / GM65 scanner - PN532 NFC (I2C / SPI / UART); PN532 module pin legend; connection schematic (I2C mode recommended). Links to buses: I2C [[EN/04-Interfaces/03-I2C.en|I2C]], SPI [[EN/04-Interfaces/02-SPI.en|SPI]], UART [[EN/04-Interfaces/01-UART.en|UART]], power supply [[EN/02-Power-Supply/01-Power-Rails.en]], basic RFID 12-Comm-Modules/01-RC522-RFID, start Home. 1. PN532 NFC (I2C / SPI / UART).
 
 ## 1. PN532 NFC (I2C / SPI / UART)
 
-Перемикачі режиму **SEL0 / SEL1** (DIP або перемички L/H on платі Elechouse):
+Mode switches **SEL0 / SEL1** (DIP or L/H jumpers on the Elechouse board):
 
-| SEL0 | SEL1 | Режим |
+| SEL0 | SEL1 | Mode |
 | --- | --- | --- |
 | L | L | HSU (UART) |
 | L | H | SPI |
-| H | L | I2C (заводський типово) |
+| H | L | I2C (factory typically) |
 
-> [!warning] Після зміни SEL - перепідключити живлення (Power-On Reset), інакше режим not застосується.
+> [!warning] After changing SEL - reconnect power (Power-On Reset), otherwise the mode is not applied.
 
 ![[assets/img/pn532-scheme.png|500]]
-*Fig. PN532 - I2C-режим for замовчуванням, перемикачі SEL0=H, SEL1=L.*
+*Fig. PN532 - I2C mode by default, SEL0=H, SEL1=L switches.*
 
 ### Module pin legend PN532
 
-| Пін | Тип | Куди | Примітка |
+| Pin | Type | Where | Note |
 | --- | --- | --- | --- |
-| VCC | Живлення вхід | 3V3 ESP32 | Тільки 3.3V for голої плати; сині плати Elechouse мають LDO and терплять 5V, але логіка все одно 3.3V - див. [[EN/02-Power-Supply/01-Power-Rails.en]] |
-| GND | Земля | GND | Спільна земля, короткий провід |
-| SDA / SCL (I2C) | Двонапрямлені OD | GPIO21 (SDA), GPIO22 (SCL) | I2C-адреса 0x24 (7-біт); потрібні pull-up 4.7к до 3.3V, див. [[EN/04-Interfaces/03-I2C.en| I2C]] |
-| SCK / MISO / MOSI / SS (SPI) | SPI | GPIO18/19/23, SS GPIO5 | Режим SPI вимагає SEL0=L, SEL1=H; швидкість до 5 МГц |
-| TX / RX (HSU-UART) | UART | GPIO16 (RX2) ← TX, GPIO17 (TX2) → RX перехресно | Швидкість 115200 for замовчуванням; режим SEL0=L, SEL1=L |
-| IRQ | Вихід, active low | GPIO4 (будь-which) | Переривання «картка in полі»; in I2C-режимі опитується бібліотекою |
-| RSTO / RSTPD_N | Вхід reset | GPIO15 або 3V3 via 10к | RSTPD_N = HIGH робота, LOW = power-down; імпульс LOW 100 мс = скидання |
-| SEL0 / SEL1 | Вхід вибору шини | Перемички L/H (GND або VCC) | H = HIGH (до VCC), L = LOW (до GND); not залишати висячими |
+| VCC | Power input | 3V3 ESP32 | 3.3V only for the bare board; blue Elechouse boards have an LDO and tolerate 5V, but logic is still 3.3V - see [[EN/02-Power-Supply/01-Power-Rails.en]] |
+| GND | Ground | GND | Common ground, short wire |
+| SDA / SCL (I2C) | Bidirectional OD | GPIO21 (SDA), GPIO22 (SCL) | I2C address 0x24 (7-bit); 4.7k pull-ups to 3.3V needed, see [[EN/04-Interfaces/03-I2C.en|I2C]] |
+| SCK / MISO / MOSI / SS (SPI) | SPI | GPIO18/19/23, SS GPIO5 | SPI mode requires SEL0=L, SEL1=H; speed up to 5 MHz |
+| TX / RX (HSU-UART) | UART | GPIO16 (RX2) from TX, GPIO17 (TX2) to RX crossed | 115200 speed by default; SEL0=L, SEL1=L mode |
+| IRQ | Output, active low | GPIO4 (any) | "Card in field" interrupt; in I2C mode polled by the library |
+| RSTO / RSTPD_N | Reset input | GPIO15 or 3V3 via 10k | RSTPD_N = HIGH work, LOW = power-down; LOW pulse 100 ms = reset |
+| SEL0 / SEL1 | Bus-select input | L/H jumpers (GND or VCC) | H = HIGH (to VCC), L = LOW (to GND); do not leave floating |
 
-### Схема підключення (I2C-режим - рекомендований)
+### Connection schematic (I2C mode recommended)
 
-| ESP32 | PN532 | Примітка |
+| ESP32 | PN532 | Note |
 | --- | --- | --- |
 | 3V3 | VCC | 3.3V |
 | GND | GND | common ground |
-| GPIO21 | SDA | pull-up 4.7к |
-| GPIO22 | SCL | pull-up 4.7к |
-| GPIO4 | IRQ | переривання |
+| GPIO21 | SDA | 4.7k pull-up |
+| GPIO22 | SCL | 4.7k pull-up |
+| GPIO4 | IRQ | interrupt |
 | GPIO15 | RSTPD_N | reset |
 | VCC (3V3) | SEL0 | H |
 | GND | SEL1 | L |
@@ -94,30 +94,30 @@ Notes:
 graph LR
     ESP32[ESP32<br/>GPIO21/22 + IRQ/RST] -->|3V3| VCC[VCC PN532]
     ESP32 -->|GND| GNDM[GND]
-    ESP32 <-->|GPIO21 SDA + PU 4.7к| SDA[SDA]
-    ESP32 -->|GPIO22 SCL + PU 4.7к| SCL[SCL]
+    ESP32 <-->|GPIO21 SDA + PU 4.7k| SDA[SDA]
+    ESP32 -->|GPIO22 SCL + PU 4.7k| SCL[SCL]
     IRQ[IRQ] -->|GPIO4| ESP32
     ESP32 -->|GPIO15| RST[RSTPD_N]
-    SEL0[SEL0=H до 3V3] -.-> VCC
-    SEL1[SEL1=L до GND] -.-> GNDM
+    SEL0[SEL0=H to 3V3] -.-> VCC
+    SEL1[SEL1=L to GND] -.-> GNDM
 ```
 
-## 2. RDM6300 125 кГц (UART 9600)
+## 2. RDM6300 125 kHz (UART 9600)
 
-Дешевий приймач EM4100-карток («товсті» брелоки). Видає 14 байт: `0x02 + 10 ASCII hex + 2 checksum + 0x03`.
+Cheap EM4100-card receiver ("thick" fobs). Outputs 14 bytes: `0x02 + 10 ASCII hex + 2 checksum + 0x03`.
 
 ![[assets/img/rdm6300-scheme.png|500]]
-*Fig. RDM6300 - живлення 5V, TX до ESP32 via дільник, зовнішня антена-котушка.*
+*Fig. RDM6300 - 5V power, TX to ESP32 via divider, outdoor coil antenna.*
 
 ### Module pin legend RDM6300
 
-| Пін | Тип | Куди | Примітка |
+| Pin | Type | Where | Note |
 | --- | --- | --- | --- |
-| VCC (+5V) | Живлення вхід | 5V (VIN/VU DevKit або окремий БЖ 5V) | Строго 5V ±5%! from 3.3V not стартує / рве пакети; струм ~50 мА |
-| GND | Земля | GND | Спільна with ESP32 |
-| TX (TXD, пін 1 on гребінці) | Вихід UART 5V-рівень | GPIO16 (RX2) via дільник 1к/2к | Швидкість 9600 8N1; рівень 5V - ESP32 терпить короткочасно, але правильно - дільник або транзистор; див. [[EN/04-Interfaces/01-UART.en| UART]] |
-| ANT1 / ANT2 | Аналогові до котушки | Штатна квадратна антена with комплекту | without антени дальність 0! not класти антену on метал; металеві двері - виносити антену назовні |
-| LED | Вихід індикації | not підключати / світлодіод | Блимає at читанні |
+| VCC (+5V) | Power input | 5V (VIN/VU DevKit or separate 5V PSU) | Strictly 5V +-5%! From 3.3V it does not start / tears packets; ~50 mA current |
+| GND | Ground | GND | Common with ESP32 |
+| TX (TXD, pin 1 on header) | 5V-level UART output | GPIO16 (RX2) via 1k/2k divider | 9600 8N1 speed; 5V level - ESP32 tolerates briefly, but correct is a divider or transistor; see [[EN/04-Interfaces/01-UART.en|UART]] |
+| ANT1 / ANT2 | Analog to coil | Stock square antenna from the kit | without antenna range is 0! Do not place the antenna on metal; metal doors - move the antenna outside |
+| LED | Indication output | leave unconnected / LED | Blinks on read |
 
 ### ASCII schematic
 
@@ -138,24 +138,24 @@ GPIO16 (RX2) ◄──[1к/2к]──  TX (5V рівень → дільник!)
 graph LR
     ESP32[ESP32<br/>5V + RX2] -->|5V| VCC[VCC 5V]
     ESP32 -->|GND| GNDM[GND]
-    TX[TX 9600] -->|через дільник 1к/2к| RX2[GPIO16 RX2]
-    ANT[ANT1/ANT2] --- COIL[(котушка-антена)]
+    TX[TX 9600] -->|via 1k/2k divider| RX2[GPIO16 RX2]
+    ANT[ANT1/ANT2] --- COIL[(coil antenna)]
 ```
 
-## 3. Сканер відбитків R307 / AS608 (UART)
+## 3. R307 / AS608 fingerprint scanner (UART)
 
-Оптичний module with DSP: enrollment and match виконуються всередині, ESP32 лише надсилає команди and отримує ID. Бібліотека Arduino - `Adafruit_Fingerprint`.
+Optical module with DSP: enrollment and match run inside, ESP32 only sends commands and receives ID. Arduino library - `Adafruit_Fingerprint`.
 
 ### Module pin legend R307
 
-| Пін | Тип | Куди | Примітка |
+| Pin | Type | Where | Note |
 | --- | --- | --- | --- |
-| VCC (3.3-6V) | Живлення вхід | 5V або 3V3 (for версією; червоний провід шлейфа) | Всередині LDO 3.3V; at 5V стабільніше підсвічування; струм до 120 мА in момент скану |
-| GND | Земля | GND | Чорний провід |
-| TX (жовтий) | Вихід UART | GPIO16 (RX2) | Заводська швидкість 57600 8N1; пароль for замовчуванням 0x00000000 |
-| RX (білий) | Вхід UART | GPIO17 (TX2) | Перехресно: module TX → ESP32 RX |
-| TOUCH / WAKE (зелений, опційно) | Вихід, HIGH at дотику | GPIO4 | Wake-сигнал «палець прикладено»; можна будити ESP32 with light-sleep |
-| NC | - | not підключати | Зарезервовано |
+| VCC (3.3-6V) | Power input | 5V or 3V3 (by version; red wire of ribbon) | 3.3V LDO inside; at 5V backlight is more stable; current up to 120 mA at scan moment |
+| GND | Ground | GND | Black wire |
+| TX (yellow) | UART output | GPIO16 (RX2) | Factory speed 57600 8N1; default password 0x00000000 |
+| RX (white) | UART input | GPIO17 (TX2) | Crossed: module TX to ESP32 RX |
+| TOUCH / WAKE (green, optional) | Output, HIGH on touch | GPIO4 | Wake signal "finger applied"; can wake ESP32 from light-sleep |
+| NC | - | leave unconnected | Reserved |
 
 ### ASCII schematic
 
@@ -180,20 +180,20 @@ graph LR
     TOUCH[TOUCH] -->|GPIO4 wake| ESP32
 ```
 
-## 4. GM65 сканер штрих-кодів (UART / USB)
+## 4. GM65 barcode scanner (UART / USB)
 
-CMOS-сканер with червоною підсвіткою. for ESP32 використовувати **UART-режим 9600** (заводський - USB-HID; перемикається скануванням спецкодів with мануала «UART Mode»). Вихід - ASCII рядок коду + `\r\n`.
+CMOS scanner with red backlight. For ESP32 use **UART 9600 mode** (factory is USB-HID; switched by scanning special codes from the "UART Mode" manual). Output is an ASCII code string + `\r\n`.
 
 ### Module pin legend GM65
 
-| Пін | Тип | Куди | Примітка |
+| Pin | Type | Where | Note |
 | --- | --- | --- | --- |
-| VCC 5V | Живлення вхід | 5V окремий / VIN | Піки підсвітки ~200 мА - from слабкого USB-UART може блимати; електроліт 470 мкФ біля модуля |
-| GND | Земля | GND | Спільна земля |
-| TX | Вихід UART | GPIO16 (RX2) | 9600 8N1, формат: `<code>\r\n` |
-| RX | Вхід UART | GPIO17 (TX2) | Команди конфігурації with мануала |
-| TRIG | Вхід, active low | GPIO5 (кнопка до GND) | Імпульс LOW ≥100 мс = одне сканування; in режимі «Auto/Continuous» можна залишити NC |
-| USB D+/D− | USB-HID | not використовувати with ESP32 | Альтернатива UART; for ESP32-S2/S3 with USB-host - можливо, але нестабільно |
+| VCC 5V | Power input | Separate 5V / VIN | Backlight peaks ~200 mA - from a weak USB-UART may blink; 470 uF electrolytic near the module |
+| GND | Ground | GND | Common ground |
+| TX | UART output | GPIO16 (RX2) | 9600 8N1, format: `<code>\r\n` |
+| RX | UART input | GPIO17 (TX2) | Configuration commands from the manual |
+| TRIG | Input, active low | GPIO5 (button to GND) | LOW pulse >=100 ms = one scan; in "Auto/Continuous" mode can be left NC |
+| USB D+/D- | USB-HID | do not use with ESP32 | UART alternative; for ESP32-S2/S3 with USB host - possible but unstable |
 
 ### ASCII schematic
 
@@ -218,18 +218,18 @@ graph LR
     ESP32 -->|GPIO5| TRIG[TRIG]
 ```
 
-### SE3307 / GM65-reader - Ready OEM-рідери
+### SE3307 / GM65-reader - ready OEM readers
 
-| Параметр | SE3307 (scan engine) | GM65-reader (готовий пристрій) |
+| Parameter | SE3307 (scan engine) | GM65-reader (ready device) |
 | --- | --- | --- |
-| Формат | Плата-движок without корпусу (вбудовується) | Корпус + кнопка + кабель |
-| Інтерфейс | UART/TTL (той же ASCII-протокол `<code>\r\n`) | UART або USB-HID (перемикається) |
-| Живлення | 3.3 in | 5 in (підсвітка!) |
-| Коли брати | Свій корпус/термінал | Готовий USB-сканер до каси + UART-гілка до ESP32 |
+| Format | Engine board without enclosure (embedded) | Enclosure + button + cable |
+| Interface | UART/TTL (same ASCII protocol `<code>\r\n`) | UART or USB-HID (switchable) |
+| Power supply | 3.3 V | 5 V (backlight!) |
+| When to take | Own enclosure/terminal | Ready USB scanner to cashier + UART branch to ESP32 |
 
-> Протокол однаковий with GM65-модулем: code вище повністю застосовний, різниця лише in обв'язці та живленні.
+> Protocol is the same as the GM65 module: code above fully applies, difference only in strapping and power.
 
-## Code - читання UID / подій
+## Code - UID / event reading
 
 ### Arduino (PN532 I2C - Adafruit_PN532)
 
@@ -259,7 +259,7 @@ void loop() {
 }
 ```
 
-### Arduino (RDM6300 - читання UID)
+### Arduino (RDM6300 - UID reading)
 
 ```cpp
 // RDM6300: TX -> GPIO16, 9600 8N1, пакет 14 байт: 02 + 10 ASCII + 2 CS + 03
@@ -318,7 +318,7 @@ void app_main(void) {
 }
 ```
 
-### MicroPython (PN532 I2C - мінімальний)
+### MicroPython (PN532 I2C - minimal)
 
 ```python
 from machine import I2C, Pin
@@ -329,7 +329,7 @@ print("I2C scan:", [hex(a) for a in i2c.scan()])  # чекаємо 0x24
 # бібліотеку micropython-pn532 (pnguyen/pn532) з прикладом read_uid().
 ```
 
-### MicroPython (RDM6300 / GM65 - UART читання рядка)
+### MicroPython (RDM6300 / GM65 - UART line reading)
 
 ```python
 from machine import UART
@@ -350,35 +350,35 @@ while True:
 
 ## typical errors
 
-| # | Symptom | Cause | Виправлення |
+| # | Symptom | Cause | Fix |
 | --- | --- | --- | --- |
-| 1 | PN532 not видно on `i2c.scan()` | SEL in режимі SPI/UART; no pull-up; живлення 5V просівше | Виставити SEL0=H SEL1=L, перепідключити живлення; pull-up 4.7к; verify 3.3V під навантаженням |
-| 2 | PN532 відповідає, але карток not бачить | Антена накрита металом / телефон поруч; NDEF-example without `SAMConfig()` | Віднести from металу ≥5 см; викликати `SAMConfig()` після `begin()` |
-| 3 | RDM6300 мовчить | Живлення 3.3V замість 5V; антена not підключена; швидкість not 9600 | Дати 5V; підключити штатну котушку; `Serial2.begin(9600, SERIAL_8N1, 16, -1)` |
-| 4 | RDM6300 видає сміття | 5V-рівень TX without дільника; довгі дроти; common ground відсутня | Дільник 1к/2к on RX ESP32; дроти <30 см; спільний GND |
-| 5 | R307 `Did not find fingerprint sensor` | Швидкість not 57600; переплутані TX/RX; пароль змінено | Спробувати 9600/57600/115200; поміняти місцями; скинути пароль via SFGDemo |
-| 6 | R307 not впізнає палець | Сухий/мокрий палець; enrollment with 1 зразком | Enrollment with 2-3 зразками; протерти скло; поріг `finger.setSecurityLevel()` |
-| 7 | SE3307/GM65-reader мовчить per UART | Заводський USB-HID режим | Відсканувати code «UART Mode» with мануала; verify 9600 8N1 |
-| 7 | GM65 мовчить per UART | module in USB-HID режимі with заводу | Відсканувати code «Enter Setup → UART Output → 9600 → Exit» with мануала |
-| 8 | GM65 перезавантажується at скані | Пік струму підсвітки просаджує 5V | Окремий БЖ 5V 1A + електроліт 470 мкФ біля VCC |
+| 1 | PN532 not visible on `i2c.scan()` | SEL in SPI/UART mode; no pull-up; 5V power sagged | Set SEL0=H SEL1=L, repower; 4.7k pull-up; verify 3.3V under load |
+| 2 | PN532 answers but sees no cards | Antenna covered by metal / phone nearby; NDEF example without `SAMConfig()` | Move >=5 cm from metal; call `SAMConfig()` after `begin()` |
+| 3 | RDM6300 silent | 3.3V power instead of 5V; antenna unconnected; speed not 9600 | Give 5V; connect the stock coil; `Serial2.begin(9600, SERIAL_8N1, 16, -1)` |
+| 4 | RDM6300 outputs garbage | 5V-level TX without divider; long wires; common ground missing | 1k/2k divider on ESP32 RX; wires <30 cm; common GND |
+| 5 | R307 `Did not find fingerprint sensor` | Speed not 57600; TX/RX swapped; password changed | Try 9600/57600/115200; swap; reset password via SFGDemo |
+| 6 | R307 does not recognize the finger | Dry/wet finger; enrollment with 1 sample | Enrollment with 2-3 samples; wipe glass; `finger.setSecurityLevel()` threshold |
+| 7 | SE3307/GM65-reader silent over UART | Factory USB-HID mode | Scan the "UART Mode" code from the manual; verify 9600 8N1 |
+| 7 | GM65 silent over UART | module in factory USB-HID mode | Scan the "Enter Setup to UART Output to 9600 to Exit" code from the manual |
+| 8 | GM65 reboots on scan | Backlight current peak sags 5V | Separate 5V 1A PSU + 470 uF electrolytic near VCC |
 
 ![[assets/img/nfc-rfid-biometry-scheme.png|500]]
-*Fig. Загальна схема: всі модулі ідентифікації on одному ESP32 (різні UART + I2C).*
+*Fig. Overall schematic: all identification modules on one ESP32 (different UARTs + I2C).*
 
 ## Official sources
 
-- [PN532 - даташит (PDF, NXP)](https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf) - режими reader/writer, емуляція картки.
-- [PN532 - сторінка продукту with фото (NXP)](https://www.nxp.com/products/rfid-nfc/nfc-hf/nfc-readers/nfc-integrated-solution:PN5321A3HN) - документи, антени.
-- [ESP32 + MFRC522 - туторіал with кодом (RNT)](https://randomnerdtutorials.com/esp32-mfrc522-rfid-reader-arduino/) - суміжний RFID-code for порівняння.
-- [RC522 - розбір with фото (LME)](https://lastminuteengineers.com/how-rfid-works-rc522-arduino-tutorial/) - база RFID, структура UID.
+- [PN532 - datasheet (PDF, NXP)](https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf) - reader/writer modes, card emulation.
+- [PN532 - product page with photo (NXP)](https://www.nxp.com/products/rfid-nfc/nfc-hf/nfc-readers/nfc-integrated-solution:PN5321A3HN) - documents, antennas.
+- [ESP32 + MFRC522 - tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-mfrc522-rfid-reader-arduino/) - adjacent RFID code for comparison.
+- [RC522 - breakdown with photo (LME)](https://lastminuteengineers.com/how-rfid-works-rc522-arduino-tutorial/) - RFID base, UID structure.
 
 ## See also
 
-- [[EN/04-Interfaces/01-UART.en|UART]] - налаштування UART2, перехрестя TX/RX
-- [[EN/04-Interfaces/02-SPI.en|SPI]] - PN532 in режимі SPI
-- [[EN/04-Interfaces/03-I2C.en|I2C]] - pull-up, адреса 0x24, сканування шини
-- [[EN/02-Power-Supply/01-Power-Rails.en]] - живлення 3.3V/5V, LDO, електроліти
-- [[EN/12-Comm-Modules/01-RC522-RFID.en]] - базовий RFID RC522 (порівняти with PN532/RDM6300)
-- [[EN/12-Comm-Modules/02-NRF24-LoRa.en]] - радіомодулі (альтернатива ідентифікації per радіо)
-- [[EN/03-GPIO/01-GPIO-Overview.en]] - IRQ/TOUCH/TRIG how входи пробудження
-- [[EN/Home.en]] - стартова сторінка довідника
+- [[EN/04-Interfaces/01-UART.en|UART]] - UART2 setup, TX/RX crossing
+- [[EN/04-Interfaces/02-SPI.en|SPI]] - PN532 in SPI mode
+- [[EN/04-Interfaces/03-I2C.en|I2C]] - pull-ups, 0x24 address, bus scan
+- [[EN/02-Power-Supply/01-Power-Rails.en]] - 3.3V/5V power, LDO, electrolytics
+- [[EN/12-Comm-Modules/01-RC522-RFID.en]] - basic RC522 RFID (compare with PN532/RDM6300)
+- [[EN/12-Comm-Modules/02-NRF24-LoRa.en]] - radio modules (radio identification alternative)
+- [[EN/03-GPIO/01-GPIO-Overview.en]] - IRQ/TOUCH/TRIG as wake inputs
+- [[EN/Home.en]] - reference start page

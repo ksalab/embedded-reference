@@ -1,42 +1,41 @@
 ---
-title: AWS IoT Core with ESP32 - сертифікати X.509, Thing Shadow, Jobs, Fleet Provisioning
-description: AWS IoT Core - керований MQTT-broker with authorization ТІЛЬКИ for X.509-сертифікатами (логін/пароль not приймається!). Плюс Thing Shadow (цифровий двійник) and Jobs (команди/OTA парку). ESP32...
+title: AWS IoT Core with ESP32 - X.509 certificates, Thing Shadow, Jobs, Fleet Provisioning
+description: AWS IoT Core - managed MQTT broker with X.509 certificate auth only, plus Shadow and Jobs; shows schematics, code and tables.
 tags: [esp32, aws, iot-core, x509, thing-shadow, jobs, fleet-provisioning, mqtt, tls]
 category: Protokoli
 date-created: 2026-09-30
 date: 2026-09-30
 lang: en
 original: 15-Protocols/12-AWS-IoT.md
-date: 2026-10-08
 ---
 
-# AWS IoT Core with ESP32: сертифікати, Shadow, Jobs
+# AWS IoT Core with ESP32: certificates, Shadow, Jobs
 
-## Призначення
+## Purpose
 
-AWS IoT Core - керований MQTT-broker with authorization ТІЛЬКИ for X.509-сертифікатами (логін/пароль not приймається!). Плюс Thing Shadow (цифровий двійник) and Jobs (команди/OTA парку). ESP32 підключається via esp-mqtt with клієнтським сертифікатом.
+AWS IoT Core - managed MQTT broker with auth ONLY by X.509 certificates (login and password are not accepted!). Plus Thing Shadow (digital twin) and Jobs (fleet commands and OTA). ESP32 connects through esp-mqtt with a client certificate.
 
-База: старт - [[Home.en]], MQTT-база - [[EN/15-Protocols/01-MQTT.en|MQTT]], TLS/NTP - [[EN/15-Protocols/03-mDNS-NTP-TLS.en]], пайплайн - [[EN/15-Protocols/05-Cloud-Pipeline.en]], OTA - [[EN/08-Memory/03-OTA.en|OTA]], час - [[EN/10-Sensors/27-Time-Mem-IO-DAC.en]].
+Base: start - [[Home.en|Home]], MQTT base - [[EN/15-Protocols/01-MQTT.en|MQTT]], TLS and NTP - [[EN/15-Protocols/03-mDNS-NTP-TLS.en|TLS and NTP]], pipeline - [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud pipeline]], OTA - [[EN/08-Memory/03-OTA.en|OTA]], time - [[EN/10-Sensors/27-Time-Mem-IO-DAC.en|Time and memory]].
 
-> [!danger] Три речі, without яких AWS not підключить
+> [!danger] Three things without which AWS will not connect
 >
-> 1. Реальний час (NTP/GPS) - сертифікат перевіряється for датою. 2. Трійка файлів: device-certificate + private-key + AmazonRootCA1 - усі три on пристрої. 3. Policy in хмарі дозволяє `iot:Connect/Publish/Subscribe` саме цьому Thing. error in будь-якому - мовчазний `CONNACK 0x05`.
+> 1. Real time (NTP/GPS) - the certificate is checked by date. 2. File triplet: device certificate + private key + AmazonRootCA1 - all three on the device. 3. Cloud policy allows `iot:Connect/Publish/Subscribe` for this exact Thing. A fault in any of them gives a silent `CONNACK 0x05`.
 
 ![[assets/img/cloud-aws-iot-scheme.png|600]]
-*Рис. ESP32 with трійкою файлів → TLS 8883 → IoT Core endpoint → Rules → Shadow/DynamoDB + Jobs on парк.*
+*Fig. ESP32 with the file triplet to TLS 8883 to IoT Core endpoint to Rules to Shadow/DynamoDB + Jobs for the fleet.*
 
-## Характеристики підключення
+## Connection specs
 
-| Параметр | Значення |
+| Parameter | Value |
 | --- | --- |
-| Endpoint | `<account>-ats.iot.<region>.amazonaws.com:8883` (ATS - новий корінь!) |
-| Авторизація | X.509 клієнтський сертифікат + приватний key (P256/RSA2048) |
-| CA | AmazonRootCA1.pem (ECC) - качати with AWS docs, not зі стелі |
-| Протокол | MQTT 3.1.1 (5 - ні), keepalive 60-300 с |
-| RAM | TLS-сесія ~40-60 КБ - on C3 without PSRAM рахувати! |
-| Ліміти | 100 повідомлень/с on with'єднання (тротлінг!), payload 128 КБ |
+| Endpoint | `<account>-ats.iot.<region>.amazonaws.com:8883` (ATS - new root!) |
+| Auth | X.509 client certificate + private key (P256/RSA2048) |
+| CA | AmazonRootCA1.pem (ECC) - download from AWS docs, not from random places |
+| Protocol | MQTT 3.1.1 (no 5), keepalive 60-300 s |
+| RAM | TLS session about 40-60 KB - mind it on C3 without PSRAM! |
+| Limits | 100 messages/s per connection (throttling!), 128 KB payload |
 
-## 1. Створення Thing and трійки файлів (консоль AWS)
+## 1. Creating a Thing and the file triplet (AWS console)
 
 ```text
 IoT Core → Manage → Things → Create:
@@ -51,7 +50,7 @@ Policy (мінімум, не "*"):
     "iot:Subscribe": "arn:...:topicfilter/device/esp32-tracker-0142/cmd" }
 ```
 
-## 2. Прошивка: esp-mqtt with сертифікатами (ESP-IDF)
+## 2. Firmware: esp-mqtt with certificates (ESP-IDF)
 
 ```c
 // ESP-IDF: сертифікати вшиті (certs.h) або з LittleFS; час — SNTP ДО connect!
@@ -69,7 +68,7 @@ esp_mqtt_client_config_t cfg = {
 // MicroPython: umqtt + ssl_params={'cert':..., 'key':..., 'cadata':...} — важко на малих чипах!
 ```
 
-## 3. Thing Shadow: цифровий двійник
+## 3. Thing Shadow: digital twin
 
 ```text
 Топіки Shadow (резервовані, з $):
@@ -81,7 +80,7 @@ esp_mqtt_client_config_t cfg = {
 Навіщо: команда дійде навіть якщо пристрій спав (desired чекає!), конфлікти видно.
 ```
 
-## 4. Jobs: команди and OTA on парк
+## 4. Jobs: commands and OTA for the fleet
 
 ```text
 Job = документ для списку Things: {"operation":"ota","url":"https://.../fw.bin","ver":"1.5.0"}.
@@ -90,7 +89,7 @@ Job = документ для списку Things: {"operation":"ota","url":"htt
 OTA через Jobs = єдина пристойна масова OTA на AWS (див. 08-Memory/03).
 ```
 
-## 5. Fleet Provisioning: серійне виробництво (JITP/JITR)
+## 5. Fleet Provisioning: mass production (JITP/JITR)
 
 ```text
 Проблема: 1000 пристроїв — не будеш руками клікати 1000 сертифікатів!
@@ -100,42 +99,42 @@ OTA через Jobs = єдина пристойна масова OTA на AWS (�
 Зв'язок з базою: mfg-NVS партиція (див. 17-Lab/03) + серійник = CN сертифіката.
 ```
 
-### Mermaid: перше підключення
+### Mermaid: first connection
 
 ```mermaid
 flowchart TB
-    SNTP[SNTP: реальний час!] --> CFG[Трійка файлів + endpoint + clientID=Thing]
+    SNTP[SNTP: real time!] --> CFG[File triplet + endpoint + clientID=Thing]
     CFG --> CONN[mqtts 8883 CONNECT]
-    CONN -->|CONNACK 0x05| FIX{Що не так?}
-    FIX -->|Час 1970| SNTP
-    FIX -->|Policy| POL[Attach policy в консолі]
-    FIX -->|Сертифікат| REV[Перевипуск, старий — revoke!]
-    CONN -->|CONNACK 0x00| SHADOW[Shadow update + delta-підписка]
+    CONN -->|CONNACK 0x05| FIX{What is wrong?}
+    FIX -->|Time 1970| SNTP
+    FIX -->|Policy| POL[Attach policy in console]
+    FIX -->|Certificate| REV[Reissue, revoke the old one!]
+    CONN -->|CONNACK 0x00| SHADOW[Shadow update + delta subscription]
     SHADOW --> JOBS[Jobs notify-next]
 ```
 
-## typical errors
+## Typical issues
 
-| # | error | Чому погано | how правильно |
+| # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
-| 1 | Час 1970 at connect | Сертифікат «недійсний» | SNTP ДО MQTT (блокуюче очікування!) |
-| 2 | clientID ≠ Thing name | Policy not пускає | clientID = Thing name буквально |
-| 3 | Policy `*` on все | Дірка in безпеці парку | Мінімальні ресурсні ARN |
-| 4 | Приватний key загублено | Перевипуск + revoke старого | Зберігати at створенні (три файли!) |
-| 5 | ATS vs старий endpoint | Старий корінь VeriSign - deprecated | Тільки `-ats` endpoint + AmazonRootCA1 |
-| 6 | MQTT 5 фічі | Core говорить 3.1.1 | without user properties |
-| 7 | Тротлінг 100 msg/s | Обрізає пачки | Агрегувати, QoS 0 for телеметрії |
-| 8 | Один сертифікат on парк | Компрометація одного = всі | Fleet Provisioning, розділ 5 |
-| 9 | umqtt + X.509 on C3 | Мало RAM під 3 PEM | ESP-IDF або чип with PSRAM |
-| 10 | Desired ніхто not читає | Команди губляться | Завжди підписка on delta |
+| 1 | Time stuck at 1970 at connect | Certificate looks invalid | SNTP BEFORE MQTT (blocking wait!) |
+| 2 | clientID differs from Thing name | Policy blocks it | clientID = Thing name literally |
+| 3 | Policy `*` on everything | Hole in fleet security | Minimal resource ARNs |
+| 4 | Private key lost | Reissue + revoke the old one | Store at creation time (three files!) |
+| 5 | ATS vs old endpoint | Old VeriSign root is deprecated | Only `-ats` endpoint + AmazonRootCA1 |
+| 6 | MQTT 5 features | Core speaks 3.1.1 | No user properties |
+| 7 | Throttling at 100 msg/s | Bursts get cut | Aggregate, QoS 0 for telemetry |
+| 8 | One certificate for the fleet | One compromised key exposes all | Fleet Provisioning, section 5 |
+| 9 | umqtt + X.509 on C3 | Too little RAM for 3 PEM files | ESP-IDF or a chip with PSRAM |
+| 10 | Desired ignored by firmware | Commands get lost | Always subscribe to delta |
 
-## official джерела
+## Official sources
 
-- [AWS IoT Core - Device SDK + приклади ESP32](https://docs.aws.amazon.com/iot/latest/developerguide/iot-embedded-c-sdk.html) - embedded C SDK.
-- [AWS Fleet Provisioning (JITP)](https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html) - claim → operational.
-- [Thing Shadow + Jobs docs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html) - топіки, документи.
+- [AWS IoT Core - Device SDK + ESP32 examples](https://docs.aws.amazon.com/iot/latest/developerguide/iot-embedded-c-sdk.html) - embedded C SDK.
+- [AWS Fleet Provisioning (JITP)](https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html) - claim to operational.
+- [Thing Shadow + Jobs docs](https://docs.aws.amazon.com/iot/latest/developerguide/iot-device-shadows.html) - topics, documents.
 
-### Arduino: PubSubClient + WiFiClientSecure (скорочено)
+### Arduino: PubSubClient + WiFiClientSecure (short)
 
 ```cpp
 #include <WiFiClientSecure.h>
@@ -153,19 +152,19 @@ void setup() {
 // RAM-ліміт C3 без PSRAM: 3 PEM (~4 КБ) + TLS-сесія 40+ КБ — рахувати heap!
 ```
 
-## Див. також
+## See also
 
-- [[Home.en|Головна]]
+- [[Home.en|Home]]
 - [[EN/15-Protocols/01-MQTT.en|MQTT]]
-- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|TLS/NTP]]
-- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud-Pipeline]]
+- [[EN/15-Protocols/03-mDNS-NTP-TLS.en|TLS and NTP]]
+- [[EN/15-Protocols/05-Cloud-Pipeline.en|Cloud pipeline]]
 - [[EN/15-Protocols/13-Azure-IoT.en]]
 - [[EN/08-Memory/03-OTA.en|OTA]]
-- [[EN/08-Memory/04-Secure-Boot-Encrypt.en|Secure Boot]]
-- [[EN/17-Lab/03-Enclosure-Cert-Factory.en|mfg-NVS]]
+- [[EN/08-Memory/04-Secure-Boot-Encrypt.en|Secure boot]]
+- [[EN/17-Lab/03-Enclosure-Cert-Factory.en|Factory NVS]]
 
 
-## Common issues
+## Appendix: connection checklist
 
 | Symptom | Cause | Fix |
 |---|---|---|

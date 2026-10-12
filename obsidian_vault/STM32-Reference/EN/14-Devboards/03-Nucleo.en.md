@@ -1,38 +1,37 @@
 ---
-title: Nucleo - плати with дебагером with коробки
+title: Nucleo - boards with out-of-the-box debugger
 description: Explains Nucleo development board with integrated ST-Link, Arduino headers and wide peripheral support; shows schematics, code and tables.
 tags: [stm32, nucleo, morpho, stlink]
 category: Boards
 lang: en
 original: STM32-Reference/14-Devboards/03-Nucleo.md
 date-created: 2026-10-01
-date: 2026-10-01
 date: 2026-10-09
 ---
 
 # Nucleo - development board with integrated ST-Link and Arduino headers
 
 ![[assets/img/stm32-nucleo-board-scheme.png|600]]
-*Рис. Плата Nucleo: вбудований дебагер, гребінки розширення and перемички живлення.*
+*Fig. Nucleo board: built-in debugger, expansion headers and power jumpers.*
 
-> [!tip] Призначення ноти
-> Пояснити чому ця лінійка головна for старту: дебагер вже on платі, віртуальний порт with коробки and сумісність with модулями розширення.
+> [!tip] Note purpose
+> Explain why this line is the main one to start with: the debugger is already on the board, the virtual port works out of the box and extension modules are compatible.
 
-## 1. Призначення
+## 1. Purpose
 
-Лінійка закриває навчання and прототипи без купівлі програматора. Вбудований дебагер шиє свій контролер and зовнішні плати via дроти. Віртуальний порт дає консоль тим самим кабелем.
+The line covers learning and prototypes without buying a programmer. The built-in debugger flashes its own controller and external boards over wires. The virtual port gives a console over the same cable.
 
-Три розміри дають вибір: маленька for компактних вузлів, середня for більшості задач, велика for процесорів with багатьма пінами. Сумісність with модулями розширення відкриває доступ до готових щитів.
+Three sizes give a choice: small for compact nodes, medium for most tasks, large for processors with many pins. Compatibility with extension modules opens access to ready shields.
 
-Вимірювання струму via перемичку вчить оцінювати споживання. Гребінки with signals контролера дають доступ до всіх інтерфейсів.
+Current measurement over a jumper teaches you to estimate consumption. Pin headers with controller signals give access to all interfaces.
 
-## 2. Лінійка трьох розмірів
+## 2. Line of three sizes
 
-| Формат | Контролер example | Пінів | Коли брати |
+| Format | Example controller | Pins | When to take |
 | --- | --- | --- | --- |
-| Мала 32 | F031, F042, G431 | 32 | Компактні вузли and навчання базове |
-| Середня 64 | F103, F401, G474, L476 | 64 | Універсальна for більшості проєктів |
-| Велика 144 | F429, F746, H743 | 144 | Дисплеї, мережа and запас інтерфейсів |
+| Small 32 | F031, F042, G431 | 32 | Compact nodes and basic learning |
+| Medium 64 | F103, F401, G474, L476 | 64 | General for most projects |
+| Large 144 | F429, F746, H743 | 144 | Displays, network and interface reserve |
 
 ```text
 Компонування середньої плати:
@@ -49,28 +48,28 @@ date: 2026-10-09
   +------------------------------------------+
 ```
 
-## 3. Вбудований дебагер
+## 3. Built-in debugger
 
-| Можливість | how працює | Навіщо |
+| Feature | How it works | Purpose |
 | --- | --- | --- |
-| Прошивка свого | via кабель with коробки | Старт без покупок |
-| Прошивка зовнішньої | Вихідні сигнали on гребінці | Шиє прості плати поруч |
-| Віртуальний порт | Міст до послідовного порту | Консоль без перетворювача |
-| Оновлення | Окрема утиліта прошивки | Лікує старі версії |
-| Живлення | Від роз'єму дебагера | Живить слабкі макети |
+| Flashing own | Over cable out of the box | Start without purchases |
+| Flashing external | Output signals on the header | Flashes simple boards nearby |
+| Virtual port | Bridge to the serial port | Console without converter |
+| Update | Separate flashing utility | Fixes old versions |
+| Power | From the debugger connector | Powers weak breadboards |
 
-Дебагер шиє and зовнішні плати: зняти перемички, підключити три дроти сигналів and землю. Це рятує коли проста плата без дебагера лежить поруч.
+The debugger also flashes external boards: remove the jumpers, connect three signal wires and ground. This saves you when a simple board without a debugger lies nearby.
 
-## 4. Перемички живлення
+## 4. Power jumpers
 
-| Позначення | Призначення | Положення |
+| Marking | Purpose | Position |
 | --- | --- | --- |
-| JP5 | Вимір струму | Знята for амперметра |
-| U5V | Живлення від дебагера | Замкнута за замовчуванням |
-| E5V | Зовнішні 5 in | Замкнута at блоці живлення |
-| VIN | Вхід 7-12 in | via стабілізатор плати |
+| JP5 | Current measurement | Removed for the ammeter |
+| U5V | Power from the debugger | Closed by default |
+| E5V | External 5 V | Closed with a power PSU |
+| VIN | 7-12 V input | Over the board regulator |
 
-typical error це живлення with двох джерел одночасно. Правило одне source for однієї плати. Вимір струму це зняти перемичку and in розрив увімкнути амперметр.
+A typical error is power from two sources at the same time. The rule is one source for one board. Current measurement means removing the jumper and switching the ammeter into the break.
 
 ```text
 Варіанти живлення однієї плати:
@@ -80,29 +79,29 @@ typical error це живлення with двох джерел одночасн�
   Вимір струму ........ JP5 знята, амперметр у розрив
 ```
 
-## 5. Гребінки розширення
+## 5. Expansion headers
 
-| Гребінка | that виведено | Сумісність |
+| Header | What is routed | Compatibility |
 | --- | --- | --- |
-| Морфо ліва | Живлення and аналогові | Всі сигнали контролера |
-| Морфо права | Цифрові and інтерфейси | Прямий доступ без щитів |
-| Щити зверху | Живлення 5 in and 3.3 in | Модулі розширення |
-| Щити знизу | Послідовний and двопровідний | Датчики готовими пакетами |
+| Morpho left | Power and analog | All controller signals |
+| Morpho right | Digital and interfaces | Direct access without shields |
+| Shields top | 5 V and 3.3 V power | Extension modules |
+| Shields bottom | Serial and two-wire | Sensors as ready packages |
 
-Сумісність with щитами дає дисплей, мережу and мотори без паяння. Морфо-гребінки дають чисті сигнали for осцилографа and логічного аналізатора.
+Shield compatibility gives display, network and motors without soldering. Morpho headers give clean signals for the oscilloscope and the logic analyzer.
 
-## 6. Вибір плати під задачу
+## 6. Choosing a board for the task
 
-| Задача | Яку брати | Чому |
+| Task | Which to take | Why |
 | --- | --- | --- |
-| Навчання базове | Мала 32 with простим чипом | Дешево and вистачає |
-| Універсальна | Середня 64 with запасом | Більшість прикладів саме під неї |
-| Дисплей and графіка | Велика 144 with контролером дисплея | Шина and пам'ять for кадрів |
-| Низьке споживання | Варіант with літерою L | Режими сну and вимір струму |
-| Звук and мотори | Варіант with F4 або G4 | Швидкість and точні таймери |
-| Мережа дротова | Велика with мережевим інтерфейсом | Фізичний рівень on платі |
+| Basic learning | Small 32 with a simple chip | Cheap and enough |
+| General | Medium 64 with reserve | Most examples target it |
+| Display and graphics | Large 144 with display controller | Bus and memory for frames |
+| Low consumption | Variant with letter L | Sleep modes and current measurement |
+| Sound and motors | Variant with F4 or G4 | Speed and accurate timers |
+| Wired network | Large with network interface | Physical layer on the board |
 
-## 7. Перший проєкт крок за кроком
+## 7. First project step by step
 
 ```text
 Старт за десять хвилин:
@@ -141,7 +140,7 @@ int main(void)
 }
 ```
 
-Зелений світлодіод on більшості плат висить on лінії PA5. Кнопка користувача on PC13 дає вхід for пауз and меню.
+The green LED on most boards hangs on the PA5 line. The user button on PC13 gives an input for pauses and menus.
 
 ```c
 #include "stm32f4xx_hal.h"
@@ -161,36 +160,36 @@ void nucleo_wait_button(void)
 }
 ```
 
-## 8. Вимірювання струму via перемичку
+## 8. Measuring current via the jumper
 
-| Крок | Дія | Очікування |
+| Step | Action | Expectation |
 | --- | --- | --- |
-| 1 | Зняти перемичку виміру | Розрив шини живлення |
-| 2 | Амперметр у розрив | Межа міліампер |
-| 3 | Прошивка with циклами сну | Струм падає in паузах |
-| 4 | Запис трьох значень | Робота, сон, простій |
+| 1 | Remove the measurement jumper | Power rail break |
+| 2 | Ammeter into the break | Milliamp range |
+| 3 | Firmware with sleep cycles | Current drops in pauses |
+| 4 | Record three values | Run, sleep, idle |
 
-Вимір вчить бачити ціну мегагерців: зниження частоти вдвічі ріже споживання помітно. Режими сну дають мікроампери між вимірами.
+Measurement teaches you to see the price of megahertz: halving the frequency cuts consumption visibly. Sleep modes give microamps between measurements.
 
-## 9. Mermaid: вибір плати
+## 9. Mermaid: choosing the board
 
 ```mermaid
 flowchart TB
-    Start[Нова задача для прототипа]
-    Start --> Size{Скільки ніг треба}
-    Size --> Small[Мала 32 для простих вузлів]
-    Size --> Mid[Середня 64 для більшості]
-    Size --> Big[Велика 144 для дисплеїв]
-    Mid --> Power{Живлення від чого}
-    Power --> Usb[Від дебагера для столу]
-    Power --> Ext[Від блока для поля]
-    Small --> Debug[Дебагер шиє з коробки]
+    Start[New task for a prototype]
+    Start --> Size{How many pins are needed}
+    Size --> Small[Small 32 for simple nodes]
+    Size --> Mid[Medium 64 for most]
+    Size --> Big[Large 144 for displays]
+    Mid --> Power{Powered from what}
+    Power --> Usb[From the debugger for the bench]
+    Power --> Ext[From the PSU for the field]
+    Small --> Debug[Debugger flashes out of the box]
     Big --> Debug
-    Usb --> Measure[Вимір струму перемичкою]
+    Usb --> Measure[Current measurement with the jumper]
     Ext --> Measure
 ```
 
-## 10. Зовнішня прошивка via дебагер
+## 10. External flashing via the debugger
 
 ```text
 Шиємо просту плату дебагером цієї:
@@ -223,7 +222,7 @@ flowchart TB
 ## See also
 
 - [[Home.en]]
-- [[EN/00-Start/04-Dev-Boards.en|огляд плат]]
-- [[EN/09-Firmware/01-CubeIDE-CubeMX.en|налаштування CubeMX]]
-- [[EN/09-Firmware/03-ST-Link-Flashing.en|прошивка via ST-Link]]
-- [[EN/14-Devboards/01-Blue-Pill.en|плата Blue Pill]]
+- [[EN/00-Start/04-Dev-Boards.en|board overview]]
+- [[EN/09-Firmware/01-CubeIDE-CubeMX.en|CubeMX setup]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|flashing via ST-Link]]
+- [[EN/14-Devboards/01-Blue-Pill.en|Blue Pill board]]

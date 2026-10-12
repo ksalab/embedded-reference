@@ -1,6 +1,6 @@
 ---
-title: Automotive - ELM327 OBD-II, LIN, SENT, FlexRay, 100BASE-T1, K-line, TPMS, KeeLoq, живлення 12V
-description: Ця нота - автомобільний вузол ESP32: diagnostics OBD-II via ELM327-клон; показує схеми, code and таблиці.; shows schematics, code and tables.
+title: Automotive - ELM327 OBD-II, LIN, SENT, FlexRay, 100BASE-T1, K-line, TPMS, KeeLoq, 12V power
+description: This note is an ESP32 automotive node: OBD-II diagnostics via an ELM327 clone; shows schematics, code and tables.; shows schematics, code and tables.
 tags: [esp32, automotive, obd2, elm327, lin, tja1020, sent, flexray, 100base-t1, k-line, iso9141, l9637d, tpms, 433mhz, keeloc, rolling-code, 12v, tvs, buck]
 category: Moduli
 lang: en
@@ -9,185 +9,185 @@ date: 2026-10-10
 original: 12-Moduli-zvyazku/22-Automotive.md
 ---
 
-# Automotive - OBD-II (ELM327), LIN, SENT, FlexRay, 100BASE-T1, K-line, TPMS, KeeLoq, живлення 12V
+# Automotive - OBD-II (ELM327), LIN, SENT, FlexRay, 100BASE-T1, K-line, TPMS, KeeLoq, 12V power
 
 ## Purpose
 
-Ця нота - автомобільний вузол ESP32: diagnostics **OBD-II** via **ELM327-клон**
-(UART, AT-команди), table **PIDs** with формулами (включно with **010C RPM**),
-**LIN-bus** (master/slave, checksum, трансивер **TJA1020**),
-датчиковий протокол **SENT** (Single Edge Nibble),
-огляди **FlexRay** and **100BASE-T1** (that треба знати інтегратору on ESP32),
-легасі **K-line / ISO 9141** (драйвер **L9637D**),
-прийом **TPMS 433 МГц** (декодування пакетів тиску),
-**KeeLoq**-брелоки (rolling code - працюємо **тільки зі своїми** пультами!
-плюс legal-блок), and **живлення from бортмережі 12V**
-(стрибки до **40V**, load dump - тільки **buck + TVS**).
+This note is an ESP32 automotive node: **OBD-II** diagnostics via an **ELM327 clone**
+(UART, AT commands), a **PID** table with formulas (including **010C RPM**),
+**LIN bus** (master/slave, checksum, **TJA1020** transceiver),
+the **SENT** sensor protocol (Single Edge Nibble),
+**FlexRay** and **100BASE-T1** overviews (what an ESP32 integrator must know),
+legacy **K-line / ISO 9141** (**L9637D** driver),
+**TPMS 433 MHz** reception (pressure packet decoding),
+**KeeLoq** fobs (rolling code - we work **only with our own** remotes!
+plus a legal block), and **12V onboard power**
+(spikes to **40V**, load dump - only **buck + TVS**).
 
 ![[assets/img/automotive-obd-lin-scheme.png|600]]
-*Fig. ESP32 in авто: ELM327-клон in OBD-II роз'ємі (UART/BT), LIN via TJA1020, K-line via L9637D, SENT-датчик on GPIO/RMT, TPMS-приймач 433 МГц, живлення 12V via buck + TVS.*
+*Fig. ESP32 in a car: ELM327 clone in the OBD-II socket (UART/BT), LIN via TJA1020, K-line via L9637D, SENT sensor on GPIO/RMT, 433 MHz TPMS receiver, 12V power via buck + TVS.*
 
 Links to [[EN/Home.en]], [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]], [[EN/04-Interfaces/01-UART.en|UART]],
 [[EN/12-Comm-Modules/19-Wired-2.en]], [[EN/12-Comm-Modules/17-GNSS-RTK.en]],
 [[EN/12-Comm-Modules/23-Marine-Time.en]], [[EN/12-Comm-Modules/21-Motion-Control.en]],
 [[EN/02-Power-Supply/01-Power-Rails.en]].
 
-> [!warning] ESP32 - not блок керування безпекою!
-> ESP32 not має автомобільної кваліфікації (AEC-Q100), детермінованого
-> реального часу and ASIL-рівня. Використання: diagnostics, телеметрія,
-> логер, стенд, комфортна електроніка. not вішати ESP32 on керування
-> гальмами, подушками, рульовим, дроселем. Шина CAN авто - тільки via
-> трансивер with фільтрами, in режимі listen-only поки not розумієте трафік.
-> Запис in шину чужого авто without згоди власника - незаконне втручання.
+> [!warning] ESP32 is not a safety control unit!
+> ESP32 has no automotive qualification (AEC-Q100), deterministic
+> real time and ASIL level. Usage: diagnostics, telemetry,
+> logger, bench, comfort electronics. Do not hang ESP32 on
+> brake, airbag, steering, throttle control. Car CAN bus - only via
+> a transceiver with filters, in listen-only mode until you understand the traffic.
+> Writing to someone else's car bus without the owner consent is illegal interference.
 
-## Характеристики
+## Characteristics
 
-| Вузол | Роль | Інтерфейс до ESP32 | Живлення | Швидкість / межа | Коли брати |
+| Node | Role | Interface to ESP32 | Power supply | Speed / limit | When to take |
 | --- | --- | --- | --- | --- | --- |
-| ELM327-клон (BT/USB/UART) | OBD-II інтерпретатор AT-команд | UART 38400 або BT SPP | 5V (всередині автоадаптера) | 10.4 кбод K-line / 500 кбіт CAN | Швидкий доступ до PIDs without писання CAN-стека |
-| OBD-II PIDs (режим 01) | Стандартні параметри (RPM, швидкість, ECT) | via ELM327 або безпосередньо TWAI ISO 15765-4 | - | запит/відповідь ~20-50 мс | Діагностика, борткомп'ютер, логер |
+| ELM327 clone (BT/USB/UART) | OBD-II AT-command interpreter | UART 38400 or BT SPP | 5V (inside the car adapter) | 10.4 kbaud K-line / 500 kbps CAN | Fast PID access without writing a CAN stack |
+| OBD-II PIDs (mode 01) | Standard parameters (RPM, speed, ECT) | via ELM327 or directly TWAI ISO 15765-4 | - | request/response ~20-50 ms | Diagnostics, trip computer, logger |
 | LIN (TJA1020) | Cheap sub-bus for doors/seats/climate | UART + TX/RX to TJA1020 | 12V bus / 3.3-5V logic | 2.4-19.2 kbaud | LIN actuator control, master emulation |
-| SENT (SAE J2716) | Датчики (тиск, положення, педаль) | GPIO + RMT/PCNT вхід | 5V живлення датчика | tick 3-90 мкс, ~1-4 кГц кадрів | Читання штатних SENT-датчиків |
-| FlexRay | Детермінована магістраль шасі | оглядово (ESP32 without контролера!) | - | до 10 Мбіт, 2 канали | Розуміти топологію, not підключати ESP32 безпосередньо |
-| 100BASE-T1 | Автомобільний Ethernet (1 пара) | оглядово (потрібен PHY типу DP83TC811) | - | 100 Мбіт, 1 вита пара | Розуміти DoIP, diagnostics via шлюз |
-| K-line / ISO 9141 (L9637D) | Легасі-diagnostics до ~2004-2008 | UART 10400 8N1 via L9637D | 12V bus / 5V логіка | 10.4 кбод | Старі VAG, ВАЗ, Daewoo, Hyundai |
-| TPMS 433 МГц (RX) | Тиск/температура шин | SPI/CC1101 або OOK-RX + GPIO | 3.3V | 433.92 МГц, OOK/FSK 4-20 кбод | Монітор тиску свого авто/причепа |
-| KeeLoq HCS301-подібні | Радіобрелоки 433 МГц rolling code | RX 433 МГц + декодер | 3.3V | 433.92 МГц AM | Тільки СВОЇ брелоки: свій приймач + свої пульти |
-| Живлення 12V buck + TVS | Вижити in бортмережі | VIN 12V → buck 5V → LDO 3.3V | 9-36V вхід (стрибки 40V+) | струм ESP32 0.2-0.5A | Будь-which постійне installation in авто |
+| SENT (SAE J2716) | Sensors (pressure, position, pedal) | GPIO + RMT/PCNT input | 5V sensor power | 3-90 us tick, ~1-4 kHz frames | Reading stock SENT sensors |
+| FlexRay | Deterministic chassis backbone | overview (ESP32 without controller!) | - | up to 10 Mbps, 2 channels | Understand topology, do not connect ESP32 directly |
+| 100BASE-T1 | Automotive Ethernet (1 pair) | overview (DP83TC811-like PHY needed) | - | 100 Mbps, 1 twisted pair | Understand DoIP, diagnostics via gateway |
+| K-line / ISO 9141 (L9637D) | Legacy diagnostics to ~2004-2008 | UART 10400 8N1 via L9637D | 12V bus / 5V logic | 10.4 kbaud | Old VAG, VAZ, Daewoo, Hyundai |
+| TPMS 433 MHz (RX) | Tire pressure/temperature | SPI/CC1101 or OOK-RX + GPIO | 3.3V | 433.92 MHz, OOK/FSK 4-20 kbaud | Pressure monitor of own car/trailer |
+| KeeLoq HCS301-like | 433 MHz rolling-code fobs | 433 MHz RX + decoder | 3.3V | 433.92 MHz AM | Only OWN fobs: own receiver + own remotes |
+| 12V buck + TVS power | Survive the onboard grid | 12V VIN to 5V buck to 3.3V LDO | 9-36V input (40V+ spikes) | ESP32 current 0.2-0.5A | Any permanent car installation |
 
-## 1. ELM327-клон - UART AT-команди
+## 1. ELM327 clone - UART AT commands
 
-**ELM327** (оригінал Elm Electronics, зараз виробництво згорнуто - див. джерела)
-and його клони (v1.5 «повний», v2.1 «урізаний») - this мікроконтролер-інтерпретатор:
-приймає ASCII **AT-команди** per UART/BT and сам говорить with авто
-(CAN ISO 15765-4, KWP2000, ISO 9141, J1850). for ESP32 this найшвидший шлях
-до PIDs: not треба писати CAN-стек, достатньо UART 38400.
+**ELM327** (original Elm Electronics, production now wound down - see sources)
+and its clones (v1.5 "full", v2.1 "cut") is a microcontroller interpreter:
+it takes ASCII **AT commands** over UART/BT and talks to the car itself
+(CAN ISO 15765-4, KWP2000, ISO 9141, J1850). For ESP32 this is the fastest path
+to PIDs: no need to write a CAN stack, UART 38400 is enough.
 
-### 1.1. Базові AT-команди (маст-хев набір)
+### 1.1. Basic AT commands (must-have set)
 
-| Команда | that робить | typical відповідь |
+| Command | What it does | Typical answer |
 | --- | --- | --- |
-| `ATZ` | Скидання адаптера | `ELM327 v1.5` |
-| `ATE0` | Вимкнути ехо | `OK` |
-| `ATL0` | Вимкнути переведення рядка (короткі відповіді) | `OK` |
-| `ATH1` / `ATH0` | Показати/приховати заголовки CAN | `OK` |
-| `ATSP0` | Автопротокол | `OK` |
-| `ATSP6` | Примусово ISO 15765-4 CAN 500 кбіт 11-біт | `OK` |
-| `ATSP3` | Примусово ISO 9141-2 | `OK` |
-| `ATDP` / `ATDPN` | Показати поточний протокол | `AUTO, ISO 15765-4 (CAN)` |
-| `ATRV` | Напруга бортмережі | `12.4V` |
-| `010C` | Запит RPM (режим 01, PID 0C) - not AT, but OBD-запит | `41 0C 1A F8` |
-| `03` | Прочитати збережені DTC | `43 01 33 00 00` |
-| `04` | Стерти DTC (ОБЕРЕЖНО - тремо MIL and freeze frame!) | `44` |
+| `ATZ` | Adapter reset | `ELM327 v1.5` |
+| `ATE0` | Echo off | `OK` |
+| `ATL0` | Line-feed off (short answers) | `OK` |
+| `ATH1` / `ATH0` | Show/hide CAN headers | `OK` |
+| `ATSP0` | Auto protocol | `OK` |
+| `ATSP6` | Force ISO 15765-4 CAN 500 kbps 11-bit | `OK` |
+| `ATSP3` | Force ISO 9141-2 | `OK` |
+| `ATDP` / `ATDPN` | Show current protocol | `AUTO, ISO 15765-4 (CAN)` |
+| `ATRV` | Onboard-grid voltage | `12.4V` |
+| `010C` | RPM request (mode 01, PID 0C) - not AT but an OBD request | `41 0C 1A F8` |
+| `03` | Read stored DTCs | `43 01 33 00 00` |
+| `04` | Erase DTCs (CAREFUL - wipes MIL and freeze frame!) | `44` |
 
-### 1.2. Формат запит/відповідь OBD via ELM327
+### 1.2. OBD request/response format via ELM327
 
 ```text
 ESP32 -> ELM327 : "010C\r"            режим 01, PID 0C (RPM)
 ELM327 -> авто  : 7DF#02 01 0C ...    CAN 11-біт ID 0x7DF, 2 байти запиту
 авто   -> ELM327: 7E8#04 41 0C 1A F8  відповідь ECU (ID 0x7E8)
 ELM327 -> ESP32 : "41 0C 1A F8\r>"    ASCII hex + промпт '>'
-Формула RPM     : ((A*256)+B)/4 = ((0x1A*256)+0xF8)/4 = 1726 об/хв
+RPM formula     : ((A*256)+B)/4 = ((0x1A*256)+0xF8)/4 = 1726 rpm
 ```
 
-> [!warning] Клони v2.1 брешуть про протокол
-> Дешеві клони v2.1 часто відповідають `OK` on будь-which `ATSP`, але реально
-> вміють тільки CAN 11/29-біт. for K-line авто (старі, до ~2008) шукайте
-> клон **v1.5** with повним набором або окремий **K-line адаптер on L9637D**.
-> check: `ATDPN` після підключення до авто + `0100` (підтримувані PIDs).
+> [!warning] v2.1 clones lie about the protocol
+> Cheap v2.1 clones often answer `OK` to any `ATSP` but really
+> know only CAN 11/29-bit. For K-line cars (old, pre-~2008) look for
+> a **v1.5** clone with the full set or a separate **L9637D K-line adapter**.
+> Check: `ATDPN` after connecting to the car + `0100` (supported PIDs).
 
-### 1.3. Три підключення ELM327 до ESP32
+### 1.3. Three ELM327 to ESP32 connections
 
-| Варіант | Плюси | Мінуси |
+| Option | Pluses | Minuses |
 | --- | --- | --- |
-| BT Classic SPP (HC-05-подібний ELM327) | without дротів, адаптер in колодці, ESP32 in бардачку | BT Classic немає on C3/S3 without Bluedroid, пін `1234`, затримка 50-150 мс |
-| USB ELM327 + USB-OTG (тільки S2/S3 host) | Стабільно, живлення from ESP32 | Потрібен USB-host, драйвер PL2303/CH340 |
-| Дротовий UART-module ELM327 (плата with TX/RX) | Найнадійніше, 38400 8N1, мінімум затримки | Треба тягти 4 дроти до колодки OBD-II |
+| BT Classic SPP (HC-05-like ELM327) | without wires, adapter in the socket, ESP32 in the glovebox | No BT Classic on C3/S3 without Bluedroid, `1234` PIN, 50-150 ms delay |
+| USB ELM327 + USB-OTG (S2/S3 host only) | Stable, powered from ESP32 | Needs USB host, PL2303/CH340 driver |
+| Wired ELM327 UART module (board with TX/RX) | Most reliable, 38400 8N1, minimum delay | Must pull 4 wires to the OBD-II socket |
 
-## 2. OBD-II PIDs - режими, автотаблиця, формули
+## 2. OBD-II PIDs - modes, auto table, formulas
 
-### 2.1. Режими (services) SAE J1979 - that питати
+### 2.1. SAE J1979 modes (services) - what to ask
 
-| Режим | Назва | example запиту | Коли |
+| Mode | Name | Request example | When |
 | --- | --- | --- | --- |
-| 01 | Поточні дані (live PIDs) | `010C` RPM | 95% роботи: борткомп'ютер, логер |
-| 02 | Freeze frame (знімок on момент DTC) | `02020C` | Розбір причини Check Engine |
-| 03 | Зчитати збережені DTC | `03` | Діагностика |
-| 04 | Стерти DTC + freeze frame | `04` | Тільки після ремонту! |
-| 07 | Очікуючі (pending) DTC | `07` | Раннє виявлення |
-| 09 | Інфо про авто (VIN, ECU) | `0902` VIN | Ідентифікація авто |
-| 0A | Постійні (permanent) DTC | `0A` | Після стирання 04 - that реально лишилось |
+| 01 | Live data (live PIDs) | `010C` RPM | 95% of work: trip computer, logger |
+| 02 | Freeze frame (snapshot at DTC moment) | `02020C` | Check-Engine cause analysis |
+| 03 | Read stored DTCs | `03` | Diagnostics |
+| 04 | Erase DTCs + freeze frame | `04` | Only after repair! |
+| 07 | Pending DTCs | `07` | Early detection |
+| 09 | Car info (VIN, ECU) | `0902` VIN | Car identification |
+| 0A | Permanent DTCs | `0A` | After erase 04 - what really stayed |
 
-### 2.2. Автотаблиця PIDs режиму 01 (найпотрібніші)
+### 2.2. Mode-01 PID auto table (most needed)
 
-Формула застосовується до байтів відповіді `41 <PID> <A> <B>...`.
-`A` - перший байт даних, `B` - другий.
+The formula applies to answer bytes `41 <PID> <A> <B>...`.
+`A` is the first data byte, `B` the second.
 
-| PID | Назва | Байти | Формула | example | Одиниці |
+| PID | Name | Bytes | Formula | Example | Units |
 | --- | --- | --- | --- | --- | --- |
-| 00 | Підтримувані PIDs 01-20 (бітова маска!) | 4 | біти A..D | `BE 1F A8 13` | маска |
-| 04 | Навантаження двигуна (LOAD) | 1 (A) | `A*100/255` | `A=0x7F` → 49.8% |% |
-| 05 | Температура охолоджувача (ECT) | 1 (A) | `A-40` | `A=0x5A` → 50°C | °C |
-| 0B | Тиск in впуску (MAP) | 1 (A) | `A` | `A=0x64` → 100 кПа | кПа |
-| 0C | Оберти (RPM) | 2 (A,B) | `((A*256)+B)/4` | `1A F8` → 1726 | об/хв |
-| 0D | Швидкість авто (VSS) | 1 (A) | `A` | `A=0x3C` → 60 | км/г |
-| 0F | Температура впуску (IAT) | 1 (A) | `A-40` | `A=0x46` → 30°C | °C |
-| 10 | Витрата повітря (MAF) | 2 (A,B) | `((A*256)+B)/100` | `01 7C` → 3.8 | г/с |
-| 11 | Положення дроселя (TP) | 1 (A) | `A*100/255` | `A=0x33` → 20% |% |
+| 00 | Supported PIDs 01-20 (bit mask!) | 4 | A..D bits | `BE 1F A8 13` | mask |
+| 04 | Engine load (LOAD) | 1 (A) | `A*100/255` | `A=0x7F` gives 49.8% |% |
+| 05 | Coolant temperature (ECT) | 1 (A) | `A-40` | `A=0x5A` gives 50C | C |
+| 0B | Intake pressure (MAP) | 1 (A) | `A` | `A=0x64` gives 100 kPa | kPa |
+| 0C | RPM | 2 (A,B) | `((A*256)+B)/4` | `1A F8` gives 1726 | rpm |
+| 0D | Car speed (VSS) | 1 (A) | `A` | `A=0x3C` gives 60 | km/h |
+| 0F | Intake temperature (IAT) | 1 (A) | `A-40` | `A=0x46` gives 30C | C |
+| 10 | Air flow (MAF) | 2 (A,B) | `((A*256)+B)/100` | `01 7C` gives 3.8 | g/s |
+| 11 | Throttle position (TP) | 1 (A) | `A*100/255` | `A=0x33` gives 20% |% |
 | 1F | Time since engine start | 2 (A,B) | `A*256+B` | `00 B4` → 180 | s |
-| 20 | Підтримувані PIDs 21-40 (маска) | 4 | біти | - | маска |
-| 2F | Рівень палива | 1 (A) | `A*100/255` | `A=0x99` → 60% |% |
-| 33 | Тиск барометра | 1 (A) | `A` | `A=0x65` → 101 | кПа |
-| 42 | Напруга модуля керування | 2 (A,B) | `((A*256)+B)/1000` | `30 D4` → 12.5 | in |
-| 46 | Температура навколишня (AMB) | 1 (A) | `A-40` | `A=0x4A` → 34°C | °C |
-| 5E | Миттєва витрата (rate) | 2 (A,B) | `((A*256)+B)/20` | дизель/бензин | мЛ/г |
+| 20 | Supported PIDs 21-40 (mask) | 4 | bits | - | mask |
+| 2F | Fuel level | 1 (A) | `A*100/255` | `A=0x99` gives 60% |% |
+| 33 | Barometer pressure | 1 (A) | `A` | `A=0x65` gives 101 | kPa |
+| 42 | Control-module voltage | 2 (A,B) | `((A*256)+B)/1000` | `30 D4` gives 12.5 | V |
+| 46 | Ambient temperature (AMB) | 1 (A) | `A-40` | `A=0x4A` gives 34C | C |
+| 5E | Instant consumption (rate) | 2 (A,B) | `((A*256)+B)/20` | diesel/petrol | mL/h |
 
-> Формула 010C RPM детально: відповідь `41 0C A B`, де `41` = відповідь
-> on режим 01, `0C` = ехо PID. `RPM = ((A × 256) + B) / 4`.
-> Ділення on 4 - because роздільна здатність 0.25 об/хв on молодший біт.
+> 010C RPM formula in detail: answer `41 0C A B`, where `41` = answer
+> to mode 01, `0C` = PID echo. `RPM = ((A x 256) + B) / 4`.
+> Division by 4 is because resolution is 0.25 rpm per low bit.
 > example: `A=0x1A (26), B=0xF8 (248)` → `(26×256+248)/4 = 6904/4 = 1726`.
 
-### 2.3. DTC-формат (режим 03) - розбір for 10 секунд
+### 2.3. DTC format (mode 03) - 10-second parsing
 
-Відповідь `43 <N> <B1H> <B1L> <B2H> <B2L>...`, кожен DTC - 2 байти.
-Перші 2 біти першого байта = літера: `00=P, 01=C, 10=B, 11=U`.
-example: `01 33` → біти `00` + `0x133` → **P0133** (повільний зонд lambda).
-`04` - стирання; після нього ECU гасить MIL, але монітори readiness
-стають `not ready` (not пройде техогляд одразу - треба drive cycle!).
+Answer `43 <N> <B1H> <B1L> <B2H> <B2L>...`, each DTC is 2 bytes.
+First 2 bits of the first byte = letter: `00=P, 01=C, 10=B, 11=U`.
+Example: `01 33` gives bits `00` + `0x133` to **P0133** (slow lambda probe).
+`04` is erase; after it the ECU quenches MIL, but readiness monitors
+become `not ready` (will not pass inspection at once - need a drive cycle!).
 
-### 2.4. Прямий CAN without ELM327 (ISO 15765-4 via TWAI)
+### 2.4. Direct CAN without ELM327 (ISO 15765-4 via TWAI)
 
-Сучасні авто (США with 2008 - усі): CAN 500 кбіт, 11-біт, запит on `0x7DF`,
-відповіді `0x7E8-0x7EF`. Кадр: `[довжина][режим][PID][доп...]`.
-Запит RPM: `02 01 0C 00 00 00 00 00`. ESP32-TWAI вміє this безпосередньо
-(див. code + [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]]) - швидше for ELM327 in 3-5 разів,
-але треба самому збирати ISO-TP for довгих відповідей (VIN, режим 09).
+Modern cars (USA since 2008 - all): CAN 500 kbps, 11-bit, request to `0x7DF`,
+answers `0x7E8-0x7EF`. Frame: `[length][mode][PID][extra...]`.
+RPM request: `02 01 0C 00 00 00 00 00`. ESP32-TWAI can do this directly
+(see code + [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]]) - 3-5x faster than ELM327,
+but you must assemble ISO-TP yourself for long answers (VIN, mode 09).
 
-## 3. Протоколи авто - зведена автотаблиця
+## 3. Car protocols - summary auto table
 
-| Протокол | Швидкість | Фізика | Піни OBD-II | Авто / роки | ESP32-шлях |
+| Protocol | Speed | Physics | OBD-II pins | Cars / years | ESP32 path |
 | --- | --- | --- | --- | --- | --- |
-| CAN ISO 15765-4 (11-біт, 500 кбіт) | 250/500 кбіт | Дифпара CANH/CANL | 6 (H), 14 (L) | Усі США with 2008, EU бензин with ~2001/EOBD | TWAI + TJA1050/SN65HVD230 |
-| CAN 29-біт (extended, 250 кбіт) | 250 кбіт | Дифпара | 6, 14 | Вантажні, деякі GM/Ford | TWAI extended ID |
-| K-line ISO 9141-2 | 10.4 кбод | Однодротова, 0/12V | 7 (K), 15 (L, опц.) | Chrysler/EU/Asia 1996-2004 | UART via L9637D |
-| KWP2000 ISO 14230 | 1.2-10.4 кбод | how ISO 9141 | 7, 15 | VAG/ВАЗ/Daewoo 2000-2008 | UART via L9637D + fast init |
-| SAE J1850 PWM (Ford) | 41.6 кбіт | Дифпара | 2 (+), 10 (−) | Ford USA до 2008 | Тільки via ELM327! |
-| SAE J1850 VPW (GM) | 10.4 кбіт | Один дріт | 2 | GM USA до 2008 | Тільки via ELM327! |
-| LIN (ISO 17987) | 2.4-19.2 кбод | Один дріт, 12V | немає in OBD (внутрішня) | Двері/клімат/сидіння всіх | UART via TJA1020 |
-| SENT (SAE J2716) | tick 3-90 мкс | Один дріт, 5V | немає (датчики) | Датчики тиску/положення | GPIO + RMT вхід |
-| FlexRay (ISO 17458) | до 10 Мбіт ×2 канали | Вита пара ×2 | немає in OBD | BMW/Mercedes/Audi шасі | Оглядово, ESP32 not підключати! |
-| 100BASE-T1 (802.3bw) | 100 Мбіт | 1 вита пара | DoIP-піни (заводські) | Нові VAG/BMW, DoIP-diagnostics | Оглядово, потрібен T1-PHY |
-| TPMS 433 МГц | OOK/FSK | Радіо 433.92 МГц | - | Датчики шин | CC1101/OOK-RX on SPI/GPIO |
+| CAN ISO 15765-4 (11-bit, 500 kbps) | 250/500 kbps | CANH/CANL diff pair | 6 (H), 14 (L) | All USA since 2008, EU petrol since ~2001/EOBD | TWAI + TJA1050/SN65HVD230 |
+| CAN 29-bit (extended, 250 kbps) | 250 kbps | Diff pair | 6, 14 | Trucks, some GM/Ford | TWAI extended ID |
+| K-line ISO 9141-2 | 10.4 kbaud | Single wire, 0/12V | 7 (K), 15 (L, opt.) | Chrysler/EU/Asia 1996-2004 | UART via L9637D |
+| KWP2000 ISO 14230 | 1.2-10.4 kbaud | like ISO 9141 | 7, 15 | VAG/VAZ/Daewoo 2000-2008 | UART via L9637D + fast init |
+| SAE J1850 PWM (Ford) | 41.6 kbps | Diff pair | 2 (+), 10 (-) | Ford USA pre-2008 | Only via ELM327! |
+| SAE J1850 VPW (GM) | 10.4 kbps | Single wire | 2 | GM USA pre-2008 | Only via ELM327! |
+| LIN (ISO 17987) | 2.4-19.2 kbaud | Single wire, 12V | none in OBD (internal) | Doors/climate/seats of all | UART via TJA1020 |
+| SENT (SAE J2716) | 3-90 us tick | Single wire, 5V | none (sensors) | Pressure/position sensors | GPIO + RMT input |
+| FlexRay (ISO 17458) | up to 10 Mbps x2 channels | Twisted pair x2 | none in OBD | BMW/Mercedes/Audi chassis | Overview, do not connect ESP32! |
+| 100BASE-T1 (802.3bw) | 100 Mbps | 1 twisted pair | DoIP pins (factory) | New VAG/BMW, DoIP diagnostics | Overview, T1-PHY needed |
+| TPMS 433 MHz | OOK/FSK | 433.92 MHz radio | - | Tire sensors | CC1101/OOK-RX on SPI/GPIO |
 
 ## 4. LIN-bus - master/slave, checksum, TJA1020
 
 **LIN** (Local Interconnect Network, ISO 17987) - cheap single-wire sub-bus:
-один **master** (зазвичай BCM/блок комфорту) опитує до 16 **slave**
-(кнопки дверей, мотори склопідйомників, клімат-заслінки, датчики дощу).
-ESP32 виступає або **слухачем-логером**, або **master** on стенді
-(емуляція BCM for перевірки дверної ручки), або **slave** (розумний актуатор).
+one **master** (usually BCM/comfort unit) polls up to 16 **slaves**
+(door buttons, window motors, climate dampers, rain sensors).
+ESP32 acts either as a **listener-logger**, or a **master** on the bench
+(BCM emulation to check a door handle), or a **slave** (smart actuator).
 
-### 4.1. Кадр LIN: break → sync → PID → data → checksum
+### 4.1. LIN frame: break to sync to PID to data to checksum
 
 ```text
 master шле:  BREAK (13+ біт LOW, мінімум 11 нульових + делімітер)
@@ -198,7 +198,7 @@ slave шле:   DATA  (2/4/8 байт за ID)
 Швидкість: 2400 / 9600 / 19200 бод, 8N1, LSB first, інверсна логіка драйвера.
 ```
 
-### 4.2. Парність PID and checksum - формули
+### 4.2. PID parity and checksum - formulas
 
 ```text
 ID біти: ID0..ID5. P0 = ID0^ID1^ID2^ID4, P1 = ~(ID1^ID3^ID4^ID5).
@@ -209,34 +209,34 @@ Enhanced (LIN 2.x, ID 0..59): те саме + PID у суму.
   Діагностика (ID 60/61): завжди classic!
 ```
 
-### 4.3. TJA1020 - that this and how підключати
+### 4.2. PID parity and checksum - formulas
 
-**TJA1020** (NXP) - LIN-трансивер: перетворює UART-логіку ESP32 (TXD/RXD)
-in 12V-сигнал LIN-шини зі slew-rate-контролем (мінімум завад),
-режими normal/low-slope/sleep, wake-up per шині. Ключове:
-внутрішній термінатор slave; for **master** треба зовнішні
-**1 кОм + діод** між VBAT and LIN (інакше slave not побачать домінанту!).
+**TJA1020** (NXP) is a LIN transceiver: converts ESP32 UART logic (TXD/RXD)
+to the 12V LIN-bus signal with slew-rate control (minimum interference),
+normal/low-slope/sleep modes, wake-up over bus. Key point:
+internal slave terminator; for **master** you need outdoor
+**1 kOhm + diode** between VBAT and LIN (otherwise slaves will not see the dominant!).
 
-| Пін TJA1020 (SO8) | Куди | Примітка |
+| TJA1020 pin (SO8) | Where | Note |
 | --- | --- | --- |
-| TXD | GPIO TX ESP32 (UART) | Вхід даних from MCU |
-| RXD | GPIO RX ESP32 (UART) | Вихід даних до MCU |
-| LIN | Шина LIN (12V) | via дросель/ESD for потреби |
-| VBAT / INH | 12V борт / key живлення | INH керує живленням вузла in sleep |
-| SLP_N | GPIO ESP32 (режим сну) | LOW = sleep (струм ~10 мкА) |
-| GND | Спільна земля | Зірка земель! |
+| TXD | ESP32 GPIO TX (UART) | MCU data input |
+| RXD | ESP32 GPIO RX (UART) | MCU data output |
+| LIN | LIN bus (12V) | via choke/ESD if needed |
+| VBAT / INH | 12V board / power switch | INH controls node power in sleep |
+| SLP_N | ESP32 GPIO (sleep mode) | LOW = sleep (~10 uA current) |
+| GND | Common ground | Ground star! |
 
-> Break-issue UART: стандартний UART ESP32 not вміє слати 13-бітний LOW.
-> Ліки: (but) тимчасово знизити бод in 1.5 раза and слати `0x00` (довший LOW =
-> псевдо-break); (б) GPIO-бітбенг break (LOW 1 мс), потім UART-кадр;
-> (in) LIN-контролер SJA1124 per SPI (апаратний break, 4 канали).
+> Break-issue UART: a standard ESP32 UART cannot send a 13-bit LOW.
+> Fix: (a) temporarily lower the baud 1.5x and send `0x00` (longer LOW =
+> pseudo-break); (b) GPIO bitbang break (LOW 1 ms), then UART frame;
+> (c) SJA1124 LIN controller over SPI (hardware break, 4 channels).
 
 ## 5. SENT - Single Edge Nibble Transmission (SAE J2716)
 
-**SENT** - однодротовий протокол датчиків: кожне повідомлення - серія
-імпульсів, де інформація in **довжині HIGH-фаз** (між спадними фронтами).
-Датчик: тиск наддуву, положення педалі, кут керма, MAF нового типу.
-ESP32 читає via **RMT-вхід** (вимір довжин) або **PCNT + таймер**.
+**SENT** is a single-wire sensor protocol: each message is a series
+of pulses where information is in the **HIGH-phase length** (between falling edges).
+Sensors: boost pressure, pedal position, steering angle, new-type MAF.
+ESP32 reads via **RMT input** (length measurement) or **PCNT + timer**.
 
 ```text
 tick = базовий квант 3..90 мкс (типово 3 мкс, калібрується по SYNC-паузі 56 ticks).
@@ -248,68 +248,68 @@ CRC: поліном x^4+x^3+x^2+1, seed 0101.
 Приклад tick=3мкс: SYNC=168мкс, нібл 0 = 36мкс, нібл 15 = 81мкс.
 ```
 
-Діагностика SENT: немає SYNC >1 мс - датчик without живлення; CRC-фейли -
-завади on землі (датчик and ESP32 on різних землях!); дрейф tick ±20% -
-норма, калібруватися per кожному SYNC.
+SENT diagnostics: no SYNC >1 ms means the sensor is without power; CRC fails mean
+interference on ground (sensor and ESP32 on different grounds!); tick drift +-20% is
+normal, calibrate on each SYNC.
 
-## 6. FlexRay - оглядово (that знати, чого not робити)
+## 6. FlexRay - overview (what to know, what not to do)
 
-**FlexRay** (ISO 17458-1..5, до 10 Мбіт, 2 незалежні канали, TDMA):
-детермінована bus шасі/ADAS (BMW X5 E70 перший серійний, далі 7-series,
-Audi A4 B9/A8, Mercedes W222/W213). Цикл = static segment (слоти) +
-dynamic segment (event). ESP32 **not має** FlexRay-контролера -
-підключення вимагає контролера (CIC310, E-Ray) + 2 трансиверів TJA1080.
-Практичний висновок: on рівні ESP32 - **тільки розуміти**, that FlexRay
-існує and чому туди лізти not можна without стенда for $2k+. Діагностика FlexRay -
-via заводський шлюз/DoIP, not прямим підключенням.
+**FlexRay** (ISO 17458-1..5, up to 10 Mbps, 2 independent channels, TDMA):
+a deterministic chassis/ADAS bus (BMW X5 E70 first serial, then 7-series,
+Audi A4 B9/A8, Mercedes W222/W213). Cycle = static segment (slots) +
+dynamic segment (event). ESP32 **has no** FlexRay controller -
+connection requires a controller (CIC310, E-Ray) + 2 TJA1080 transceivers.
+Practical conclusion: on ESP32 level - **only understand** that FlexRay
+exists and why you must not climb there without a $2k+ bench. FlexRay diagnostics go
+via the factory gateway/DoIP, not by direct connection.
 
-## 7. 100BASE-T1 - оглядово (однопарний Ethernet)
+## 7. 100BASE-T1 - overview (single-pair Ethernet)
 
-**100BASE-T1** (IEEE 802.3bw, OPEN Alliance): 100 Мбіт per **одній** витій парі
-(замість 2 пар in 100BASE-TX) - менше міді, менше ваги. Фізика PAM3,
-повний дуплекс. for ESP32: потрібен автомобільний PHY
-(напр. **DP83TC811S-Q1**, TI - див. джерела) per RMII/RGMII до MCU with EMAC
-(ESP32 classic має EMAC; C3/S2 - ні!). Застосування: **DoIP**
-(Diagnostics over IP, ISO 13400) - заводська diagnostics нових авто,
-камери, доменні контролери. Практично: ESP32 how DoIP-сканер можливий
-тільки with T1-PHY платою + TCP-стек UDS; починати with вивчення DoIP-шлюзу
-авто, not with пайки PHY.
+**100BASE-T1** (IEEE 802.3bw, OPEN Alliance): 100 Mbps over **one** twisted pair
+(instead of 2 pairs in 100BASE-TX) - less copper, less weight. PAM3 physics,
+full duplex. For ESP32: an automotive PHY is needed
+(e.g. **DP83TC811S-Q1**, TI - see sources) over RMII/RGMII to an MCU with EMAC
+(ESP32 classic has EMAC; C3/S2 do not!). Application: **DoIP**
+(Diagnostics over IP, ISO 13400) is factory diagnostics of new cars,
+cameras, domain controllers. Practically: ESP32 as a DoIP scanner is possible
+only with a T1-PHY board + TCP UDS stack; start by studying the car DoIP gateway,
+not by soldering a PHY.
 
 ## 8. K-line / ISO 9141 - L9637D
 
-Старі авто (VAG до ~2004, ВАЗ/ЗАЗ/Daewoo/Hyundai/KIA): diagnostics
-**K-line** - однодротовий UART 10400 бод, рівні 0/12V, ініціалізація
-**5-baud init** (ECU будиться повільним байтом 0x33 on 5 бод!) або
-**fast init** (25 мс LOW + 25 мс HIGH). Драйвер **L9637D** (ST) -
-перетворювач K/L-line ↔ логіка: TX (from MCU) → K (open-collector 12V),
-K → RX (компаратор), ISO-термозахист, ESD.
+Old cars (VAG pre-~2004, VAZ/ZAZ/Daewoo/Hyundai/KIA): **K-line** diagnostics
+is a single-wire UART at 10400 baud, 0/12V levels, initialization by
+**5-baud init** (ECU woken by a slow 0x33 byte at 5 baud!) or
+**fast init** (25 ms LOW + 25 ms HIGH). The **L9637D** (ST) driver is
+a K/L-line to logic converter: TX (from MCU) to K (12V open-collector),
+K to RX (comparator), ISO thermal protection, ESD.
 
-| Сигнал L9637D | Куди on ESP32 | Примітка |
+| L9637D signal | Where on ESP32 | Note |
 | --- | --- | --- |
-| TX | GPIO UART TX | Вхід драйвера |
-| RX | GPIO UART RX | Вихід драйвера |
-| K | Пін 7 OBD-II | via 510 Ом + TVS! |
-| L | Пін 15 OBD-II (опц.) | Часто not потрібна |
-| VS | 12V борт (via діод) | Живлення драйвера |
-| GND | Земля | Спільна with OBD піни 4/5 |
+| TX | GPIO UART TX | Driver input |
+| RX | GPIO UART RX | Driver output |
+| K | OBD pin 7, via 510 Ohm | Pull-up to 12V inside |
+| L | OBD pin 15 (opt.) | Often NC |
+| VS | 12V board (via diode) | Driver power |
+| GND | Ground | Common with OBD pins 4/5 |
 
-Послідовність 5-baud init (VAG 1.9 TDI, ВАЗ Bosch MP7.0):
+5-baud init sequence (VAG 1.9 TDI, VAZ Bosch MP7.0):
 
 ```text
 1. UART TX на 5 бод (!), слати 0x33 (адреса ECU), чекати 20-50мс.
 2. ECU відповідає 0x55 0xEF 0x8F на 10400 бод (sync + key bytes).
 3. ESP32 шле інверсію key2 (0x8F -> 0x70) як підтвердження.
 4. ECU шле інверсію адреси (0xCC) -> з'єднання встановлено, далі KWP2000 кадри.
-Бод UART ESP32: перемкнути 5 бод -> 10400 бод між кроком 1 і 2!
+W1..W5 timings (25-100ms) are critical - a software GPIO UART is more reliable at 5 baud than HW.
 Таймінги W1..W5 (25-100мс) критичні — програмний UART на GPIO надійніший за HW на 5 бод.
 ```
 
-## 9. TPMS 433 МГц - прийом and декодування
+## 9. TPMS 433 MHz - reception and decoding
 
-Датчики тиску шин шлють on **433.92 МГц** (OOK/ASK або FSK, Manchester):
-ID датчика (32 біти) + тиск (8-9 біт) + температура + прапор батареї + CRC/Checksum.
-Шлях ESP32: **CC1101** (SPI, гнучкий: OOK/FSK, RSSI) або дешевий OOK-RX
-(напр. SRX882) + GPIO-переривання + софт-декодер Manchester.
+Tire-pressure sensors send on **433.92 MHz** (OOK/ASK or FSK, Manchester):
+sensor ID (32 bits) + pressure (8-9 bits) + temperature + battery flag + CRC/Checksum.
+ESP32 path: **CC1101** (SPI, flexible: OOK/FSK, RSSI) or a cheap OOK-RX
+(e.g. SRX882) + GPIO interrupt + soft Manchester decoder.
 
 ```text
 Типовий пакет (приклад, Schrader-подібний, 64 біти Manchester):
@@ -320,16 +320,16 @@ ID датчика (32 біти) + тиск (8-9 біт) + температура
 Процедура прив'язки: записати ID 4 датчиків свого авто, ігнорувати чужі (фільтр по ID!).
 ```
 
-> [!warning] Чужий TPMS - чужі дані
-> Етично and технічно: декодувати **тільки свої** датчики (своє авто, свій причіп).
-> on паркінгу ESP32 побачить десятки чужих ID - відкидати фільтром білого списку,
-> not логувати чужі треки. this and приватність, and стабільність (немає фантомних коліс).
+> [!warning] Foreign TPMS is foreign data
+> Ethically and technically: decode **only your own** sensors (own car, own trailer).
+> In a parking lot ESP32 sees dozens of foreign IDs - drop them with a whitelist filter,
+> do not log foreign tracks. This is both privacy and stability (no phantom wheels).
 
-## 10. KeeLoq - брелоки, rolling code (тільки свої! + legal)
+## 10. KeeLoq - fobs, rolling code (only own! + legal)
 
-**KeeLoq** (Microchip HCS301/HCS341 енкодери) - блочний шифр rolling code:
-кожне натискання шле новий code (лічильник + дискримінант + шифр on ключі
-виробника). Приймач приймає вікно наступних N кодів (±16 типово).
+**KeeLoq** (Microchip HCS301/HCS341 encoders) is a rolling-code block cipher:
+each press sends a new code (counter + discriminant + cipher on the
+manufacturer key). The receiver accepts a window of the next N codes (typically +-16).
 
 ```text
 Пакет HCS301 (66 біт, 433.92 МГц AM, PWM-манчестер ~1-2 кбод):
@@ -338,25 +338,25 @@ ID датчика (32 біти) + тиск (8-9 біт) + температура
 Rolling вікно: приймач зберігає останній лічильник; приймає +16 вперед, resync — 2 збіги підряд.
 ```
 
-that робимо on ESP32 (ЛЕГАЛЬНО): купуємо **свій** комплект (приймач superheterodyne
-433 МГц + 2 свої HCS-пульти або learning-приймач with реле), декодуємо **свої**
-пакети for свого гаража/воріт/макету. code нижче - **прийом свого** фіксованого
-ID + check лічильника монотонності (анти-replay on своєму приймачі).
+What we do on ESP32 (LEGALLY): buy **our own** kit (433 MHz superheterodyne
+receiver + 2 own HCS remotes or a learning receiver with relay), decode **our own**
+packets for our own garage/gate/mockup. Code below is **receiving our own** fixed
+ID + checking counter monotonicity (anti-replay on our own receiver).
 
-> [!danger] Legal - прочитати двічі
-> Перехоплення, replay, jamming, RollJam-подібні атаки on **чужі** авто/ворота -
-> кримінальний злочин (несанкціоноване втручання, крадіжка). Дослідження
-> вразливостей KeeLoq (Bogdanov, Courtois, Bochum side-channel - див. джерела)
-> цитуємо for розуміння, чому свій приймач має мати **вікно resync малим**,
-> **seed унікальним**, but реле - **імпульсним** (not тримати ворота відкритими).
-> in цій ноті - ніяких граберів, ніякого глушіння, ніяких чужих ключів. Крапка.
+> [!danger] Legal - read twice
+> Intercepting, replay, jamming, RollJam-like attacks on **foreign** cars/gates are a
+> criminal offense (unauthorized interference, theft). KeeLoq vulnerability
+> research (Bogdanov, Courtois, Bochum side-channel - see sources)
+> is cited to understand why our own receiver must have a **small resync window**,
+> a **unique seed**, while the relay is **pulsed** (do not hold gates open).
+> In this note - no grabbers, no jamming, no foreign keys. Period.
 
-## 11. Живлення 12V from бортмережі - стрибки 40V, buck + TVS
+## 11. 12V onboard power - 40V spikes, buck + TVS
 
-Бортмережа 12V - this not 12V: пуск (просадка до 6V), load dump
-(вимкення АКБ at працюючому генераторі - **+40..+60V, сотні мс**),
-стрибки запалювання, переполюсовка at «прикурюванні». Лінійний LDO
-7805 тут згорить разом with ESP32. Схема виживання:
+The 12V onboard grid is not 12V: crank (sag to 6V), load dump
+(battery disconnect with running generator - **+40..+60V, hundreds of ms**),
+ignition spikes, reverse polarity on "jump start". A linear 7805 LDO
+burns here together with ESP32. Survival schematic:
 
 ```text
 АКБ 12V (клема 30, постійна) --[запобіжник 1A]--+--[TVS SMBJ28A]--+--[buck 9-36V->5V]--+--[LDO 5->3.3V]--> ESP32
@@ -365,76 +365,76 @@ ID + check лічильника монотонності (анти-replay on с�
                                                 GND зіркою на кузов біля точки, TVS якомога ближче до входу!
 ```
 
-| Елемент | Вимога | example |
+| Element | Requirement | Example |
 | --- | --- | --- |
-| Запобіжник | 0.5-1A, швидкий, тримач | Mini Blade + колодка |
-| TVS (двонаправлений!) | Vrwm ≥ 22V (for 12V мережі), Pppm 600W+ | SMBJ24A/SMBJ28A, далі варистор опційно |
-| Зворотний діод | protection from переполюсовки | SS34 Schottky (падіння 0.4V) |
-| Buck | Вхід 7-40V+, вихід 5V 1A, AEC-практика | MP1584EN, LM2596HV (HV-версія!), XL1509-5 |
-| LDO 3.3V | Після buck, чисті 3.3V for ESP32/RF | AMS1117-3.3 (with запасом) / ME6211 |
+| Fuse | 0.5-1A, fast, holder | Mini Blade + socket |
+| TVS (bidirectional!) | Vrwm >= 22V (for 12V grid), Pppm 600W+ | SMBJ24A/SMBJ28A, varistor optional next |
+| Reverse diode | reverse-polarity protection | SS34 Schottky (0.4V drop) |
+| Buck | 7-40V+ input, 5V 1A output, AEC practice | MP1584EN, LM2596HV (HV version!), XL1509-5 |
+| 3.3V LDO | After buck, clean 3.3V for ESP32/RF | AMS1117-3.3 (with margin) / ME6211 |
 | Filter | LC at buck input (100 uH + 100 uF) | Against starter cranking dips |
-| Детект запалювання | Дільник + стабілітрон 3.6V on GPIO | 12V→2.2V on GPIO34 (тільки вхід!) |
+| Ignition detect | Divider + 3.6V Zener on GPIO | 12V to 2.2V on GPIO34 (input only!) |
 
-> Вимірювання: сплячий ESP32-логер має брати <5 мА from АКБ (deep-sleep +
-> buck in eco-режимі або окремий key живлення per клемі 15). Інакше for 2 тижні
-> стоянки АКБ 60Аг сяде in нуль. Реле/key high-side (BTS6143D) per запалюванню -
-> стандартне рішення.
+> Measurements: a sleeping ESP32 logger must take <5 mA from the battery (deep-sleep +
+> buck in eco mode or a separate power switch on terminal 15). Otherwise in 2 weeks
+> of parking a 60Ah battery sits to zero. Relay/high-side switch (BTS6143D) on ignition is the
+> standard solution.
 
-## Легенда пінів модуля
+## Module pin legend
 
-### ELM327-клон (BT-module, типовий)
+### ELM327 clone (BT module, typical)
 
-| Пін / елемент | Позначення | Тип | Куди | Примітка |
+| Pin / element | Marking | Type | Where | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC 5V | Живлення | 5V / OBD пін 16 via 12→5V | Всередині адаптера свій регулятор! |
-| 2 | GND | Земля | GND / OBD піни 4+5 | Обидві землі OBD with'єднати! |
-| 3 | TX (адаптер→ESP32) | Вихід UART 3.3/5V | GPIO16 (RX2 ESP32) via дільник якщо 5V! | Бод 38400 (рідше 9600/115200) |
-| 4 | RX (ESP32→адаптер) | Вхід UART | GPIO17 (TX2 ESP32) | Перехресно TX→RX |
-| BT | SPP `OBDII`, пін `1234`/`0000` | BT Classic | ESP32 Bluedroid SPP | Тільки classic ESP32, not C3! |
-| OBD-роз'єм | J1962 16-пін | Авто | колодка авто | Піни 6/14 CAN, 7 K-line, 16 +12V |
+| 1 | VCC 5V | Power supply | 5V / OBD pin 16 via 12 to 5V | Own regulator inside the adapter! |
+| 2 | GND | Ground | GND / OBD pins 4+5 | Join both OBD grounds! |
+| 3 | TX (adapter to ESP32) | UART 3.3/5V output | GPIO16 (ESP32 RX2) via divider if 5V! | Baud 38400 (rarely 9600/115200) |
+| 4 | RX (ESP32 to adapter) | UART input | GPIO17 (ESP32 TX2) | Crossed TX to RX |
+| BT | SPP `OBDII`, `1234`/`0000` PIN | BT Classic | ESP32 Bluedroid SPP | Classic ESP32 only, not C3! |
+| OBD connector | J1962 16-pin | Car | car socket | Pins 6/14 CAN, 7 K-line, 16 +12V |
 
-### TJA1020 LIN-плата
+### TJA1020 LIN board
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC 3.3/5V | Живлення логіки | 3V3 (або 5V for версією плати) | Рівні TXD/RXD сумісні 3.3/5V |
-| 2 | GND | Земля | GND | Спільна with ESP32 and кузовом |
-| 3 | TXD | Вхід цифровий | GPIO17 (UART TX) | ESP32 TX → TXD |
-| 4 | RXD | Вихід цифровий | GPIO16 (UART RX) | RXD → ESP32 RX |
-| 5 | SLP_N | Вхід керування | GPIO5 (HIGH=робота) | LOW = сон 10 мкА |
-| 6 | LIN | Шина 12V | LIN-bus авто/стенда | Master: +1кОм+діод on VBAT! |
-| 7 | VBAT | Живлення 12V | Борт 12V via запобіжник | Діапазон 5.5-27V |
+| 1 | VCC 3.3/5V | Logic power | 3V3 (or 5V by board version) | TXD/RXD levels 3.3/5V compatible |
+| 2 | GND | Ground | GND | Common with ESP32 and body |
+| 3 | TXD | Digital input | GPIO17 (UART TX) | ESP32 TX to TXD |
+| 4 | RXD | Digital output | GPIO16 (UART RX) | RXD to ESP32 RX |
+| 5 | SLP_N | Control input | GPIO5 (HIGH=work) | LOW = 10 uA sleep |
+| 6 | LIN | 12V bus | Car/bench LIN bus | Master: +1kOhm+diode to VBAT! |
+| 7 | VBAT | 12V power | 12V board via fuse | 5.5-27V range |
 
-### L9637D K-line плата
+### L9637D K-line board
 
 | Pin | Label | Type | To | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC 5V | Живлення | 5V | Логіка 5V - RX до ESP32 via дільник 2:1! |
-| 2 | GND | Земля | GND | Спільна |
-| 3 | TX | Вхід | GPIO17 (TX2) | 10400 8N1 |
-| 4 | RX | Вихід 5V! | GPIO16 via дільник 10к/20к | 5V вб'є GPIO without дільника! |
-| 5 | K | Шина | OBD пін 7, via 510 Ом | Підтяжка до 12V всередині |
-| 6 | L | Шина (опц.) | OBD пін 15 | Часто NC |
-| 7 | VS | 12V | Борт via діод + TVS | Живлення драйвера |
+| 1 | VCC 5V | Power supply | 5V | 5V logic - RX to ESP32 via 2:1 divider! |
+| 2 | GND | Ground | GND | Common |
+| 3 | TX | Input | GPIO17 (TX2) | 10400 8N1 |
+| 4 | RX | 5V output! | GPIO16 via 10k/20k divider | 5V kills GPIO without divider! |
+| 5 | K | Bus | OBD pin 7, via 510 Ohm | Pull-up to 12V inside |
+| 6 | L | Bus (opt.) | OBD pin 15 | Often NC |
+| 7 | VS | 12V | Board via diode + TVS | Driver power |
 
-### CC1101 433 МГц (TPMS / свої KeeLoq-пульти)
+### CC1101 433 MHz (TPMS / own KeeLoq remotes)
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC 3.3V | Живлення | 3V3 | Тільки 3.3V! |
-| 2 | GND | Земля | GND | Короткий провід |
-| 3 | SCK | SPI | GPIO18 | SPI до 10 МГц |
+| 1 | VCC 3.3V | Power supply | 3V3 | 3.3V only! |
+| 2 | GND | Ground | GND | Short wire |
+| 3 | SCK | SPI | GPIO18 | SPI up to 10 MHz |
 | 4 | MOSI | SPI | GPIO23 | - |
 | 5 | MISO | SPI | GPIO19 | - |
-| 6 | CSN | SPI | GPIO5 | Активний LOW |
-| 7 | GDO0 | Вихід цифровий | GPIO4 (переривання) | Дані OOK / sync-преривання |
-| 8 | GDO2 | Вихід цифровий | GPIO2 (опц.) | RSSI/carrier sense |
-| ANT | SMA/IPEX | RF | Антена 433 МГц 17 см | Довжина чвертьхвилі! |
+| 6 | CSN | SPI | GPIO5 | Active LOW |
+| 7 | GDO0 | Digital output | GPIO4 (interrupt) | OOK data / sync interrupt |
+| 8 | GDO2 | Digital output | GPIO2 (opt.) | RSSI/carrier sense |
+| ANT | SMA/IPEX | RF | 433 MHz 17 cm antenna | Quarter-wave length! |
 
-## Схема
+## Schematic
 
-Загальна схема: ESP32 + buck/TVS-живлення from 12V, ELM327 (UART/BT) in OBD,
-LIN via TJA1020, K-line via L9637D, SENT-датчик on RMT-вхід,
+Overall schematic: ESP32 + buck/TVS power from 12V, ELM327 (UART/BT) in OBD,
+LIN via TJA1020, K-line via L9637D, SENT sensor on RMT input,
 TPMS/KeeLoq-RX on CC1101.
 
 ### ASCII schematic
@@ -472,31 +472,31 @@ RF 433 МГц:
   KeeLoq: ТІЛЬКИ свій learning-приймач + свої пульти; реле імпульсом 0.5с
 ```
 
-### Mermaid-діаграма шин
+### Mermaid bus diagram
 
 ```mermaid
 graph LR
-    BAT[АКБ 12V<br/>кл.30 + кл.15] -->|FUSE + TVS| BUCK[Buck 12→5V<br/>+ LDO 3.3V]
+    BAT[12V battery<br/>term.30 + term.15] -->|FUSE + TVS| BUCK[Buck 12 to 5V<br/>+ LDO 3.3V]
     BUCK --> ESP32[ESP32<br/>UART + TWAI + RMT + SPI]
-    IGN[Запалювання кл.15<br/>дільник] -->|GPIO34| ESP32
-    ESP32 <-->|UART 38400 / BT SPP| ELM[ELM327-клон<br/>AT-команди]
-    ELM <-->|J1962| OBD((OBD-II колодка<br/>6/14 CAN, 7 K-line))
+    IGN[Ignition term.15<br/>divider] -->|GPIO34| ESP32
+    ESP32 <-->|UART 38400 / BT SPP| ELM[ELM327 clone<br/>AT commands]
+    ELM <-->|J1962| OBD((OBD-II socket<br/>6/14 CAN, 7 K-line))
     OBD <-->|CANH/L| TWAI[TJA1050<br/>CTX GPIO5 / CRX GPIO4]
     TWAI <--> ESP32
     OBD <-->|K-line| L9637[L9637D<br/>10400 8N1]
     L9637 <-->|TX/RX| ESP32
     ESP32 <-->|TXD/RXD + SLP| TJA[TJA1020<br/>LIN 12V]
-    TJA <-->|LIN| LINBUS((LIN-bus<br/>двері/клімат))
-    SENTD[SENT-датчик<br/>5V] -->|RMT GPIO15<br/>дільник!| ESP32
-    CC[CC1101 433МГц<br/>SPI + GDO0] <--> ESP32
-    TPMS((TPMS-датчики<br/>свої ID!)) -->|433.92 OOK| CC
-    KEY[Свої KeeLoq-пульти<br/>HCS] -->|433.92 AM| CC
-    CC -->|реле імпульс| REL[Реле воріт<br/>0.5с]
+    TJA <-->|LIN| LINBUS((LIN bus<br/>doors/climate))
+    SENTD[SENT sensor<br/>5V] -->|RMT GPIO15<br/>divider!| ESP32
+    CC[CC1101 433MHz<br/>SPI + GDO0] <--> ESP32
+    TPMS((TPMS sensors<br/>own IDs!)) -->|433.92 OOK| CC
+    KEY[Own KeeLoq remotes<br/>HCS] -->|433.92 AM| CC
+    CC -->|relay pulse| REL[Gate relay<br/>0.5s]
 ```
 
 ## Code
 
-### ESP-IDF - ELM327 per UART + RPM 010C with формулою
+### ESP-IDF - ELM327 over UART + RPM 010C with formula
 
 ```c
 // ESP-IDF v5.x: ELM327-клон на UART2 (GPIO16 RX <- TX адаптера, GPIO17 TX -> RX).
@@ -584,7 +584,7 @@ void app_main(void) {
 }
 ```
 
-### ESP-IDF - прямий CAN ISO 15765-4 запит RPM via TWAI (without ELM327)
+### ESP-IDF - direct CAN ISO 15765-4 RPM request via TWAI (without ELM327)
 
 ```c
 // ESP-IDF v5.x (новий TWAI API): прямий запит RPM на 0x7DF, відповідь з 0x7E8.
@@ -690,7 +690,7 @@ void app_main(void) {
 }
 ```
 
-### Arduino - ELM327 + LIN-слухач + SENT via RMT (огляд)
+### Arduino - ELM327 + LIN listener + SENT via RMT (overview)
 
 ```cpp
 // Arduino-ESP32: ELM327 по Serial2 (38400), TJA1020 LIN на Serial1 (9600),
@@ -742,7 +742,7 @@ void loop() {
 }
 ```
 
-### MicroPython - OBD RPM + LIN-кадр + SENT-заглушка
+### MicroPython - OBD RPM + LIN frame + SENT stub
 
 ```python
 """MicroPython ESP32: RPM через ELM327 (UART2 38400), LIN-кадр вручну, SENT — оцінка tick."""
@@ -796,7 +796,7 @@ while True:
     time.sleep(1)
 ```
 
-### MicroPython - TPMS білий список ID (свої колеса!)
+### MicroPython - TPMS whitelist of IDs (own wheels!)
 
 ```python
 """Фільтр своїх TPMS-датчиків: чужі ID відкидаємо, свої — тиск/температура."""
@@ -814,45 +814,45 @@ def tpms_handle(pkt_id, press_raw, temp_raw):
 
 ## typical errors
 
-| # | Symptom | Cause | Ліки |
+| # | Symptom | Cause | Fix |
 | --- | --- | --- | --- |
-| 1 | ELM327 відповідає `?` on всі запити | Ехо not вимкнено / немає `\r` in кінці | `ATE0`, слати `cmd + "\r"`, чекати `>` |
-| 2 | `NO DATA` on `010C` at ввімкненому запалюванні | not той протокол (клон v2.1 without K-line) | `ATDPN`, примусово `ATSP6` (CAN) або `ATSP3` (K-line) |
-| 3 | Клон v2.1 мовчить on старому авто | Урізаний клон without ISO 9141/J1850 | Взяти v1.5-повний або L9637D-плату |
-| 4 | RPM стрибає in 4 рази | Забули `/4` in формулі 010C | `((A*256)+B)/4`, not `(A*256+B)`! |
-| 5 | `UNABLE TO CONNECT` після `ATSP0` | Адаптер not in колодці / запалювання OFF | verify пін 16 (+12V), увімкнути запалювання, `ATZ`+повтор |
-| 6 | TWAI мовчить on CAN OBD | Немає термінатора / not та швидкість | 500 кбіт 11-біт (США with 2008), 120 Ом on кінцях стенда |
-| 7 | LIN-slave not відповідають | Master without підтяжки 1кОм+діод | Додати master-термінатор on VBAT, verify SLP_N=HIGH |
-| 8 | LIN-сміття замість кадрів | Бод not відкалібрований (немає SYNC-захоплення) | Слухати SYNC 0x55, міряти бод per ньому, break ≥13 біт |
-| 9 | SENT CRC-фейли | Різні землі датчика and ESP32 / HIGH 4.1V without дільника | Спільна земля, дільник 10к/20к on вхід, калібровка per SYNC |
-| 10 | L9637D мовчить (немає 0x55) | 5-baud init not витримані таймінги W1..W5 | Бітбенг 5 бод for 0x33, потім 10400, W=25-100мс |
-| 11 | 5V on RX ESP32 from L9637D | RX драйвера 5V-рівень | Дільник 10к/20к або 74LVC245, інакше смерть GPIO! |
-| 12 | TPMS показує чужі колеса | Немає білого списку ID | Фільтр своїх 4-8 ID, чужі відкидати |
-| 13 | KeeLoq-приймач відкривається from запису | Resync-вікно величезне / seed спільний | Вузьке вікно, унікальний seed, реле імпульсом 0.5с |
-| 14 | ESP32 згорів via тиждень in авто | Живлення безпосередньо from 12V / without TVS (load dump 40V+) | Buck 7-40V + TVS SMBJ28A + запобіжник 1A |
-| 15 | АКБ сідає for стоянку | Логер жере 100+ мА постійно | Deep-sleep + key per клемі 15, ціль <5 мА in сні |
+| 1 | ELM327 answers `?` to all requests | Echo not off / no `\r` at end | `ATE0`, send `cmd + "\r"`, wait for `>` |
+| 2 | `NO DATA` on `010C` with ignition on | wrong protocol (v2.1 clone without K-line) | `ATDPN`, force `ATSP6` (CAN) or `ATSP3` (K-line) |
+| 3 | v2.1 clone silent on an old car | Cut clone without ISO 9141/J1850 | Take a full v1.5 or an L9637D board |
+| 4 | RPM jumps 4x | Forgot `/4` in the 010C formula | `((A*256)+B)/4`, not `(A*256+B)`! |
+| 5 | `UNABLE TO CONNECT` after `ATSP0` | Adapter not in socket / ignition OFF | verify pin 16 (+12V), turn ignition on, `ATZ`+repeat |
+| 6 | TWAI silent on CAN OBD | No terminator / wrong speed | 500 kbps 11-bit (USA since 2008), 120 Ohm on bench ends |
+| 7 | LIN slaves do not answer | Master without 1kOhm+diode pull-up | Add master terminator to VBAT, verify SLP_N=HIGH |
+| 8 | LIN garbage instead of frames | Baud not calibrated (no SYNC capture) | Listen to SYNC 0x55, measure baud on it, break >=13 bits |
+| 9 | SENT CRC fails | Different sensor and ESP32 grounds / 4.1V HIGH without divider | Common ground, 10k/20k divider on input, calibration on SYNC |
+| 10 | L9637D silent (no 0x55) | 5-baud init W1..W5 timings not held | 5-baud bitbang for 0x33, then 10400, W=25-100ms |
+| 11 | 5V on ESP32 RX from L9637D | 5V-level driver RX | 10k/20k divider or 74LVC245, else GPIO death! |
+| 12 | TPMS shows foreign wheels | No ID whitelist | Filter own 4-8 IDs, drop foreign |
+| 13 | KeeLoq receiver opens from record | Huge resync window / shared seed | Narrow window, unique seed, 0.5s pulse relay |
+| 14 | ESP32 burnt after a week in the car | Powered straight from 12V / without TVS (40V+ load dump) | 7-40V buck + SMBJ28A TVS + 1A fuse |
+| 15 | Battery drains over parking | Logger eats 100+ mA constantly | Deep-sleep + switch on terminal 15, target <5 mA in sleep |
 
 ## Official sources
 
-> Усі посилання нижче перевірені завантаженням (webfetch, 2026-09-29). Вгаданих URL немає.
+> All links below verified by download (webfetch, 2026-09-29). No guessed URLs.
 
-- OBD-II PIDs (режими, формули включно with 010C RPM) - <https://en.wikipedia.org/wiki/OBD-II_PIDs>
-- On-board diagnostics (J1962, протоколи, ISO 9141 / ISO 14230 / CAN) - <https://en.wikipedia.org/wiki/On-board_diagnostics>
-- Elm Electronics (офіційний сайт ELM327: datasheets, AT-команди, статус) - <https://www.elmelectronics.com/>
-- NXP TJA1020 - LIN-трансивер, baud до 20 кбод, документація - <https://www.nxp.com/products/interfaces/lin-transceivers/dual-lin-transceiver-with-low-drop-voltage-regulator:TJA1020>
-- SENT - Single Edge Nibble Transmission, SAE J2716 (структура кадрів) - <https://en.wikipedia.org/wiki/SENT_(protocol)>
-- FlexRay (ISO 17458, до 10 Мбіт, static/dynamic segments) - <https://en.wikipedia.org/wiki/FlexRay>
-- KeeLoq (HCS, rolling code, атаки - for захисту своїх приймачів) - <https://en.wikipedia.org/wiki/KeeLoq>
+- OBD-II PIDs (modes, formulas including 010C RPM) - <https://en.wikipedia.org/wiki/OBD-II_PIDs>
+- On-board diagnostics (J1962, protocols, ISO 9141 / ISO 14230 / CAN) - <https://en.wikipedia.org/wiki/On-board_diagnostics>
+- Elm Electronics (official ELM327 site: datasheets, AT commands, status) - <https://www.elmelectronics.com/>
+- NXP TJA1020 - LIN transceiver, baud up to 20 kbaud, docs - <https://www.nxp.com/products/interfaces/lin-transceivers/dual-lin-transceiver-with-low-drop-voltage-regulator:TJA1020>
+- SENT - Single Edge Nibble Transmission, SAE J2716 (frame structure) - <https://en.wikipedia.org/wiki/SENT_(protocol)>
+- FlexRay (ISO 17458, up to 10 Mbps, static/dynamic segments) - <https://en.wikipedia.org/wiki/FlexRay>
+- KeeLoq (HCS, rolling code, attacks - to protect own receivers) - <https://en.wikipedia.org/wiki/KeeLoq>
 - TI DP83TC811S-Q1 - 100BASE-T1 PHY IEEE 802.3bw, datasheet - <https://www.ti.com/product/DP83TC811S-Q1>
-- ESP-IDF TWAI (CAN-контролер ESP32: TX/RX, фільтри, приклади) - <https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/twai.html>
+- ESP-IDF TWAI (ESP32 CAN controller: TX/RX, filters, examples) - <https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/twai.html>
 
 ## See also
 
 - [[EN/Home.en]]
-- [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]] - TWAI/CAN-база for прямого OBD-II without ELM327
+- [[EN/04-Interfaces/05-CAN-TWAI-RS485.en]] - TWAI/CAN base for direct OBD-II without ELM327
 - [[EN/04-Interfaces/01-UART.en|UART]] - UART for ELM327 / LIN / K-line
-- [[EN/12-Comm-Modules/19-Wired-2.en]] - CAN-інструменти (CANable, SLCAN, ISO1050, Wireshark)
-- [[EN/12-Comm-Modules/17-GNSS-RTK.en]] - GNSS-трекер до автомобільного логера
-- [[EN/12-Comm-Modules/23-Marine-Time.en]] - сусідня нота (NMEA2000/CAN 250 кбіт, спільний TWAI-досвід)
-- [[EN/12-Comm-Modules/21-Motion-Control.en]] - керування моторами/актуаторами (продовження LIN-тематики)
-- [[EN/02-Power-Supply/01-Power-Rails.en]] - ланцюги живлення, buck, TVS, protection
+- [[EN/12-Comm-Modules/19-Wired-2.en]] - CAN tools (CANable, SLCAN, ISO1050, Wireshark)
+- [[EN/12-Comm-Modules/17-GNSS-RTK.en]] - GNSS tracker to the car logger
+- [[EN/12-Comm-Modules/23-Marine-Time.en]] - neighbor note (NMEA2000/CAN 250 kbps, shared TWAI experience)
+- [[EN/12-Comm-Modules/21-Motion-Control.en]] - motor/actuator control (LIN-topic continuation)
+- [[EN/02-Power-Supply/01-Power-Rails.en]] - power rails, buck, TVS, protection

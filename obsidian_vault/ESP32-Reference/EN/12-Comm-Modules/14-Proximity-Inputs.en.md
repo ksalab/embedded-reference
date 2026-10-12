@@ -1,6 +1,6 @@
 ---
-description: Ця нота - міст from «лабораторних» кнопок ([[EN/10-Sensors/34-Buttons-Switches-Pots.en]]) до цехових дискретних входів: безконтактні датчики наближення (proximity), які самі живляться from 12/24 in...; shows schematics, code and tables.
-title: Промислові дискретні входи ESP32 - індуктивні LJ12A3, ємнісні LJC, фотоелектричні E18-D80NK, through-beam, retroreflective, щілинні TCST2103, NPN/PNP sinking-sourcing, опторозв'язка PC817 for 12-24V, сухий контакт, ізольовані 8ch
+description: This note is a bridge from "lab" buttons ([[EN/10-Sensors/34-Buttons-Switches-Pots.en]]) to workshop discrete inputs: contactless proximity sensors powered from 12/24 V...; shows schematics, code and tables.
+title: Industrial discrete ESP32 inputs - inductive LJ12A3, capacitive LJC, photoelectric E18-D80NK, through-beam, retroreflective, slot TCST2103, NPN/PNP sinking-sourcing, PC817 optoisolation for 12-24V, dry contact, isolated 8ch
 tags: [esp32, proximity, inductive, capacitive, photoelectric, npn, pnp, optocoupler, pc817, industrial, dry-contact, isolated-input]
 category: Moduli
 lang: en
@@ -9,64 +9,64 @@ date: 2026-10-10
 original: 12-Moduli-zvyazku/14-Proximity-Inputs.md
 ---
 
-# Промислові дискретні входи: індуктивні LJ12A3, ємнісні, фотоелектричні E18-D80NK, NPN/PNP, PC817 for 12/24 in, сухий контакт, ізольовані 8ch
+# Industrial discrete inputs: inductive LJ12A3, capacitive, photoelectric E18-D80NK, NPN/PNP, PC817 for 12/24 V, dry contact, isolated 8ch
 
 ![[assets/img/proximity-industrial-inputs-scheme.png|600]]
-*Fig. 1. Промислові входи ESP32: індуктивний LJ12A3 per металу, дифузний E18-D80NK, вилочний TCST2103, NPN/PNP via PC817 with 24 in on 3.3 in GPIO.*
+*Fig. 1. Industrial ESP32 inputs: inductive LJ12A3 for metal, diffuse E18-D80NK, fork TCST2103, NPN/PNP via PC817 from 24 V to 3.3 V GPIO.*
 
 > [!danger] 12/24 in - not in GPIO!
-> Індуктивні/ємнісні/фотоелектричні датчики живляться from **6-36 in** and видають стільки ж on виході. Пряме підключення вб'є ESP32. Правило: **дільник for лабораторії, оптопара PC817 for цеху**. Див. [[EN/13-Power-Modules/02-Level-Shifters.en|Level-shifters]] та [[EN/12-Comm-Modules/10-Industrial.en|Industrial fieldbus]].
+> Inductive/capacitive/photoelectric sensors are powered from **6-36 V** and output the same on the output. Direct connection kills ESP32. Rule: **divider for the lab, PC817 optocoupler for the workshop**. See [[EN/13-Power-Modules/02-Level-Shifters.en|Level-shifters]] and [[EN/12-Comm-Modules/10-Industrial.en|Industrial fieldbus]].
 >
-> [!tip] Де this живе
-> Кінцевик осі ЧПК (LJ12A3 бачить гайку каретки), контроль наявності деталі (ємнісний LJC бачить пластик/рідину), лічильник пляшок on конвеєрі (E18-D80NK), енкодер принтера/лічильник обертів (TCST2103), кнопки пульта 24 in in шафі керування (PC817), «сухий контакт» реле/геркона, 8-канальна ізольована плата входів ПЛК-стилю.
+> [!tip] Where this lives
+> CNC axis limit switch (LJ12A3 sees the carriage nut), part-presence check (capacitive LJC sees plastic/liquid), bottle counter on a conveyor (E18-D80NK), printer encoder/rev counter (TCST2103), 24 V panel buttons in a control cabinet (PC817), relay/reed "dry contact", 8-channel isolated PLC-style input board.
 
 ## Purpose
 
-Ця нота - міст from «лабораторних» кнопок ([[EN/10-Sensors/34-Buttons-Switches-Pots.en]]) до цехових дискретних входів: безконтактні датчики наближення (proximity), які самі живляться from 12/24 in and самі перемикають вихід, та способи безпечно завести їх in 3.3 in GPIO ESP32. on відміну from сухої кнопки (пасивний контакт), proximity-датчик - **активний 3-дротовий пристрій**: коричневий `BN = +V`, синій `BU = GND`, чорний `BK = вихід`.
+This note is a bridge from "lab" buttons ([[EN/10-Sensors/34-Buttons-Switches-Pots.en]]) to workshop discrete inputs: contactless proximity sensors powered from 12/24 V that switch the output themselves, and ways to safely bring them into 3.3 V ESP32 GPIO. Unlike a dry button (passive contact), a proximity sensor is an **active 3-wire device**: brown `BN = +V`, blue `BU = GND`, black `BK = output`.
 
-that покрито: індуктивні LJ12A3 (метал, 4 мм!), ємнісні LJC18 (метал/пластик/рідина), фотоелектричні дифузні E18-D80NK with підстроюванням дистанції, through-beam (випромінювач + приймач) та retroreflective (датчик + катафот) оглядово, щілинні/вилочні TCST2103 (енкодери принтера, лічильники обертів!), NPN vs PNP виходи + sinking/sourcing with обома схемами, дільник напруги vs опторозв'язка PC817 for 12/24 in with розрахунком резистора світлодіода, поняття «сухий контакт», оглядові ізольовані 8-канальні плати входів ПЛК-стилю.
+Covered: inductive LJ12A3 (metal, 4 mm!), capacitive LJC18 (metal/plastic/liquid), diffuse photoelectric E18-D80NK with distance trim, through-beam (emitter + receiver) and retroreflective (sensor + reflector) overview, slot/fork TCST2103 (printer encoders, rev counters!), NPN vs PNP outputs + sinking/sourcing with both schematics, voltage divider vs PC817 optoisolation for 12/24 V with LED resistor calculation, the "dry contact" concept, overview isolated PLC-style 8-channel input boards.
 
-Головна формула ноти - резистор світлодіода оптопари: `R = (Vвх − Vf − Vce_датчика) / If`. Головне правило: **common ground 24 in and ESP32 - тільки via оптопару або ізольовану плату; інакше петлі земель and кидки пускачів дійдуть до кристала**.
+The main formula of the note is the optocoupler LED resistor: `R = (Vin - Vf - Vce_sensor) / If`. The main rule: **common ground of 24 V and ESP32 - only via an optocoupler or an isolated board; otherwise ground loops and contactor throws reach the die**.
 
-## Характеристики
+## Characteristics
 
-### Безконтактні датчики наближення: порівняння
+### Contactless proximity sensors: comparison
 
-| Параметр | Індуктивний LJ12A3-4-Z/BX | Ємнісний LJC18A3 | Фотоелектричний E18-D80NK (дифузний) |
+| Parameter | Inductive LJ12A3-4-Z/BX | Capacitive LJC18A3 | Photoelectric E18-D80NK (diffuse) |
 | --- | --- | --- | --- |
-| that бачить | **Тільки метал!** (сталь 4 мм, алюміній ~2 мм) | Метал/пластик/дерево/рідина/сипучі (via стінку!) | Будь-which непрозора поверхня (відбиття ІЧ) |
-| Дистанція | 4 мм (M12), гістерезис ~10% | 1-10 мм (регулюється гвинтом!) | 3-80 см (гвинт чутливості!) |
-| Живлення | 6-36 in DC (типово 12/24 in) | 6-36 in DC | 5 in (є версії 6-36 in E18-D80NK!) |
-| Вихід | NPN NO (BX) / NC (BY); PNP версії AX/AY | NPN/PNP NO/NC | NPN NO (транзистор до GND) |
-| Струм виходу | До 300 мА (перемикає реле безпосередньо!) | До 300 мА | До 100-300 мА (for версією) |
-| Індикація | Червоний LED on тильній стороні (горить at спрацюванні) | Червоний LED | Червоний LED + зелений «живлення» |
-| Частота | До ~500 Гц (метал!) | До ~100 Гц | До ~100 Гц (ІЧ-модуляція 38 кГц всередині) |
-| Ціна/доступність | Дешевий, стандарт ЧПК-кінцевиків | Дешевий, контроль рівня/наявності | Дешевий, лічильники/об'їзди роботів |
-| Підводний камінь | not бачить пластик/руку! Зменшення дистанції on кольорових металах | Реагує on руку/вологу/пил - хибні спрацювання | Сліпне on сонці/чорному оксамиті; потрібне юстування гвинта |
+| What it sees | **Metal only!** (steel 4 mm, aluminium ~2 mm) | Metal/plastic/wood/liquid/bulk (through a wall!) | Any opaque surface (IR reflection) |
+| Distance | 4 mm (M12), ~10% hysteresis | 1-10 mm (adjustable with screw!) | 3-80 cm (sensitivity screw!) |
+| Power supply | 6-36 V DC (typically 12/24 V) | 6-36 V DC | 5 V (there are 6-36 V E18-D80NK versions!) |
+| Output | NPN NO (BX) / NC (BY); PNP versions AX/AY | NPN/PNP NO/NC | NPN NO (transistor to GND) |
+| Output current | Up to 300 mA (switches a relay directly!) | Up to 300 mA | Up to 100-300 mA (by version) |
+| Indication | Red LED on the back (lights on trigger) | Red LED | Red LED + green "power" |
+| Frequency | Up to ~500 Hz (metal!) | Up to ~100 Hz | Up to ~100 Hz (38 kHz IR modulation inside) |
+| Price/availability | Cheap, CNC limit-switch standard | Cheap, level/presence control | Cheap, counters/robot bypasses |
+| Pitfall | does not see plastic/hand! Reduced distance on colored metals | Reacts to hand/moisture/dust - false triggers | Blinded in sun/on black velvet; screw adjustment needed |
 
-### Фотоелектричні топології оглядово: diffuse vs through-beam vs retroreflective
+### Photoelectric topologies overview: diffuse vs through-beam vs retroreflective
 
-| Топологія | how влаштовано | Дальність | Плюси | Мінуси |
+| Topology | How built | Range | Pluses | Minuses |
 | --- | --- | --- | --- | --- |
-| Дифузна (diffuse, E18-D80NK) | Випромінювач + приймач in одному корпусі, відбиття from об'єкта | 0.03-0.8 м | Один корпус, дешево, нічого not ставити навпроти | Залежить from кольору/блиску; чорний матовий «невидимий» |
-| Through-beam (on просвіт) | Окремий TX (ІЧ-LED) навпроти RX (фотодіод), промінь переривається | 1-30 м! | Найдальше, найнадійніше, прозорі об'єкти ловить | Два корпуси + два живлення + юстування осі |
-| Retroreflective (with катафотом) | Датчик + кутовий відбивач (катафот) навпроти | 0.5-6 м | Один активний корпус, дальність більша for дифузну | Бликаючі/прозорі об'єкти можуть «просвічувати»; катафот брудниться |
-| Щілинна/вилочна (slot, TCST2103) | U-вилка: LED + фототранзистор, зазор 3-5 мм | 3 мм (прапорця!) | Ідеальна for енкодерів/лічильників, різкий фронт | Тільки тонкий прапорець in зазорі; бруд вбиває |
+| Diffuse (E18-D80NK) | Emitter + receiver in one body, reflection from the object | 0.03-0.8 m | One body, cheap, nothing to place opposite | Depends on color/gloss; black matte is "invisible" |
+| Through-beam | Separate TX (IR LED) opposite RX (photodiode), beam interrupted | 1-30 m! | Farthest, most reliable, catches transparent objects | Two bodies + two power supplies + axis alignment |
+| Retroreflective (with reflector) | Sensor + corner reflector opposite | 0.5-6 m | One active body, longer range than diffuse | Flashing/transparent objects may "shine through"; reflector gets dirty |
+| Slot/fork (TCST2103) | U-fork: LED + phototransistor, 3-5 mm gap | 3 mm (flag!) | Ideal for encoders/counters, sharp edge | Only a thin flag in the gap; dirt kills |
 
-### Щілинний TCST2103 (енкодери принтера!)
+### Slot TCST2103 (printer encoders!)
 
-| Параметр | Значення | Примітка |
+| Parameter | Value | Note |
 | --- | --- | --- |
-| Конструкція | ІЧ-LED (анод/катод) + фототранзистор (колектор/емітер), зазор ~3 мм | 4 виводи, крок 2.54 мм |
-| LED | Vf ~1.2 in, If 10-20 мА (резистор 150-220 Ом from 5 in!) | without резистора LED згорає миттєво |
-| Фототранзистор | NPN, колектор via 10 кОм до 3V3, емітер on GND | Вихід-колектор → GPIO (LOW = промінь перекрито) |
-| Застосування | Енкодери принтерів (лінійка зі штрихами!), лічильники обертів диска with прорізами | Диск with N прорізами → N імпульсів/оберт |
-| Швидкість | Фронти ~10 мкс, до десятків кГц | Краще for механіку in 100 разів; дебаунс not потрібен! |
-| Бруд | Пил in зазорі = «завжди перекрито» | Продувати/закривати кожухом |
+| Construction | IR LED (anode/cathode) + phototransistor (collector/emitter), ~3 mm gap | 4 leads, 2.54 mm pitch |
+| LED | Vf ~1.2 V, If 10-20 mA (150-220 Ohm resistor from 5 V!) | without resistor the LED burns instantly |
+| Phototransistor | NPN, collector via 10 kOhm to 3V3, emitter to GND | Collector output to GPIO (LOW = beam blocked) |
+| Application | Printer encoders (strip with marks!), disk rev counters with slots | Disk with N slots gives N pulses/rev |
+| Speed | Edges ~10 us, up to tens of kHz | 100x better than mechanics; no debounce needed! |
+| Dirt | Dust in the gap = "always blocked" | Blow out/cover with a hood |
 
-### NPN vs PNP + sinking/sourcing (схеми обох!)
+### NPN vs PNP + sinking/sourcing (both schematics!)
 
-Датчик with NPN-виходом **стягує (sinks)** струм on землю; with PNP - **віддає (sources)** струм with плюса. ESP32 with pull-up любить NPN; PNP вимагає pull-down або оптопари.
+An NPN-output sensor **sinks** current to ground; PNP **sources** current from plus. ESP32 with pull-up loves NPN; PNP requires pull-down or an optocoupler.
 
 ```text
  NPN NO (sinking), датчик живиться 24В:         PNP NO (sourcing), датчик живиться 24В:
@@ -81,110 +81,110 @@ that покрито: індуктивні LJ12A3 (метал, 4 мм!), ємні
       (ідеально: NPN + pull-up до 3V3).            з pull-down (див. схеми нижче).
 ```
 
-| Вихід датчика | in спокої (немає об'єкта) | at спрацюванні | Вхід ESP32 (via PC817) |
+| Sensor output | at rest (no object) | on trigger | ESP32 input (via PC817) |
 | --- | --- | --- | --- |
-| NPN NO | BK висить (транзистор закритий) | BK = GND (відкритий) | LED оптопари світить at спрацюванні |
-| NPN NC | BK = GND | BK висить | Інверсія: світить in спокої (рідше беруть) |
-| PNP NO | BK висить | BK = +24 in | LED via резистор до GND світить at спрацюванні |
-| PNP NC | BK = +24 in | BK висить | Інверсія |
+| NPN NO | BK floats (transistor closed) | BK = GND (open) | Optocoupler LED lights on trigger |
+| NPN NC | BK = GND | BK floats | Inversion: lights at rest (taken rarely) |
+| PNP NO | BK floats | BK = +24 V | LED via resistor to GND lights on trigger |
+| PNP NC | BK = +24 V | BK floats | Inversion |
 
-> [!tip] how розпізнати on корпусі
-> Маркування `BX` (LJ12A3-4-Z/BX) = NPN NO; `BY` = NPN NC; `AX` = PNP NO; `AY` = PNP NC. on E18-D80NK - NPN NO for замовчуванням (є PNP-версії E18-D80PK). Якщо сумнів - мультиметр: чорний щуп on BU, червоний on BK: at спрацюванні NPN покаже ~0 in, PNP покаже ~+24 in.
+> [!tip] How to recognize on the body
+> Marking `BX` (LJ12A3-4-Z/BX) = NPN NO; `BY` = NPN NC; `AX` = PNP NO; `AY` = PNP NC. On E18-D80NK - NPN NO by default (there are PNP E18-D80PK versions). If in doubt - multimeter: black probe on BU, red on BK: on trigger NPN shows ~0 V, PNP shows ~+24 V.
 
-### Дільник vs опторозв'язка: коли that
+### Divider vs optoisolation: when which
 
-| Метод | Схема | Коли брати | Коли not брати |
+| Method | Schematic | When to take | When not to take |
 | --- | --- | --- | --- |
-| Дільник 24→3.3 (напр. 22к/3.3к) | BK → 22к → GPIO → 3.3к → GND (GND спільна!) | Лабораторія, спільний БЖ, короткі дроти, NPN/PNP статика | Цех, різні шафи, пускачі/частотники, довгі лінії, грози |
-| Оптопара PC817 | BK → R → LED → GND_поле; фототранзистор → GPIO + pull-up 3V3 | **Цех for замовчуванням**, гальваніка 5 кВ, різні землі | Швидкість >20 кГц without прискорення (PC817 повільна!) |
-| Ізольована плата 8ch | Готовий module: клеми 12/24 in + оптопари + виходи 3V3 | 4+ входів, шафа керування, ПЛК-стиль | Один датчик (надлишково) |
+| 24 to 3.3 divider (e.g. 22k/3.3k) | BK to 22k to GPIO to 3.3k to GND (GND common!) | Lab, shared PSU, short wires, NPN/PNP statics | Workshop, different cabinets, contactors/VFDs, long lines, storms |
+| PC817 optocoupler | BK to R to LED to field-GND; phototransistor to GPIO + 3V3 pull-up | **Workshop by default**, 5 kV galvanics, different grounds | Speed >20 kHz without acceleration (PC817 is slow!) |
+| Isolated 8ch board | Ready module: 12/24 V terminals + optocouplers + 3V3 outputs | 4+ inputs, control cabinet, PLC style | One sensor (overkill) |
 
-### Розрахунок резистора світлодіода PC817 (обов'язково!)
+### PC817 LED resistor calculation (mandatory!)
 
-Формула: `R = (Vвх − Vf − Vce_датчика) / If`, потужність `P = I²·R`.
+Formula: `R = (Vin - Vf - Vce_sensor) / If`, power `P = I²·R`.
 
-PC817: `Vf ≈ 1.2 in` (ІЧ-LED), потрібний `If = 5-10 мА` (CTR ≥50% дає 2.5-5 мА on транзисторі - достатньо for GPIO with pull-up 10к), ізоляція 5 кВ, швидкість ~4-20 кГц.
+PC817: `Vf ~= 1.2 V` (IR LED), needed `If = 5-10 mA` (CTR >=50% gives 2.5-5 mA on the transistor - enough for GPIO with 10k pull-up), 5 kV isolation, ~4-20 kHz speed.
 
-| Вхід | Розрахунок (If=10 мА, Vce NPN≈0.3 in) | Стандарт E12 | Потужність | check |
+| Input | Calculation (If=10 mA, Vce NPN~=0.3 V) | E12 standard | Power | check |
 | --- | --- | --- | --- | --- |
-| 12 in (кнопка/датчик PNP) | R = (12−1.2−0.3)/0.01 = 1050 Ом | **1 кОм** | 0.1 Вт (беремо 0.25 Вт) | If = 10.5 мА ✓ |
-| 24 in (цеховий стандарт) | R = (24−1.2−0.3)/0.01 = 2250 Ом | **2.2 кОм** | 0.23 Вт (беремо 0.5 Вт!) | If = 10.2 мА ✓ |
-| 24 in економ (If=5 мА) | R = 22.5/0.005 = 4500 Ом | **4.7 кОм** | 0.12 Вт (0.25 Вт) | If = 4.8 мА, CTR мінімум verify! |
-| 5 in (E18-D80NK 5V-версія) | R = (5−1.2)/0.01 = 380 Ом | **390 Ом** | 0.04 Вт | If ≈ 9.7 мА ✓ |
+| 12 V (button/PNP sensor) | R = (12-1.2-0.3)/0.01 = 1050 Ohm | **1 kOhm** | 0.1 W (take 0.25 W) | If = 10.5 mA OK |
+| 24 V (workshop standard) | R = (24-1.2-0.3)/0.01 = 2250 Ohm | **2.2 kOhm** | 0.23 W (take 0.5 W!) | If = 10.2 mA OK |
+| 24 V economy (If=5 mA) | R = 22.5/0.005 = 4500 Ohm | **4.7 kOhm** | 0.12 W (0.25 W) | If = 4.8 mA, verify minimum CTR! |
+| 5 V (E18-D80NK 5V version) | R = (5-1.2)/0.01 = 380 Ohm | **390 Ohm** | 0.04 W | If ~= 9.7 mA OK |
 
-Зворотний діод 1N4148 антипаралельно LED - якщо вхід може отримати зворотну полярність (клеми плутають!). Резистор підтяжки фототранзистора - 10 кОм до 3V3 on стороні ESP32.
+Reverse 1N4148 diode antiparallel to the LED - if the input can get reverse polarity (terminals get mixed up!). Phototransistor pull-up resistor - 10 kOhm to 3V3 on the ESP32 side.
 
-### «Сухий контакт» vs «мокрий» вихід
+### "Dry contact" vs "wet" output
 
-| Термін | that this | Приклади | Підключення до ESP32 |
+| Term | What it is | Examples | Connection to ESP32 |
 | --- | --- | --- | --- |
-| Сухий контакт (dry contact) | Пасивний контакт without власного живлення: реле NO/NC, геркон, кнопка, мікрик | Реле SRD-05, геркон скляний, кінцевик | how кнопка: один бік on GND, другий on GPIO + pull-up 10к |
-| Мокрий/активний вихід | Датчик сам видає напругу (NPN/PNP, 0-10 in, 4-20 мА) | LJ12A3, E18-D80NK, XTR115 | Тільки via дільник/оптопару/шунт, ніколи безпосередньо! |
-| Відкритий колектор (open-collector) | NPN-транзистор without верхнього резистора (підвид сухого логічного) | E18-D80NK BK, енкодери with OC | Зовнішній pull-up до 3V3 (10к) - працює how кнопка до GND! |
+| Dry contact | Passive contact without its own power: relay NO/NC, reed, button, microswitch | SRD-05 relay, glass reed, limit switch | like a button: one side to GND, other to GPIO + 10k pull-up |
+| Wet/active output | Sensor outputs voltage itself (NPN/PNP, 0-10 V, 4-20 mA) | LJ12A3, E18-D80NK, XTR115 | Only via divider/optocoupler/shunt, never directly! |
+| Open collector | NPN transistor without upper resistor (a dry-logic subtype) | E18-D80NK BK, OC encoders | External pull-up to 3V3 (10k) - works like a button to GND! |
 
-## Легенда пінів модуля
+## Module pin legend
 
-### LJ12A3 / LJC18 (3 дроти, кольори for стандартом!)
+### LJ12A3 / LJC18 (3 wires, colors per standard!)
 
-| Дріт | Колір | Призначення | Куди |
+| Wire | Color | Purpose | Where |
 | --- | --- | --- | --- |
-| BN | Коричневий | +V живлення 6-36 in | +12/+24 in цехового БЖ (!) |
-| BU | Синій | GND живлення | GND цехового БЖ → (via оптопару розв'язано!) |
-| BK | Чорний | Вихід NPN/PNP | via R → LED PC817 (див. схему) |
-| LED | Червоний on корпусі | Індикація спрацювання | Візуально: горить = метал поруч (LJ12A3) |
+| BN | Brown | +V power 6-36 V | +12/+24 V of workshop PSU (!) |
+| BU | Blue | Power GND | Workshop PSU GND → (isolated via optocoupler!) |
+| BK | Black | NPN/PNP output | via R to PC817 LED (see schematic) |
+| LED | Red on body | Trigger indication | Visually: lights = metal near (LJ12A3) |
 
-### E18-D80NK (дифузний, 3 дроти + гвинт)
+### E18-D80NK (diffuse, 3 wires + screw)
 
-| Дріт | Колір | Призначення | Куди |
+| Wire | Color | Purpose | Where |
 | --- | --- | --- | --- |
-| Brown | Коричневий | +V (5 in або 6-36 in for версією!) | verify етикетку! 5V-версія згорить from 24 in |
-| Blue | Синій | GND | GND БЖ датчика |
-| Black | Чорний | NPN NO вихід (open-collector) | Pull-up або PC817 |
-| Гвинт | Пластиковий шліц ззаду | Дистанція 3-80 см (for годинниковою = далі) | Крутити at встановленій мішені! |
+| Brown | Brown | +V (5 V or 6-36 V by version!) | verify the label! The 5V version burns from 24 V |
+| Blue | Blue | GND | Sensor PSU GND |
+| Black | Black | NPN NO output (open-collector) | Pull-up or PC817 |
+| Screw | Plastic slot at back | Distance 3-80 cm (clockwise = farther) | Turn with the target installed! |
 
-### TCST2103 (вилочний, 4 піни)
+### TCST2103 (fork, 4 pins)
 
-| Пін | Сторона | Призначення | Куди |
+| Pin | Side | Purpose | Where |
 | --- | --- | --- | --- |
-| A | LED анод | + via 220 Ом | 3V3/5V via резистор! (If ~15 мА) |
-| K | LED катод | GND | GND |
-| C | Фототранзистор колектор | Вихід via 10 кОм до 3V3 | GPIO (LOW = перекрито) |
-| E | Фототранзистор емітер | GND | GND |
+| A | LED anode | + via 220 Ohm | 3V3/5V via resistor! (If ~15 mA) |
+| K | LED cathode | GND | GND |
+| C | Phototransistor collector | Output via 10 kOhm to 3V3 | GPIO (LOW = blocked) |
+| E | Phototransistor emitter | GND | GND |
 
-### PC817 (оптопара, 4 піни DIP)
+### PC817 (optocoupler, 4-pin DIP)
 
-| Пін | Призначення | Сторона |
+| Pin | Purpose | Side |
 | --- | --- | --- |
-| 1 (анод) | LED+ via R from BK/24В | Польова (12/24 in!) |
-| 2 (катод) | LED− on GND_поле | Польова |
-| 3 (емітер) | on GND ESP32 | Логічна (3.3 in) |
-| 4 (колектор) | Вихід → GPIO + pull-up 10к до 3V3 | Логічна |
+| 1 (anode) | LED+ via R from BK/24V | Field (12/24 V!) |
+| 2 (cathode) | LED- to field-GND | Field |
+| 3 (emitter) | to ESP32 GND | Logic (3.3 V) |
+| 4 (collector) | Output to GPIO + 10k pull-up to 3V3 | Logic |
 
-### Ізольована плата 8ch (оглядово, typical)
+### Isolated 8ch board (overview, typical)
 
-| Клема | Призначення | Куди |
+| Terminal | Purpose | Where |
 | --- | --- | --- |
-| IN1-IN8 | Входи 12/24 in (кожен via свій оптрон + R) | BK датчиків / кнопки 24 in / реле |
-| COM / GND_поле | Спільна земля польової сторони | GND цехового БЖ |
-| OUT1-OUT8 / VCC_лог | Виходи open-collector + живлення логіки 3.3/5 in | GPIO ESP32 (+ pull-up), 3V3/GND ESP32 |
-| Перемичка NPN/PNP | Вибір полярності входів (sinking/sourcing!) | for типом датчиків in шафі |
+| IN1-IN8 | 12/24 V inputs (each via own optron + R) | Sensor BK / 24 V buttons / relays |
+| COM / field-GND | Field-side common ground | Workshop PSU GND |
+| OUT1-OUT8 / logic-VCC | Open-collector outputs + 3.3/5 V logic supply | ESP32 GPIO (+ pull-up), ESP32 3V3/GND |
+| NPN/PNP jumper | Input polarity selection (sinking/sourcing!) | per sensor type in the cabinet |
 
-## Схема підключення
+## Connection schematic
 
-| ESP32 | LJ12A3/LJC (NPN) | E18-D80NK | TCST2103 | Кнопка 24 in / сухий контакт | Примітка |
+| ESP32 | LJ12A3/LJC (NPN) | E18-D80NK | TCST2103 | 24 V button / dry contact | Note |
 | --- | --- | --- | --- | --- | --- |
-| 3V3 | - (датчик from 24 in!) | - | A via 220 Ом (LED) | - | Логіка окремо from поля! |
-| GND_лог | PC817 пін 3 | PC817 пін 3 | E + K | - | Земля ESP32 |
-| GPIO32 | PC817 пін 4 + 10к до 3V3 | - | - | PC817 пін 4 | Вхід with оптопари (LOW=активно) |
-| GPIO33 | - | PC817 пін 4 + 10к | - | - | Дифузний лічильник |
-| GPIO34 | - | - | C (+10к до 3V3) | - | Вилочний енкодер (тільки вхід!) |
-| +24В_поле | BN (коричневий) | BN (якщо 24V-версія!) | - | Кнопка → R 2.2к → PC817 пін 1 | Польовий БЖ окремо! |
-| GND_поле | BU (синій) | BU | - | PC817 пін 2 | Польова земля |
-| BK | → R 2.2к → PC817 пін 1 | → R → PC817 пін 1 (або 10к pull-up до 3V3 for 5V-версії!) | - | - | NPN стягує LED on землю |
+| 3V3 | - (sensor from 24 V!) | - | A via 220 Ohm (LED) | - | Logic separate from field! |
+| Logic-GND | PC817 pin 3 | PC817 pin 3 | E + K | - | ESP32 ground |
+| GPIO32 | PC817 pin 4 + 10k to 3V3 | - | - | PC817 pin 4 | Input from optocoupler (LOW=active) |
+| GPIO33 | - | PC817 pin 4 + 10k | - | - | Diffuse counter |
+| GPIO34 | - | - | C (+10k to 3V3) | - | Fork encoder (input only!) |
+| +24V_field | BN (brown) | BN (if 24V version!) | - | Button to R 2.2k to PC817 pin 1 | Field PSU separate! |
+| Field-GND | BU (blue) | BU | - | PC817 pin 2 | Field ground |
+| BK | to R 2.2k to PC817 pin 1 | to R to PC817 pin 1 (or 10k pull-up to 3V3 for the 5V version!) | - | - | NPN pulls the LED to ground |
 
 ### ASCII schematic
 
-NPN-датчик 24 in via PC817 (базова цехова схема, sinking):
+NPN 24 V sensor via PC817 (basic workshop schematic, sinking):
 
 ```text
  ПОЛЬОВА СТОРОНА (24В):              ГАЗОРОЗРЯДНИК НЕ ТРЕБА, АЛЕ TVS БАЖАНО
@@ -202,7 +202,7 @@ NPN-датчик 24 in via PC817 (базова цехова схема, sinking)
   LED не горить => 10к тягне GPIO=HIGH.
 ```
 
-PNP-датчик 24 in via PC817 (sourcing):
+PNP 24 V sensor via PC817 (sourcing):
 
 ```text
  ПОЛЬОВА СТОРОНА (24В):
@@ -215,7 +215,7 @@ PNP-датчик 24 in via PC817 (sourcing):
  УВАГА: PNP NC-версія дає +24В у спокої => LED горить завжди, гасне при спрацюванні (інверсія!).
 ```
 
-Сухий контакт 24 in (кнопка пульта/реле) via PC817:
+24 V dry contact (panel button/relay) via PC817:
 
 ```text
  +24В ---[кнопка/реле NO]---[2.2к 0.5Вт]---(1)PC817(2)--- GND_поле
@@ -225,7 +225,7 @@ PNP-датчик 24 in via PC817 (sourcing):
  Діод 1N4148 антипаралельно LED — protection від переплутаних клем 24В.
 ```
 
-Дільник 24→3.3 (тільки лабораторія, спільна GND!):
+24 to 3.3 divider (lab only, common GND!):
 
 ```text
  BK (NPN/PNP 24В) ---[22к]---+--- GPIO (INPUT, БЕЗ внутрішнього pull!)
@@ -237,7 +237,7 @@ PNP-датчик 24 in via PC817 (sourcing):
  Струм: 24/25.3к ≈ 0.95мА постійно. НЕ для цеху (немає ізоляції!).
 ```
 
-E18-D80NK 5V-версія безпосередньо (open-collector, тільки якщо датчик 5V and короткий дріт!):
+E18-D80NK 5V version directly (open-collector, only if the sensor is 5V and the wire is short!):
 
 ```text
  E18 Brown --- 5V; Blue --- GND (спільна з ESP32!)
@@ -246,7 +246,7 @@ E18-D80NK 5V-версія безпосередньо (open-collector, тільк
  Об'єкт у 3-80см: BK стягується на GND => GPIO LOW.
 ```
 
-TCST2103 вилка (енкодер принтера, лічильник):
+TCST2103 fork (printer encoder, counter):
 
 ```text
  3V3 ---[220 Ом]---(A)LED(K)--- GND        If=(3.3-1.2)/220≈9.5мА
@@ -261,24 +261,24 @@ TCST2103 вилка (енкодер принтера, лічильник):
 
 ```mermaid
 graph LR
-    ESP32["ESP32 GPIO 32/33/34<br/>PULLUP 10k до 3V3<br/>INT FALLING"]
-    LJ["LJ12A3 індуктивний<br/>метал 4мм! 6-36V<br/>NPN BK sinking"]
-    LJC["LJC18A3 ємнісний<br/>пластик/рідина<br/>гвинт 1-10мм"]
-    E18["E18-D80NK дифузний<br/>3-80см гвинт<br/>NPN OC + LED"]
-    SLOT["TCST2103 вилка<br/>зазор 3мм<br/>диск/прапорець"]
-    TB["Through-beam 30м<br/>Retroreflective 6м<br/>оглядово"]
-    PC["PC817 xN<br/>R=2.2к 24V / 1к 12V<br/>ізоляція 5кВ!"]
-    ISO8["Плата 8ch iso<br/>клеми 24V<br/>NPN/PNP джампер"]
-    DRY["Сухий контакт<br/>реле/геркон<br/>без живлення"]
-    ESP32 ---|"BK через R"| PC
+    ESP32["ESP32 GPIO 32/33/34<br/>PULLUP 10k to 3V3<br/>INT FALLING"]
+    LJ["LJ12A3 inductive<br/>metal 4mm! 6-36V<br/>NPN BK sinking"]
+    LJC["LJC18A3 capacitive<br/>plastic/liquid<br/>screw 1-10mm"]
+    E18["E18-D80NK diffuse<br/>3-80cm screw<br/>NPN OC + LED"]
+    SLOT["TCST2103 fork<br/>3mm gap<br/>disk/flag"]
+    TB["Through-beam 30m<br/>Retroreflective 6m<br/>overview"]
+    PC["PC817 xN<br/>R=2.2k 24V / 1k 12V<br/>isolation 5kV!"]
+    ISO8["8ch iso board<br/>24V terminals<br/>NPN/PNP jumper"]
+    DRY["Dry contact<br/>relay/reed<br/>without power"]
+    ESP32 ---|"BK via R"| PC
     LJ ---|"NPN 24V"| PC
     LJC ---|"NPN/PNP"| PC
     E18 ---|"OC BK"| PC
-    PC ---|"колектор GPIO"| ESP32
-    SLOT ---|"C прямо GPIO"| ESP32
-    TB ---|"через PC817"| ESP32
+    PC ---|"collector GPIO"| ESP32
+    SLOT ---|"C straight to GPIO"| ESP32
+    TB ---|"via PC817"| ESP32
     ISO8 ---|"OUT GPIO"| ESP32
-    DRY ---|"як кнопка/PC817"| ESP32
+    DRY ---|"like button/PC817"| ESP32
 ```
 
 ## Code ESP-IDF
@@ -414,32 +414,32 @@ while True:
 
 | № | error | Symptom | Solution |
 | --- | --- | --- | --- |
-| 1 | BK 24 in безпосередньо in GPIO | Миттєва смерть піна/кристала | Тільки дільник (лабораторія) або PC817 (цех); verify мультиметром до ввімкнення! |
-| 2 | Pull-up до 5V on BK E18 5V-версії | 5 in on GPIO | Pull-up тільки до 3V3 (10 кОм); ніколи до 5V |
-| 3 | LJ12A3 not бачить пластик/руку | «Датчик несправний» | LJ - тільки метал 4 мм! Пластик/рідина - ємнісний LJC; рука - E18 |
-| 4 | Алюміній on 4 мм not спрацьовує | Спрацьовує лише впритул | Коефіцієнт редукції: Al ~0.5 дистанції; брати запас 2× або сталь-мішень |
-| 5 | E18 гвинт викручено on максимум | Ловить стіну for 80 см / самозбудження | Юстувати on реальній мішені: from мінімуму до впевненого спрацювання + 1/4 оберту |
-| 6 | E18 сліпне on сонці / чорному оксамиті | Пропуски / хибні | Козирок from сонця; чорний матовий - ближче/більша мішень або through-beam |
-| 7 | Переплутано NPN/PNP (sinking/sourcing) | Інверсія або «завжди активно» | Продзвонити BK мультиметром; NC-версії інвертують логіку; джампер NPN/PNP on платі 8ch |
-| 8 | R світлодіода PC817 навмання (10к on 24В) | If=2 мА, CTR not відкриває транзистор | Рахувати: 24В→2.2к (10мА), 12В→1к; резистор 0.5 Вт on 24 in! |
-| 9 | Спільна GND 24В and ESP32 without ізоляції | Скидання at пусках пускачів, вигоряння | PC817/плата 8ch: землі розділені; екран до PE in одній точці |
-| 10 | TCST2103 LED without резистора | LED згорів for секунду | 150-220 Ом послідовно with A; verify If ~10-15 мА |
-| 11 | Пил in зазорі TCST | «Завжди перекрито» | Кожух + продувка; поріг per фронту, not per рівню |
-| 12 | Сухий контакт реле прийнято for «5V-вихід» | Дзвін/наводки on довгому шлейфі | Сухий контакт = кнопка: GND + pull-up 10к; довгий шлейф - 4.7к + RC або PC817 |
-| 13 | PC817 on швидкий енкодер (>20 кГц) | Змазані фронти, втрата імпульсів | PC817 лише до ~20 кГц; швидше - 6N137/TLP2362 або прямий TCST |
-| 14 | E18 5V-версія живиться from 24 in | Дим, смерть датчика | Читати етикетку! 5V-версія - окремо; 6-36V-версія - in цех |
+| 1 | BK 24 V directly to GPIO | Instant pin/die death | Only divider (lab) or PC817 (workshop); verify with multimeter before power-on! |
+| 2 | Pull-up to 5V on BK of E18 5V version | 5 V on GPIO | Pull-up only to 3V3 (10 kOhm); never to 5V |
+| 3 | LJ12A3 does not see plastic/hand | "Sensor faulty" | LJ - metal only 4 mm! Plastic/liquid - capacitive LJC; hand - E18 |
+| 4 | Aluminium at 4 mm does not trigger | Triggers only point-blank | Reduction factor: Al ~0.5 of distance; take 2x margin or a steel target |
+| 5 | E18 screw turned to maximum | Catches the wall beyond 80 cm / self-excitation | Adjust on the real target: from minimum to confident trigger + 1/4 turn |
+| 6 | E18 blinded in sun / on black velvet | Misses / false | Sun visor; black matte - closer/bigger target or through-beam |
+| 7 | NPN/PNP mixed up (sinking/sourcing) | Inversion or "always active" | Ring out BK with a multimeter; NC versions invert logic; NPN/PNP jumper on the 8ch board |
+| 8 | PC817 LED R at random (10k on 24V) | If=2 mA, CTR does not open the transistor | Calculate: 24V to 2.2k (10mA), 12V to 1k; 0.5 W resistor on 24 V! |
+| 9 | Shared 24V and ESP32 GND without isolation | Resets on contactor starts, burnout | PC817/8ch board: grounds separated; shield to PE in one point |
+| 10 | TCST2103 LED without resistor | LED burned in a second | 150-220 Ohm in series with A; verify If ~10-15 mA |
+| 11 | Dust in the TCST gap | "Always blocked" | Hood + blow-out; threshold by edge, not by level |
+| 12 | Relay dry contact taken for a "5V output" | Ringing/coupling on a long stub | Dry contact = button: GND + 10k pull-up; long stub - 4.7k + RC or PC817 |
+| 13 | PC817 on a fast encoder (>20 kHz) | Smeared edges, lost pulses | PC817 only to ~20 kHz; faster - 6N137/TLP2362 or direct TCST |
+| 14 | E18 5V version powered from 24 V | Smoke, sensor death | Read the label! 5V version - separately; 6-36V version - to the workshop |
 
 ## Official sources
 
-- [GPIO & RTC GPIO - ESP-IDF Programming Guide (Espressif)](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/gpio.html) - входи, pull-up, переривання for дискретних сигналів with оптопар.
-- [ISO124 Precision Isolation Amplifier - Texas Instruments](https://www.ti.com/product/ISO124) - принцип гальванічної розв'язки польової та логічної сторін (концепція for 24 in входів).
-- [XTR115 4-20 mA Transmitter - Texas Instruments](https://www.ti.com/product/XTR115) - цехові рівні 24 in, петля, IRET/Vref (контекст промислових сигналів).
-- [CAN Bus BFF Guide - Adafruit Learn](https://learn.adafruit.com/adafruit-can-bus-bff) - дифпари in шумі, термінатор 120 Ом, MCP2515/SPI (цехова практика поруч with дискретними входами).
+- [GPIO and RTC GPIO - ESP-IDF Programming Guide (Espressif)](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/gpio.html) - inputs, pull-ups, interrupts for discrete signals with optocouplers.
+- [ISO124 Precision Isolation Amplifier - Texas Instruments](https://www.ti.com/product/ISO124) - galvanic isolation principle of field and logic sides (concept for 24 V inputs).
+- [XTR115 4-20 mA Transmitter - Texas Instruments](https://www.ti.com/product/XTR115) - workshop 24 V levels, loop, IRET/Vref (industrial signal context).
+- [CAN Bus BFF Guide - Adafruit Learn](https://learn.adafruit.com/adafruit-can-bus-bff) - diff pairs in noise, 120 Ohm terminator, MCP2515/SPI (workshop practice next to discrete inputs).
 
 ## See also
 
-- [[Home.en|Головна карта довідника]]
-- [[EN/03-GPIO/03-Pull-Ups-Levels.en|Підтяжки та рівні 3.3V/5V]]
-- [[EN/13-Power-Modules/02-Level-Shifters.en|Level-shifters та опторозв'язка]]
-- [[EN/12-Comm-Modules/10-Industrial.en|Industrial fieldbus: CAN/DMX/4-20мА/TRIAC]]
-- [[EN/10-Sensors/34-Buttons-Switches-Pots.en|Кнопки, тумблери, E-Stop, потенціометри]]
+- [[Home.en|Home reference map]]
+- [[EN/03-GPIO/03-Pull-Ups-Levels.en|Pull-ups and 3.3V/5V levels]]
+- [[EN/13-Power-Modules/02-Level-Shifters.en|Level-shifters and optoisolation]]
+- [[EN/12-Comm-Modules/10-Industrial.en|Industrial fieldbus: CAN/DMX/4-20mA/TRIAC]]
+- [[EN/10-Sensors/34-Buttons-Switches-Pots.en|Buttons, toggles, E-Stop, potentiometers]]

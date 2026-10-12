@@ -9,51 +9,51 @@ date-created: 2026-09-28
 date: 2026-10-08
 ---
 
-# HTTP REST та WebSocket on ESP32
+# HTTP REST and WebSocket on ESP32
 
-> [!warning] Довгі HTTPS-запити in `loop()` годують WDT-ресет, but TLS with'їдає ~40 КБ heap!
-> Важкі запити - in окрему задачу FreeRTOS with запасом стеку, відповіді читати порціями.
+> [!warning] Long HTTPS requests in `loop()` feed the WDT reset, while TLS eats about 40 KB of heap!
+> Heavy requests go to a separate FreeRTOS task with stack margin, read responses in chunks.
 
-Network overview: [[05-Radio/01-WiFi-STA-AP.en | 01-WiFi-STA-AP]], MQTT-альтернатива [[15-Protocols/01-MQTT.en | MQTT]], час/TLS [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]], старт [[Home.en | Home]].
+Network overview: [[05-Radio/01-WiFi-STA-AP.en | WiFi STA and AP]], MQTT alternative [[15-Protocols/01-MQTT.en | MQTT]], time and TLS [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS, NTP and TLS]], start [[Home.en | Home]].
 
 ## Purpose
 
-HTTP - коли потрібен класичний REST до свого бекенда: `GET /api/state`, `POST /api/sensors` with JSON. WebSocket - коли потрібен дуплекс in реальному часі: дашборд, керування реле without опитування.
+HTTP - when a classic REST to your own backend is needed: `GET /api/state`, `POST /api/sensors` with JSON. WebSocket - when real-time duplex is needed: dashboard, relay control without polling.
 
 When to use HTTP:
 
-- відправка телеметрії on свій server раз on хвилину;
-- OTA-firmware with URL (`update.start(url)`), див. [[08-Memory/03-OTA.en | OTA]];
-- конфіг with бекенда одним GET at старті.
+- sending telemetry to your own server once a minute;
+- OTA firmware from a URL (`update.start(url)`), see [[08-Memory/03-OTA.en | OTA]];
+- config from the backend with one GET at start.
 
 When to use WebSocket / SSE:
 
-- живий дашборд: AsyncWebServer + SSE штовхає дані in браузер;
-- команди with браузера without перезавантаження сторінки;
+- live dashboard: AsyncWebServer + SSE pushes data to the browser;
+- commands from the browser without page reload;
 - full duplex - WebSocket client to its own server.
 
-When NOT to use: dozens of nodes with frequent messages - MQTT is cheaper, see [[15-Protocols/01-MQTT.en | MQTT]].
+When NOT to use: dozens of nodes with frequent messages - MQTT is cheaper, see [[15-Protocols/01-MQTT.en|MQTT]].
 
 ## Parameters
 
-| Параметр | Value | Note |
+| Parameter | Value | Note |
 | --- | --- | --- |
-| IDF-client | `esp_http_client` (GET/POST/PUT, keep-alive, chunked) | блокуючий `perform()` |
-| IDF-server | `esp_http_server` | for локальних сторінок |
-| Arduino-client | `HTTPClient` (обгортка над WiFiClient) | простий, синхронний |
-| Arduino-server | ESPAsyncWebServer + SSE | неблокуючий, події in браузер |
-| MP-client | `urequests` (GET/POST JSON) | відповідь закривати! |
-| MP-server | picoweb / micropython-async webserver | simple pages only |
-| WebSocket IDF | `esp_websocket_client` | окремий компонент реєстру |
-| WebSocket Arduino | WebSocketsClient (Links2004) | текст/бінарні кадри |
-| HTTPS | CA-bundle або один CA PEM | час via NTP обов'язково |
-| RAM під TLS | ~40 КБ heap on сесію | not тримати 2 TLS-сесії on C3 |
-| WDT | довгі запити > 2-3 с in loop = ребут | окрема задача / async |
+| IDF client | `esp_http_client` (GET/POST/PUT, keep-alive, chunked) | blocking `perform()` |
+| IDF server | `esp_http_server` | for local pages |
+| Arduino client | `HTTPClient` (wrapper over WiFiClient) | simple, synchronous |
+| Arduino server | ESPAsyncWebServer + SSE | non-blocking, events to the browser |
+| MP client | `urequests` (GET/POST JSON) | close the response! |
+| MP server | picoweb / micropython-async webserver | simple pages only |
+| WebSocket IDF | `esp_websocket_client` | separate registry component |
+| WebSocket Arduino | WebSocketsClient (Links2004) | text and binary frames |
+| HTTPS | CA bundle or single CA PEM | time via NTP is mandatory |
+| RAM for TLS | about 40 KB heap per session | do not hold 2 TLS sessions on C3 |
+| WDT | requests over 2-3 s in loop = reboot | separate task or async |
 
 ![[assets/img/http-websocket-rest-scheme.png | 600]]
-*Fig. REST (запит→відповідь) and WebSocket/SSE (постійний channel) між ESP32, бекендом and браузером.*
+*Fig. REST (request to response) and WebSocket/SSE (persistent channel) between ESP32, backend and browser.*
 
-### ASCII-схема
+### ASCII diagram
 
 ```text
 ESP32 (клієнт)                    Свій бекенд (192.168.1.20:8000)
@@ -74,43 +74,43 @@ ESP32 (сервер AsyncWebServer:80)      Браузер дашборда
 
 ```mermaid
 graph LR
-    ESP[ESP32<br/>HTTP-клієнт] -->|POST JSON| API[Бекенд API<br/>:8000]
+    ESP[ESP32<br/>HTTP client] -->|POST JSON| API[Backend API<br/>:8000]
     API -->|GET config| ESP
     ESP -->|HTTPS CA-bundle| API
-    BR[Браузер] -->|GET /| WEB[ESP32 AsyncWebServer]
+    BR[Browser] -->|GET /| WEB[ESP32 AsyncWebServer]
     WEB -->|SSE /events| BR
     WEB <-->|WS /ws| BR
 ```
 
-## REST GET/POST JSON до свого бекенда
+## REST GET/POST JSON to your own backend
 
-Контракт прикладного API (вигадати свій, але зафіксувати версію):
+Application API contract (invent your own, but pin the version):
 
 ```text
 POST /api/v1/sensors   body: {"id":"esp32-01","t":24.5,"h":55} → 200 {"ok":true}
 GET  /api/v1/config?id=esp32-01 → 200 {"period":60,"relay":"auto"}
 ```
 
-Правила: `Content-Type: application/json`, таймаут 5-10 с, 3 спроби with backoff, відповідь парсити потоково (ArduinoJson with фільтром), code стану логувати. Період відправки зберігати in NVS, див. [[08-Memory/01-Partitions-NVS.en | 01-Partitions-NVS]].
+Rules: `Content-Type: application/json`, 5-10 s timeout, 3 tries with backoff, parse the response as a stream (ArduinoJson with a filter), log status codes. Store the send period in NVS, see [[08-Memory/01-Partitions-NVS.en | Partitions and NVS]].
 
-## HTTPS with CA-бандлом
+## HTTPS with CA bundle
 
 Server verification options (from secure to test):
 
-1. CA-bundle Mozilla in прошивці (IDF: `crt_bundle_attach`, Arduino: вшитий PEM) - продакшен.
+1. Mozilla CA bundle in firmware (IDF: `crt_bundle_attach`, Arduino: embedded PEM) - production.
 2. One root CA for your own server - your VPS with Let's Encrypt.
-3. Fingerprint SHA-1/SHA-256 - крихко (ламається at перевипуску), тільки тимчасово.
-4. `setInsecure()` - тільки стенд in локалці, ніколи in прод.
+3. SHA-1/SHA-256 fingerprint - fragile (breaks on reissue), temporary only.
+4. `setInsecure()` - local bench only, never in production.
 
-without синхронізованого часу (NTP) check сертифіката завжди FAIL - див. [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]].
+Without synced time (NTP) the certificate check always FAILs - see [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS, NTP and TLS]].
 
-## WebSocket-дуплекс and AsyncWebServer + SSE
+## WebSocket duplex and AsyncWebServer + SSE
 
-- SSE (`/events`): server pushes telemetry to browser, auto reconnect. Cheap, enough for a dashboard.
-- WebSocket (`/ws`): дуплекс - слайдер/button in браузері керує ESP32 without перезавантаження.
-- on IDF - `esp_websocket_client` component for the client; server - `esp_http_server` with WS handler.
-- on Arduino - WebSocketsClient for the client, ESPAsyncWebServer for the server with SSE.
-- not тримати одночасно WS-server on 4+ clients and HTTPS-client on C3 without PSRAM - not вистачить heap.
+- SSE (`/events`): server pushes telemetry to the browser, auto reconnect. Cheap, enough for a dashboard.
+- WebSocket (`/ws`): duplex - a slider or button in the browser drives ESP32 without reload.
+- On IDF - `esp_websocket_client` component for the client; server - `esp_http_server` with a WS handler.
+- On Arduino - WebSocketsClient for the client, ESPAsyncWebServer for the server with SSE.
+- Do not hold a WS server with 4+ clients and an HTTPS client at once on C3 without PSRAM - heap will run out.
 
 ## Code ESP-IDF (esp_http_client + WebSocket)
 
@@ -251,33 +251,33 @@ while True:
 
 ## Common issues
 
-| Симптом | Причина | Рішення |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| WDT-ребут під час POST | блокуючий запит in `loop()` without yield | окрема задача FreeRTOS / AsyncWebServer |
-| `-1` from HTTPClient | WiFi обрив або DNS not резолвить | verify `WL_CONNECTED`, IP замість hostname |
-| `-11` читання | server висне, таймаут малий | `setTimeout(8000)`, ретраї with backoff |
-| `ENOMEM` on MP via годину | `urequests` without `r.close()` | закривати кожну відповідь in `finally` |
-| HTTPS `verify failed` | немає NTP (час 1970) або not той CA | спочатку SNTP, див. [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]] |
-| Обірваний великий body | весь JSON in RAM | chunked-читання порціями / фільтр ArduinoJson |
-| SSE not доходять | проксі буферизує потік | `Cache-Control: no-cache`, direct IP |
-| WS рветься for NAT | idle > 60 с | ping/pong кожні 25 с, `setReconnectInterval` |
-| 4 WS clients + HTTPS = crash | heap exhausted (~40 KB/TLS) | limit clients, PSRAM, close sessions |
+| WDT reboot during POST | blocking request in `loop()` without yield | separate FreeRTOS task or AsyncWebServer |
+| `-1` from HTTPClient | WiFi drop or DNS not resolving | check `WL_CONNECTED`, IP instead of hostname |
+| `-11` on read | server hangs, timeout too small | `setTimeout(8000)`, retries with backoff |
+| `ENOMEM` on MP after an hour | `urequests` without `r.close()` | close every response in `finally` |
+| HTTPS `verify failed` | no NTP (time 1970) or wrong CA | SNTP first, see [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS, NTP and TLS]] |
+| Truncated large body | whole JSON in RAM | chunked reading in parts / ArduinoJson filter |
+| SSE never arrive | proxy buffers the stream | `Cache-Control: no-cache`, direct IP |
+| WS drops behind NAT | idle over 60 s | ping/pong every 25 s, `setReconnectInterval` |
+| 4 WS clients + HTTPS = crash | heap exhausted (about 40 KB per TLS) | limit clients, PSRAM, close sessions |
 
 ## Official sources
 
 - [ESP HTTP Client - API reference (ESP-IDF)](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_http_client.html) - perform, stream, auth, bundle.
-- [esp_websocket_client - ESP Component Registry](https://components.espressif.com/components/espressif/esp_websocket_client) - дуплексний WS-client, події.
+- [esp_websocket_client - ESP Component Registry](https://components.espressif.com/components/espressif/esp_websocket_client) - duplex WS client, events.
 - [ESPAsyncWebServer - GitHub](https://github.com/me-no-dev/ESPAsyncWebServer) - AsyncWebServer, SSE `AsyncEventSource`.
-- [arduinoWebSockets - GitHub](https://github.com/Links2004/arduinoWebSockets) - WebSocketsClient, кадри, реконект.
+- [arduinoWebSockets - GitHub](https://github.com/Links2004/arduinoWebSockets) - WebSocketsClient, frames, reconnect.
 
 ## See also
 
-- [[Home.en | Home]]
-- [[05-Radio/01-WiFi-STA-AP.en | WiFi STA/AP]] - transport for HTTP/WS
-- [[08-Memory/03-OTA.en | OTA]] - оновлення прошивкою with URL
-- [[08-Memory/01-Partitions-NVS.en | NVS]] - URL бекенда and період опитування
-- [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] - WDT, ENOMEM, heap
-- [[15-Protocols/01-MQTT.en | MQTT]] - легка альтернатива for телеметрії
-- [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS/NTP/TLS]] - час and сертифікати for HTTPS
-- [[15-Protocols/04-Provisioning.en | Provisioning]] - первинне configuration
-- [[15-Protocols/05-Cloud-Pipeline.en | Cloud-Pipeline]] - куди складати дані далі
+- [[Home.en|Home]]
+- [[05-Radio/01-WiFi-STA-AP.en|WiFi STA and AP]] - transport for HTTP and WS
+- [[08-Memory/03-OTA.en|OTA]] - firmware update from URL
+- [[08-Memory/01-Partitions-NVS.en|NVS]] - backend URL and polling period
+- [[EN/99-Additions/02-Troubleshooting-FAQ.en|FAQ]] - WDT, ENOMEM, heap
+- [[15-Protocols/01-MQTT.en|MQTT]] - light alternative for telemetry
+- [[15-Protocols/03-mDNS-NTP-TLS.en|mDNS, NTP and TLS]] - time and certificates for HTTPS
+- [[15-Protocols/04-Provisioning.en|Provisioning]] - initial configuration
+- [[15-Protocols/05-Cloud-Pipeline.en|Cloud pipeline]] - where to store data next

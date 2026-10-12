@@ -1,6 +1,6 @@
 ---
-title: LPWAN-альтернативи LoRa - Sigfox, Weightless, MIOTY, Wize: чесне порівняння
-description: LoRa перемогла, але not скрізь and not назавжди: Sigfox (0G-оператор), Weightless (відкритий стандарт), MIOTY (TSMA for цехів), Wize (169 МГц, лічильники). Нота - чесне порівняння, щоб...; shows schematics, code and tables.
+title: LoRa LPWAN alternatives - Sigfox, Weightless, MIOTY, Wize: honest comparison
+description: LoRa won, but not everywhere and not forever: Sigfox (0G operator), Weightless (open standard), MIOTY (TSMA for workshops), Wize (169 MHz, meters). Note - honest comparison for a conscious choice; shows schematics, code and tables.
 tags: [esp32, lpwan, sigfox, weightless, mioty, wize, lora-compare, moduli]
 category: Moduli
 lang: en
@@ -9,48 +9,48 @@ date: 2026-10-08
 original: 12-Moduli-zvyazku/27-LPWAN-Alt.md
 ---
 
-# LPWAN-альтернативи LoRa: Sigfox, Weightless, MIOTY, Wize
+# LoRa LPWAN alternatives: Sigfox, Weightless, MIOTY, Wize
 
 ## Purpose
 
-LoRa перемогла, але not скрізь and not назавжди: Sigfox (0G-оператор), Weightless (відкритий стандарт), MIOTY (TSMA for цехів), Wize (169 МГц, лічильники). Нота - чесне порівняння, щоб вибрати свідомо, but not for звичкою.
+LoRa won, but not everywhere and not forever: Sigfox (0G operator), Weightless (open standard), MIOTY (TSMA for workshops), Wize (169 MHz, meters). Note - honest comparison for a conscious choice, not out of habit.
 
-База: start - [[EN/Home.en]], LoRa-база - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]], Cat-1 - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1]], NB-IoT - [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en|NB-IoT]].
+Base: start - [[EN/Home.en]], LoRa base - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|LoRa]], Cat-1 - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1]], NB-IoT - [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en|NB-IoT]].
 
 ![[assets/img/lpwan-alt-compare-scheme.png|600]]
-*Fig. LPWAN-карта: LoRa (своя мережа), Sigfox (0G-оператор), NB-IoT (стільниковий), MIOTY/Wize (ніші).*
+*Fig. LPWAN map: LoRa (own network), Sigfox (0G operator), NB-IoT (cellular), MIOTY/Wize (niches).*
 
-## Порівняльна table (станом on 2026!)
+## Comparison table (as of 2026!)
 
-| Параметр | LoRa/LoRaWAN | Sigfox (0G) | NB-IoT | MIOTY | Wize (169 МГц) |
+| Parameter | LoRa/LoRaWAN | Sigfox (0G) | NB-IoT | MIOTY | Wize (169 MHz) |
 | --- | --- | --- | --- | --- | --- |
-| Своя мережа | Так (свій шлюз!) | Ні (оператор) | Ні (оператор) | Так | Так |
-| Пейлоад | До 242 байт | 12 байт uplink! | ~1.6 КБ | ~200 байт | ~200 байт |
-| Downlink | Так (класи A/B/C) | 4×8 байт/добу! | Так | Так | Так |
-| Дальність | 2-15 км | 10-50 км | how LTE | 5-15 км (цех!) | 5-10 км |
-| Статус 2026 | Росте (private!) | Стагнація, банкрутства операторів | Живий (телко) | Ніша цехів | Ніша лічильників (FR) |
-| module | $5-15 (RAK/E78) | $10+абонплата | $15+тариф | $20+ | $15+ |
+| Own network | Yes (own gateway!) | No (operator) | No (operator) | Yes | Yes |
+| Payload | Up to 242 bytes | 12 bytes uplink! | ~1.6 KB | ~200 bytes | ~200 bytes |
+| Downlink | Yes (classes A/B/C) | 4x8 bytes/day! | Yes | Yes | Yes |
+| Range | 2-15 km | 10-50 km | like LTE | 5-15 km (workshop!) | 5-10 km |
+| Status 2026 | Growing (private!) | Stagnation, operator bankruptcies | Alive (telco) | Workshop niche | Meter niche (FR) |
+| Module | $5-15 (RAK/E78) | $10+subscription | $15+tariff | $20+ | $15+ |
 
-### Mermaid: that вибрати
+### Mermaid: what to choose
 
 ```mermaid
 flowchart TB
-    Q[Далекобій без WiFi] --> OWN{Своя інфраструктура можлива?}
-    OWN -->|Так, свій шлюз| LORA[LoRa/LoRaWAN: контроль + без абонплати]
-    OWN -->|Ні| TEL{Є покриття і бюджет?}
-    TEL -->|Так| NB[NBCat-M/NB-IoT: як стільниковий]
-    TEL -->|Маленькі пакети,рідко| SIG[Sigfox: перевірити ЖИВІСТЬ оператора в країні!]
-    Q --> SHOP{Цех з металом?}
-    SHOP -->|Так| MIO[MIOTY: TSMA проти завмирань]
+    Q[Long range without WiFi] --> OWN{Own infrastructure possible?}
+    OWN -->|Yes, own gateway| LORA[LoRa/LoRaWAN: control + no subscription]
+    OWN -->|No| TEL{Is there coverage and budget?}
+    TEL -->|Yes| NB[NBCat-M/NB-IoT: like cellular]
+    TEL -->|Small packets, rarely| SIG[Sigfox: check operator ALIVENESS in the country!]
+    Q --> SHOP{Workshop with metal?}
+    SHOP -->|Yes| MIO[MIOTY: TSMA against fading]
 ```
 
-## Чому LoRa перемогла (and коли this неважливо)
+## Why LoRa won (and when it does not matter)
 
-1. **Свій шлюз**: $50-200 один раз - and ніяких абонплат/банкрутств операторів (урок Sigfox!).
-2. **Екосистема**: RAK/E78/модулі, TTN/ChirpStack, приклади під ESP32 - нічого цього in MIOTY/Wize for хобі немає.
-3. **Коли not LoRa**: лічильники під key with оператором (NB-IoT), спадщина Sigfox-датчиків (підтримка, not нові), цех with жорстким multipath (MIOTY).
+1. **Own gateway**: $50-200 once - and no subscriptions/operator bankruptcies (Sigfox lesson!).
+2. **Ecosystem**: RAK/E78/modules, TTN/ChirpStack, ESP32 examples - none of this exists in MIOTY/Wize for hobby.
+3. **When not LoRa**: meters under key with an operator (NB-IoT), legacy Sigfox sensors (support, not new ones), workshop with harsh multipath (MIOTY).
 
-### Helium-статус: перевіряти перед проєктом
+### Helium status: check before the project
 
 ```text
 Helium (LongFi, блокчейн-мережа LoRa): пік 2021–2022, далі — згасання покриття
@@ -62,22 +62,22 @@ TCO-корекція: «безкоштовний» Helium з мертвим по
 
 ## typical errors
 
-| # | error | Чому погано | how правильно |
+| # | Error | Why it is bad | How to do it right |
 | --- | --- | --- | --- |
-| 1 | Новий проєкт on Sigfox | Оператори згортаються | LoRa або NB-IoT |
-| 2 | 12 байт not вистачає | Архітектура Sigfox not зміниться | Проєктувати пейлоад під 12 Б with початку |
-| 3 | Downlink how uplink | 4×8 байт/добу in Sigfox! | Команди - рідко and коротко |
-| 4 | «Безкоштовний» NB-IoT | Тариф + eSIM-логістика | Рахувати TCO on 5 років |
-| 5 | Своя LoRa without шлюзу | Немає кому слухати | Шлюз першим (див. 29-Gateway) |
+| 1 | New project on Sigfox | Operators are winding down | LoRa or NB-IoT |
+| 2 | 12 bytes is not enough | Sigfox architecture will not change | Design payload for 12 B from the start |
+| 3 | Downlink like uplink | 4x8 bytes/day in Sigfox! | Commands - rarely and short |
+| 4 | "Free" NB-IoT | Tariff + eSIM logistics | Calculate TCO over 5 years |
+| 5 | Own LoRa without gateway | Nobody to listen | Gateway first (see 29-Gateway) |
 
 ## Official sources
 
-- [Sigfox 0G technology](https://www.sigfox.com/en) - специфікація, покриття.
-- [Weightless - історія стандарту (Wikipedia)](https://en.wikipedia.org/wiki/Weightless_(wireless_communications)) - відкритий стандарт.
-- [MIOTY technology](https://mioty-alliance.com/miotytechnology/) - TSMA, кейси цехів.
-- [LoRaWAN Specification v1.0.3](https://lora-alliance.org/resource_hub/lorawan-specification-v1-0-3/) - for порівняння.
+- [Sigfox 0G technology](https://www.sigfox.com/en) - specification, coverage.
+- [Weightless - standard history (Wikipedia)](https://en.wikipedia.org/wiki/Weightless_(wireless_communications)) - open standard.
+- [MIOTY technology](https://mioty-alliance.com/miotytechnology/) - TSMA, workshop cases.
+- [LoRaWAN Specification v1.0.3](https://lora-alliance.org/resource_hub/lorawan-specification-v1-0-3/) - for comparison.
 
-## Sigfox детально: 12 байт and 4 даунлінки
+## Sigfox in detail: 12 bytes and 4 downlinks
 
 ```text
 Uplink: 12 байт, ≤140/добу; модуляція UNB 100 Гц (ультравузька!) — звідси дальність.
@@ -87,15 +87,15 @@ Downlink: ТІЛЬКИ після uplink, 8 байт, 4 рази на добу �
 Вердикт 2026: підтримка існуючого парку — так; нові проєкти — тільки якщо оператор живий і дешевший за NB-IoT.
 ```
 
-## Weightless / MIOTY / Wize коротко
+## Weightless / MIOTY / Wize in short
 
-| Технологія | Фішка | Статус модулів for хобі |
+| Technology | Trick | Module status for hobby |
 | --- | --- | --- |
-| Weightless-P/N | Відкритий стандарт, двосторонній | Майже немає (телко-історія) |
-| MIOTY (TSMA) | Telegram Splitting: пакет рветься on шматки - стійкість до завмирань in цеху | Промислові (AG/Gemtek), дорого |
-| Wize (169 МГц) | Проникнення in будівлі (низька частота!) | Французькі лічильники, вузко |
+| Weightless-P/N | Open standard, two-way | Almost none (telco history) |
+| MIOTY (TSMA) | Telegram Splitting: packet torn into pieces - resilience to fading in the workshop | Industrial (AG/Gemtek), expensive |
+| Wize (169 MHz) | Penetration into buildings (low frequency!) | French meters, narrow |
 
-### TCO-example (100 датчиків, 5 років)
+### TCO example (100 sensors, 5 years)
 
 ```text
 LoRa свій шлюз: 2× шлюз $150 + вузли $12×100 = $1500 РАЗОМ, далі $0/рік.
@@ -104,16 +104,16 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 Висновок: свій LoRa-шлюз окупається на 2-й рік проти будь-якої абонплати.
 ```
 
-## Покриття in Україні/ЄС: де that ловить (орієнтири!)
+## Coverage in Ukraine/EU: where it catches (landmarks!)
 
-| Мережа | Місто | Поле/траса | Коментар |
+| Network | City | Field/road | Comment |
 | --- | --- | --- | --- |
-| LoRa своя | Свій шлюз - своє покриття | Щогла 15 м ≈ 20 км | Контроль in своїх руках |
+| LoRa own | Own gateway - own coverage | 15 m mast ≈ 20 km | Control in your own hands |
 | NB-IoT | Big-three operators (check coverage map!) | Along highways - yes, remote areas - no | eSIM/M2M tariff separately! |
-| Sigfox | Колишні зони (стискаються!) | Рідко | Перед проєктом - тестовий девайс on місцевості |
-| Wize/MIOTY | Точково (проєкти) | Ні | Тільки під конкретний тендер |
+| Sigfox | Former zones (shrinking!) | Rarely | Before the project - test device on site |
+| Wize/MIOTY | Spot projects | No | Only for a specific tender |
 
-### Чек-лист вибору (5 питань!)
+### Choice checklist (5 questions!)
 
 ```text
 [ ] Пейлоад вміщається? (12 Б Sigfox vs 242 Б LoRa)
@@ -123,7 +123,7 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 [ ] TCO на 5 років пораховано? (Розділ TCO вище)
 ```
 
-## Міграція with Sigfox on LoRa (план for живого парку!)
+## Migration from Sigfox to LoRa (plan for a live fleet!)
 
 ```text
 Проблема: 500 датчиків на Sigfox, оператор гасне. План:
@@ -135,7 +135,7 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 Ризик: корпуси/антени 868 МГц ті самі — залізо міняти НЕ треба, тільки плати зв'язку.
 ```
 
-## Джерела per міграціях (кейси!)
+## Sources on migrations (cases!)
 
 ```text
 Шукати: "Sigfox migration LoRaWAN case study" + свій вертикаль (лічильники/логістика).
@@ -143,14 +143,14 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 Патерн провалу: «переключимо за вихідні» без паралельного періоду.
 ```
 
-## Глосарій LPWAN for 30 секунд
+## LPWAN glossary in 30 seconds
 
-| Термін | that означає |
+| Term | What it means |
 | --- | --- |
-| UNB | Ultra-Narrow-Band (Sigfox: 100 Гц!) |
-| TSMA | Telegram Splitting (MIOTY: пакет шматками) |
-| 0G | Мережа оператора without роумінгу даних (Sigfox-модель) |
-| Duty cycle | Ліміт ефіру 1% (EU868!) - стосується ВСІХ технологій |
+| UNB | Ultra-Narrow-Band (Sigfox: 100 Hz!) |
+| TSMA | Telegram Splitting (MIOTY: packet in pieces) |
+| 0G | Operator network without data roaming (Sigfox model) |
+| Duty cycle | 1% airtime limit (EU868!) - applies to ALL technologies |
 
 ## Common issues
 
@@ -163,8 +163,8 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 | Wize range too short | 169 MHz needs long whip, wrong matching | Use quarter-wave whip, check matching network |
 ## See also
 
-- [[Home.en|Головна]]
+- [[Home.en|Home]]
 - [[EN/12-Comm-Modules/02-NRF24-LoRa.en|NRF24/LoRa]]
 - [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en|Cat-1/LoRa-2]]
 - [[EN/12-Comm-Modules/09-Cellular-NBIoT-UARTLoRa.en|NB-IoT]]
-- [[EN/12-Comm-Modules/29-LoRaWAN-Gateway.en|LoRaWAN-шлюз]]
+- [[EN/12-Comm-Modules/29-LoRaWAN-Gateway.en|LoRaWAN gateway]]

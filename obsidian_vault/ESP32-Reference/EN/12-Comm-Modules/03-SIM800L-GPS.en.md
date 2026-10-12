@@ -1,8 +1,8 @@
 ---
 category: Moduli
 lang: en
-title: SIM800L GSM та NEO-6M GPS
-description: SIM800L GSM + NEO-6M GPS - SIM800L - живлення (найважливіше); Легенда пінів модуля SIM800L; ASCII-схема (SIM800L); shows schematics, code and tables.
+title: SIM800L GSM and NEO-6M GPS
+description: SIM800L GSM + NEO-6M GPS - SIM800L power supply (most important); SIM800L module pin legend; ASCII schematic (SIM800L); shows schematics, code and tables.
 tags: [esp32, sim800l, gsm, gps, neo-6m, uart, at]
 date: 2026-10-08
 original: 12-Moduli-zvyazku/03-SIM800L-GPS.md
@@ -10,59 +10,59 @@ original: 12-Moduli-zvyazku/03-SIM800L-GPS.md
 
 # SIM800L GSM + NEO-6M GPS
 
-> [!danger] SIM800L not живити from 5V and not from 3.3V ESP32! Норма: 3.7-4.2V, пік 2A in TX-бурсті. without потужного живлення - вічні перезавантаження and мережа not реєструється.
+> [!danger] Do not power SIM800L from 5V and not from ESP32 3.3V! Norm: 3.7-4.2V, 2A peak in TX burst. Without strong power - eternal reboots and the network never registers.
 
-Контекст: UART див. [[EN/04-Interfaces/01-UART.en|UART]], живлення [[EN/02-Power-Supply/01-Power-Rails.en]] та [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]], рівні [[EN/13-Power-Modules/02-Level-Shifters.en]], піни [[EN/99-Additions/01-Pinout-tablici.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start [[EN/Home.en]].
+Context: UART see [[EN/04-Interfaces/01-UART.en|UART]], power supply [[EN/02-Power-Supply/01-Power-Rails.en]] and [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]], levels [[EN/13-Power-Modules/02-Level-Shifters.en]], pins [[EN/99-Additions/01-Pinout-tablici.en]], diagnostics [[EN/99-Additions/02-Troubleshooting-FAQ.en]], start [[EN/Home.en]].
 
 ## Purpose
 
-SIM800L GSM + NEO-6M GPS - SIM800L - живлення (найважливіше); Легенда пінів модуля SIM800L; ASCII-схема (SIM800L). SIM800L not живити from 5V and not from 3.3V ESP32! Норма: 3.7-4.2V, пік 2A in TX-бурсті. without потужного живлення - вічні перезавантаження and мережа not реєструється. Середній струм 200-500 мА, пік TX до 2A (577 мкс слот).
+SIM800L GSM + NEO-6M GPS - SIM800L power supply (most important); SIM800L module pin legend; ASCII schematic (SIM800L). Do not power SIM800L from 5V and not from ESP32 3.3V! Norm: 3.7-4.2V, 2A peak in TX burst. Without strong power - eternal reboots and the network never registers. Average current 200-500 mA, TX peak up to 2A (577 us slot).
 
-## 1. SIM800L - живлення (найважливіше)
+## 1. SIM800L power supply (most important)
 
-- Чіп SIM800L: 3.4-4.4V (номінал 4.0V). 5V - смерть. 3.3V - нестабільність.
-- Середній струм 200-500 мА, пік TX до 2A (577 мкс слот).
-- Рекомендована схема: 5V 2A адаптер -> buck LM2596 виставлений on 4.0V -> електроліт 1000 мкФ low-ESR + кераміка 100 нФ біля SIM800L. Діод Шотткі проти переполюсовки.
-- Дроти живлення товсті й короткі (<10 см). Земля спільна with ESP32.
-- Світлодіод NET: блимає 1 раз/сек - немає мережі, 1 раз/3 сек - зареєстровано.
+- SIM800L chip: 3.4-4.4V (nominal 4.0V). 5V is death. 3.3V is instability.
+- Average current 200-500 mA, TX peak up to 2A (577 us slot).
+- Recommended schematic: 5V 2A adapter -> LM2596 buck set to 4.0V -> 1000 uF low-ESR electrolytic + 100 nF ceramic near SIM800L. Schottky diode against reverse polarity.
+- Power wires thick and short (<10 cm). Ground common with ESP32.
+- NET LED: blinks 1 time/sec - no network, 1 time/3 sec - registered.
 
 ![[assets/img/sim800l-power-4v.png|500]]
-*Fig. SIM800L - живлення 4.0V 2A via buck LM2596 + 1000 мкФ, UART перехресно до ESP32.*
+*Fig. SIM800L - 4.0V 2A power via LM2596 buck + 1000 uF, UART crossed to ESP32.*
 
 ### Module pin legend SIM800L
 
-Синя маленька плата SIM800L має гребінку: VCC, RST, RXD, TXD, GND + окремо виводи NET (індикація), MIC/ SPK (аудіо), ANT (U.FL for GSM-антени).
+The small blue SIM800L board has a header: VCC, RST, RXD, TXD, GND + separate NET (indication), MIC/SPK (audio), ANT (U.FL for GSM antenna) pins.
 
-| Пін | Позначення | Тип | Куди on ESP32 / живлення | Примітка |
+| Pin | Marking | Type | Where on ESP32 / power | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | Живлення 3.4-4.4V, пік 2A | Вихід buck LM2596 виставлений on 4.0V | not 5V (пробій!) and not 3.3V ESP32 (просадки, ребути); + електроліт 1000 мкФ low-ESR + 100 нФ біля піна |
-| 2 | RST | Вхід reset, active low | GPIO4 або кнопка до GND | Імпульс LOW >100 мс = перезапуск; in роботі підтягнутий до HIGH |
-| 3 | RXD | Вхід UART | GPIO17 (TX2 ESP32) via дільник | ESP32 TX → SIM800L RX: дільник 1к/2к або 2к/3.3к, або level-shifter, див. [[EN/13-Power-Modules/02-Level-Shifters.en]] |
-| 4 | TXD | Вихід UART | GPIO16 (RX2 ESP32) безпосередньо | SIM800L TX → ESP32 RX перехресно; рівень ~2.8V - ESP32 читає how HIGH without проблем |
-| 5 | GND | Земля | GND ESP32 + GND buck | Спільна товста земля, дроти <10 см, зірка заземлення |
-| 6 | NET | Вихід індикація | LED on платі / GPIO-вхід (опційно) | Блимання: 1 Гц = пошук мережі, 1 раз/3 с = зареєстровано |
-| 7 | MIC_P / MIC_N | Аналоговий вхід | Електретний мікрофон | for дзвінків, in IoT зазвичай NC |
-| 8 | SPK_P / SPK_N | Аналоговий вихід | Динамік 8 Ом | for дзвінків, in IoT зазвичай NC |
-| 9 | ANT | ВЧ | GSM-антена (U.FL або клема) | without антени not реєструється, TX on повну потужність гріється |
+| 1 | VCC | 3.4-4.4V power, 2A peak | LM2596 buck output set to 4.0V | not 5V (breakdown!) and not ESP32 3.3V (sags, reboots); + 1000 uF low-ESR electrolytic + 100 nF near the pin |
+| 2 | RST | Reset input, active low | GPIO4 or button to GND | LOW pulse >100 ms = restart; in operation pulled to HIGH |
+| 3 | RXD | UART input | GPIO17 (ESP32 TX2) via divider | ESP32 TX to SIM800L RX: 1k/2k or 2k/3.3k divider, or level-shifter, see [[EN/13-Power-Modules/02-Level-Shifters.en]] |
+| 4 | TXD | UART output | GPIO16 (ESP32 RX2) directly | SIM800L TX to ESP32 RX crossed; ~2.8V level - ESP32 reads as HIGH without issues |
+| 5 | GND | Ground | ESP32 GND + buck GND | Common thick ground, wires <10 cm, ground star |
+| 6 | NET | Indication output | LED on board / GPIO input (optional) | Blinking: 1 Hz = network search, 1 time/3 s = registered |
+| 7 | MIC_P / MIC_N | Analog input | Electret microphone | for calls, usually NC in IoT |
+| 8 | SPK_P / SPK_N | Analog output | 8 Ohm speaker | for calls, usually NC in IoT |
+| 9 | ANT | RF | GSM antenna (U.FL or terminal) | without antenna it never registers, TX at full power heats up |
 
-Чому not 5V and not 3.3V:
+Why not 5V and not 3.3V:
 
-1. **not 5V:** абсолютний максимум чипа 4.4V. Подача 5V пробиває RF-підсилювач - module гріється and вмирає for секунди. Виняток - лише червона плата EVB with власним стабілізатором and micro-USB: їй можна 5V, because on платі стоїть buck. Перевіряй свою версію візуально!
-2. **not 3.3V ESP32:** нижня межа чипа 3.4V, but in TX-бурсті 2A просадка on тонких доріжках DevKit сягає 0.3-0.5V → 2.8V on чипі → brownout and перезапуск саме in момент реєстрації in мережі. Symptom класичний: «AT OK, but AT+CREG ніколи not 0,1».
-3. **Правильно:** окремий buck LM2596 (або MP1584) with 5V 2A адаптера, on виході рівно 4.0V під навантаженням, електроліт 1000 мкФ low-ESR + кераміка 100 нФ біля SIM800L, товсті короткі дроти, див. [[EN/02-Power-Supply/01-Power-Rails.en]] and [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]].
-4. **UART перехресно:** TX модуля → RX ESP32, RX модуля → TX ESP32. Швидкість for замовчуванням 115200, див. [[EN/04-Interfaces/01-UART.en|UART]]. RX SIM800L not 5V-толерантний - дільник обов'язковий.
-5. **AT-повідомлення:** після `AT+CMGF=1` and `AT+CMGS` module відповідає `>` and чекає текст + Ctrl+Z (0x1A). Довгі AT-сесії вести via міст Serial↔Serial2 for відладки.
+1. **Not 5V:** absolute chip maximum 4.4V. Applying 5V breaks the RF amplifier - the module heats and dies in seconds. Exception - only the red EVB board with its own regulator and micro-USB: it can take 5V, because a buck sits on the board. Check your version visually!
+2. **Not ESP32 3.3V:** chip lower limit 3.4V, but in a 2A TX burst the sag on thin DevKit traces reaches 0.3-0.5V, giving 2.8V on the chip, causing brownout and restart exactly at network registration. Classic symptom: "AT OK, but AT+CREG never 0,1".
+3. **Correct:** a separate LM2596 buck (or MP1584) from a 5V 2A adapter, exactly 4.0V output under load, 1000 uF low-ESR electrolytic + 100 nF ceramic near SIM800L, thick short wires, see [[EN/02-Power-Supply/01-Power-Rails.en]] and [[EN/13-Power-Modules/01-Buck-Boost-Solar.en]].
+4. **UART crossed:** module TX to ESP32 RX, module RX to ESP32 TX. Default speed 115200, see [[EN/04-Interfaces/01-UART.en|UART]]. SIM800L RX is not 5V-tolerant - divider mandatory.
+5. **AT messages:** after `AT+CMGF=1` and `AT+CMGS` the module answers `>` and waits for text + Ctrl+Z (0x1A). Run long AT sessions via a Serial to Serial2 bridge for debugging.
 
-| ESP32 | SIM800L | Примітка |
+| ESP32 | SIM800L | Note |
 | --- | --- | --- |
-| - (LM2596 4.0V) | VCC | 4.0V 2A + 1000 мкФ, not 5V/3.3V |
-| GND | GND | спільна товста земля |
-| GPIO16 (RX2) | TX | SIM800L TX -> ESP32 RX, дільник/level-shift якщо 5V-версія плати |
-| GPIO17 (TX2) | RX | ESP32 TX -> SIM800L RX via дільник 2к/3.3к або 1к/2к |
-| GPIO4 | RST | опційно, active low |
-| - | ANT | GSM-антена, without неї not реєструється |
+| - (LM2596 4.0V) | VCC | 4.0V 2A + 1000 uF, not 5V/3.3V |
+| GND | GND | common thick ground |
+| GPIO16 (RX2) | TX | SIM800L TX -> ESP32 RX, divider/level-shift if 5V board version |
+| GPIO17 (TX2) | RX | ESP32 TX -> SIM800L RX via 2k/3.3k or 1k/2k divider |
+| GPIO4 | RST | optional, active low |
+| - | ANT | GSM antenna, without it never registers |
 
-> Червона плата SIM800L EVB with micro-USB - має свій стабілізатор, їй можна 5V. Синя маленька плата without стабілізатора - тільки 4V! Перевіряй свою версію.
+> The red SIM800L EVB board with micro-USB has its own regulator, it can take 5V. The small blue board without regulator - only 4V! Check your version.
 
 ### ASCII schematic (SIM800L)
 
@@ -89,17 +89,17 @@ Serial2.begin(115200, SERIAL_8N1, 16, 17);
 
 ```mermaid
 graph LR
-    AD[5V 2A адаптер] --> BUCK[buck LM2596<br/>4.0V]
-    BUCK -->|4.0V 2A пік + 1000мкФ| VCC[VCC SIM800L]
-    BUCK -->|GND товста| GNDM[GND SIM800L]
-    ESP32[ESP32] -->|GND спільна| GNDM
+    AD[5V 2A adapter] --> BUCK[buck LM2596<br/>4.0V]
+    BUCK -->|4.0V 2A peak + 1000uF| VCC[VCC SIM800L]
+    BUCK -->|GND thick| GNDM[GND SIM800L]
+    ESP32[ESP32] -->|GND common| GNDM
     TXD[TXD SIM800L] -->|GPIO16 RX2| ESP32
-    ESP32 -->|GPIO17 TX2 через дільник| RXD[RXD SIM800L]
-    ESP32 -->|GPIO4 опційно| RST[RST]
-    ANT[GSM антена] --- VCC
+    ESP32 -->|GPIO17 TX2 via divider| RXD[RXD SIM800L]
+    ESP32 -->|GPIO4 optional| RST[RST]
+    ANT[GSM antenna] --- VCC
 ```
 
-## 2. AT-команди базові
+## 2. Basic AT commands
 
 ```text
 AT                  -> OK (зв'язок)
@@ -114,58 +114,58 @@ AT+SAPBR=3,1,"APN","internet" -> налаштування GPRS
 AT+HTTPINIT / AT+HTTPPARA / AT+HTTPACTION=0 -> HTTP GET
 ```
 
-### Зведена шпаргалка (єдиний формат бази: команда → відповідь → зміст → error)
+### Summary cheat sheet (single base format: command → answer → meaning → error)
 
-Деталі кожної групи - in розділах 4-9; повна шпаргалка on 35 команд (EC200U/A7670) - in [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]], базова 4G-table - in [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]].
+Details of each group are in sections 4-9; the full 35-command cheat sheet (EC200U/A7670) is in [[EN/12-Comm-Modules/18-Cellular-LoRa-2.en]], the basic 4G table - in [[EN/12-Comm-Modules/07-SIM7600-W5500-MCP2515.en]].
 
-| Команда | Відповідь OK | that означає | typical error |
+| Command | OK answer | What it means | Typical error |
 | --- | --- | --- | --- |
-| `AT` | `OK` | Зв'язок per UART | Тиша: baud 115200? RX/TX перехресно? |
-| `AT+CPIN?` | `+CPIN: READY` | SIM готова | `SIM PIN`: `AT+CPIN="1234"`; IoT - зняти CLCK (розд. 1 ноти 26) |
-| `AT+CSQ` | `+CSQ: 18,0` | Рівень, норма >10 | 99,99: антена/екран/підвал |
-| `AT+CREG?` | `+CREG: 0,1` | Реєстрація home | 0,2: живлення/антена/PIN; блимання NET 1/с |
-| `AT+CBC` | `+CBC: 0,95,4100` | VBAT ~4100 мВ | <3600: дроти/buck/конденсатор (розд. 5 ноти 26) |
-| `AT+CMGF=1` | `OK` | Text-режим SMS | without нього `CMGS` → ERROR (розд. 4) |
-| `AT+CMGS="..."` + текст + `0x1A` | `+CMGS: id` | SMS надіслано | `+CMS ERROR 305`: пам'ять/мережа; кирилиця - PDU (розд. 4) |
-| `ATD+380...;` | `OK` | Voice дзвінок | without `;` - data-дзвінок/тиша (розд. 5) |
-| `AT+CUSD=1,"*101#"` | URC `+CUSD` for 2-10 с | USSD-баланс | Порожньо: повторити; кирилиця - UCS2-hex (розд. 6) |
-| `AT+SAPBR=1,1` | `OK` | Bearer відкрито | ERROR: APN буквально with табл. 6.2; спочатку `CGATT=1` (розд. 7) |
-| `AT+HTTPACTION=0` | `+HTTPACTION: 0,200,N` | HTTP OK, N байт | 601: URL/SSL/час `CCLK` (розд. 7) |
-| `AT+CSCLK=2` | `OK` | Автосон | not будиться: смикнути DTR (розд. 9) |
+| `AT` | `OK` | UART link | Silence: baud 115200? RX/TX crossed? |
+| `AT+CPIN?` | `+CPIN: READY` | SIM ready | `SIM PIN`: `AT+CPIN="1234"`; IoT - remove CLCK (sec. 1 of note 26) |
+| `AT+CSQ` | `+CSQ: 18,0` | Level, norm >10 | 99,99: antenna/screen/basement |
+| `AT+CREG?` | `+CREG: 0,1` | Home registration | 0,2: power/antenna/PIN; NET blinking 1/s |
+| `AT+CBC` | `+CBC: 0,95,4100` | VBAT ~4100 mV | <3600: wires/buck/capacitor (sec. 5 of note 26) |
+| `AT+CMGF=1` | `OK` | SMS text mode | without it `CMGS` gives ERROR (sec. 4) |
+| `AT+CMGS="..."` + text + `0x1A` | `+CMGS: id` | SMS sent | `+CMS ERROR 305`: memory/network; Cyrillic - PDU (sec. 4) |
+| `ATD+380...;` | `OK` | Voice call | without `;` - data call/silence (sec. 5) |
+| `AT+CUSD=1,"*101#"` | URC `+CUSD` in 2-10 s | USSD balance | Empty: repeat; Cyrillic - UCS2-hex (sec. 6) |
+| `AT+SAPBR=1,1` | `OK` | Bearer open | ERROR: APN literally from table 6.2; first `CGATT=1` (sec. 7) |
+| `AT+HTTPACTION=0` | `+HTTPACTION: 0,200,N` | HTTP OK, N bytes | 601: URL/SSL/`CCLK` time (sec. 7) |
+| `AT+CSCLK=2` | `OK` | Autosleep | does not wake: pull DTR (sec. 9) |
 
 ## 3. NEO-6M GPS
 
-Specifications: u-blox NEO-6M, UART 9600 NMEA, холодний start ~30 с, гарячий ~5 с, антена керамічна + опційно активна. Живлення 3.3-5V (on платі є LDO), логіка 3.3V толерантна до ESP32 безпосередньо.
+Specifications: u-blox NEO-6M, UART 9600 NMEA, cold start ~30 s, hot ~5 s, ceramic antenna + optional active. Power 3.3-5V (the board has an LDO), logic 3.3V tolerant to ESP32 directly.
 
 ![[assets/img/neo6m-uart.png|500]]
-*Fig. NEO-6M - UART до ESP32 перехресно (TX модуля → RX контролера), PPS опційно.*
+*Fig. NEO-6M - UART to ESP32 crossed (module TX to controller RX), PPS optional.*
 
 ### Module pin legend NEO-6M GPS
 
 | Pin | Label | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | Живлення 3.3-5V | 3V3 або 5V for маркуванням плати | on платі GY-GPS6MV2 стоїть LDO - їй можна 5V; логіка все одно 3.3V |
-| 2 | GND | Земля | GND | Спільна земля with ESP32 |
-| 3 | TX | Вихід UART 9600 NMEA | GPIO26 (RX1 ESP32) | TX модуля → RX ESP32 перехресно! Потік NMEA $GPGGA/$GPRMC |
-| 4 | RX | Вхід UART | GPIO27 (TX1 ESP32) або NC | ESP32 TX → GPS RX; потрібен лише for конфігурації u-blox (можна not підключати) |
-| 5 | PPS | Вихід цифра 1 Гц | Будь-which GPIO with перериванням (опційно) | Точний імпульс секунди for синхронізації часу, ширина ~100 мс |
+| 1 | VCC | 3.3-5V power | 3V3 or 5V per board marking | the GY-GPS6MV2 board has an LDO - it can take 5V; logic is still 3.3V |
+| 2 | GND | Ground | GND | Common ground with ESP32 |
+| 3 | TX | UART 9600 NMEA output | GPIO26 (ESP32 RX1) | Module TX to ESP32 RX crossed! NMEA $GPGGA/$GPRMC stream |
+| 4 | RX | UART input | GPIO27 (ESP32 TX1) or NC | ESP32 TX to GPS RX; needed only for u-blox configuration (can be left unconnected) |
+| 5 | PPS | 1 Hz digital output | Any GPIO with interrupt (optional) | Exact second pulse for time sync, ~100 ms wide |
 
-Пояснення:
+Explanation:
 
-- **TX модуля → RX ESP32:** головне правило UART, див. [[EN/04-Interfaces/01-UART.en|UART]]. GPS лише передає NMEA, therefore мінімальна схема - 4 дроти: VCC, GND, TX→RX. RX GPS можна залишити вільним.
-- **PPS:** імпульс точної секунди from супутників (джиттер ~десятки нс). Використовується for RTC-синхронізації або міток часу. without PPS час беруть with NMEA-речення `$GPRMC`.
-- **Антена:** керамічний квадрат on платі працює лише with видом неба; in приміщенні - зовнішня активна антена with живленням 3.3V via коаксіал. Холодний start with видом неба 30 с - 15 хв.
-- **Два UART одночасно:** SIM800L on Serial2 (16/17), GPS on Serial1 (26/27). not вішати обидва on один UART - NMEA потопить AT-відповіді.
+- **Module TX to ESP32 RX:** the main UART rule, see [[EN/04-Interfaces/01-UART.en|UART]]. GPS only transmits NMEA, so the minimal schematic is 4 wires: VCC, GND, TX to RX. GPS RX can be left free.
+- **PPS:** exact-second pulse from satellites (jitter ~tens of ns). Used for RTC sync or timestamps. Without PPS time is taken from the `$GPRMC` NMEA sentence.
+- **Antenna:** the ceramic square on the board works only with sky view; indoors - an outdoor active antenna with 3.3V power over coax. Cold start with sky view 30 s - 15 min.
+- **Two UARTs at once:** SIM800L on Serial2 (16/17), GPS on Serial1 (26/27). Do not hang both on one UART - NMEA drowns AT answers.
 
-| ESP32 | NEO-6M | Примітка |
+| ESP32 | NEO-6M | Note |
 | --- | --- | --- |
-| 3V3 або 5V | VCC | for маркуванням плати (зазвичай 3.3-5V) |
+| 3V3 or 5V | VCC | per board marking (usually 3.3-5V) |
 | GND | GND | common ground |
 | GPIO16 (RX2) | TX | GPS TX -> ESP32 RX |
-| GPIO17 (TX2) | RX | for конфігурації u-blox, можна not підключати |
-| - | PPS | опційно, точний імпульс 1 Гц |
+| GPIO17 (TX2) | RX | for u-blox configuration, can be left unconnected |
+| - | PPS | optional, exact 1 Hz pulse |
 
-> Два UART-пристрої одночасно: SIM800L on Serial2 (16/17), GPS on Serial1 (напр. RX=26 TX=27) або програмний. not вішати обидва on один UART.
+> Two UART devices at once: SIM800L on Serial2 (16/17), GPS on Serial1 (e.g. RX=26 TX=27) or software. Do not hang both on one UART.
 
 ### ASCII schematic (NEO-6M)
 
@@ -189,29 +189,29 @@ graph LR
     ESP32[ESP32] -->|3V3/5V| VCC[VCC NEO-6M]
     ESP32 -->|GND| GNDM[GND NEO-6M]
     TX[TX GPS<br/>9600 NMEA] -->|GPIO26 RX1| ESP32
-    ESP32 -->|GPIO27 TX1 опційно| RX[RX GPS]
-    PPS[PPS 1Гц] -.->|GPIO33 опційно| ESP32
+    ESP32 -->|GPIO27 TX1 optional| RX[RX GPS]
+    PPS[PPS 1Hz] -.->|GPIO33 optional| ESP32
 ```
 
-### Порівняння NEO-6M vs 7/8/M10: that брати in 2026
+### Comparing NEO-6M vs 7/8/M10: what to take in 2026
 
-| module | Супутники | Холодний start | Струм | Ціна (орієнтир) | Вердикт |
+| Module | Satellites | Cold start | Current | Price (landmark) | Verdict |
 | --- | --- | --- | --- | --- | --- |
-| NEO-6M | GPS+SBAS (72 канали) | ~30 с (with небом) | ~40 мА | $5-8 | Класика for навчання; for виробу - застарів |
-| NEO-7M | GPS+GLONASS | ~25 с | ~35 мА | $7-10 | GLONASS in місті допомагає, але рідкісний |
-| NEO-8M (M8N) | GPS+GLONASS+BeiDou+Galileo | ~20 с | ~30 мА | $10-15 | **Золота середина**: 3 сузір'я, PPS, той же footprint |
-| NEO-M10 (M10Q) | 4 сузір'я, L1 | ~15 с + низьке споживання | ~20 мА | $15-25 | Батарейні трекери; I2C+UART, крихітний 9.7×10.1 мм |
-| ZED-F9P | L1+L2, RTK | сантиметри with поправками | ~70 мА | $150+ | Геодезія, див. [[EN/12-Comm-Modules/17-GNSS-RTK.en]] |
+| NEO-6M | GPS+SBAS (72 channels) | ~30 s (with sky) | ~40 mA | $5-8 | Classic for learning; for a product - outdated |
+| NEO-7M | GPS+GLONASS | ~25 s | ~35 mA | $7-10 | GLONASS helps in the city, but rare |
+| NEO-8M (M8N) | GPS+GLONASS+BeiDou+Galileo | ~20 s | ~30 mA | $10-15 | **Golden middle**: 3 constellations, PPS, same footprint |
+| NEO-M10 (M10Q) | 4 constellations, L1 | ~15 s + low consumption | ~20 mA | $15-25 | Battery trackers; I2C+UART, tiny 9.7x10.1 mm |
+| ZED-F9P | L1+L2, RTK | centimeters with corrections | ~70 mA | $150+ | Geodesy, see [[EN/12-Comm-Modules/17-GNSS-RTK.en]] |
 
-> Піни NEO-6M/7M/8M on платах GY-GPSxx сумісні (VCC/GND/TX/RX/PPS) - апгрейд перепайкою without зміни firmwares. M10Q - інший footprint (Qwiic), зате їсть удвічі менше.
+> NEO-6M/7M/8M pins on GY-GPSxx boards are compatible (VCC/GND/TX/RX/PPS) - upgrade by re-soldering without firmware change. M10Q is a different footprint (Qwiic), but eats half.
 
-### Холодний / теплий / гарячий start + батарейка V_BCKP
+### Cold / warm / hot start + V_BCKP battery
 
-| Старт | that збережено | Час до Fix | Коли |
+| Start | What is kept | Time to fix | When |
 | --- | --- | --- | --- |
-| Холодний | Нічого (перше ввімкнення, переїзд >500 км) | 30 с - 15 хв | with коробки, після місяця without живлення |
-| Теплий | Альманах + приблизний час | 5-30 с | V_BCKP живий, доба without неба |
-| Гарячий | Ефемериди + час + позиція | 1-5 с | Короткий сон, тунель 5 хв |
+| Cold | Nothing (first power-on, move >500 km) | 30 s - 15 min | out of the box, after a month without power |
+| Warm | Almanac + approximate time | 5-30 s | V_BCKP alive, a day without sky |
+| Hot | Ephemeris + time + position | 1-5 s | Short sleep, 5 min tunnel |
 
 ```text
 V_BCKP (резервне живлення RTC+SRAM приймача):
@@ -220,21 +220,21 @@ V_BCKP (резервне живлення RTC+SRAM приймача):
   Без V_BCKP кожне ввімкнення = холодний start = 30+ с очікування в полі!
 ```
 
-### AssistNow (AGPS): ефемериди via інтернет
+### AssistNow (AGPS): ephemeris over internet
 
-Замість чекати ефемериди with неба (12.5 хв повний альманах!) - залити via UART:
+Instead of waiting for ephemeris from the sky (full almanac 12.5 min!) - pour over UART:
 
 ```text
 1. Скачати AssistNow Online (u-blox сервер) або Offline (3–14 діб прогнозу).
 2. Залити бінарник у приймач UBX-пакетом (115200 бод, RX GPS підключений!).
 3. Холодний start стискається до 3–10 с.
-Для ESP32-практики: ESP32 качає файл по WiFi/GPRS (розділи 7–8) і переливає в GPS.
-Окупність: трекер, що прокидається раз на годину — тільки з AssistNow або M10.
+For ESP32 practice: ESP32 downloads the file over WiFi/GPRS (sections 7-8) and pours it into GPS.
+Payback: a tracker that wakes once an hour - only with AssistNow or M10.
 ```
 
-### PPS-синхронізація часу (точність without NTP)
+### PPS time sync (accuracy without NTP)
 
-PPS - імпульс секунди with джиттером десятки нс (проти мілісекунд in NTP via WiFi!):
+PPS is a second pulse with tens-of-ns jitter (vs milliseconds in NTP over WiFi!):
 
 ```cpp
 // Arduino: мітка точної секунди за PPS + добивка часу з RMC
@@ -249,19 +249,19 @@ void setup() {
 // Для TLS/HTTPS через модем цього досить; для науки — input capture таймера.
 ```
 
-## 4. SMS докладно: Text vs PDU, читання, видалення, URC
+## 4. SMS in detail: Text vs PDU, reading, deletion, URC
 
-### 4.1. Два режими: Text (латиниця) vs PDU (кирилиця)
+### 4.1. Two modes: Text (Latin) vs PDU (Cyrillic)
 
-| Режим | Команда | that вміє | Обмеження |
+| Mode | Command | What it can | Limit |
 | --- | --- | --- | --- |
-| Text | `AT+CMGF=1` | Прості ASCII-SMS, читабельні команди | Тільки GSM 7-bit (латиниця, цифри); кирилиця - кракозябри |
-| PDU | `AT+CMGF=0` | Будь-which алфавіт via UCS2-hex, довгі/конкатеновані | Треба кодувати/декодувати PDU (онлайн-кодувальники або бібліотека) |
-| Кодування | `AT+CSCS?` | `"GSM"` for замовчуванням; `"UCS2"` for hex-тексту in Text-режимі | Після `AT+CSCS="UCS2"` номер теж hex: `AT+CMGS="002B0033..."` |
+| Text | `AT+CMGF=1` | Simple ASCII SMS, readable commands | Only GSM 7-bit (Latin, digits); Cyrillic - mojibake |
+| PDU | `AT+CMGF=0` | Any alphabet via UCS2-hex, long/concatenated | Must encode/decode PDU (online encoders or a library) |
+| Encoding | `AT+CSCS?` | `"GSM"` by default; `"UCS2"` for hex text in Text mode | After `AT+CSCS="UCS2"` the number is also hex: `AT+CMGS="002B0033..."` |
 
-Практичне правило: сповіщення латиницею/транслітом - Text-режим; кирилиця клієнту - PDU або UCS2-hex. Трансліт in аварійних SMS - нормальна інженерна практика (доставка важливіша for красу).
+Practical rule: Latin/translit notifications - Text mode; Cyrillic to the client - PDU or UCS2-hex. Translit in emergency SMS is normal engineering practice (delivery matters more than beauty).
 
-### 4.2. Відправка SMS покроково (Text-режим)
+### 4.2. Sending SMS step by step (Text mode)
 
 ```text
 AT+CMGF=1            -> OK (текстовий режим)
@@ -273,9 +273,9 @@ ALARM: temp 85C!     <- текст, БЕЗ Enter зайвого
 <Esc 0x1B>           -> скасувати набір (якщо передумав після ">")
 ```
 
-> Після `>` чекати not більше 10-15 с: module сам повернеться in командний режим. Довгі паузи між символами тексту - module вирішить, that this кінець, and відправить обрізане.
+> After `>` wait no more than 10-15 s: the module returns to command mode by itself. Long pauses between text characters - the module decides this is the end and sends it truncated.
 
-### 4.3. Читання, видалення, пам'ять, нові повідомлення
+### 4.3. Reading, deletion, memory, new messages
 
 ```text
 AT+CPMS?             -> +CPMS: "SM",3,50,"SM",3,50,"SM",3,50 (зайнято/всього)
@@ -287,27 +287,27 @@ AT+CMGD=1,4          -> видалити ВСІ (індекс ігноруєть
 AT+CNMI=2,1,0,0,0    -> URC +CMTI при новій SMS (індекс одразу в події!)
 ```
 
-> SIM-карта тримає зазвичай 30-50 SMS. Переповнення = нові not доходять МОВЧКИ. in автономному пристрої: після обробки кожної вхідної - `AT+CMGD`, плюс раз on добу `AT+CMGD=1,4` how страховка.
+> A SIM card usually holds 30-50 SMS. Overflow = new ones silently never arrive. In an autonomous device: after processing each incoming - `AT+CMGD`, plus once a day `AT+CMGD=1,4` as insurance.
 
-### 4.4. Mermaid: життєвий цикл SMS
+### 4.4. Mermaid: SMS lifecycle
 
 ```mermaid
 flowchart TB
     CFG[AT+CMGF=1 + CNMI=2,1] --> WAIT{URC +CMTI?}
-    WAIT -->|індекс N| READ[AT+CMGR=N — читати]
-    READ --> PARSE{Команда валідна?}
-    PARSE -->|Так: RELE ON| ACT[Виконати + SMS-відповідь]
-    PARSE -->|Ні| IGN[Ігнор + SMS 'ERR']
-    ACT --> DEL[AT+CMGD=N — видалити]
+    WAIT -->|index N| READ[AT+CMGR=N - read]
+    READ --> PARSE{Command valid?}
+    PARSE -->|Yes: RELE ON| ACT[Execute + SMS answer]
+    PARSE -->|No| IGN[Ignore + SMS ERR]
+    ACT --> DEL[AT+CMGD=N - delete]
     IGN --> DEL
     DEL --> WAIT
-    SEND[Тригога датчика] --> OUT[AT+CMGS — відправка]
+    SEND[Sensor alarm] --> OUT[AT+CMGS - send]
     OUT -->|Ctrl+Z| OKC[+CMGS: id]
 ```
 
-## 5. Голосові дзвінки: ATD/ATA/ATH, АОН, автовідповідь, аудіо
+## 5. Voice calls: ATD/ATA/ATH, caller ID, auto-answer, audio
 
-### 5.1. Команди дзвінка
+### 5.1. Call commands
 
 ```text
 ATD+380971234567;    -> OK → дзвінок (крапка з комою ОБОВ'ЯЗКОВА = Voice режим!)
@@ -319,7 +319,7 @@ ATS0=2               -> автовідповідь після 2 гудків (0 
 AT+CHUP              -> альтернатива ATH (покласти)
 ```
 
-Розбір вхідного with АОН:
+Incoming parsing with caller ID:
 
 ```text
 RING                          <- гудок 1
@@ -327,21 +327,21 @@ RING                          <- гудок 1
 RING                          <- гудок 2 …
 ```
 
-> Білий список номерів - in прошивці: порівнювати `+CLIP`-номер with NVS-списком, чужих - `ATH` одразу. Дзвінок how безкоштовний канал керування: «дзвінок with номера господаря = відкрити ворота, передзвонювати not треба» (визначаємо per 1-2 RING and кладемо самі - 0 грн).
+> Number whitelist - in firmware: compare the `+CLIP` number with the NVS list, hang up strangers with `ATH` at once. A call as a free control channel: "a call from the owner number = open the gate, no need to call back" (detect on 1-2 RINGs and hang up ourselves - 0 UAH).
 
-### 5.2. Аудіо: мікрофон/динамік синьої плати
+### 5.2. Audio: blue-board microphone/speaker
 
-| Пін/команда | Призначення | Налаштування |
+| Pin/command | Purpose | Setting |
 | --- | --- | --- |
-| MIC_P / MIC_N | Електретний мікрофон | Безпосередньо капсуль, живлення дає сам module |
-| SPK_P / SPK_N | Динамік 8 Ом | Диференційно, not садити один кінець on GND! |
-| `AT+CMIC=0,10` | Чутливість мікрофона (канал 0, рівень 0-15) | Підбирати: фон/луна |
+| MIC_P / MIC_N | Electret microphone | Capsule directly, the module gives power itself |
+| SPK_P / SPK_N | 8 Ohm speaker | Differentially, do not seat one end on GND! |
+| `AT+CMIC=0,10` | Microphone sensitivity (channel 0, level 0-15) | Pick: background/echo |
 | `AT+CLVL=60` | Speaker volume 0-100 | 60 - initial value |
-| `AT+CHFA=1` | Перемикання аудіоканалу (гарнітура/гучномовець on EVB) | on синій платі зазвичай один канал |
+| `AT+CHFA=1` | Audio channel switch (headset/loudspeaker on EVB) | on the blue board usually one channel |
 
-## 6. USSD and APN українських операторів
+## 6. USSD and APN of Ukrainian operators
 
-### 6.1. USSD-запити
+### 6.1. USSD requests
 
 ```text
 AT+CUSD=1,"*101#"     -> OK, відповідь приходить URC:
@@ -350,21 +350,21 @@ AT+CUSD=1,"*101#",15  -> той самий запит з явним кодува
 AT+CUSD=2             -> скасувати активну USSD-сесію
 ```
 
-> USSD-відповідь - not синхронна: приходить окремим `+CUSD` via 2-10 с. Парсер AT має вміти URC посеред будь-якого очікування. Кирилична відповідь in UCS2-hex - декодувати hex→UTF-16.
+> A USSD answer is not synchronous: it comes as a separate `+CUSD` in 2-10 s. The AT parser must handle URC in the middle of any wait. A Cyrillic answer in UCS2-hex - decode hex to UTF-16.
 
-### 6.2. Оператори України: USSD-портали та APN
+### 6.2. Operators of Ukraine: USSD portals and APN
 
-| Оператор | Баланс/меню (USSD) | APN (GPRS) | Логін/пароль | Примітка |
+| Operator | Balance/menu (USSD) | APN (GPRS) | Login/password | Note |
 | --- | --- | --- | --- | --- |
-| Kyivstar | `*111#` (меню «Мій Київстар», там and баланс) | `kyivstar` | порожні | Старий `www.kyivstar.net` - legacy, not використовувати |
-| Vodafone UA | `*101#` (баланс одразу) | `internet` | порожні | - |
-| Lifecell | `*111#` (баланс/меню) | `internet` | порожні | - |
+| Kyivstar | `*111#` ("My Kyivstar" menu, balance there too) | `kyivstar` | empty | Old `www.kyivstar.net` is legacy, do not use |
+| Vodafone UA | `*101#` (balance at once) | `internet` | empty | - |
+| Lifecell | `*111#` (balance/menu) | `internet` | empty | - |
 
-> APN чутливий до регістру and пробілів: `"Internet"` ≠ `"internet"` - мережа відхилить PDP-контекст with `AT+SAPBR=1,1` помилкою. Копіювати with таблиці буквально.
+> APN is case- and space-sensitive: `"Internet"` is not `"internet"` - the network rejects the PDP context with an `AT+SAPBR=1,1` error. Copy from the table literally.
 
-## 7. GPRS → HTTP/HTTPS: SAPBR-послідовність and SSL
+## 7. GPRS to HTTP/HTTPS: SAPBR sequence and SSL
 
-### 7.1. Підняття GPRS-сесії (порядок суворий!)
+### 7.1. Raising a GPRS session (order is strict!)
 
 ```text
 AT+CGATT=1                              -> OK (attach до GPRS-мережі)
@@ -374,7 +374,7 @@ AT+SAPBR=1,1                             -> OK (відкрити bearer; чек�
 AT+SAPBR=2,1                             -> +SAPBR: 1,1,"10.20.30.40" (IP видано!)
 ```
 
-### 7.2. HTTP GET / POST вбудованим стеком
+### 7.2. HTTP GET / POST with the built-in stack
 
 ```text
 AT+HTTPINIT                              -> OK
@@ -396,7 +396,7 @@ AT+HTTPDATA=48,10000                             -> DOWNLOAD (запрошенн
 AT+HTTPACTION=1                                  -> +HTTPACTION: 1,200,16
 ```
 
-### 7.3. HTTPS (SSL) - чесно про межі
+### 7.3. HTTPS (SSL) - honestly about limits
 
 ```text
 AT+HTTPSSL=1                             -> OK (увімкнути TLS для наступних HTTPACTION)
@@ -404,51 +404,51 @@ AT+HTTPPARA="URL","https://api.example.com/data" -> OK
 AT+HTTPACTION=0                          -> +HTTPACTION: 0,200,...
 ```
 
-| Питання | Відповідь |
+| Question | Answer |
 | --- | --- |
-| Чи вміє SIM800 HTTPS? | Так, `AT+HTTPSSL=1`. TLS 1.0-1.2, набір шифрів старий - частина сучасних серверів відмовить in handshake |
-| Свій CA-сертифікат | Завантажити in файлову систему модуля (`AT+FSWRITE`), прив'язати via SSL-команди; процедура громіздка |
-| check hostname | Слабка/відсутня - for критичних даних краще свій шлюз: ESP32→HTTP→свій сервер→HTTPS далі |
-| Час for TLS | Сертифікати валідуються for часом: спочатку `AT+CCLK?` має показувати реальний час (NITZ from мережі або `AT+CCLK="26/09/30,08:00:00+12"`) |
+| Can SIM800 do HTTPS? | Yes, `AT+HTTPSSL=1`. TLS 1.0-1.2, old cipher set - some modern servers refuse the handshake |
+| Own CA certificate | Download into the module file system (`AT+FSWRITE`), bind via SSL commands; procedure is bulky |
+| Hostname check | Weak/absent - for critical data better your own gateway: ESP32 to HTTP to own server to HTTPS further |
+| Time for TLS | Certificates validate by time: first `AT+CCLK?` must show real time (NITZ from network or `AT+CCLK="26/09/30,08:00:00+12"`) |
 
-### 7.4. Mermaid: GPRS-сесія
+### 7.4. Mermaid: GPRS session
 
 ```mermaid
 flowchart TB
     ATT[AT+CGATT=1] --> CFG[AT+SAPBR=3,1 Contype/APN]
     CFG --> OPEN[AT+SAPBR=1,1]
-    OPEN --> IP{AT+SAPBR=2,1<br/>IP видано?}
-    IP -->|Ні: APN/покриття| FIX[Перевірити APN табл. 6.2<br/>+CSQ, +CREG]
+    OPEN --> IP{AT+SAPBR=2,1<br/>IP issued?}
+    IP -->|No: APN/coverage| FIX[Check APN table 6.2<br/>+CSQ, +CREG]
     FIX --> OPEN
-    IP -->|Так| HTTP[HTTPINIT → HTTPPARA → HTTPACTION]
+    IP -->|Yes| HTTP[HTTPINIT to HTTPPARA to HTTPACTION]
     HTTP --> SSL{HTTPS?}
-    SSL -->|Так| TLS[AT+HTTPSSL=1 + CCLK-час!]
-    SSL -->|Ні| READ[AT+HTTPREAD]
+    SSL -->|Yes| TLS[AT+HTTPSSL=1 + CCLK time!]
+    SSL -->|No| READ[AT+HTTPREAD]
     TLS --> READ
     READ --> TERM[HTTPTERM → SAPBR=0,1]
 ```
 
-## 8. E-mail via GPRS (оглядово - краще шлюзом)
+## 8. E-mail over GPRS (overview - better via gateway)
 
-SIM800 має вбудований SMTP-клієнт (`AT+EMAILCID`, `AT+EMAILTO`, `AT+SMTPSRV`, `AT+SMTPAUTH`, `AT+SMTPSEND`). Послідовність робоча, але:
+SIM800 has a built-in SMTP client (`AT+EMAILCID`, `AT+EMAILTO`, `AT+SMTPSRV`, `AT+SMTPAUTH`, `AT+SMTPSEND`). The sequence works, but:
 
-1. Авторизація сучасних поштовиків (OAuth2, app-passwords) - via AT-термінал біль and сльози.
-2. Кирилиця in темі/тілі - кодування вручну.
-3. Будь-which зміна політики Gmail - and прошивка in полі ламається.
+1. Modern mailer auth (OAuth2, app-passwords) over an AT terminal is pain and tears.
+2. Cyrillic in subject/body - manual encoding.
+3. Any Gmail policy change - and the firmware in the field breaks.
 
-> Інженерне рішення: ESP32 шле HTTP POST on СВІЙ сервер (розділ 7.2), but листи відправляє сервер звичайною бібліотекою (Python `smtplib`, Node `nodemailer`). Модем лишається дурним транспортом - так надійніше on порядок.
+> Engineering solution: ESP32 sends HTTP POST to its OWN server (section 7.2), and the server sends letters with a plain library (Python `smtplib`, Node `nodemailer`). The modem stays a dumb transport - an order more reliable.
 
-## 9. Енергоспоживання та сон: CSCLK, DTR, PWRKEY
+## 9. Power consumption and sleep: CSCLK, DTR, PWRKEY
 
-### 9.1. Режими SIM800L
+### 9.1. SIM800L modes
 
-| Режим | Струм (орієнтир) | how увійти | how вийти | Коли |
+| Mode | Current (landmark) | How to enter | How to exit | When |
 | --- | --- | --- | --- | --- |
-| Активний (TX-бурст) | до 2000 мА пік | Дзвінок/GPRS-трафік | Кінець трафіку | Передача |
-| Idle зареєстрований | ~20 мА | Просто чекати | - | Чергування |
-| Сон `AT+CSCLK=1` | ~1-2 мА | DTR HIGH + 5 с тиші | DTR LOW | Батарейні датчики |
-| Сон `AT+CSCLK=2` | ~1-2 мА | Автоматично після 5 с тиші | Дзвінок/SMS/дані per UART | Те саме without дроту DTR |
-| Вимкнений | ~0 (десятки мкА) | PWRKEY LOW 1-2 с | PWRKEY LOW 1-2 с | Глибоке чергування |
+| Active (TX burst) | up to 2000 mA peak | Call/GPRS traffic | End of traffic | Transfer |
+| Idle registered | ~20 mA | Just wait | - | Duty |
+| Sleep `AT+CSCLK=1` | ~1-2 mA | DTR HIGH + 5 s of silence | DTR LOW | Battery sensors |
+| Sleep `AT+CSCLK=2` | ~1-2 mA | Automatically after 5 s of silence | Call/SMS/data over UART | Same without the DTR wire |
+| Off | ~0 (tens of uA) | PWRKEY LOW 1-2 s | PWRKEY LOW 1-2 s | Deep duty |
 
 ```text
 AT+CSCLK=0     -> OK (сон заборонено, за замовчуванням)
@@ -456,7 +456,7 @@ AT+CSCLK=1     -> OK (сон за рівнем DTR: HIGH = спати)
 AT+CSCLK=2     -> OK (автосон: засне сам, прокинеться сам)
 ```
 
-### 9.2. Схема сну with DTR and RI
+### 9.2. Sleep schematic with DTR and RI
 
 ```text
 ESP32 DevKit          SIM800L
@@ -466,28 +466,28 @@ GPIO19 ◄────────────  RI (прокидається LOW
 GND ────────────────  GND
 ```
 
-> PSM how in NB-IoT in SIM800 НЕМАЄ - not шукати. Економія будується так: `CSCLK=2` між сеансами + повне вимкнення PWRKEY on години (with MOSFET-ключем живлення, див. [[EN/13-Power-Modules/04-LDO-Buck-XL4015-Protect.en]]). RI-пін - будильник ESP32: прокинувся → читай `+CLIP`/`+CMTI`.
+> There is NO PSM like in NB-IoT in SIM800 - do not look for it. Economy is built like this: `CSCLK=2` between sessions + full PWRKEY shutdown for hours (with a MOSFET power switch, see [[EN/13-Power-Modules/04-LDO-Buck-XL4015-Protect.en]]). The RI pin is the ESP32 alarm: woke up, read `+CLIP`/`+CMTI`.
 
-### 9.3. Mermaid: сон and пробудження
+### 9.3. Mermaid: sleep and wake-up
 
 ```mermaid
 flowchart TB
-    IDLE[Idle, CSCLK=2] -->|5 с тиші| SLEEP[Сон ~1.5 мА]
-    SLEEP -->|RING/SMS| RI[RI падає — будить ESP32]
-    SLEEP -->|Дані в UART| WAKE[Прокинувся сам]
-    SLEEP -->|DTR LOW при CSCLK=1| WAKE
-    RI --> READ[ESP32 читає CLIP/CMTI]
-    WAKE --> WORK[AT-сесія]
+    IDLE[Idle, CSCLK=2] -->|5 s of silence| SLEEP[Sleep ~1.5 mA]
+    SLEEP -->|RING/SMS| RI[RI falls - wakes ESP32]
+    SLEEP -->|Data to UART| WAKE[Woke by itself]
+    SLEEP -->|DTR LOW at CSCLK=1| WAKE
+    RI --> READ[ESP32 reads CLIP/CMTI]
+    WAKE --> WORK[AT session]
     WORK --> IDLE
-    NIGHT[Ніч, 8 год] --> OFF[PWRKEY — вимкнути в нуль]
-    OFF -->|Таймер/кнопка| PWR[PWRKEY — увімкнути]
-    PWR --> REG[CREG + SAPBR заново]
+    NIGHT[Night, 8 h] --> OFF[PWRKEY - turn off to zero]
+    OFF -->|Timer/button| PWR[PWRKEY - turn on]
+    PWR --> REG[CREG + SAPBR anew]
 ```
 
 ![[assets/img/sim800l-sms-call-scheme.png|600]]
-*Fig. SIM800L how термінал сповіщень: SMS (Text/PDU), голос with білим списком, USSD-баланс, GPRS-сесія SAPBR, сон via DTR/RI.*
+*Fig. SIM800L as a notification terminal: SMS (Text/PDU), voice with whitelist, USSD balance, SAPBR GPRS session, sleep via DTR/RI.*
 
-## Code (3 фреймворки)
+## Code (3 frameworks)
 
 ### Arduino - SIM800L AT + NEO-6M TinyGPS++
 
@@ -571,39 +571,39 @@ while True:
 // AT через uart_write_bytes + парсинг OK/CSQ/CREG; GPS NMEA через minmea lib на UART_NUM_1 (26/27)
 ```
 
-### Живлення SIM800L - покрокова check
+### SIM800L power supply - step-by-step check
 
-1. Виставити buck LM2596 on 4.0V without навантаження, потім підключити SIM800L via 1000 мкФ.
-2. `AT+CBC` має показати 3900-4200 мВ; якщо менше - товстіші дроти, коротші, зірка GND.
-3. `AT+CSQ` > 10, інакше винести GSM-антену до вікна.
-4. `AT+CREG?` чекати `0,1` до 60 с; блимання NET 1 раз/3 с = успіх.
-5. GPRS: `AT+SAPBR`, HTTP або MQTT - лише після стабільної реєстрації, див. [[EN/05-Radio/01-WiFi-STA-AP.en]] for порівняння with WiFi.
+1. Set the LM2596 buck to 4.0V without load, then connect SIM800L via 1000 uF.
+2. `AT+CBC` must show 3900-4200 mV; if less - thicker wires, shorter, GND star.
+3. `AT+CSQ` > 10, otherwise move the GSM antenna to the window.
+4. `AT+CREG?` wait for `0,1` up to 60 s; NET blinking 1 time/3 s = success.
+5. GPRS: `AT+SAPBR`, HTTP or MQTT - only after stable registration, see [[EN/05-Radio/01-WiFi-STA-AP.en]] for comparison with WiFi.
 
 | Symptom | Cause | Solution |
 | --- | --- | --- |
-| SIM800L перезавантажується, NET блимає | power sag, пік 2A | LM2596 on 4.0V + 1000 мкФ, товсті дроти |
-| AT+CREG 0,2 довго | немає антени / слабкий сигнал / SIM without PIN знято | антена, AT+CPIN, винести до вікна |
-| GPS нулі 00.0000 | холодний start in приміщенні | чекати 5-15 хв with видом неба, активна антена |
-| Сміття in UART | різні baud / спільний UART on два модулі | SIM 115200 on Serial2, GPS 9600 on Serial1 |
-| SIM800L гріється | подано 5V on синю плату | негайно вимкнути, verify 4.0V |
-| `AT+CMGS` → `ERROR` / `+CMS ERROR: 305` | not Text-режим або немає пам'яті/мережі | `AT+CMGF=1` перед відправкою; `AT+CPMS?` - чистити; `AT+CREG?` має бути 0,1 |
-| SMS кирилицею - кракозябри | Text-режим тільки GSM 7-bit | PDU-режим або `AT+CSCS="UCS2"` with hex, або трансліт (розділ 4.1) |
-| Після `>` нічого not відправляється | забутий Ctrl+Z / пауза >15 с | `sim.write(0x1A)` одразу після тексту; Esc скасовує |
-| Нові SMS not доходять | переповнена SIM (30-50 шт) | `AT+CMGD=1,4` раз on добу + видаляти після читання |
-| USSD порожня відповідь / `+CUSD: 2` | сесія обірвана оператором | повторити via 10 с; `AT+CUSD=2` перед новим запитом |
-| `AT+SAPBR=1,1` → ERROR | неправильний APN / немає GPRS-покриття | APN буквально with таблиці 6.2; `AT+CGATT=1` перед SAPBR |
-| HTTPS `+HTTPACTION: 0,601` | немає маршруту/сертифікат відхилено (601 = network error) | verify URL, `AT+HTTPSSL=1`, `AT+CCLK?` - реальний час! |
-| not прокидається with `CSCLK=2` | дані шлються in сплячий UART | смикнути DTR LOW або слати символ-пробудження and чекати 100 мс |
-| `ATD` without `;` - тиша | пішов DATA-дзвінок замість голосового | завжди `ATD+380...;` with крапкою with комою |
+| SIM800L reboots, NET blinks | power sag, 2A peak | LM2596 at 4.0V + 1000 uF, thick wires |
+| AT+CREG 0,2 for long | no antenna / weak signal / SIM without PIN removed | antenna, AT+CPIN, move to window |
+| GPS zeros 00.0000 | cold start indoors | wait 5-15 min with sky view, active antenna |
+| Garbage in UART | different baud / shared UART on two modules | SIM 115200 on Serial2, GPS 9600 on Serial1 |
+| SIM800L heats up | 5V applied to the blue board | turn off immediately, verify 4.0V |
+| `AT+CMGS` gives `ERROR` / `+CMS ERROR: 305` | not Text mode or no memory/network | `AT+CMGF=1` before sending; `AT+CPMS?` - clean; `AT+CREG?` must be 0,1 |
+| Cyrillic SMS - mojibake | Text mode is GSM 7-bit only | PDU mode or `AT+CSCS="UCS2"` with hex, or translit (section 4.1) |
+| After `>` nothing is sent | forgotten Ctrl+Z / pause >15 s | `sim.write(0x1A)` right after text; Esc cancels |
+| New SMS never arrive | SIM full (30-50 pcs) | `AT+CMGD=1,4` once a day + delete after reading |
+| USSD empty answer / `+CUSD: 2` | session dropped by operator | repeat in 10 s; `AT+CUSD=2` before a new request |
+| `AT+SAPBR=1,1` gives ERROR | wrong APN / no GPRS coverage | APN literally from table 6.2; `AT+CGATT=1` before SAPBR |
+| HTTPS `+HTTPACTION: 0,601` | no route/certificate rejected (601 = network error) | verify URL, `AT+HTTPSSL=1`, `AT+CCLK?` - real time! |
+| does not wake with `CSCLK=2` | data sent to a sleeping UART | pull DTR LOW or send a wake char and wait 100 ms |
+| `ATD` without `;` - silence | DATA call went instead of voice | always `ATD+380...;` with semicolon |
 
 ## Official sources
 
-- [SIM800 - даташити й AT Manual (SIMCom)](https://www.simcom.com/product/SIM800.html) - Hardware Design, живлення 3.4-4.4V.
-- [NEO-6 - даташит (u-blox)](https://www.u-blox.com/en/product/neo-6-series) - NMEA, антени, фото.
-- [ESP32 SIM800L SMS - туторіал with кодом (RNT)](https://randomnerdtutorials.com/esp32-sim800l-send-text-messages-sms/) - TinyGSM, пороги.
-- [ESP32 + NEO-6M - туторіал with кодом (RNT)](https://randomnerdtutorials.com/esp32-neo-6m-gps-module-arduino/) - TinyGPS++, широта/довгота.
-- [SIM800 Series AT Command Manual (SIMCom)](https://www.simcom.com/product/SIM800.html) - повний довідник: CMGF/CMGS/CUSD/SAPBR/HTTP/CSCLK/CSCS.
-- [u-blox NEO-6M Hardware Integration Manual](https://www.u-blox.com/en/product/neo-6-series) - PPS, V_BCKP, активні антени.
+- [SIM800 - datasheets and AT Manual (SIMCom)](https://www.simcom.com/product/SIM800.html) - Hardware Design, 3.4-4.4V power.
+- [NEO-6 - datasheet (u-blox)](https://www.u-blox.com/en/product/neo-6-series) - NMEA, antennas, photo.
+- [ESP32 SIM800L SMS - tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-sim800l-send-text-messages-sms/) - TinyGSM, thresholds.
+- [ESP32 + NEO-6M - tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-neo-6m-gps-module-arduino/) - TinyGPS++, latitude/longitude.
+- [SIM800 Series AT Command Manual (SIMCom)](https://www.simcom.com/product/SIM800.html) - full reference: CMGF/CMGS/CUSD/SAPBR/HTTP/CSCLK/CSCS.
+- [u-blox NEO-6M Hardware Integration Manual](https://www.u-blox.com/en/product/neo-6-series) - PPS, V_BCKP, active antennas.
 
 ## See also
 
