@@ -25,8 +25,8 @@ The base is built as a MOC (Map of Content): [Home](../../../../STM32-Reference/
 
 | Task | Path |
 | --- | --- |
-| First Blink | [DevKit boards](../../../../STM32-Reference/UA/00-Start/04-Devkit-plati.md) → [Environment choice](../../../../STM32-Reference/UA/00-Start/05-Vibir-seredovischa.md) |
-| Pick a chip | [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md) |
+| First Blink | [ DevKit boards] → [ Environment choice] |
+| Pick a chip | [ Chip comparison] |
 | Sensor over I2C | Section 10 (queue 4) → a specific sensor |
 | Board does not work | FAQ + logic + ST-Link debug (queues 1, 5) |
 
@@ -148,4 +148,4 @@ Found an issue - record it: file, line, what is wrong, what you checked (board, 
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
+- [ Chip comparison]

@@ -1,9 +1,12 @@
 ---
+lang: en
 description: Цехова нота-міст from 12-Comm-Modules/04-RS485-CAN-Ethernet-Kamera та [05-CAN-TWAI-RS485](../../../../ESP32-Reference/UA/04-Shini/05-CAN-TWAI-RS485.md) до промислових шин: CANopen (об'єктний словник, SDO/PDO оглядово), DMX512 (сценічне...; shows schematics, code and tables.
 title: CANopen DMX512 KNX DALI 4-20мА 0-10V TRIAC-димер BACnet OPC-UA MCP2518FD ізольований RS485 - industrial fieldbus
 tags: [esp32, industrial, canopen, dmx512, knx, dali, 4-20ma, 0-10v, triac, moc3021, bacnet, opc-ua, mqtt-sn, can-fd, mcp2518fd, rs485, modbus]
 category: Moduli-zvyazku
 date-created: 2026-09-28
+date: 2026-10-10
+original: 12-Moduli-zvyazku/10-Industrial.md
 ---
 
 # Industrial fieldbus: CANopen / DMX512 / KNX / DALI / 4-20 мА / 0-10 in / TRIAC / BACnet / CAN-FD
@@ -19,7 +22,7 @@ date-created: 2026-09-28
 
 ## Purpose
 
-Цехова нота-міст from [RS485/CAN-камери](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/04-RS485-CAN-Ethernet-Kamera.md) та [05-CAN-TWAI-RS485](../../../../ESP32-Reference/UA/04-Shini/05-CAN-TWAI-RS485.md) до промислових шин: CANopen (об'єктний словник, SDO/PDO оглядово), DMX512 (сценічне світло via MAX485 on 250 кбод!), KNX/DALI оглядово (that живе in будівлях), струмова петля 4-20 мА (передавач XTR115 + прийом шунтом 165 Ом → 3.3 in!), димер 0-10 in (ЦАП + ОП), TRIAC-димер with детектором переходу via нуль (MOC3021 + H11AA1!, ІЗОЛЯЦІЯ), оглядова table BACnet/OPC-UA/MQTT-SN/AMQP «that for цеху», CAN-FD контролери MCP2518FD/TCAN4550 та ізольовані RS485-модулі. Живлення - тільки via [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) with захистом.
+Цехова нота-міст from [RS485/CAN-камери](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/04-RS485-CAN-Ethernet-Kamera.md) та [05-CAN-TWAI-RS485](../../../../ESP32-Reference/UA/04-Shini/05-CAN-TWAI-RS485.md) до промислових шин: CANopen (об'єктний словник, SDO/PDO оглядово), DMX512 (сценічне світло via MAX485 on 250 кбод!), KNX/DALI оглядово (that живе in будівлях), струмова петля 4-20 мА (передавач XTR115 + прийом шунтом 165 Ом → 3.3 in!), димер 0-10 in (ЦАП + ОП), TRIAC-димер with детектором переходу via нуль (MOC3021 + H11AA1!, ІЗОЛЯЦІЯ), оглядова table BACnet/OPC-UA/MQTT-SN/AMQP «that for цеху», CAN-FD контролери MCP2518FD/TCAN4550 та ізольовані RS485-модулі. Живлення - тільки via [EN/02-Power-Supply/01-Power-Rails.en] with захистом.
 
 > Де that живе: станок/робот - CANopen; сцена/клуб - DMX512; будівля/офіс - KNX/DALI/BACnet; датчики тиску/рівня on 100+ м - 4-20 мА; старі світильники/вентилятори - 0-10 in; лампи розжарювання/ТЕНи - TRIAC with zero-cross; хмари/ SCADA - OPC-UA/MQTT.
 
@@ -30,7 +33,7 @@ date-created: 2026-09-28
 | Фізичний рівень | CAN ISO 11898-2, 10 кбіт-1 Мбіт (CC) / до 8 Мбіт дані (FD) | RS485 + UART 250 кбод 8N2! | KNX: вита пара 9600 + 30 in; DALI: 2 дроти 1200 бод, 16 in |
 | Модель даних | Об'єктний словник (OD): індекси 0x1000-0x9FFF | 512 каналів-слотів, кадр BREAK+MAB | KNX: групові адреси; DALI: 64 адреси + 16 груп |
 | Сервіси | SDO (configuration) / PDO (реальний час) / NMT / SYNC / EMCY / Heartbeat | Постійний потік кадрів ~44 Гц, without підтверджень | KNX: телеграми; DALI: команди лампам/баластам |
-| Адресація | Node-ID 1-127, COB-ID | Універс 1-512, startова адреса приладу | KNX: area.line.device; DALI: short address |
+| Addressing | Node-ID 1-127, COB-ID | Universe 1-512, fixture start address | KNX: area.line.device; DALI: short address |
 | Довжина | До 1000 м (on низьких бодах), 120 Ом термінатори | До 300-1200 м, 120 Ом, 32 прилади on сегмент! | KNX до 1000 м/сегмент; DALI до 300 м |
 | ESP32 | TWAI (CC) + MCP2518FD/TCAN4550 (FD!) | UART + MAX485 (DE завжди TX!) | Шлюзи/мости (not GPIO безпосередньо!) |
 
@@ -53,7 +56,7 @@ date-created: 2026-09-28
 | Протокол «that for цеху» | Рівень | Транспорт | Коли брати |
 | --- | --- | --- | --- |
 | Modbus RTU/TCP | Поле/цех | RS485 / Ethernet | Насоси, лічильники, ПЛК - перший вибір |
-| CANopen | Поле/маbus | CAN | Приводи, енкодери, модулі вводу |
+| CANopen | Field/bus | CAN | Drives, encoders, input modules |
 | DMX512 | Сцена | RS485-250к | Світло, дим, лебідки сцени |
 | KNX | Будівля | Вита пара 30 in | Освітлення/жалюзі/клімат офісу |
 | DALI-2 | Будівля/світло | 2 дроти 16 in | Адресні світильники, аварійне світло |
@@ -361,7 +364,7 @@ while True:
 | Параметр | PC817 (Sharp) | EL817 (Everlight) |
 | --- | --- | --- |
 | Призначення | Універсальна оптоізоляція цифра/аналог | Pin-to-pin аналог PC817 |
-| CTR | 50-600 % (ранги A-D) | 50-600 % (ранги A-D) |
+| CTR | 50-600% (ранги A-D) | 50-600% (ранги A-D) |
 | Напруга ізоляції | 5 кВ | 5 кВ |
 | Коли брати | that є in наявності - взаємозамінні; ранг CTR дивитись in маркуванні (C/D for малих струмів) |
 
@@ -391,6 +394,15 @@ R розрахувати: If = 5–10 мА (не 20 «за звичкою» — 
 | 14 | OPC-UA прямо on ESP32 without TLS | Злами/падіння | OPC-UA - on шлюзі (RPi/ПК), ESP32 - MQTT/Modbus до шлюзу! |
 | 15 | PC817/EL817 without розрахунку If | 20 мА «for звичкою», деградація LED | If 5-10 мА for CTR-рангом; ранг дивитись in маркуванні |
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| CANopen nodes drop out | Missing 120 Ohm terminators or wrong bitrate | Terminate both bus ends, set all nodes to same bitrate |
+| DMX flicker on fixtures | Break timing wrong or missing 120 Ohm term | Check 88 us break, terminate chain end, shielded pair |
+| 4-20 mA reads wrong | Wrong burden resistor or loop not powered | Use 250 Ohm precision burden, power loop 24 V, check wiring |
+| TRIAC fires randomly | No zero-cross sync or no opto-isolation | Add ZC detector interrupt, MOC3021 isolation, snubber on load |
+| Mains work is unsafe | No breaker, no isolation, N/PE mixed | Breaker plus indicator, optocouplers, closed box, qualified person only |
 ## Official sources
 
 - [CANopen - база знань and специфікації (CAN in Automation, CiA)](https://www.can-cia.org/can-knowledge/canopen) - об'єктний словник, SDO/PDO, NMT, профілі.
@@ -414,7 +426,7 @@ R розрахувати: If = 5–10 мА (не 20 «за звичкою» — 
 - [Головна карта довідника](../../../../ESP32-Reference/Home.md)
 - [RS485/CAN/Ethernet/Камера](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/04-RS485-CAN-Ethernet-Kamera.md)
 - [CAN/TWAI/RS485 шини](../../../../ESP32-Reference/UA/04-Shini/05-CAN-TWAI-RS485.md)
-- [Ланцюги живлення](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
+- [Ланцюги живлення]
 - [UART bus](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
 - [SPI bus](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
 - [Магнітометри/IMU-2](../../../../ESP32-Reference/UA/10-Sensori/25-Mag-IMU-2.md)

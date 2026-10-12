@@ -184,7 +184,7 @@ Details - [[EN/00-Start/05-Environment-Choice.en| Environment choice]].
 | PlatformIO | Via pioarduino/community | Same path | Yes | Yes |
 
 Details - [[EN/00-Start/05-Environment-Choice.en| Environment choice]],
-IDF setup - [[09-Firmware/01-ESP-IDF-setup.en | ESP-IDF setup]],
+IDF setup - [[EN/09-Firmware/01-ESP-IDF-Setup.en| ESP-IDF setup]],
 Arduino/PIO - [[09-Firmware/02-Arduino-PlatformIO.en | Arduino/PlatformIO]],
 full notes - [[EN/01-Hardware/10-ESP32-C5-C61.en]] and [[EN/01-Hardware/09-ESP32-C2-P4.en]].
 

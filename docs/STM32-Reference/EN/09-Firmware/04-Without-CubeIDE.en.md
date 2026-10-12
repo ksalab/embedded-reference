@@ -87,7 +87,7 @@ platformio.ini для Blue Pill:
 | Topic | Practice |
 | --- | --- |
 | Framework of choice | arduino or stm32cube in one config! |
-| Libraries | Deps in .ini, versions pinned |
+| Libraries | Deps in.ini, versions pinned |
 | Port monitor | Built-in serial monitor |
 | Debug | PIO Unified Debugger (GDB under the hood) |
 | CI | pio run from console - the same config |
@@ -153,9 +153,9 @@ openocd -f interface/stlink.cfg -f target/stm32f1x.cfg \
 | 1 | Arduino pins in HAL code | Different numbering systems | Match table before porting |
 | 2 | FPU flags at random | Falls on float | Per the chip core datasheet! |
 | 3 | HAL copied in pieces | Versions drift apart | Submodule or full package copy |
-| 4 | build/ in git | Trash in the repo | .gitignore from day one |
+| 4 | build/ in git | Trash in the repo |.gitignore from day one |
 | 5 | CI builds unlike local | Not reproducible | Same CMake plus pinned versions |
-| 6 | Wrong board in .ini | Silence or glitches | Exact board part number! |
+| 6 | Wrong board in.ini | Silence or glitches | Exact board part number! |
 
 ## Official sources
 
@@ -166,5 +166,5 @@ openocd -f interface/stlink.cfg -f target/stm32f1x.cfg \
 
 - [Home](../../../../STM32-Reference/Home.md)
 - [CubeIDE](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
-- [ST-Link](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md)
-- [environment choice](../../../../STM32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ST-Link]
+- [environment choice]

@@ -1,9 +1,12 @@
 ---
+lang: en
 description: Далекобійний зв'язок for ESP32 without WiFi: NB-IoT/Cat-M module SIM7080G with GNSS,; shows schematics, code and tables.
 title: SIM7080G/A7670/LoRa-UART-E32/SX1262/HC-11 - стільниковий та UART-зв'язок
 tags: [esp32, cellular, nbiot, cat-m, sim7080g, a7670, lora, e32, sx1262, uart, gnss]
 category: Zvyazok
 date-created: 2026-09-28
+date: 2026-10-10
+original: 12-Moduli-zvyazku/09-Cellular-NBIoT-UARTLoRa.md
 ---
 
 # Стільниковий та UART-радіо - SIM7080G, A7670, LoRa-UART E32, SX1262, HC-11
@@ -26,7 +29,7 @@ SIM7600/4G - [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli
 
 | module | Мережа / діапазон | Інтерфейс | Живлення | Особливість |
 | --- | --- | --- | --- | --- |
-| SIM7080G | Cat-M1 + NB-IoT + GNSS, багатодіапазонний LTE | UART (AT), USB | 2.7-4.8 in, типово 4 in! Пік 2 but | PSM/eDRX - 10 років from батареї; PWRKEY for startу |
+| SIM7080G | Cat-M1 + NB-IoT + GNSS, multiband LTE | UART (AT), USB | 2.7-4.8 V, typically 4 V! Peak 2 A | PSM/eDRX - 10 years on battery; PWRKEY for startup |
 | A7670 (A7670E/G/SA) | 4G LTE Cat-1 + 2G fallback, голос/SMS/GNSS (залежить from субверсії) | UART (AT), USB | 3.4-4.2 in, пік 2 but | Наступник SIM800: ті ж AT-команди, сучасні мережі (2G вимикають!) |
 | E32-TTL-100 (SX1276) | LoRa 410-441 МГц, 20 дБм | UART 1200-115200 + M0/M1 | 2.3-5.5 in (версії 3.3/5 in) | Прозорий/фіксований режими, адреса and канал per повітрю |
 | E22 (SX1262) | LoRa 410-493 / 850-930 МГц, 22 дБм | UART + M0/M1 + AUX | 2.3-5.5 in | Новіший for E32: менше споживання, далі зв'язок |
@@ -62,7 +65,7 @@ SIM7600/4G - [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli
 | 2 | GND | Земля | GND | Спільна земля |
 | 3 | TXD | Вихід UART | GPIO16 (RX2) | Перехресно, 115200 |
 | 4 | RXD | Вхід UART | GPIO17 (TX2) | Перехресно |
-| 5 | PWRKEY | Вхід | GPIO27 | Імпульс LOW ~1 с for startу (how SIM800!) |
+| 5 | PWRKEY | Input | GPIO27 | LOW pulse ~1 s for startup (like SIM800!) |
 | 6 | RESET | Вхід | GPIO14 або NC | Аварійний скид |
 | 7 | STATUS | Вихід | GPIO34 | HIGH = увімкнено |
 | 8 | SIM-картка | Тримач | Nano-SIM 4G | Звичайна IoT/мобільна SIM |
@@ -146,7 +149,7 @@ SIM7600/4G - [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli
 | 3V3/5V | - | VCC E32/E22 | - |
 | 3V3 | - | VCC RYLR998 | VCC SX1262 |
 
-Живлення стільникових - окремий DC-DC with запасом 2 but, див. [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md).
+Живлення стільникових - окремий DC-DC with запасом 2 but, див. [EN/02-Power-Supply/01-Power-Rails.en].
 UART - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md). Baud стільникових and RYLR998: 115200 8N1.
 
 ### ASCII schematic
@@ -370,7 +373,7 @@ m0.value(0); m1.value(0)  # назад у Normal
 AT-шпаргалки єдиного формату (команда → відповідь → зміст → error): зведена SIM800 - [03-SIM800L-GPS](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/03-SIM800L-GPS.md), базова 4G - [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/07-SIM7600-W5500-MCP2515.md), повна 35 команд - [18-Cellular-LoRa-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/18-Cellular-LoRa-2.md). Нижче - специфічні граблі цієї ноти:
 
 1. **SIM7080G from 3V3 DevKit** → вічні ребути at attach. Пік 2 but! Окремий DC-DC 4 in 2 but + електроліт 470+ мкФ.
-2. **without імпульсу PWRKEY** → тиша in UART. SIM7080G/A7670 startують тільки імпульсом LOW ~1 с, not появою живлення.
+2. **Without PWRKEY pulse** → silence on UART. SIM7080G/A7670 start only with a LOW pulse ~1 s, not on power-up.
 3. **Звичайна SIM without NB-IoT** → `+CGATT: 0`. for SIM7080G потрібен тариф/оператор with Cat-M/NB-IoT покриттям.
 4. **LTE-антена on LoRa and навпаки** → КСХ > 3, смерть PA. Антени маркуються частотою: LTE 700-2700 МГц, LoRa 433/868 МГц.
 5. **TX without антени** → перегрів вихідного каскаду. Правило: накрутив антену → живлення → AT → TX.
@@ -381,6 +384,15 @@ AT-шпаргалки єдиного формату (команда → відп
 10. **SX1262 without очікування BUSY** → биті команди. Перед кожною SPI-командою чекати BUSY=LOW.
 11. **LLCC68 with LoRaWAN-стеком SX1262 without правок** → join not проходить. verify таблицю частот/TCXO in конфігу радіо.
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Reboots at network attach | 2 A TX peak sags 3V3 DevKit rail | Separate 4 V buck plus 470 uF cap, short thick VBAT wires |
+| Silent UART after power-on | No PWRKEY low pulse for 1 s | Drive PWRKEY low 1 s, wait for RDY or 3 s before AT |
+| CGATT 0, no attach | SIM without NB-IoT tariff or wrong APN | Check operator Cat-M/NB-IoT coverage, set APN with CGDCONT |
+| E32 ignores commands | Module in Normal mode, not Sleep | Set M0/M1 high, wait AUX high after each command |
+| SX1262 garbage replies | SPI command while BUSY high | Poll BUSY low before every command, slow SPI to 1 MHz first |
 ## Official sources
 
 - [SIM7080G - сторінка продукту with фото (SIMCom)](https://www.simcom.com/product/SIM7080G.html) - Cat-M/NB-IoT/GNSS, PSM/eDRX, AT Manual.
@@ -398,6 +410,6 @@ AT-шпаргалки єдиного формату (команда → відп
 - [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/07-SIM7600-W5500-MCP2515.md)
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
+- [EN/02-Power-Supply/01-Power-Rails.en]
 - [02-LDO-DC-DC](../../../../ESP32-Reference/UA/02-Zhivlennya/02-LDO-DC-DC.md)
 - [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md)

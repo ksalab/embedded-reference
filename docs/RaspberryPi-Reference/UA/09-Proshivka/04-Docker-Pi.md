@@ -119,9 +119,9 @@ sudo docker run -d --name rpi_sensor \
 | --- | --- | --- |
 | `Cannot connect to Docker daemon` | користувач не в групі docker / демон не запущений | `sudo usermod -aG docker` + `sudo systemctl restart docker` |
 | `no space left on device` | SD переповнена / томи великі | `docker system prune -a`, перенести томи на NVMe |
-| `Permission denied` на томі | UID контейнера != хоста | `--user $(id -u):$(id -g)` або `chmod 777` для тесту |
+| `Permission denied` на томі | UID контейнера!= хоста | `--user $(id -u):$(id -g)` або `chmod 777` для тесту |
 | Контейнер не стартує після reboot | немає `restart: unless-stopped` / systemd | додати політику в compose або unit |
-| `manifest for ... not found` | образ для arm/v7 замість arm64 | `docker pull --platform linux/arm/v7` або використати `arm32v7` |
+| `manifest for... not found` | образ для arm/v7 замість arm64 | `docker pull --platform linux/arm/v7` або використати `arm32v7` |
 | GPIO не видно з контейнера | `/dev/gpiochip0` не передано | `--device /dev/gpiochip0 --device /dev/gpiochip1` |
 | `error during connect` Docker опісля оновлення | стара версія docker-ce | `apt upgrade docker-ce` з репо Docker, не з Debian |
 

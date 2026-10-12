@@ -4,6 +4,7 @@ title: Secure Elements - захищені елементи для ESP32
 tags: [esp32, secure-element, cryptography, authentication, i2c, spi]
 category: Moduli
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Secure Elements - захищені елементи для ESP32

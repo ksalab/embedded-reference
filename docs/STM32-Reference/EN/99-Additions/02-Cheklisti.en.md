@@ -45,7 +45,7 @@ Connection details are described in the note about firmware via ST-Link, and pow
 | 5 | Quartz | Is there a load according to the datasheet, or are there short lines?
 | 6 | SWD connector | Are SWDIO, SWCLK, NRST, GND, 3.3 V |
 | 7 | Buttons and LEDs Is there no conflict with SWD and bootloader |
-| 8 | 5 V tolerance | Is the FT column checked for each input 5 V | Classic cases will remind [01-Hardware/01-F0-F1-Classic classic F0 and F1], and board selection [Nucleo boards](../../../../STM32-Reference/UA/14-Devboards/03-Nucleo.md).
+| 8 | 5 V tolerance | Is the FT column checked for each input 5 V | Classic cases will remind [classic F0 and F1](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md), and board selection [Nucleo boards](../../../../STM32-Reference/UA/14-Devboards/03-Nucleo.md).
 ## 3. Checklist of your board: printing and installation
 
 | Number | Verification | Norma |
@@ -85,9 +85,12 @@ If there is a short on the power supply, do not turn it on again, but look for a
 | 6 | Calculate the budget Divide the battery capacity by the average current |
 | 7 | Check self-discharge and cold | Reserve 30 percent for frost and aging |
 | 8 | Write a profile | Sleep, measurement, transfer, sleep againThe theory of sleep is given by [sleep modes](../../../../STM32-Reference/UA/07-Timeri-Son/03-Sleep-Stop-Standby.md), pin modes [ GPIO modes], and port [[04-Interfaces/01-UART | UART serial port].
-## 6. Mermaid: from the box to the series```mermaid
+## 6. Mermaid: from the box to the series
+
+```mermaid
 flowchart LR
-Box[Board from the box] --> PWR[Power and Review]PWR --> ERASEERASE --> BLINK[Blink 1 Hz]BLINK --> CLK[Clock and UART]CLK --> OWN[Own board: schematic and print]OWN --> REL[Release: WDT and Protection]REL --> BAT[Battery: Sleep and Budget]BAT --> SER[Series ready]```
+Box[Board from the box] --> PWR[Power and Review]PWR --> ERASEERASE --> BLINK[Blink 1 Hz]BLINK --> CLK[Clock and UART]CLK --> OWN[Own board: schematic and print]OWN --> REL[Release: WDT and Protection]REL --> BAT[Battery: Sleep and Budget]BAT --> SER[Series ready]
+```
 Do not move to the next rectangle until the previous one is green. Haste at the start is worth resoldering the series.
 
 ## 7. Typical failures of starting a series
@@ -99,7 +102,7 @@ Do not move to the next rectangle until the previous one is green. Haste at the 
 | 3 | VDDA was connected through a long wire | A/D noise, the filter and ground were redone
 | 4 | Release without WDT | The client's hangover was treated by driving, a watchman was added
 | 5 | Sleep was not measured, believe the data sheet The real current is a hundred times greater, the initialization of the pins has been rewritten |
-| 6 | There is no firmware backup Rollback took a day, now two files in release |Перед замовленням партії перечитай [reference guide](../../../../STM32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md) and звір чипи with [chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md).
+| 6 | There is no firmware backup Rollback took a day, now two files in release |Перед замовленням партії перечитай [ reference guide] and звір чипи with [ chip comparison].
 ## 8. Checklist for the first activation of your board
 
 | Number | Action | Criterion |
@@ -113,20 +116,22 @@ Do not move to the next rectangle until the previous one is green. Haste at the 
 | 7 | Pour Blink | LED flashes |
 | 8 | UART-log starts | The console is alive |
 | 9 | Check the timing of the MCO | Frequency as in CubeMX |
-| 10 | Drive the periphery one by one | I2C, SPI, ADC correspond to |```text
+| 10 | Drive the periphery one by one | I2C, SPI, ADC correspond to |
+
+```text
 Якщо струм одразу in обмеження:
   вимкнути НЕГАЙНО;
   шукати коротке: переплутаний LDO, намистина припою, TVS навпаки;
-  гріється — винуватець знайдений пальцем.
+  гріється - винуватець знайдений пальцем.
 ```
-## See also- [[Home | Home]]
-- [[02-Power-Supply/01-Power-Supply-Rails.en | board power supply circuits]]
-- [[09-Firmware/01-CubeIDE-CubeMX.en | CubeMX settings]]
-- [[09-Firmware/03-ST-Link-Flashing.en | firmware via ST-Link]]
-- [[14-Devboards/01-Blue-Pill | the Blue Pill fee]]
-- [[15-Protocols/02-DFU-Bootloader | firmware update]]
-- [[99-Additions/01-Troubleshooting-FAQ | answers to frequently asked questions]]
-- [[99-Additions/03-Datasheet-Links | where to take datasheets]]
+## See also- [Home](../../../../STM32-Reference/Home.md)
+- [ board power supply circuits]
+- [CubeMX settings](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
+- [ firmware via ST-Link]
+- [the Blue Pill fee](../../../../STM32-Reference/UA/14-Devboards/01-Blue-Pill.md)
+- [firmware update](../../../../STM32-Reference/UA/15-Protokoli/02-DFU-Bootloader.md)
+- [answers to frequently asked questions](../../../../STM32-Reference/UA/99-Dodatki/01-Troubleshooting-FAQ.md)
+- [where to take datasheets](../../../../STM32-Reference/UA/99-Dodatki/03-Datasheet-Links.md)
 
 
 ## Common issues

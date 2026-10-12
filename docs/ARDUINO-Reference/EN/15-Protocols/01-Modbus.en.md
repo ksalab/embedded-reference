@@ -226,4 +226,4 @@ flowchart TB
 - [Home](../../../../ARDUINO-Reference/Home.md)
 - [serial port](../../../../ARDUINO-Reference/UA/04-Shini/01-UART.md)
 - [cloud through ESP](../../../../ARDUINO-Reference/UA/15-Protokoli/02-MQTT-ESP.md)
-- [home automation](../../../../ARDUINO-Reference/UA/16-Proekti/02-Rozumniy-dim.md)
+- [home automation]

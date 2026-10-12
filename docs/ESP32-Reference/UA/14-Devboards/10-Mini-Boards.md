@@ -4,6 +4,7 @@ title: Міні-плати ESP32-S2/S3 - QT Py, TinyS3/FeatherS3, Lolin mini, Na
 tags: [esp32, devboards, mini, s2, s3, qtpy, tinys3, feathers3, lolin, nano, micropython, stemma, battery]
 category: Devboards
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Mini-Boards: QT Py / TinyS3 / Lolin mini / Nano ESP32
@@ -75,7 +76,7 @@ Nano ESP32: класична Nano-гребінка (сумісність з Ardu
 
 QT Py / Lolin mini: тільки native USB-CDC. Драйвера не треба, але кабель - обов'язково data. Перша прошивка: утримати BOOT → вставити USB → шити → Reset. Після deep-sleep порт «зникає» - натисніть Reset. Lolin за замовчуванням з MicroPython-прошивкою - порт видно як CDC одразу.
 
-TinyS3/FeatherS3: native USB + USB Serial/JTAG. З коробки - CircuitPython з UF2-bootloader: дабл-клік Reset = диск для перетягування .uf2. Перехід між CircuitPython/MicroPython/Arduino: стерти Flash → BOOT+Reset → шити нове. RX/TX-піни НЕ з'єднані з USB - це вільний UART0 для модулів! Деталі - [USB-UART](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/05-USB-UART-AutoReset.md).
+TinyS3/FeatherS3: native USB + USB Serial/JTAG. З коробки - CircuitPython з UF2-bootloader: дабл-клік Reset = диск для перетягування.uf2. Перехід між CircuitPython/MicroPython/Arduino: стерти Flash → BOOT+Reset → шити нове. RX/TX-піни НЕ з'єднані з USB - це вільний UART0 для модулів! Деталі - [USB-UART](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/05-USB-UART-AutoReset.md).
 
 Nano ESP32: класичний міст (драйвер потрібен) + native S3. Arduino IDE шиє через міст без танців з BOOT. Для MicroPython - офіційний інсталятор Arduino Lab for MicroPython.
 
@@ -143,7 +144,7 @@ framework = arduino
 monitor_speed = 115200
 ```
 
-MicroPython/CircuitPython: Lolin mini - MicroPython прелоад (WebREPL/ampy одразу); Nano ESP32 - офіційний MicroPython через Arduino Lab; QT Py / UM - CircuitPython + UF2 (перетягнути .uf2 на змонтований диск). ESP-IDF: цілі `esp32s2` / `esp32s3`. Деталі середовищ - [Arduino/PlatformIO](../../../../ESP32-Reference/UA/09-Proshivka/02-Arduino-PlatformIO.md).
+MicroPython/CircuitPython: Lolin mini - MicroPython прелоад (WebREPL/ampy одразу); Nano ESP32 - офіційний MicroPython через Arduino Lab; QT Py / UM - CircuitPython + UF2 (перетягнути.uf2 на змонтований диск). ESP-IDF: цілі `esp32s2` / `esp32s3`. Деталі середовищ - [Arduino/PlatformIO](../../../../ESP32-Reference/UA/09-Proshivka/02-Arduino-PlatformIO.md).
 
 ## Типові помилки
 
@@ -162,7 +163,7 @@ MicroPython/CircuitPython: Lolin mini - MicroPython прелоад (WebREPL/ampy
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![](../../../../ESP32-Reference/assets/img/devboard-mini-s2s3-scheme.png)
+> [!example] Фото/схема:![](../../../../ESP32-Reference/assets/img/devboard-mini-s2s3-scheme.png)
 
 ```text
 QT Py: [USB-C native] ─► S2/S3-USB (BOOT при вмиканні для 1-ї прошивки).
@@ -297,14 +298,14 @@ board_upload.flash_size = 8MB
 | 5V | Вхід/вихід 4.8-5.2V | Зовнішні 5V / вихід ~4.9V при USB (падіння на діоді!) | Діапазон вхідний суворий: 4.8-5.2V |
 | 3V3 | Вихід 700 мА (LDO) | Датчики, периферія | Масивний LDO, без просадок |
 | VBUS-sense пін | Цифровий вхід | Ознака «є 5V» | Код вирішує: працюємо від мережі чи батареї |
-| Fuel gauge (внутрішній I2C) | Монітор батареї | % заряду, напруга + INT на RTC-IO | Wake при низькому заряді! |
+| Fuel gauge (внутрішній I2C) | Монітор батареї |% заряду, напруга + INT на RTC-IO | Wake при низькому заряді! |
 | RGB-діод (живлення через IO!) | Статус | NeoPixel-подібний | **Спочатку притягнути IO живлення в HIGH**, інакше темно! |
 | RX / TX | UART0 (вільний!) | Модулі, GPS, RS485 | НЕ з'єднані з USB - для периферії! |
 | USB-C | Native + USB Serial/JTAG | Прошивка, JTAG-дебіг, OTG | UF2-bootloader з коробки (CircuitPython) |
 
 Живлення: USB-C → charging-IC → JST-LiPo; power/charge-світлодіоди **ізольовані на 5V-домен** (від батареї не світяться і не їдять - by design!). Порожня батарея: помаранчевий charge-LED блимає - це норма (чіп не відрізняє «повна» від «немає»). Boost-перетворювача немає: від батареї на піні 5V **напруги не буде** - 5V-датчикам потрібен свій step-up.
 
-Кнопки/BOOT: BOOT + Reset. UF2-режим (CircuitPython на борту): Reset → дочекатись фіолетового RGB → натиснути BOOT → зелений = диск змонтовано, тягніть .uf2. Зміна середовища (CircuitPython↔MicroPython↔Arduino↔IDF): **стерти Flash** → утримати BOOT → клік Reset → відпустити BOOT → шити нове.
+Кнопки/BOOT: BOOT + Reset. UF2-режим (CircuitPython на борту): Reset → дочекатись фіолетового RGB → натиснути BOOT → зелений = диск змонтовано, тягніть.uf2. Зміна середовища (CircuitPython↔MicroPython↔Arduino↔IDF): **стерти Flash** → утримати BOOT → клік Reset → відпустити BOOT → шити нове.
 
 USB: native CDC (без драйверів) + USB Serial/JTAG (дебіг без зонда!, див. [JTAG](../../../../ESP32-Reference/UA/09-Proshivka/05-JTAG-Debug.md)).
 
@@ -394,7 +395,7 @@ board_build.psram_type = qspi
 
 Антена: PCB (keep-out зона на шовкографії - не заливати міддю!). Сон: сотні мкА залежно від ревізії (LDO + обв'язка не оптимізовані під сон).
 
-Пастки: **S2 без BLE**; D1-шилд клона не став - звірити схему PDF з wemos.cc; MicroPython з коробки перезапишеться першим Arduino-скนี้чем (бекап скриптів!); 5V-датчики - тільки через дільник/перетворювач рівнів.
+Пастки: **S2 без BLE**; D1-шилд клона не став - звірити схему PDF з wemos.cc; MicroPython з коробки перезапишеться першим Arduino-скетчем (бекап скриптів!); 5V-датчики - тільки через дільник/перетворювач рівнів.
 
 ### Картка 6 - Lolin S3 mini
 
@@ -538,7 +539,7 @@ while True:
     time.sleep(2)
 ```
 
-Fuel gauge на TinyS3/FeatherS3 (точний % і wake при розряді - краще за дільник!):
+Fuel gauge на TinyS3/FeatherS3 (точний% і wake при розряді - краще за дільник!):
 
 ```cpp
 // 1) VBUS-sense: чи є 5V? Номер піна — З PINOUT-КАРТКИ вашої ревізії UM!
@@ -554,7 +555,7 @@ esp_deep_sleep_start();
 ```
 
 > [!tip] Дільник vs fuel gauge
-> Дільник дешевий, але бреше (напруга LiPo нелінійна + пливе з температурою/струмом). Fuel gauge рахує кулони і дає чесний %. Для «поставив і забув на пів року» - тільки gauge + wake по INT.
+> Дільник дешевий, але бреше (напруга LiPo нелінійна + пливе з температурою/струмом). Fuel gauge рахує кулони і дає чесний%. Для «поставив і забув на пів року» - тільки gauge + wake по INT.
 
 ## Антени: PCB vs chip vs u.FL + орієнтація
 

@@ -50,7 +50,7 @@ Requirements:
 
 | Component | Reference note | Price, approx. |
 | --- | --- | --- |
-| ESP32 DevKit (WROOM-32) | [[00-Start/04-Devkit-plati.en | DevKit]] | $6 |
+| ESP32 DevKit (WROOM-32) | [[EN/00-Start/04-Dev-Boards.en| DevKit]] | $6 |
 | NEO-M8N module with antenna | [[12-Comm-Modules/03-SIM800L-GPS.en | SIM800L/GPS]] | $10 |
 | A7670E/SA 4G module + LTE antenna | [[12-Comm-Modules/07-SIM7600-W5500-MCP2515.en | 4G]] | $25 |
 | LiPo 2000 mAh + TP4056 (protected) | [[EN/02-Power-Supply/04-Batteries-TP4056.en| Batteries]] | $8 |

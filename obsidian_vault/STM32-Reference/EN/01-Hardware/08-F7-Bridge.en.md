@@ -149,5 +149,5 @@ flowchart TB
 - [[Home.en]]
 - [[01-Hardware/02-F3-F4.en | Productive F3 and F4]]
 - [[01-Hardware/04-H5-H7.en | Flagships]]
-- [[01-Hardware/07-Errata-Migratsiya.en | Errata and migrations]]
+- [[EN/01-Hardware/07-Errata-Migration.en| Errata and migrations]]
 - [[09-Firmware/07-Performance-Optimization.en | Speed measurement]]

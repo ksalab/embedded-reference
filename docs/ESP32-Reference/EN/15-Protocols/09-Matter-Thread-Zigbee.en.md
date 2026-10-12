@@ -15,7 +15,7 @@ date: 2026-10-08
 > [!warning] Matter/Thread/Zigbee потребують радіо 802.15.4 - this C6/H2, but not C3!
 > ESP32-C3 not має 802.15.4 and not підтримує ані Thread, ані Zigbee. for Matter-over-WiFi підійде будь-which ESP32 with WiFi, але for Matter-over-Thread або Zigbee беріть C6/H2. Див. [C3/C6/H2](../../../../ESP32-Reference/UA/01-Hardware/04-ESP32-C3-C6-H2.md).
 
-Огляд радіо: [BLE](../../../../ESP32-Reference/UA/05-Radio/02-BLE-Bluetooth.md), живлення [живлення](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), старт [Home](../../../../ESP32-Reference/Home.md).
+Огляд радіо: [BLE](../../../../ESP32-Reference/UA/05-Radio/02-BLE-Bluetooth.md), живлення [живлення], старт [Home](../../../../ESP32-Reference/Home.md).
 
 ## Призначення
 

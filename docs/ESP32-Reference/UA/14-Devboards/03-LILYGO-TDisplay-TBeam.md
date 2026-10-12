@@ -4,6 +4,7 @@ title: LILYGO TTGO T-Display і T-Beam - дисплейні та LoRa+GPS пла
 tags: [esp32, devboards, lilygo, ttgo, t-display, t-beam, st7789, lora, gps]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # LILYGO T-Display / T-Beam
@@ -154,7 +155,7 @@ ESP-IDF: цілі `esp32` (Classic) / `esp32s3` (Supreme). MicroPython на T-Di
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![](../../../../ESP32-Reference/assets/img/devboard-ttgo-tdisplay-tbeam.png)
+> [!example] Фото/схема:![](../../../../ESP32-Reference/assets/img/devboard-ttgo-tdisplay-tbeam.png)
 
 ```text
 T-Display: [USB-C 5V / LiPo JST 3.7V] ──► LDO ──► 3.3V ──► ESP32 + ST7789

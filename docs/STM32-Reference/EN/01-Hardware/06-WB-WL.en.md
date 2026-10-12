@@ -164,5 +164,5 @@ flowchart TB
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
+- [ Chip comparison]
 - [Low-power](../../../../STM32-Reference/UA/01-Hardware/05-L0-L4-U5.md)

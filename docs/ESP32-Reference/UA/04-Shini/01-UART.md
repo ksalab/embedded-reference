@@ -127,7 +127,7 @@ void rs485Write(const uint8_t *b, size_t n) {
 | HW RX FIFO | 128 байт | `uart_set_rx_full_thr()` / `rxfifo_full_thrhd` |
 | HW TX FIFO | 128 байт | `txfifo_empty_thrhd` |
 | RX timeout | ~10 символьних часів тиші | `rx_timeout_thrhd` - межа пакета (Modbus!) |
-| SW ring (IDF) | за замовчуванням 256-1024 | `uart_driver_install(u, rx_size, tx_size, ...)` |
+| SW ring (IDF) | за замовчуванням 256-1024 | `uart_driver_install(u, rx_size, tx_size,...)` |
 | Arduino SW буфер | 256 байт | `Serial.setRxBufferSize(n)` до `begin()` |
 
 Практика:

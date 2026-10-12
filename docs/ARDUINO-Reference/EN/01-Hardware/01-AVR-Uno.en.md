@@ -205,9 +205,9 @@ Settings go to EEPROM rarely and in small portions, because the number of write 
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [board comparison](../../../../ARDUINO-Reference/UA/00-Start/03-Porivnyannya-plat.md)
-- [board overview](../../../../ARDUINO-Reference/UA/00-Start/04-Devkit-plati.md)
-- [environment choice](../../../../ARDUINO-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [board comparison]
+- [board overview]
+- [environment choice]
 - [compact and pins](../../../../ARDUINO-Reference/UA/01-Hardware/02-Nano-Mega.md)
 - [modern Uno](../../../../ARDUINO-Reference/UA/01-Hardware/04-Uno-R4.md)
 - [bootloader and avrdude](../../../../ARDUINO-Reference/UA/09-Proshivka/02-Bootloader-AVRDUDE.md)

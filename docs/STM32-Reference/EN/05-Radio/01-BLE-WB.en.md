@@ -105,7 +105,7 @@ Reference:
   15 ms connection ....... days, but instant response.
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -117,7 +117,7 @@ Reference:
 | 6 | All logic in stack callbacks | Radio core hangs | Short callback, work in main |
 | 7 | No disconnect handling | Node hangs without advertising | On disconnect - back to advertising |
 
-## Official Sources
+## Official sources
 
 - [STM32WB BLE stack guide (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32wb-series.html) - stacks, FUS, examples.
 - [Bluetooth Core Specification (Bluetooth SIG)](https://www.bluetooth.com/specifications/specs/) - GATT, roles, profiles.

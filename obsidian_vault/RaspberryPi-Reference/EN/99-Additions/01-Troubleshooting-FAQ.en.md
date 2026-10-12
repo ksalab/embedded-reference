@@ -44,7 +44,7 @@ Tailscale or WireGuard. Port forwarding is a last resort with fail2ban.
 `enable` was forgotten or the paths are relative. `systemctl status`, absolute paths, `journalctl -u`.
 
 **Old code from raspistill not working?**Stack removed. Rewrite on Picamera2. Details: [[EN/10-Sensors/06-CSI-Camera.en| CSI camera]].
-## Where to search next- Base map: [[Home | main map]].- Diagnosis by symptoms: [[EN/99-Additions/03-Diagnostic-Map.en| diagnostic card]] - queue note 4.- Datasheets: [[EN/99-Additions/02-Datasheet-Links.en| links to datasheets]].
+## Where to search next- Base map: [[Home.en | main map]].- Diagnosis by symptoms: [[EN/99-Additions/03-Diagnostic-Map.en| diagnostic card]] - queue note 4.- Datasheets: [[EN/99-Additions/02-Datasheet-Links.en| links to datasheets]].
 
 ## Common issues
 

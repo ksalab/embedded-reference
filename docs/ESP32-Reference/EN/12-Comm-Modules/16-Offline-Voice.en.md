@@ -6,6 +6,7 @@ category: Moduli
 lang: en
 date-created: 2026-09-29
 date: 2026-09-29
+original: 12-Moduli-zvyazku/16-Offline-Voice.md
 ---
 
 # Офлайн-голос on ESP32 - LD3320, SU-61T/SU-20T, CI-03T/CI-40T/UNI3588/SYN7318
@@ -112,7 +113,7 @@ IDX  Ключове слово (як шити в регістри)   Дія в �
 | MISO (SO) | Вихід SPI | GPIO19 | Читання статусу/індексу; рівень 3.3V with плати - безпечно |
 | CS (NSS) | Вхід SPI | GPIO5 | Chip select, active low |
 | IRQ | Вихід, active low | GPIO4 (переривання!) | LOW = слово розпізнано; підтяжка 10к до 3.3V якщо плата without неї |
-| RST | Вхід, active low | GPIO15 | Reset: LOW 10 мс at startі, потім HIGH |
+| RST | Input, active low | GPIO15 | Reset: LOW 10 ms at startup, then HIGH |
 | MIC+ / MIC− | Аналог вхід | Штатний електрет плати | **not подовжувати!** module ставити ближче до користувача |
 | SPK | Вихід аудіо | NC / динамік 8 Ом (опційно) | Звуковий відгук «підтверджено» without ESP32 |
 
@@ -258,7 +259,7 @@ Voice module має свій мікрофон - але ESP32-сторона ча
 | GPIO17 (TX2) | RX | - | - | 3.3V достатньо for входу 5V-модуля |
 | GPIO4 | B1 (імпульс команди) | IRQ (переривання) | - | Один або другий - not обидва on пін! |
 | GPIO18/23/19/5 | - | SCK/MOSI/MISO/CS | - | SPI <10 см |
-| GPIO15 | - | RST | - | LOW 10 мс at startі |
+| GPIO15 | - | RST | - | LOW 10 ms at startup |
 | GPIO21/19/32 | - | - | WS/SCK/SD | I2S; SCK можна спільний for частотою |
 | GPIO27 | Реле (via транзистор!) | Реле (via транзистор!) | - | Пін модуля/module реле: струм котушки not with GPIO |
 
@@ -591,7 +592,7 @@ while True:
     time.sleep_ms(5)
 ```
 
-Детальніше про середовища: [Вибір середовища](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md).
+Детальніше про середовища: [Вибір середовища].
 
 ## typical errors
 

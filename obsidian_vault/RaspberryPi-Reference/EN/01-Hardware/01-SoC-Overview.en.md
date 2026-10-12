@@ -124,7 +124,7 @@ More about memory:
 - [[EN/01-Hardware/02-BCM2712-Pi5.en|BCM2712 and Pi 5]] - flagship in detail.
 - [[EN/01-Hardware/03-RP2040-RP2350.en|RP2040 and RP2350]] - microcontrollers.
 - [[EN/00-Start/03-Board-Comparison.en|model comparison]] - board choice.
-- [[EN/14-Devboards/01-Pi5-Flagman.en|Pi 5 flagship]] - board in detail.
+- [[EN/14-Devboards/01-Pi5-Flagship.en|Pi 5 flagship]] - board in detail.
 - [[EN/09-Firmware/02-EEPROM-Boot.en|EEPROM boot]] - bootloader firmware.
 
 ## 9.1 Quick SoC cheat sheet

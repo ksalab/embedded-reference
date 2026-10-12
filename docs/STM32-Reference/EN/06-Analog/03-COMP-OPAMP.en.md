@@ -222,7 +222,7 @@ flowchart TB
     Irq --> Done
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -233,7 +233,7 @@ flowchart TB
 | 5 | Long spread traces from shunt | Loop picks up switching spikes | Route as short close pair, filter after amplifier |
 | 6 | Automatic PWM restart after fault | Rhythmic current hits and overheating | Hold outputs muted until deliberate program unlock |
 
-## Official Sources
+## Official sources
 
 - [STM32 comparator application guide (ST)](https://www.st.com/resource/en/application_note/an4071-comparator-usage-in-stm32-microcontrollers--stmicroelectronics.pdf) - references, hysteresis, timer link.
 - [Op-amp description in STM32G4 (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32g474re.html) - modes, programmable gain, calibration.

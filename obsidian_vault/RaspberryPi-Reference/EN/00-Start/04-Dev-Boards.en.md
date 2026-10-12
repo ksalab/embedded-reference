@@ -71,7 +71,7 @@ Official PSU - not marketing: holds 5.1V at peak, cheap ones sag to 4.6V and rai
 | --- | --- | --- | --- |
 | Camera Module 3 | 12 MP, autofocus | ArduCam analogues | CSI camera |
 | AI Camera | Sony IMX500 + Hailo | - | CSI camera |
-| Display 7" DSI | 800x480, touch | Waveshare analogues | [[11-Vivid/01-DSI-HDMI-Displeyi.en | displays]] |
+| Display 7" DSI | 800x480, touch | Waveshare analogues | [[EN/11-Vivid/01-DSI-HDMI-Displays.en| displays]] |
 | Display 5" DSI | compact | - | displays |
 
 CSI/DSI flexes are fragile: 90-degree bend near the connector - a break. A spare flex in the bag saves a week.
@@ -141,10 +141,10 @@ Next level after the analyzer:
 ## 9. Related notes
 
 - [[EN/00-Start/03-Board-Comparison.en|board comparison]] - board choice.
-- [[EN/14-Devboards/01-Pi5-Flagman.en|Pi 5 flagship]] - board in detail.
+- [[EN/14-Devboards/01-Pi5-Flagship.en|Pi 5 flagship]] - board in detail.
 - [[EN/02-Power-Supply/01-USB-C-PD.en|USB-C power]] - power demands.
 - [[EN/08-Memory/01-SD-eMMC-NVMe.en|memory media]] - SD and NVMe.
-- [[EN/10-Sensors/06-Kamera-CSI.en|CSI camera]] - cameras in detail.
+- [[EN/10-Sensors/06-CSI-Camera.en|CSI camera]] - cameras in detail.
 
 ## Official sources
 

@@ -199,7 +199,7 @@ PAwR (Periodic Advertising with Responses, BT 5.4) - зірка для **еле�
 
 ## LE Audio - LC3, BIS/Auracast, BAP/CAP/HAP/TMAP
 
-LE Audio - звук поверх BLE-isochronous каналів: новий кодек **LC3** (краще за SBC у 2 рази за бітріंतु), unicast (CIS - навушники) і broadcast (BIS - Auracast на необмежену кількість слухачів).
+LE Audio - звук поверх BLE-isochronous каналів: новий кодек **LC3** (краще за SBC у 2 рази за бітрейту), unicast (CIS - навушники) і broadcast (BIS - Auracast на необмежену кількість слухачів).
 
 | Блок | Що це | Приклад |
 | --- | --- | --- |
@@ -374,4 +374,4 @@ while True:
 - [BLE-шлюз і трекер](../../../../ESP32-Reference/UA/05-Radio/06-BLE-Gateway-Tracker.md) - RSSI-дистанція, ESPresense/Bermuda на практиці
 - [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md) - транспорт для шлюзів і координаторів
 - [05-Cloud-Pipeline](../../../../ESP32-Reference/UA/15-Protokoli/05-Cloud-Pipeline.md) - куди складати RSSI/кути/телеметрію
-- [Sleep / ULP](../../../../ESP32-Reference/UA/07-Timeri-Son/03-Sleep-ULP.md) - маяки на батареї: adv-інтервал, Coded-ціна струму
+- [Sleep / ULP](../../../../ESP32-Reference/UA/07-Timeri-Son/03-Sleep-ULP.md) - маяки на батареї: adv-інтервал, Coded-пін струму

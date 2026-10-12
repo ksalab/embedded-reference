@@ -45,7 +45,7 @@ flowchart TB
 | SoC | crystal with CPU+GPU+memory (BCM2712, RP2040) | [[EN/01-Hardware/01-SoC-Overview.en| SoC overview]] |
 | BCM2712 | Pi 5 chip: 4xA76 2.4 GHz, VideoCore VII | [[01-Hardware/02-BCM2712-Pi5.en | BCM2712 and Pi 5]] |
 | RP2040/RP2350 | Pico microcontrollers: M0+/M33, PIO | [[01-Hardware/03-RP2040-RP2350.en | RP2040 and RP2350]] |
-| Pi 5/4/Zero/Pico | board models of various classes | [[14-Devboards/01-Pi5-Flagman.en | Pi 5 flagship]] |
+| Pi 5/4/Zero/Pico | board models of various classes | [[EN/14-Devboards/01-Pi5-Flagship.en| Pi 5 flagship]] |
 | CM4/CM5 | Compute Module for embedding | [[14-Devboards/05-CM4-CM5.en | CM modules]] |
 | HAT | board for the 40-pin header with EEPROM | [[12-Comm-Modules/01-Sense-HAT.en | Sense sensor board]] |
 | PoE HAT | power over Ethernet cable | [[02-Power-Supply/02-PoE-HAT.en | PoE power]] |
@@ -60,17 +60,17 @@ flowchart TB
 | SPI | fast bus for displays and ADCs | [[04-Interfaces/01-I2C-SPI-UART.en | I2C/SPI/UART buses]] |
 | UART | serial port, console and modems | I2C/SPI/UART buses |
 | USB-CDC | virtual COM port of Pico and programmers | buses and USB |
-| PWM | PWM: brightness, servo, sound | [[03-GPIO/02-PWM-Pererivannya.en | PWM and interrupts]] |
+| PWM | PWM: brightness, servo, sound | [[EN/03-GPIO/02-PWM-Interrupts.en| PWM and interrupts]] |
 | PIO | RP2040 programmable engines (hardware bit-bang) | [[01-Hardware/03-RP2040-RP2350.en | RP2040 and RP2350]] |
 
 ## 4. Cameras, displays, sound
 
 | Term | Meaning | Note |
 | --- | --- | --- |
-| CSI | camera flex cable (not USB!) | [[10-Sensors/06-Kamera-CSI.en | CSI camera]] |
-| DSI | display flex cable | [[11-Vivid/01-DSI-HDMI-Displeyi.en | DSI/HDMI displays]] |
-| Picamera2 | camera library of the new stack | [[10-Sensors/06-Kamera-CSI.en | CSI camera]] |
-| HDMI | monitor/TV, sound too | [[11-Vivid/01-DSI-HDMI-Displeyi.en | DSI/HDMI displays]] |
+| CSI | camera flex cable (not USB!) | [[EN/10-Sensors/06-CSI-Camera.en| CSI camera]] |
+| DSI | display flex cable | [[EN/11-Vivid/01-DSI-HDMI-Displays.en| DSI/HDMI displays]] |
+| Picamera2 | camera library of the new stack | [[EN/10-Sensors/06-CSI-Camera.en| CSI camera]] |
+| HDMI | monitor/TV, sound too | [[EN/11-Vivid/01-DSI-HDMI-Displays.en| DSI/HDMI displays]] |
 | I2S | digital audio to DACs/microphones | [[11-Vivid/03-Audio-HAT.en | audio and HAT]] |
 
 ## 5. Power supply and memory
@@ -87,10 +87,10 @@ flowchart TB
 
 | Term | Meaning | Note |
 | --- | --- | --- |
-| Raspberry Pi OS | official OS (Bookworm) | [[09-Firmware/03-OS-Nalashtuvannya.en | OS setup]] |
+| Raspberry Pi OS | official OS (Bookworm) | [[EN/09-Firmware/03-OS-Setup.en| OS setup]] |
 | Imager | out of box SD flasher | [[09-Firmware/01-Imager-Headless.en | Imager flashing]] |
 | Headless | no monitor, over SSH | [[09-Firmware/01-Imager-Headless.en | Imager flashing]] |
-| Device Tree | hardware description for the kernel (config.txt) | [[09-Firmware/03-OS-Nalashtuvannya.en | OS setup]] |
+| Device Tree | hardware description for the kernel (config.txt) | [[EN/09-Firmware/03-OS-Setup.en| OS setup]] |
 | gpiozero | Python GPIO library | [[03-GPIO/01-Header-Gpiozero.en | pin header and gpiozero]] |
 | MQTT | telemetry protocol | [[15-Protocols/01-MQTT.en | MQTT protocol]] |
 | HAT EEPROM | ID chip of the expansion board | [[03-GPIO/03-HAT-EEPROM.en | HAT and EEPROM]] |

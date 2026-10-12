@@ -89,7 +89,7 @@ flowchart TB
 | Firmware changes power | Retest, because spectrum changed |
 | Documents | RED for Europe, FCC for USA - time and money |
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -109,7 +109,7 @@ flowchart TB
 | Metal | Shields fully | External antenna through connector |
 | Moisture and dirt | Matching drifts | Sealing and S11 margin |
 
-## Official Sources
+## Official sources
 
 - [AN5128 Antenna design (ST)](https://www.st.com/resource/en/application_note/an5128.pdf) - PCB antennas and matching.
 - [ETSI EN 300 220 (ETSI)](https://www.etsi.org/committee/ERM) - European sub-GHz band requirements.

@@ -172,5 +172,5 @@ AN2606 is an ST document with a list of factory bootloaders for EACH chip: which
 ## See also
 
 - [[Home.en]]
-- [[00-Start/03-Porivnyannya-chipiv.en | Chip comparison]]
-- [[00-Start/04-Devkit-plati.en | DevKit boards]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]
+- [[EN/00-Start/04-Dev-Boards.en| DevKit boards]]

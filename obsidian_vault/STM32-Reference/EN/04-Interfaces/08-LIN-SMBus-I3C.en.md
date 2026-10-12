@@ -156,4 +156,4 @@ HAL_SMBUS_Master_Receive(&hsmbus1, BAT_ADDR, buf, 2, 100);
 - [[04-Interfaces/01-UART.en | Serial port]]
 - [[04-Interfaces/03-I2C.en | Exchange bus]]
 - [[04-Interfaces/04-FDCAN.en | Car bus]]
-- [[02-Power-Supply/02-Batareyne-zhivlennya.en | Battery power]]
+- [[EN/02-Power-Supply/02-Battery-Power.en| Battery power]]

@@ -230,9 +230,9 @@ Practical order: low speed for LEDs and relays, medium for UART and slow SPI, hi
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [Alternate function mapping](../../../../STM32-Reference/UA/03-GPIO/02-AF-maping.md)
+- [ Alternate function mapping]
 - [EXTI interrupts](../../../../STM32-Reference/UA/03-GPIO/03-EXTI-NVIC.md)
 - [F0/F1 classics](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md)
 - [HAL and LL layers](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)
 - [CubeMX setup](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
-- [Environment choice](../../../../STM32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ Environment choice]

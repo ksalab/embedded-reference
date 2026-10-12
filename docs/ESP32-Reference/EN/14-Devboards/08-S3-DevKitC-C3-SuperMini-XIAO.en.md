@@ -70,7 +70,7 @@ S3-DevKitC-1 has BOTH: CP2102N (UART port, SiLabs driver) + native S3 USB (secon
 
 ## Buttons
 
-S3-DevKitC-1: big BOOT + RESET - convenient. SuperMini: microscopic, need tweezers/fingernail; hold BOOT at power-on for download. XIAO: small but reachable; double-click Reset on some firmware means UF2 bootloader (drag the .uf2 file!). RGB/user/charging LEDs show the mode.
+S3-DevKitC-1: big BOOT + RESET - convenient. SuperMini: microscopic, need tweezers/fingernail; hold BOOT at power-on for download. XIAO: small but reachable; double-click Reset on some firmware means UF2 bootloader (drag the.uf2 file!). RGB/user/charging LEDs show the mode.
 
 ## What it fits
 
@@ -128,7 +128,7 @@ First native-USB flash: hold BOOT, connect USB, flash, Reset. ESP-IDF: `esp32s3`
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-s3-c3-xiao.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-s3-c3-xiao.png)
 
 ```text
 S3-DevKitC-1: [USB-C UART-порт] ─► CP2102N ─► прошивка. [USB-C native] ─► S3-USB.

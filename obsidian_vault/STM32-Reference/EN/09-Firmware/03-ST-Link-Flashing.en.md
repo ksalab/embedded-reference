@@ -163,4 +163,4 @@ st-info --probe   # що за чип підключено
 - [[Home.en]]
 - [[EN/09-Firmware/01-CubeIDE-CubeMX.en|CubeIDE]]
 - [[EN/09-Firmware/02-HAL-LL.en|HAL and LL]]
-- [[EN/09-Firmware/04-Bez-CubeIDE.en|without CubeIDE]]
+- [[EN/09-Firmware/04-Without-CubeIDE.en|without CubeIDE]]

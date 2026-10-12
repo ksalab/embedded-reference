@@ -103,7 +103,7 @@ date: 2026-10-08
 | Thread | 802.15.4 mesh | IPv6 grid for H2/C6, border router on WiFi | [[EN/00-Start/03-Chip-Comparison.en| Chips]] |
 | mDNS | Local names | `esp32.local` in one subnet, _http._tcp services | [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS/NTP/TLS]] |
 | SNTP | Time sync | UDP 123, UTC + TZ Europe/Kyiv, mandatory before TLS | [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS/NTP/TLS]] |
-| SSE | Server events | One-way text stream at `/events` for browser telemetry | [[15-Protocols/02-HTTP-WebSocket.en | HTTP]] |
+| SSE | Server events | One-way text stream at `/events` for browser telemetry | [[EN/15-Protocols/03-HTTP-Client.en| HTTP]] |
 | Backoff | Exponential pause | Reconnects at 1/2/4/8 s against reconnect storms | [[15-Protocols/01-MQTT.en | MQTT]] |
 | Broker | Message server | Mosquitto: takes PUBLISH, fans out SUB by topic | [[15-Protocols/01-MQTT.en | MQTT]] |
 | Gateway | Protocol gateway | LoRa to MQTT, Modbus to WiFi, BLE to cloud bridge | [[15-Protocols/05-Cloud-Pipeline.en | Cloud]] |

@@ -31,7 +31,7 @@ ESP32 power rails - power schematic-table; currents and capacitors; ESP32-to-mod
 | LiPo 3.7V | Buck/LDO -> | **3.3V** chip | See [[EN/04-Batteries-TP4056.en]] |
 
 > [!danger] The 3V3 pin is NOT a 5V input
-> A common way boards die: 5V fed into the 3V3 pin - the chip burns instantly. Check with a multimeter before powering on. Strapping: [[EN/03-GPIO/02-Strapping-pini.en]].
+> A common way boards die: 5V fed into the 3V3 pin - the chip burns instantly. Check with a multimeter before powering on. Strapping: [[EN/03-GPIO/02-Strapping-Pins.en]].
 
 ## Currents and capacitors
 
@@ -200,8 +200,8 @@ flowchart TB
 
 - [[EN/Home.en]]
 - [[EN/00-Start/03-Chip-Comparison.en]]
-- [[EN/03-GPIO/01-GPIO-oglyad.en]]
-- [[EN/03-GPIO/02-Strapping-pini.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/03-GPIO/02-Strapping-Pins.en]]
 - [[EN/02-Power-Supply/01-Power-Rails.en]]
 - [[EN/02-LDO-DC-DC.en]]
 - [[EN/03-Power-Consumption.en]]

@@ -14,162 +14,162 @@ date: 2026-10-08
 
 ## Purpose
 
-Симinольнand LCD (16×2, 20×4) at Controllerах HD44780 / KS0066 / ST7066 -
-toйдешеinший текстоinий pin: menus каinоinарки, лandчильники, статуси реле,
-debug беwith комп'ютера. Працюють for years, читаються беwith underсinandтки
-under кутом, жиinуть on 5 in.
+Character LCD (16x2, 20x4) on HD44780 / KS0066 / ST7066 controllers -
+cheapest text display: cash-register menus, counters, relay statuses,
+debug without PC. Run for years, readable without backlight
+at angle, powered at 5 V.
 
-Нота - inглиб, but not «hello world»: 4-бandтний режим (6 GPIO instead 11);
-сinої симinоли CGRAM (градус, батарея, стрandлки, прогрес-бар); inеликand цифри
-with кастомних глandфandin; рandwithниця addrцandї DDRAM in 1602 vs 2004 (чому 3-й ряup toк
-«стрибає»); контраст Vo and PWM underсinandтки; маpinг бandтandin PCF8574-бекпака
-and конфлandкти адрес 0x27 / 0x3F (скаnotр!); code LiquidCrystal_I2C;
-кирилиця (її НЕМАЄ in ROM - тandльки сinої глandфи!).
+This note goes deep, not hello world: 4-bit mode (6 GPIO instead of 11);
+own CGRAM symbols (degree, battery, arrows, progress bar); large digits
+from custom glyphs; DDRAM addressing difference in 1602 vs 2004 (why 3rd row
+jumps); Vo contrast and PWM backlight; PCF8574 backpack bit mapping
+and 0x27 / 0x3F address conflicts (scan!); LiquidCrystal_I2C code;
+Cyrillic (missing in ROM - only own glyphs!).
 
 > Бачиш «кубики» in першому рядку - this not смерть,
-> this notandнandцandалandwithоinаний HD44780 (power supply is, init not пройшоin / контраст not той).
+> this is uninitialised HD44780 (power present, init not passed / wrong contrast).
 
 ## Characteristics
 
 | Parameter | value |
 | --- | --- |
-| Контролери | HD44780 (Hitachi-оригandtoл), KS0066 (Samsung-клон), ST7066 (Sitronix-клон) - сумandснand withа командами |
+| Controllers | HD44780 (Hitachi original), KS0066 (Samsung clone), ST7066 (Sitronix clone) - command compatible |
 | Формати | 1602 (16×2), 2004 (20×4), less often 0802 / 1604 / 4002 |
-| Матриця симinолу | 5×8 точок (8-й ряup toк - курсор), CGRAM - 8 слотandin 0-7 |
-| ROM-withtoкогеnotратор | A00 (японська катакаto) або A02 (єinропейська with дandакритикою); КИРИЛИЦІ НЕМАЄ in жодному! |
-| Інтерфейс голий | 8-бandт (DB0-DB7) або 4-бandт (DB4-DB7) + RS + EN (+ RW at withемлю) |
+| Symbol matrix | 5x8 dots (8th row - cursor), CGRAM - 8 slots 0-7 |
+| ROM font | A00 (Japanese katakana) or A02 (European with diacritics); NO CYRILLIC in either! |
+| Bare interface | 8-bit (DB0-DB7) or 4-bit (DB4-DB7) + RS + EN (+ RW to ground) |
 | Інтерфейс through бекпак | I2C PCF8574: SDA/SCL, адреси 0x27 / 0x3F (less often 0x20-0x26) |
-| power supply | Логandка 5 in (деякand 3.3 in-inерсandї with ICL7660); underсinandтка LED ~4.2 in / 20-120 мА |
-| Контраст | Vo (pin 3) through потенцandометр 10 кОм мandж VCC-GND; беwith нього - «порожньо» або «кубики» |
-| current | Логandка ~1-2 мА + underсinandтка 20-100 мА (through транwithистор бекпака!) |
-| speed | EN-цикл ~1 мкс; `clear()` ~1.5 мс - not слати команди частandше беwith withатримок! |
-| Температура | 0…+50 °C typically; at мороwithand симinоли «поinwithуть» (поinandльний LC) |
-| libraries | LiquidCrystal (парbutль), LiquidCrystal_I2C / LCD_I2C (бекпак), HD44780 (Bill Perry, toйпоinнandша) |
+| Power | 5 V logic (some 3.3 V versions with ICL7660); LED backlight ~4.2 V / 20-120 mA |
+| Contrast | Vo (pin 3) via 10 k pot between VCC-GND; without it - blank or blocks |
+| Current | Logic ~1-2 mA + backlight 20-100 mA (via backpack transistor!) |
+| Speed | EN cycle ~1 us; `clear()` ~1.5 ms - do not send commands faster without delays! |
+| Temperature | 0…+50 C typically; in frost symbols slow down (slow LC) |
+| Libraries | LiquidCrystal (parallel), LiquidCrystal_I2C / LCD_I2C (backpack), HD44780 (Bill Perry, fullest) |
 
-### 4-бandтний режим - чому inсand так роблять
+### 4-bit mode - why everyone does it
 
-| Режим | Пandни даних | Всього GPIO | Коли брати |
+| Mode | Data pins | Total GPIO | When to use |
 | --- | --- | --- | --- |
-| 8-бandт | DB0-DB7 + RS + EN | 10 (+RW) | Нandколи at ESP32 (марнотратстinо pinandin) |
-| 4-бandт | DB4-DB7 + RS + EN | 6 | Голий LCD беwith бекпака, toinчальний стенд |
-| I2C-бекпак | SDA + SCL | 2 | Бойоinий inарandант: 2 wires, addrцandя, underсinandтка команup toю |
+| 8-bit | DB0-DB7 + RS + EN | 10 (+RW) | Never on ESP32 (pin waste) |
+| 4-bit | DB4-DB7 + RS + EN | 6 | Bare LCD without backpack, learning rig |
+| I2C backpack | SDA + SCL | 2 | Combat option: 2 wires, addressing, backlight command |
 
-in 4-бandтному режимand кожен байт шлеться дinома toпandinбайтами (старший → молодший),
+in 4-bit mode each byte goes as two nibbles (high → low),
 library LiquidCrystal робить this сама: `LiquidCrystal(rs, en, d4, d5, d6, d7)`.
-RW atтискають up to GND (тandльки record) - читання busy-flag not потрandбnot,
-withатримки inшитand in бandблandотеку.
+RW pressed to GND (write only) - busy-flag read not needed,
+delays sewn into library.
 
-### DDRAM-addrцandя: 1602 vs 2004 (голоinний underступ!)
+### DDRAM addressing: 1602 vs 2004 (main pitfall!)
 
-| Ряup toк | 1602 (16×2) address | 2004 (20×4) address | Доinжиto |
+| Row | 1602 (16x2) address | 2004 (20x4) address | Length |
 | --- | --- | --- | --- |
 | 0 | 0x00-0x0F | 0x00-0x13 | 16 / 20 |
 | 1 | 0x40-0x4F | 0x40-0x53 | 16 / 20 |
-| 2 | - | 0x14-0x27 | Тandльки 2004! |
-| 3 | - | 0x54-0x67 | Тandльки 2004! |
+| 2 | - | 0x14-0x27 | 2004 only! |
+| 3 | - | 0x54-0x67 | 2004 only! |
 
-Наслandдки:
+Consequences:
 
-- Рядки 2004 йдуть not underряд: поряup toк адрес 0, 1, 2, 3 = 0x00, 0x40, 0x14, 0x54.
-  therefore «library for 1602» at 2004 пише 3-й ряup toк withand shiftом at 4 симinоли -
+- 2004 rows go out of order: address order 0, 1, 2, 3 = 0x00, 0x40, 0x14, 0x54.
+  therefore a 1602 library on 2004 writes 3rd row shifted by 4 symbols -
   класичний bug with `setCursor(0,2)`.
-- Рandшення: beforeаinати праinильну геометрandю `LiquidCrystal_I2C(0x27, 20, 4)`,
-  нandколи `16, 2` at фandwithичному 2004!
-- 40-симinольний controller обрandwithає ряup toк up to inandкto: симinоли 16-39 andснують
-  in DDRAM, but notinидимand - туди можto «хоinати» текст for прокрутки.
+- Fix: pass correct geometry `LiquidCrystal_I2C(0x27, 20, 4)`,
+  never `16, 2` on physical 2004!
+- 40-symbol controller trims row to window: symbols 16-39 exist
+  in DDRAM but invisible - text can hide there for scrolling.
 
-### CGRAM - сinої симinоли (8 слотandin)
+### CGRAM - own symbols (8 slots)
 
-Кожен слот - 8 байтandin (5 молодших бandт кожного = точки рядка):
+Each slot is 8 bytes (low 5 bits of each = row dots):
 
-| Слот | Глandф | Байти (ex.) | Використання |
+| Slot | Glyph | Bytes (ex.) | Use |
 | --- | --- | --- | --- |
 | 0 | Градус `°` | 0x06,0x09,0x09,0x06,0x00,0x00,0x00,0x00 | `24°C` |
-| 1 | Батарея-рамка | 0x0E,0x1B,0x11,0x11,0x11,0x11,0x11,0x1F | Індикатор withаряду |
-| 2 | Стрandлка inгору | 0x04,0x0E,0x15,0x04,0x04,0x04,0x04,0x00 | Меню/тренди |
-| 3 | Стрandлка inниwith | 0x00,0x04,0x04,0x04,0x04,0x15,0x0E,0x04 | Меню/тренди |
-| 4-6 | Прогрес 1/3, 2/3, 3/3 | Стоinпчики 0x10/0x18/0x1C… | Бар-граф 0-100% |
+| 1 | Battery frame | 0x0E,0x1B,0x11,0x11,0x11,0x11,0x11,0x1F | Charge indicator |
+| 2 | Up arrow | 0x04,0x0E,0x15,0x04,0x04,0x04,0x04,0x00 | Menu/trends |
+| 3 | Down arrow | 0x00,0x04,0x04,0x04,0x04,0x15,0x0E,0x04 | Menu/trends |
+| 4-6 | Progress 1/3, 2/3, 3/3 | Columns 0x10/0x18/0x1C… | 0-100% bar graph |
 | 7 | Галочка OK | 0x00,0x01,0x03,0x16,0x1C,0x08,0x00,0x00 | Статуси |
 
-Обмеження: inсього 8! for кирилицand + andконок одночасно not inистачить -
-переwithаinантажуinати CGRAM at withмandнand екрану (`createChar` before кожним екраном).
+Limit: only 8! For Cyrillic + icons together not enough -
+reload CGRAM on screen change (`createChar` before each screen).
 
-### Великand цифри (double-size)
+### Large digits (double-size)
 
-Прийом: цифра 0-9 малюється дinома рядками per 3 кастомних глandфи
-(inерх/ниwith полоinинки). Потрandбно 6 слотandin at toбandр - so inеликand цифри
-withаймають ВСЮ CGRAM and notсумandснand with одночасною кирилицею at so ж екранand.
-Чергуinати: екран «годинник» (inеликand цифри) vs екран «menus» (кирилиця).
+Trick: digit 0-9 drawn in two rows from 3 custom glyphs
+(top/bottom halves). Need 6 slots per set - so large digits
+occupy ALL CGRAM and clash with Cyrillic on same screen.
+Alternate: clock screen (large digits) vs menu screen (Cyrillic).
 
-### Контраст Vo + underсinandтка
+### Vo contrast + backlight
 
-- **Vo (pin 3):** 0-1 in for inидимих симinолandin (not 2.5 in «поamongинand»!).
-  Потенцandометр 10 кОм: VCC-Vo-GND. Беwith бекпака - крутити ОБОВ'ЯЗКОВО.
-  at I2C-бекпаку потенцandометр inже роwithпаяний (синandй кубик) - крутити inикруткою.
-- **Пandдсinandтка (pinи 15/16, A/K):** LED through реwithистор ~100 Ом at модулand.
-  current 20-100 мА - not with GPIO беwithпоamongньо! at бекпаку - транwithистор,
-  керуinання `lcd.backlight()` / `lcd.noBacklight()`.
-- **PWM-диммandнг:** inandдпаяти перемичку J (LED) at бекпаку → pin катода
-  through N-MOSFET at GPIO with `ledc` 5 кГц. Або withалишити J and миритися with ON/OFF.
+- **Vo (pin 3):** 0-1 V for visible symbols (not 2.5 V middle!).
+  10 k pot: VCC-Vo-GND. Without backpack - turn MANDATORY.
+  on I2C backpack pot already soldered (blue cube) - turn with screwdriver.
+- **Backlight (pins 15/16, A/K):** LED via ~100 Ohm resistor on module.
+  current 20-100 mA - not from GPIO directly! On backpack - transistor,
+  control via `lcd.backlight()` / `lcd.noBacklight()`.
+- **PWM dimming:** unsolder J (LED) jumper on backpack → cathode pin
+  via N-MOSFET to GPIO with `ledc` 5 kHz. Or leave J and accept ON/OFF.
 
 ## Легенда pinandin модуля
 
 Голий HD44780 (16 pinandin) + that робить PCF8574-бекпак:
 
-| pin LCD | Поvalue | Тип | Куди / through бекпак | Note |
+| LCD pin | Value | Type | Where / via backpack | Note |
 | --- | --- | --- | --- | --- |
 | 1 | VSS | GND | GND | ground |
 | 2 | VDD | +5 in | 5V (VU/VIN!) | 5 in! on 3V3 - тьмяно/порожньо |
-| 3 | Vo | Контраст | Потенцandометр 10 кОм | 0-1 in; at бекпаку - синandй underстроєчник |
-| 4 | RS | Вибandр регandстр | Бекпак P0 | 0 = команда, 1 = data |
-| 5 | RW | Читання/record | GND (record) | at бекпаку atтиснуто up to GND |
-| 6 | EN | Строб | Бекпак P2 | Фронт withаписує toпandinбайт |
-| 7-10 | DB0-DB3 | data | Нandкуди (4-бandт!) | Залишити inandльними |
-| 11-14 | DB4-DB7 | data | Бекпак P4-P7 | Старший toпandinбайт першим |
-| 15 | A/LED+ | Пandдсinandтка + | 5 in through реwithистор/транwithистор | at бекпаку - key + `backlight()` |
-| 16 | K/LED− | Пandдсinandтка − | GND | through J-перемичку at бекпаку |
+| 3 | Vo | Contrast | 10 k pot | 0-1 V; on backpack - blue trimmer |
+| 4 | RS | Register select | Backpack P0 | 0 = command, 1 = data |
+| 5 | RW | Read/write | GND (write) | on backpack pressed to GND |
+| 6 | EN | Strobe | Backpack P2 | Edge writes nibble |
+| 7-10 | DB0-DB3 | data | Nowhere (4-bit!) | Leave floating |
+| 11-14 | DB4-DB7 | data | Backpack P4-P7 | High nibble first |
+| 15 | A/LED+ | Backlight + | 5 V via resistor/transistor | on backpack - key + `backlight()` |
+| 16 | K/LED- | Backlight - | GND | via J jumper on backpack |
 
-Маpinг PCF8574 → LCD (standard бекпак, withапам'ятати!):
+PCF8574 → LCD mapping (standard backpack, memorise!):
 
-| Бandт PCF8574 | Куди | Purpose |
+| PCF8574 bit | Where | Purpose |
 | --- | --- | --- |
 | P0 | RS | Register Select |
-| P1 | RW | in бandльшостand бекпакandin - NC/GND-логandка (not RW!) |
+| P1 | RW | in most backpacks - NC/GND logic (not RW!) |
 | P2 | EN | Enable-строб |
-| P3 | LED | Пandдсinandтка (1 = ON) |
-| P4-P7 | DB4-DB7 | 4 бandти даних |
+| P3 | LED | Backlight (1 = ON) |
+| P4-P7 | DB4-DB7 | 4 data bits |
 
 Адреси PCF8574/PCF8574A:
 
-| Мandкроschem | Дandапаwithон | Типоinand | as роwithрandwithнити |
+| Microscheme | Range | Typical | how to tell |
 | --- | --- | --- | --- |
-| PCF8574 | 0x20-0x27 (A0-A2) | **0x27** (inсand джампери роwithandмкнутand) | Маркуinання `PCF8574T` |
-| PCF8574A | 0x38-0x3F | **0x3F** (inсand роwithandмкнутand) | Маркуinання `PCF8574AT` with лandтерою A! |
+| PCF8574 | 0x20-0x27 (A0-A2) | **0x27** (all jumpers open) | Marking `PCF8574T` |
+| PCF8574A | 0x38-0x3F | **0x3F** (all open) | Marking `PCF8574AT` with letter A! |
 
-> Купиin «такий самий» display, but address andнша - this 8574 vs 8574A.
-> Джампери A0-A2 withапаюinанням ЗМЕНШУЮТЬ адресу. Заinжди ганяти скаnotр!
+> Bought same display but different address - this is 8574 vs 8574A.
+> Soldered A0-A2 jumpers LOWER the address. Always run scanner!
 
 ## Wiring diagram
 
 | ESP32 | LCD + PCF8574-бекпак | Note |
 | --- | --- | --- |
-| 5V (VU/VIN) | VCC | 5 in! Пandдсinandтка and контраст хочуть 5 in |
+| 5V (VU/VIN) | VCC | 5 V! Backlight and contrast want 5 V |
 | GND | GND | common ground |
 | GPIO22 | SCL | hardware I2C0 |
 | GPIO21 | SDA | hardware I2C0, pull-up 4.7 кОм (is at бекпаку) |
-| - | Vo-потенцandометр | Покрутити up to пояinи симinолandin! |
-| GPIO16 (опцandйно) | LED-катод through MOSFET | Тandльки if withнято J-перемичку (PWM-диммandнг) |
+| - | Vo pot | Turn until symbols appear! |
+| GPIO16 (optional) | LED cathode via MOSFET | Only if J jumper removed (PWM dimming) |
 
-Голий LCD беwith бекпака (4-бandт, toinчальний inарandант):
+Bare LCD without backpack (4-bit, learning option):
 
 | ESP32 | HD44780 голий | Note |
 | --- | --- | --- |
 | 5V / GND | VDD / VSS | power supply 5 in |
-| Потенцandометр 10 кОм | Vo (pin 3) | Середнandй pin → Vo |
+| 10 k pot | Vo (pin 3) | Middle pin → Vo |
 | GPIO4 | RS (pin 4) | |
-| GND | RW (pin 5) | Притиснути up to withемлand! |
+| GND | RW (pin 5) | Press to ground! |
 | GPIO5 | EN (pin 6) | |
-| GPIO13/12/14/27 | DB4-DB7 (pinи 11-14) | Уникати strapping-pinandin at EN/RS! |
+| GPIO13/12/14/27 | DB4-DB7 (pins 11-14) | Avoid strapping pins for EN/RS! |
 
 ### ASCII-schem
 
@@ -201,11 +201,11 @@ graph LR
 ```
 
 ![](../../../../ESP32-Reference/assets/img/lcd-char-hd44780-scheme.png)
-*Рис. Симinольний LCD through PCF8574: 2 wires I2C, 5 in power supply, address 0x27/0x3F. Мandсце under схему - see ![](assets/README).*
+*Fig. Character LCD via PCF8574: 2-wire I2C, 5 V power, address 0x27/0x3F. Space below schematic - see ![](assets/README).*
 
 ## Code ESP-IDF
 
-ESP-IDF (through I2C-driver + HD44780-компоnotнт `esp-idf-lib`):
+ESP-IDF (via I2C driver + HD44780 `esp-idf-lib` component):
 
 ```c
 #include "driver/i2c.h"
@@ -248,8 +248,8 @@ void app_main(void) {
 }
 ```
 
-> at практицand in ESP-IDF toйшinидше - inwithяти готоinий ex.
-> `esp-idf-lib/examples/hd44780` цandлком, but not писати `write_cb` inручну.
+> in practice on ESP-IDF fastest is to take ready ex.
+> `esp-idf-lib/examples/hd44780` as is, not write `write_cb` manually.
 
 ## Code Arduino - LiquidCrystal_I2C
 
@@ -325,7 +325,7 @@ void loop() {
 }
 ```
 
-Кирилиця сinоїми глandфами (ex. - лandтери big-5, решту up toмалюinати!):
+Cyrillic with own glyphs (ex. - big-5 letters, draw the rest!):
 
 ```cpp
 // Кирилиці в ROM НЕМАЄ - кожну літеру малюємо самі (5x8).
@@ -399,25 +399,25 @@ goto(0, 1); puts("T=24.5"); putc(chr(0)); puts("C")
 
 ## Common issues
 
-| error (симптом) | cause | Випраinлення |
+| Error (symptom) | cause | Fix |
 | --- | --- | --- |
-| Кубики in 1-му рядку | Init not пройшоin (not та address/library) або RW not at GND | Скаnotр I2C, праinильний constructor, RW→GND, `lcd.init()` |
-| Порожньо, but underсinandтка is | Контраст Vo at нулand | Крутити синandй потенцandометр at бекпаку up to симinолandin |
-| `No I2C device` in скаnotрand | power supply 3V3 instead 5V / переплутанand SDA/SCL | VCC→5V (VU), SDA=21/SCL=22, common GND |
-| Працює at 0x27, ноinий - моinчить | Ноinий module at PCF8574A (0x3F) | Скаnotр + `LiquidCrystal_I2C(0x3F, ...)` |
-| 3-й ряup toк 2004 withand shiftом 4 симinоли | constructor `16,2` at фandwithичному `20,4` | `LiquidCrystal_I2C(addr, 20, 4)` |
-| Тьмянand симinоли on 3V3 | Логandка хоче 5 in, ICL7660 inandдсутнandй | Жиinити 5V; SDA/SCL 3.3 in up toстатньо (pull-up up to 5V through 4.7к - норма) |
-| Кирилиця - andєроглandфи/крапки | Її nothas in ROM A00/A02 | Тandльки `createChar` (8 слотandin, переwithаinантаження per екраtoх) |
-| CGRAM withлетandла пandсля `clear()` | `clear()` not чandпає CGRAM, but чужий `createChar` переwithаписаin | `createChar` inикликати ПЕРЕД кожним екраном, слоти not дandлити моinчки |
-| Пandдсinandтка not гасnot `noBacklight()` | jumper J withапаяto беwithпоamongньо | for PWM - withняти J, катод through MOSFET; for ON/OFF - лишити J |
-| Смandття at up toinгих дротах | I2C 400 кГц + 50 см Dupont | 100 кГц, коротшand wires, 100 нФ withа powerм |
+| Blocks in 1st row | Init not passed (wrong address/library) or RW not to GND | I2C scan, correct constructor, RW→GND, `lcd.init()` |
+| Blank but backlight on | Vo contrast at zero | Turn blue pot on backpack until symbols |
+| `No I2C device` in scan | 3V3 supply instead of 5V / SDA/SCL swapped | VCC→5V (VU), SDA=21/SCL=22, common GND |
+| Works at 0x27, new one silent | New module on PCF8574A (0x3F) | Scan + `LiquidCrystal_I2C(0x3F,...)` |
+| 2004 3rd row shifted by 4 symbols | `16,2` constructor on physical `20,4` | `LiquidCrystal_I2C(addr, 20, 4)` |
+| Dim symbols on 3V3 | Logic wants 5 V, no ICL7660 | Power 5V; 3.3 V SDA/SCL is enough (4.7k pull-up to 5V - fine) |
+| Cyrillic shows hieroglyphs/dots | Missing in ROM A00/A02 | Only `createChar` (8 slots, reload per screens) |
+| CGRAM flew after `clear()` | `clear()` does not touch CGRAM, but foreign `createChar` overwrote | Call `createChar` BEFORE each screen, do not share slots silently |
+| Backlight ignores `noBacklight()` | J jumper soldered by default | for PWM - remove J, cathode via MOSFET; for ON/OFF - keep J |
+| Garbage on long wires | I2C 400 kHz + 50 cm Dupont | 100 kHz, shorter wires, 100 nF on power |
 
 ## Official sources
 
-- [RNT - I2C LCD with ESP32 in Arduino IDE](https://randomnerdtutorials.com/esp32-esp8266-I2C-lcd-arduino-ide/) - проinодка, скаnotр адреси, `LiquidCrystal_I2C`, кастомнand симinоли.
+- [RNT - I2C LCD with ESP32 in Arduino IDE](https://randomnerdtutorials.com/esp32-esp8266-I2C-lcd-arduino-ide/) - wiring, address scan, `LiquidCrystal_I2C`, custom symbols.
 - [LiquidCrystal_I2C - library Marco Schwartz (форк fdebrabander)](https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library) - API `init/backlight/createChar`.
-- [LiquidCrystal_I2C - library DFRobot (johnrickman)](https://github.com/johnrickman/LiquidCrystal_I2C) - альтерtoтиinний форк, ex.и Hello World.
-- [Adafruit - Character LCDs (HD44780)](https://learn.adafruit.com/character-lcds) - 4-бandтний режим, проinодка голого LCD, контраст.
+- [LiquidCrystal_I2C - DFRobot library (johnrickman)](https://github.com/johnrickman/LiquidCrystal_I2C) - alternative fork, Hello World ex.
+- [Adafruit - Character LCDs (HD44780)](https://learn.adafruit.com/character-lcds) - 4-bit mode, bare LCD wiring, contrast.
 
 ## See also
 

@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. 4 SWD wires, connect-under-reset, erase before write, verify after.*
 
 > [!tip] Purpose of this note
-> Teach how to flash any STM32 board: what goes where, what pours .elf, .bin and .hex, and how to revive a brick.
+> Teach how to flash any STM32 board: what goes where, what pours.elf,.bin and.hex, and how to revive a brick.
 
 ## 1. Purpose
 
@@ -93,14 +93,14 @@ flowchart TB
 
 | Format | Holds | When to use |
 | --- | --- | --- |
-| .elf | Code plus symbols plus addresses (all!) | GDB debug, the main artifact |
-| .hex | Addresses plus data as text | CubeProgrammer, universal |
-| .bin | Bare data with no addresses | UART bootloader, OTA, exact address mandatory! |
+|.elf | Code plus symbols plus addresses (all!) | GDB debug, the main artifact |
+|.hex | Addresses plus data as text | CubeProgrammer, universal |
+|.bin | Bare data with no addresses | UART bootloader, OTA, exact address mandatory! |
 
 | Rule | Explanation |
 | --- | --- |
-| Flashing .bin means giving an address | Usually 0x08000000 (Flash start) |
-| Flashing .hex or .elf means address inside | No need to give it by hand |
+| Flashing.bin means giving an address | Usually 0x08000000 (Flash start) |
+| Flashing.hex or.elf means address inside | No need to give it by hand |
 | Always verify after a write | Catches broken Flash and bad contact |
 
 ## OpenOCD and st-flash (console and Linux)
@@ -147,7 +147,7 @@ st-info --probe   # що за чип підключено
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
 | 1 | No common GND | Random breaks, broken data | GND always the first wire |
-| 2 | Flashing .bin with no address | Code in the wrong place means silence | 0x08000000 for Flash |
+| 2 | Flashing.bin with no address | Code in the wrong place means silence | 0x08000000 for Flash |
 | 3 | RDP 2 on a debug board | Trash | Only RDP 0 or 1 in development |
 | 4 | PA13/PA14 given to GPIO | SWD lost after the first flashing | Leave SWD or use Under Reset |
 | 5 | Long wires on a breadboard | Breaks at high frequency | Shorter plus lower SWD frequency |
@@ -163,4 +163,4 @@ st-info --probe   # що за чип підключено
 - [Home](../../../../STM32-Reference/Home.md)
 - [CubeIDE](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
 - [HAL and LL](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)
-- [without CubeIDE](../../../../STM32-Reference/UA/09-Proshivka/04-Bez-CubeIDE.md)
+- [without CubeIDE]

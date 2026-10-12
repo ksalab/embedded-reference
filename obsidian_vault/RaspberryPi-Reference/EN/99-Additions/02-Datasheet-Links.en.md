@@ -80,7 +80,7 @@ date: 2026-10-08
 - [USB Host examples](https://github.com/espressif/esp-idf/tree/master/examples/peripherals/usb/host) - USB host.
 - [MQTT Specification](https://mqtt.org/mqtt-specification/) - telemetry protocol.
 
-## See also- [[EN/99-Additions/01-Troubleshooting-FAQ.en| FAQ]] - answers on the rake.- [[EN/99-Additions/03-Diagnostic-Map.en| diagnostic card]] - symptom → action.- [[Home | main map]] - full navigation.
+## See also- [[EN/99-Additions/01-Troubleshooting-FAQ.en| FAQ]] - answers on the rake.- [[EN/99-Additions/03-Diagnostic-Map.en| diagnostic card]] - symptom → action.- [[Home.en | main map]] - full navigation.
 
 ## Common issues
 

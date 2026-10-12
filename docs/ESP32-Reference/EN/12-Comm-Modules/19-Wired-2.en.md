@@ -17,7 +17,7 @@ date-created: 2026-09-29
 ![](../../../../ESP32-Reference/assets/img/wired-2-eth-can-tools-scheme.png)
 *Fig. ESP32 as Modbus RTU↔TCP gateway and CAN analyzer: RMII-PHY / ENC28J60 on one side, TWAI + ISO1050 + CANable / SLCAN on the other, RS-485 / CAN / Ethernet interfaces.*
 
-Links to [Home](../../../../ESP32-Reference/Home.md), [04-RS485-CAN-Ethernet-Kamera](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/04-RS485-CAN-Ethernet-Kamera.md), [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/07-SIM7600-W5500-MCP2515.md), [19-Wired-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/19-Wired-2.md) (self), [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md).
+Links to [Home](../../../../ESP32-Reference/Home.md), [04-RS485-CAN-Ethernet-Kamera](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/04-RS485-CAN-Ethernet-Kamera.md), [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/07-SIM7600-W5500-MCP2515.md), [19-Wired-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/19-Wired-2.md) (self), [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), [EN/02-Power-Supply/01-Power-Rails.en].
 
 Characteristics (comparison table):
 
@@ -182,6 +182,21 @@ GND Common: All modules share GND; use star topology
 | Modbus RTU timeout | Wrong baud / parity / slave address / RS-485 polarity | Use oscilloscope / check A/B polarity / set 9600 8N1 |
 | Gateway not responding | Firewall / port 502 blocked / IP conflict / no TCP stack | Check firewall / bind 0.0.0.0:502 / verify lwIP config |
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| No Ethernet link on PHY | Wrong REF_CLK or RMII pin mismatch | Verify clock source and RMII mapping against reference schematic |
+| ENC28J60 SPI errors | Long wires, no CS pull-up, shared rail noise | Shorten SPI under 10 cm, 10k CS pull-up, separate LDO |
+| CAN bus error frames | Bitrate mismatch or missing 120 Ohm terms | Set identical bitrate, terminate both ends, shield the pair |
+| Modbus TCP refused | Firewall blocks 502 or IP conflict | Open port 502, bind 0.0.0.0, resolve duplicate IP |
+| RTU timeout on RS-485 | A/B swapped or wrong slave address | Check polarity, set 9600 8N1, poll address 1 first |
+
+## Official sources
+
+- [W5500 docs (WIZnet)](https://docs.wiznet.io/Product/Chip/Ethernet/W5500) - sockets, registers and SPI modes.
+- [ENC28J60 Datasheet (Microchip)](https://www.microchip.com) - SPI Ethernet controller data; search ENC28J60 on the site. - `check manually`.
+- [ESP32 SPI master (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/spi_master.html) - bus setup for ENC28J60 and CAN controllers.
 ## References
 
 - Modbus over TCP / RTU specs (Modbus Organization)

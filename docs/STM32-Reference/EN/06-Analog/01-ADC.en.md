@@ -265,7 +265,7 @@ flowchart TB
     Sample -- Code floats --> Sample
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -276,7 +276,7 @@ flowchart TB
 | 5 | Software start for current regulator | Time jitter gives speed and current noise | Timer trigger, for motor into PWM pulse middle |
 | 6 | Ignored switching node noise near inputs | Edge spikes ruin lower bits | Ferrite on supply, ground polygon, PWM traces away from inputs |
 
-## Official Sources
+## Official sources
 
 - [STM32 ADC application guide (ST)](https://www.st.com/resource/en/application_note/an2834-how-to-get-the-best-adc-accuracy-in-stm32-microcontrollers--stmicroelectronics.pdf) - accuracy, noise, board layout and calibration.
 - [ADC in RM0316 for STM32F3 (ST)](https://www.st.com/resource/en/reference_manual/rm0316-stm32f303xbcde-stm32f303x68-stm32f328x8-stm32f358xc-stm32f398xe-advanced-armbased-mcus-stmicroelectronics.pdf) - scan modes, watchdog, module interleaving.

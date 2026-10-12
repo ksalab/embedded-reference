@@ -40,7 +40,7 @@ When NOT to use:
 | --- | --- | --- | --- | --- | --- |
 | Реєстрація | @BotFather → токен | номер in контактах CallMeBot, apikey | key maker.ifttt.com + APP/USER keys | without реєстрації | акаунт + APP_KEY/SECRET |
 | Protocol | HTTPS `api.telegram.org` | HTTPS GET 1 запитом | HTTPS POST JSON | UDP discovery + HTTP (LAN) | WebSocket/MQTT TLS до хмари |
-| Прийом команд | long-poll `getUpdates` | тільки відправка | via IFTTT-аплети | голос «turn on/off/set %» | голос + застосунок |
+| Прийом команд | long-poll `getUpdates` | тільки відправка | via IFTTT-аплети | голос «turn on/off/set%» | голос + застосунок |
 | Фото/файли | `sendPhoto` with камери! | текст (медіа - платно) | Pushover attachment 5 МБ | ні | камера (окремі приклади) |
 | Вартість | безкоштовно | free personal / TextMeBot платно | IFTTT free-ліміти, Pushover разовий платіж | безкоштовно | 3 девайси free, далі $/рік |
 | Затримка | 1-3 с | 5-30 с (черга) | 2-15 с | < 1 с (LAN) | 1-3 с |
@@ -254,11 +254,11 @@ curl -s -F "token=APP_TOKEN" -F "user=USER_KEY" \
 # Вкладення: -F "attachment=@/capture.jpg" (до 5 МБ!)
 ```
 
-Pushbullet - простіше (1 токен, channelи), але without emergency-повторів. for «пожежа/потоп» - Pushover priority 2, for «полив завершено» - Telegram/IFTTT.
+Pushbullet - simpler (1 token, channels), but without emergency repeats. For "fire/flood" - Pushover priority 2, for "watering done" - Telegram/IFTTT.
 
 ## Alexa via fauxmoESP + Sinric Pro, Google Home
 
-fauxmoESP - локальна емуляція ламп for Alexa, інтернет not потрібен. Працює так: ESP32 прикидається Philips Hue (v3+, раніше - Belkin WeMo), колонка Echo знаходить її in LAN and шле `turn on/off/set %`.
+fauxmoESP - локальна емуляція ламп for Alexa, інтернет not потрібен. Працює так: ESP32 прикидається Philips Hue (v3+, раніше - Belkin WeMo), колонка Echo знаходить її in LAN and шле `turn on/off/set%`.
 
 > [!note] Історична деталь: до v3.0 fauxmoESP емулював Belkin WeMo, with v3.0 - Philips Hue (дає димування «set to 50%»). in старих гайдах ще пишуть «WeMo» - суть та сама: локальний discovery without хмари.
 
@@ -382,7 +382,7 @@ esp_deep_sleep_start();  // команд НЕ чекаємо — тільки в
 | Кирилиця in CallMeBot - «???» | not закодовано URL | `url.encode()` / `%20` for пробілів, краще латиниця |
 | IFTTT спрацьовує via хвилини | free-черга IFTTT | критичне - безпосередньо Pushover/Telegram, not via аплет |
 | «Alexa, turn on…» - «device not found» | різні підмережі / port not 80 | одна LAN 2.4 ГГц, `fauxmo.setPort(80)`, rediscover |
-| fauxmoESP not компілюється with WebServer | конфлікт portу 80 | example `fauxmoESP_External_Server` або інший port + gen1-колонка |
+| fauxmoESP does not compile with WebServer | port 80 conflict | example `fauxmoESP_External_Server` or another port + gen1 speaker |
 | Long-poll їсть батарею for добу | WiFi+TLS постійно in ефірі | deep-sleep + відправка per будильнику, див. розділ Сон |
 | Pushover emergency not замовкає | немає `retry/expire`, юзер not підтвердив | `retry≥30, expire≤10800`, підтвердження in застосунку |
 

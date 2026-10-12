@@ -131,7 +131,7 @@ void loop() {
 ## 8. Related notes
 
 - [[EN/01-Hardware/03-Due-Zero-ARM.en|Due/Zero]] - basic ARM.
-- [[EN/00-Start/03-Porivnyannya-plat.en|Board comparison]] - the whole table.
+- [[EN/00-Start/03-Board-Comparison.en|Board comparison]] - the whole table.
 - [[EN/09-Firmware/01-IDE-CLI.en|IDE/CLI]] - core installation.
 - [[EN/05-Radio/02-GSM-SIM800.en|GSM]] - LTE/MKR contrast.
 

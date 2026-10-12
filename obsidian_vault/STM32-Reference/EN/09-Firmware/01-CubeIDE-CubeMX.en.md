@@ -170,7 +170,7 @@ int main(void)
 ## See also
 
 - [[Home.en]]
-- [[EN/00-Start/05-Vibir-seredovischa.en|environment choice]]
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]]
 - [[EN/09-Firmware/02-HAL-LL.en|HAL and LL]]
-- [[EN/09-Firmware/03-ST-Link-Proshivka.en|ST-Link]]
-- [[EN/09-Firmware/04-Bez-CubeIDE.en|without CubeIDE]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|ST-Link]]
+- [[EN/09-Firmware/04-Without-CubeIDE.en|without CubeIDE]]

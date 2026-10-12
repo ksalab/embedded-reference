@@ -149,4 +149,4 @@ flowchart TB
 - [accurate carbon dioxide gas]
 - [signal measurement](../../../../STM32-Reference/UA/06-Analog/01-ADC.md)
 - [power supply rails]
-- [weather node](../../../../STM32-Reference/UA/16-Proekti/01-Meteostantsiya.md)
+- [weather node]

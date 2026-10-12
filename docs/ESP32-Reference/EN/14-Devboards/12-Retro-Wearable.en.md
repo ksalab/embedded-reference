@@ -76,7 +76,7 @@ T-Deck (full wiki mapping): shared SPI bus - TFT CS12, LoRa CS9, SD CS39 (drive 
 
 ## USB-UART features
 
-VGA32: classic bridge + BOOT/RESET (old boards) or native boot. FabGL examples flash as plain Arduino sketches; the terminal talks over Serial. Odroid-GO: Micro-USB (charge + UART), flashing with esptool/Arduino, launchers as .bin via the factory utility or SD! T-Watch S3: native S3 USB-C (USB CDC On Boot Enabled), BOOT on first flash. T-Deck: native USB-C; if it refuses to flash use trackball-center (BOOT) + plug USB + flash + RST. The Meshtastic web flasher can "1200bps reset" for auto download entry. Details - [USB-UART](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/05-USB-UART-AutoReset.md).
+VGA32: classic bridge + BOOT/RESET (old boards) or native boot. FabGL examples flash as plain Arduino sketches; the terminal talks over Serial. Odroid-GO: Micro-USB (charge + UART), flashing with esptool/Arduino, launchers as.bin via the factory utility or SD! T-Watch S3: native S3 USB-C (USB CDC On Boot Enabled), BOOT on first flash. T-Deck: native USB-C; if it refuses to flash use trackball-center (BOOT) + plug USB + flash + RST. The Meshtastic web flasher can "1200bps reset" for auto download entry. Details - [USB-UART](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/05-USB-UART-AutoReset.md).
 
 ## Buttons
 
@@ -144,7 +144,7 @@ T-Deck + Meshtastic: simplest is the web flasher (pick `T-Deck`, LoRa antenna co
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-retro-wearable-scheme.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-retro-wearable-scheme.png)
 
 ```text
 FabGL/VGA32: [Блок 5V] ─► ESP32 ─► VGA-резистори ─► монітор (8/64 кольори!).
@@ -326,7 +326,7 @@ Li-Polymer 3.7V 1200 mAh battery. Charge over Micro-USB 5V at ~500 mA (full cycl
 
 ### Launchers and firmware
 
-A launcher is "trampoline" firmware that starts .bin/emulators straight from RAM/SD with no USB reflash each time.
+A launcher is "trampoline" firmware that starts.bin/emulators straight from RAM/SD with no USB reflash each time.
 
 - Stock/factory - button/screen/sound/SD test.
 - GO-Play (OtherCrashOverride) - minimal menu, fast start, NES/GB/SMS.
@@ -334,7 +334,7 @@ A launcher is "trampoline" firmware that starts .bin/emulators straight from RAM
 - MicroPython (loboris port) - display/buttons as modules, handy for learning: `import odroid_go` and draw.
 - Arduino "from zero" - your game as a plain sketch (see below).
 
-How to install: option 1 - .bin via the factory utility/esptool (`esptool.py write_flash 0x10000 go-play.bin`); option 2 - copy `firmware.bin` + `roms/` folder (subfolders `nes/`, `gb/`, `sms/`) to a FAT32-SD root and reboot holding Menu. ROMs from your own dumps only!
+How to install: option 1 -.bin via the factory utility/esptool (`esptool.py write_flash 0x10000 go-play.bin`); option 2 - copy `firmware.bin` + `roms/` folder (subfolders `nes/`, `gb/`, `sms/`) to a FAT32-SD root and reboot holding Menu. ROMs from your own dumps only!
 
 ### Your own game step by step (7 steps)
 
@@ -547,7 +547,7 @@ Expanded table (base 11 above in "Common issues"; here another 16 rakes from pra
 | 13 | FabGL builds but boot-loops | Core over 2.0.17 or S3/C3 picked in Tools to Board | ESP32 package 2.0.17, `ESP32 Dev Module` board, PSRAM Enabled |
 | 14 | USB keyboard via adapter mute | Passive adapter with no converter (USB is NOT PS/2!) | Native PS/2 keyboard or active USB to PS/2 adapter |
 | 15 | Odroid-GO: 64 GB SDXC invisible | exFAT instead of FAT32 | Card 32 GB or less, format FAT32 (not quick!), ROMs in `/roms/` |
-| 16 | RetroESP32 hangs on splash | Broken .bin / wrong flash address / dead battery | Re-download release, `esptool erase_flash` + clean flash, charge |
+| 16 | RetroESP32 hangs on splash | Broken.bin / wrong flash address / dead battery | Re-download release, `esptool erase_flash` + clean flash, charge |
 | 17 | T-Watch swelled after "fast" 1A charge | Current far over 130 mA for 470 mAh | Cap charge in PMU under 130 mA, charge with the stock cable, do not leave overnight |
 | 18 | Wake on tap broken | Touch put to sleep with reset unconnected - nothing to wake with! | Do not sleep the touch, or wake with button/BMA/timer |
 | 19 | BMA423 always "0 steps" | Not initialized / wrong I2C address / old lib | Example from the t-watch-s3 branch, I2C scanner, update SensorsLib |

@@ -95,7 +95,7 @@ echo "reboot now: sudo reboot"
 | --- | --- | --- |
 | Power supply | `vcgencmd get_throttled` | `0x0` |
 | Temperature | `vcgencmd measure_temp` | < 60 C |
-| Disk | `df -h /` | < 70 % |
+| Disk | `df -h /` | < 70% |
 | Memory | `free -h` | swap ~ 0 |
 | Uptime services | `systemctl --failed` | empty |
 
@@ -110,7 +110,7 @@ echo "reboot now: sudo reboot"
 - MAC/serial sticker on the case right after flashing;
 - first boot of the batch - one board at a time, not all together;
 - journal: which card in which board, date, image version;
-- spare cards with the golden image - 10 % of the batch.
+- spare cards with the golden image - 10% of the batch.
 
 Parallel flashing - through a powered USB hub with 4+ readers. Serial is more reliable, parallel is faster: choice by deadline.
 

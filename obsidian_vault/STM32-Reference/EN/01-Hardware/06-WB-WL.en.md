@@ -164,5 +164,5 @@ flowchart TB
 ## See also
 
 - [[Home.en]]
-- [[00-Start/03-Porivnyannya-chipiv.en | Chip comparison]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]
 - [[01-Hardware/05-L0-L4-U5.en | Low-power]]

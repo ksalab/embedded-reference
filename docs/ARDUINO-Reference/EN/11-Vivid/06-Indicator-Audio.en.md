@@ -94,6 +94,18 @@ TM1637: SDA-SCL to two pins
 DFPlayer: TX-RX to UART pins; 5V-GND separate
 ```
 
+Keep TM1637 off hardware SPI pins D11 and D13; move it to D2/D3.
+DFPlayer speaker outputs are differential SPK+ and SPK-; never ground one side.
+Feed DFPlayer from separate regulator with capacitor; peaks distort on weak rail.
+
+## 8.1 Matrix 8x8: running line
+
+Matrix cascade uses same three SPI wires plus per-module select.
+Set `shutdown(false)` on every device; default state is dark after power-up.
+Scroll text by shifting columns; keep one column buffer in RAM, not full frame.
+Brightness 8 of 15 is enough indoors; full brightness needs stronger supply.
+Test with single dot sweep before loading font tables.
+
 ## 9. Mermaid: selection
 
 ```mermaid
@@ -105,6 +117,22 @@ flowchart TB
     S --> P
 ```
 
+## 9.1 DFPlayer: files and commands
+
+Format card FAT32, capacity up to 32 GB; names strictly four digits `0001.mp3`.
+Place files in root or `MP3` folder; play by number with `play(1)`.
+Wait for BUSY line low before next track; queue voice events from sensors.
+Volume 20 of 30 is loud enough; set once at boot, adjust by button later.
+Check card on computer first: corrupt files stay silent without error code.
+
+## 9.2 Power
+
+MAX7219 chain draws pulses per lit row; star ground back to supply.
+TM1637 is light; share board rail with decoupling capacitor nearby.
+DFPlayer peaks reach amplifier watts; separate 5 V feed with thick ground.
+Measure rail during loud playback; dips below 4.5 V mean weak supply.
+Power whole node from one switch; sequence display init after rail settles.
+
 ## Common issues
 
 | # | Issue | Why bad | How to fix |
@@ -112,6 +140,10 @@ flowchart TB
 | 1 | MAX7219 without library | Nothing shows | Use LedControl init |
 | 2 | TM1637 wrong pins | No clock | Check data and clock |
 | 3 | DFPlayer no SD | No sound | Format SD and name files 0001.mp3 |
+| 4 | MAX7219 dark by default | Shutdown mode after power-up | Call shutdown false in setup |
+| 5 | TM1637 garbage | CLK and DIO swapped | Swap wires, rerun example |
+| 6 | Hoarse peaks | Weak supply sags | Separate regulator plus capacitor |
+| 7 | Pin conflict | TM1637 on SPI pins D11/D13 | Move to D2/D3 |
 
 ## Official sources
 

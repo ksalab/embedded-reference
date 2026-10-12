@@ -21,7 +21,7 @@ date: 2026-10-08
 | Model | person-detection int8, ~300 KB |
 | Input | 96×96 grayscale |
 | Speed | 5-8 fps on S3 240 MHz |
-| Accuracy | ~85 % daytime, worse at night |
+| Accuracy | ~85% daytime, worse at night |
 | Power | solar 10W + 2×18650 |
 
 Requirements:
@@ -50,7 +50,7 @@ ESP32-S3 is the only node; no second MCU; CSI directly to S3; PIR triggers captu
 
 - model: SSD-MobileNet int8 96×96; ~300 KB; 2 classes person / background;
 - thresholds: score ≥ 0.6 for detection; IoU ≥ 0.3 for track; track window 10 frames;
-- ROI mask: skip sky top 20 %; focus middle 60 %; filter by area > 500 px.
+- ROI mask: skip sky top 20%; focus middle 60%; filter by area > 500 px.
 
 ## 5. Working code (C, ESP-IDF)
 
@@ -131,8 +131,8 @@ if img.get("gray").mean() > 100:
 
 - collect 200 images with person at 2-4 m distance; 100 without;
 - run `tflite_convert` with representative dataset; quantize int8;
-- verify accuracy on 50 test images; if < 80 %, collect more diverse light conditions;
-- fix ROI: skip top 20 % sky region; apply mask before inference.
+- verify accuracy on 50 test images; if < 80%, collect more diverse light conditions;
+- fix ROI: skip top 20% sky region; apply mask before inference.
 
 ## Maintenance table
 
@@ -151,3 +151,21 @@ if img.get("gray").mean() > 100:
 - [ ] PIR sensitivity calibrated
 - [ ] Solar panel angle checked
 - [ ] BMS balance verified
+
+![](../../../../ESP32-Reference/assets/img/placeholder.png)
+*Fig. 1. Edge AI vision node: PIR wake, OV2640 capture, int8 person detect, solar power, MQTT event.*
+
+### Vision pipeline
+
+```mermaid
+flowchart LR
+    PIR["PIR GPIO4<br/>wake"]
+    CAM["OV2640<br/>96x96 gray"]
+    MOD["int8 person model<br/>300 KB"]
+    PUB["MQTT event<br/>image on hit"]
+    SOL["Solar 10W<br/>2S BMS"]
+    PIR --> CAM
+    CAM --> MOD
+    MOD --> PUB
+    SOL --> CAM
+```

@@ -25,7 +25,7 @@ The main idea is simple: autonomy is not the cell capacity, it is the product of
 
 After reading, the reader can tell a 9V block for a day from a lithium pack for a month, understands DW01 protection, and can add a solar panel with headroom.
 
-The link to mains power is direct: USB and VIN are described in [VIN power supply], the board itself is described in [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md), and sleep and supervision are described in [sleep and watchdog](../../../../ARDUINO-Reference/UA/07-Timeri-Son/02-Son-WDT.md).
+The link to mains power is direct: USB and VIN are described in [VIN power supply], the board itself is described in [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md), and sleep and supervision are described in [sleep and watchdog].
 
 ## 2. 9V block: why it lives a day or two
 
@@ -149,7 +149,7 @@ A classic board with a USB bridge never gives microamps: the bridge eats milliam
 
 So for months of autonomy take a board without a bridge, or move the bridge out of the node after debugging.
 
-The detailed sleep and supervision map lives in [sleep and watchdog](../../../../ARDUINO-Reference/UA/07-Timeri-Son/02-Son-WDT.md): watchdog periods and restart on hangs are there.
+The detailed sleep and supervision map lives in [sleep and watchdog]: watchdog periods and restart on hangs are there.
 
 ```cpp
 // Сон між вимірами: прокинутись по сторожу, виміряти, заснути
@@ -396,4 +396,4 @@ The third trip is already the field: with a spare cell and a way to pull logs wi
 - [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
 - [board overview]
 - [VIN power supply]
-- [sleep and watchdog](../../../../ARDUINO-Reference/UA/07-Timeri-Son/02-Son-WDT.md)
+- [sleep and watchdog]

@@ -296,7 +296,7 @@ flowchart TB
 | --- | --- | --- |
 | GPIO0 (Classic/S2/S3) / GPIO8 (C3/C6/C5) / GPIO0 (P4) | **LOW** (button pressed) | **HIGH** (pull-up 10k) |
 | EN | rising edge 0 to 1 (reset released) | rising edge 0 to 1 |
-| U0TXD (GPIO1) | ROM prints `waiting for download` | ROM prints `boot:0x13 ... SPI boot` |
+| U0TXD (GPIO1) | ROM prints `waiting for download` | ROM prints `boot:0x13... SPI boot` |
 | What ROM listens to | UART0 115200 + USB-Serial/JTAG (where present) | reads flash from 0x1000 (bootloader) |
 | esptool.py | `Connecting... chip sync ok` | `Timed out waiting for packet header` (normal! flash - only via download) |
 | Current | 30-60 mA stable | ripple 30 to 150 mA (bootloader loads code) |
@@ -350,7 +350,7 @@ espefuse.py --port /dev/ttyUSB0 dump
 # рівень на піні ігнорується, дивись тільки eFuse!
 ```
 
-Secure boot link: with secure boot on, ROM ignores part of strapping (downgrade-to-download protection). A board that after enabling secure boot "stopped flashing" - this is normal behavior, not a defect. See [08-Security-Hardening](../../../../ESP32-Reference/UA/15-Protokoli/08-Security-Hardening.md) and [Boot and flashing](../../../../ESP32-Reference/UA/09-Proshivka/04-Esptool-Flash.md).
+Secure boot link: with secure boot on, ROM ignores part of strapping (downgrade-to-download protection). A board that after enabling secure boot "stopped flashing" - this is normal behavior, not a defect. See [EN/15-Protocols/06-Secure-Boot.en] and [Boot and flashing](../../../../ESP32-Reference/UA/09-Proshivka/04-Esptool-Flash.md).
 
 ## RC calculation of EN delay (why 1 uF and not 10 uF)
 

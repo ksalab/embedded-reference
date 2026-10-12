@@ -190,7 +190,7 @@ flowchart TB
     VoltQ -->|Yes| Bus[View buses with analyzer]
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -201,7 +201,7 @@ flowchart TB
 | 5 | Unknown board power with no current limit | First mistake becomes the board last | First power-on through a hundred-milliamp limit |
 | 6 | Trust in a box cable with no check | Sags give phantom reboots | Match two cables with a USB tester under load |
 
-## Official Sources
+## Official sources
 
 - [Arduino documentation - measure and power basics](https://docs.arduino.cc/learn/electronics/power/) - voltages, currents, board power choice.
 - [Sigrok PulseView - free analyzer program](https://sigrok.org/wiki/PulseView) - captures, bus decoders, supported instruments.

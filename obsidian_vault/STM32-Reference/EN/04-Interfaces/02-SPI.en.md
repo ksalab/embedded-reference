@@ -374,5 +374,5 @@ flowchart TB
 - [[04-Interfaces/03-I2C.en | I2C bus]]
 - [[EN/09-Firmware/01-CubeIDE-CubeMX.en| CubeMX setup]]
 - [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
-- [[03-GPIO/01-GPIO-rezhimi.en | GPIO modes]]
-- [[03-GPIO/02-AF-maping.en | Alternate function mapping]]
+- [[EN/03-GPIO/01-GPIO-Modes.en| GPIO modes]]
+- [[EN/03-GPIO/02-AF-Mapping.en| Alternate function mapping]]

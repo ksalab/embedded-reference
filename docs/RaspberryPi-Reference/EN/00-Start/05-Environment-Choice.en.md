@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Choice by branches: Linux models - Pi OS/Ubuntu/DietPi, Pico - C SDK or MicroPython.*
 
 > [!tip] What this note is
-> Software for hardware: which OS for which board, when Lite with no desktop is enough, how to flash Pico. After choice - flashing: Imager flashing. Boards: [board comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md).
+> Software for hardware: which OS for which board, when Lite with no desktop is enough, how to flash Pico. After choice - flashing: Imager flashing. Boards: [board comparison].
 
 ## 1. Goal
 
@@ -141,10 +141,10 @@ Backup check:
 ## 9. Related notes
 
 - [Imager flashing](../../../../RaspberryPi-Reference/UA/09-Proshivka/01-Imager-Headless.md) - first flash step by step.
-- [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md) - system after start.
+- [OS setup] - system after start.
 - [Pico family](../../../../RaspberryPi-Reference/UA/14-Devboards/03-Pico-W-Family.md) - microcontroller boards.
 - [pin header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md) - first code.
-- [board comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md) - hardware for software.
+- [board comparison] - hardware for software.
 
 ## Official sources
 

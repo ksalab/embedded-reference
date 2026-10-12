@@ -151,5 +151,5 @@ Check: `st-info --probe` (chip ID + flash size), then a CubeMX blink, then a tes
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [DevKit boards](../../../../STM32-Reference/UA/00-Start/04-Devkit-plati.md)
-- [Environment choice](../../../../STM32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ DevKit boards]
+- [ Environment choice]

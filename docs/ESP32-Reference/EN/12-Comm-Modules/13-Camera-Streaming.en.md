@@ -5,6 +5,8 @@ tags: [esp32, camera, ov2640, mjpeg, rtsp, qr, apriltag, telegram, timelapse, ps
 category: Moduli
 lang: en
 date-created: 2026-09-28
+date: 2026-10-10
+original: 12-Moduli-zvyazku/13-Camera-Streaming.md
 ---
 
 # Камера OV2640 - MJPEG-стрим, RTSP, QR/AprilTag, Timelapse, Telegram
@@ -129,7 +131,7 @@ ESP32 шле фото via Bot API `sendPhoto` (multipart/form-data, ліміт ~
 → `/capture` → HTTPS POST on `https://api.telegram.org/bot<token>/sendPhoto`.
 Нюанси: потрібен коректний час (NTP, інакше TLS рветься), токен зберігати in NVS,
 but not in коді; for відео - `sendVideo` not тягне MJPEG, тільки MP4 (ESP32 not кодує -
-not використовувати). Сповіщення/голосові - див. [07-Notify-Voice](../../../../ESP32-Reference/UA/15-Protokoli/07-Notify-Voice.md).
+not використовувати). Сповіщення/голосові - див. [EN/15-Protocols/02-Notify-Voice.en].
 
 ## Вимоги освітлення and фокуса
 
@@ -377,6 +379,15 @@ while True:
 11. **Сторожевой task watchdog in стрим-циклі** → немає поступок планувальнику at RTSP +
     детекція in одному ядрі. Детекцію - окремим таском with паузою, див. example вище.
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| fb alloc failed or reboot on UXGA | No PSRAM or PSRAM off in menuconfig | Use S3R8+ board, enable octal PSRAM 80 MHz, add bulk cap |
+| Brownout at capture | WiFi plus sensor peak sags rail | 100 uF cap on 3V3, short thick power wires, lower TX power |
+| Blurry dark frames | Bad focus or weak light, wrong exposure | Refocus lens, add light, fix exposure and white balance |
+| MJPEG stream stalls | WiFi bandwidth below frame rate needs | Lower resolution or fps, use wired-adjacent AP, check RSSI |
+| Telegram photo rejected | File over bot size limit or wrong format | Downscale to 1280 max, send JPEG under 10 MB |
 ## Official sources
 
 - [OV2640 - OmniVision](https://www.ovt.com/sensors/OV2640) - 2 Мп, DVP, формати виводу.
@@ -392,7 +403,7 @@ while True:
 - [Home](../../../../ESP32-Reference/Home.md)
 - [04-RS485-CAN-Ethernet-Kamera](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/04-RS485-CAN-Ethernet-Kamera.md)
 - [Файлові системи](../../../../ESP32-Reference/UA/08-Pamyat/02-Filesystem.md)
-- [07-Notify-Voice](../../../../ESP32-Reference/UA/15-Protokoli/07-Notify-Voice.md)
+- [EN/15-Protocols/02-Notify-Voice.en]
 - [12-RC-Protocols](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/12-RC-Protocols.md)
 - [12-LVGL-SquareLine](../../../../ESP32-Reference/UA/11-Vivid/12-LVGL-SquareLine.md)
 - [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md)

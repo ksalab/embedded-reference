@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Term map: hardware (SoC to board to HAT), interfaces (GPIO to buses to CSI/DSI), software (OS to libraries to cloud).*
 
 > [!tip] What this note is
-> Base dictionary: each term in one paragraph linked to a note. Read it on the first meeting with an unknown word. Entry: [how to use](../../../../RaspberryPi-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md), next: [board comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md).
+> Base dictionary: each term in one paragraph linked to a note. Read it on the first meeting with an unknown word. Entry: [how to use], next: [board comparison].
 
 ## 1. Goal
 
@@ -42,10 +42,10 @@ flowchart TB
 
 | Term | Meaning | Note |
 | --- | --- | --- |
-| SoC | crystal with CPU+GPU+memory (BCM2712, RP2040) | [SoC overview](../../../../RaspberryPi-Reference/UA/01-Hardware/01-SoC-Oglyad.md) |
+| SoC | crystal with CPU+GPU+memory (BCM2712, RP2040) | [ SoC overview] |
 | BCM2712 | Pi 5 chip: 4xA76 2.4 GHz, VideoCore VII | [BCM2712 and Pi 5](../../../../RaspberryPi-Reference/UA/01-Hardware/02-BCM2712-Pi5.md) |
 | RP2040/RP2350 | Pico microcontrollers: M0+/M33, PIO | [RP2040 and RP2350](../../../../RaspberryPi-Reference/UA/01-Hardware/03-RP2040-RP2350.md) |
-| Pi 5/4/Zero/Pico | board models of various classes | [Pi 5 flagship](../../../../RaspberryPi-Reference/UA/14-Devboards/01-Pi5-Flagman.md) |
+| Pi 5/4/Zero/Pico | board models of various classes | [ Pi 5 flagship] |
 | CM4/CM5 | Compute Module for embedding | [CM modules](../../../../RaspberryPi-Reference/UA/14-Devboards/05-CM4-CM5.md) |
 | HAT | board for the 40-pin header with EEPROM | [Sense sensor board](../../../../RaspberryPi-Reference/UA/12-Moduli-zvyazku/01-Sense-HAT.md) |
 | PoE HAT | power over Ethernet cable | [PoE power](../../../../RaspberryPi-Reference/UA/02-Zhivlennya/02-PoE-HAT.md) |
@@ -60,17 +60,17 @@ flowchart TB
 | SPI | fast bus for displays and ADCs | [I2C/SPI/UART buses](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md) |
 | UART | serial port, console and modems | I2C/SPI/UART buses |
 | USB-CDC | virtual COM port of Pico and programmers | buses and USB |
-| PWM | PWM: brightness, servo, sound | [PWM and interrupts](../../../../RaspberryPi-Reference/UA/03-GPIO/02-PWM-Pererivannya.md) |
+| PWM | PWM: brightness, servo, sound | [ PWM and interrupts] |
 | PIO | RP2040 programmable engines (hardware bit-bang) | [RP2040 and RP2350](../../../../RaspberryPi-Reference/UA/01-Hardware/03-RP2040-RP2350.md) |
 
 ## 4. Cameras, displays, sound
 
 | Term | Meaning | Note |
 | --- | --- | --- |
-| CSI | camera flex cable (not USB!) | [CSI camera](../../../../RaspberryPi-Reference/UA/10-Sensori/06-Kamera-CSI.md) |
-| DSI | display flex cable | [DSI/HDMI displays](../../../../RaspberryPi-Reference/UA/11-Vivid/01-DSI-HDMI-Displeyi.md) |
-| Picamera2 | camera library of the new stack | [CSI camera](../../../../RaspberryPi-Reference/UA/10-Sensori/06-Kamera-CSI.md) |
-| HDMI | monitor/TV, sound too | [DSI/HDMI displays](../../../../RaspberryPi-Reference/UA/11-Vivid/01-DSI-HDMI-Displeyi.md) |
+| CSI | camera flex cable (not USB!) | [ CSI camera] |
+| DSI | display flex cable | [ DSI/HDMI displays] |
+| Picamera2 | camera library of the new stack | [ CSI camera] |
+| HDMI | monitor/TV, sound too | [ DSI/HDMI displays] |
 | I2S | digital audio to DACs/microphones | [audio and HAT](../../../../RaspberryPi-Reference/UA/11-Vivid/03-Audio-HAT.md) |
 
 ## 5. Power supply and memory
@@ -87,10 +87,10 @@ flowchart TB
 
 | Term | Meaning | Note |
 | --- | --- | --- |
-| Raspberry Pi OS | official OS (Bookworm) | [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md) |
+| Raspberry Pi OS | official OS (Bookworm) | [ OS setup] |
 | Imager | out of box SD flasher | [Imager flashing](../../../../RaspberryPi-Reference/UA/09-Proshivka/01-Imager-Headless.md) |
 | Headless | no monitor, over SSH | [Imager flashing](../../../../RaspberryPi-Reference/UA/09-Proshivka/01-Imager-Headless.md) |
-| Device Tree | hardware description for the kernel (config.txt) | [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md) |
+| Device Tree | hardware description for the kernel (config.txt) | [ OS setup] |
 | gpiozero | Python GPIO library | [pin header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md) |
 | MQTT | telemetry protocol | [MQTT protocol](../../../../RaspberryPi-Reference/UA/15-Protokoli/01-MQTT.md) |
 | HAT EEPROM | ID chip of the expansion board | [HAT and EEPROM](../../../../RaspberryPi-Reference/UA/03-GPIO/03-HAT-EEPROM.md) |
@@ -145,9 +145,9 @@ flowchart TB
 
 ## 9. Related notes
 
-- [how to use](../../../../RaspberryPi-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md) - reading paths.
-- [board comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md) - hardware choice.
-- [environment choice](../../../../RaspberryPi-Reference/UA/00-Start/05-Vibir-seredovischa.md) - software choice.
+- [how to use] - reading paths.
+- [board comparison] - hardware choice.
+- [environment choice] - software choice.
 - [home map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## Official sources

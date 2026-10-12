@@ -13,7 +13,7 @@ date: 2026-10-08
 
 ![](../../../../ESP32-Reference/assets/img/placeholder.png)
 
-Process: start [Home](../../../../ESP32-Reference/Home.md), pins [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md), power [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) + [01-Buck-Boost-Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md), levels [02-Level-Shifters](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shifters.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), datasheets [04-Datasheet-Links](../../../../ESP32-Reference/UA/99-Dodatki/04-Datasheet-Links.md).
+Process: start [Home](../../../../ESP32-Reference/Home.md), pins [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md), power [EN/02-Power-Supply/01-Power-Rails.en] + [01-Buck-Boost-Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md), levels [02-Level-Shifters](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shifters.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), datasheets [04-Datasheet-Links](../../../../ESP32-Reference/UA/99-Dodatki/04-Datasheet-Links.md).
 
 ## 1. First DevKit Launch (5 min)
 
@@ -78,8 +78,8 @@ Process: start [Home](../../../../ESP32-Reference/Home.md), pins [01-Pinout-tabl
 - [ ] Partition with OTA, firmware version in EEPROM/NVS, logging in Serial + file
 - [ ] WDT enabled, brownout 2.7V, code survives reboot (state in RTC/NVS)
 - [ ] Case: ventilation, antenna outside, wires secured, moisture protection if needed
-- [ ] Documentation: schematic, pinout sheet, WiFi password, where .bin firmware is stored
-- [ ] Spare ESP32 module + flashed .bin on flash drive next to product
+- [ ] Documentation: schematic, pinout sheet, WiFi password, where.bin firmware is stored
+- [ ] Spare ESP32 module + flashed.bin on flash drive next to product
 
 ## 8. Batch Check (batch 10+ pcs, before shipping!)
 
@@ -99,7 +99,7 @@ Process: start [Home](../../../../ESP32-Reference/Home.md), pins [01-Pinout-tabl
 - [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md)
 - [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md)
 - [04-Datasheet-Links](../../../../ESP32-Reference/UA/99-Dodatki/04-Datasheet-Links.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
+- [EN/02-Power-Supply/01-Power-Rails.en]
 - [01-Buck-Boost-Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md)
 - [03-Sleep-ULP](../../../../ESP32-Reference/UA/07-Timeri-Son/03-Sleep-ULP.md)
 

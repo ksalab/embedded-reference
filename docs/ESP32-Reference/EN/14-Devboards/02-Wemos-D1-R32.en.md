@@ -122,7 +122,7 @@ Blink example: the built-in LED on D13 (GPIO18 on some revisions) may be missing
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-wemos-d1r32.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-wemos-d1r32.png)
 
 ```text
 [DC 7.5V (краще) / USB 5V] ──► стаб. 5V ──► AMS1117 ──► 3.3V (ESP32)

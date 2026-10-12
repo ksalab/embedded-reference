@@ -165,7 +165,7 @@ flowchart TB
 
 The wiring reads top to bottom. Fuse first, voltage set before board connection, relays fed before the module separately. Analog readings are averaged.
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -176,7 +176,7 @@ The wiring reads top to bottom. Fuse first, voltage set before board connection,
 | 5 | No fuse | A short melts wires | 2 A fuse on supply plus |
 | 6 | Five volts into the board power jack | Board never starts right | Five volts into the 5V pin or USB |
 
-## Official Sources
+## Official sources
 
 - [LM2596 datasheet (Texas Instruments)](https://www.ti.com/product/LM2596) - currents, efficiency, typical buck converter wiring.
 - [Arduino power guide](https://docs.arduino.cc/learn/electronics/power-pins/) - board power pins and current limits.

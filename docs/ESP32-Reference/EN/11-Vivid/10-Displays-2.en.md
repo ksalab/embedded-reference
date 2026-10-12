@@ -1,5 +1,5 @@
 ---
-description: Displays 2; shows schematics, code and tables.
+description: Covers SPI TFT displays, OLED controllers, expansion drivers and UART smart HMI panels for ESP32; explains wiring, libraries and example code with comparison tables.
 title: Displays 2 - TFT SPI, SH1106/SSD1309, HX8357, TM1638, HT16K33, Smart HMI
 tags: [esp32, display, tft, st7735, sh1106, ssd1309, hx8357, tm1638, ht16k33, hmi, spi, i2c, uart]
 category: Vivid
@@ -14,119 +14,119 @@ date: 2026-10-08
 
 ## Purpose
 
-Роwithширений overview displayних modules for ESP32: кольороinand TFT at SPI (ST7735 1.8", HX8357 3.5"),
-monoнand OLED-Controllerи SH1106 та SSD1309 (чим inandдрandwithняються on SSD1306),
-LED-Controllerи with кнопками TM1638 and I2C-матричний driver HT16K33,
-but also роwithумнand UART-дисплеї DWIN / TJC (TJC - клон Nextion) / Stone with inласним HMI-редактором.
-Баwithоinий OLED SSD1306 - see [OLED SSD1306](../../../../ESP32-Reference/UA/11-Vivid/01-OLED-SSD1306.md), TFT/EPaper - [TFT LCD Epaper](../../../../ESP32-Reference/UA/11-Vivid/02-TFT-LCD-Epaper.md),
-7-сегментнand MAX7219/TM1637 - [MAX7219 TM1637 74HC595](../../../../ESP32-Reference/UA/11-Vivid/05-MAX7219-TM1637-74HC595.md), Nextion/LCD2004 - [DFPlayer MAX98357 Nextion LCD2004](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md).
+Extended overview of display modules for ESP32: colour TFT over SPI (ST7735 1.8", HX8357 3.5"),
+mono OLED controllers SH1106 and SSD1309 (how they differ from SSD1306),
+LED controllers with TM1638 buttons and I2C matrix driver HT16K33,
+but also smart UART displays DWIN / TJC (TJC - Nextion clone) / Stone with own HMI editor.
+Basic OLED SSD1306 - see [OLED SSD1306](../../../../ESP32-Reference/UA/11-Vivid/01-OLED-SSD1306.md), TFT/EPaper - [TFT LCD Epaper](../../../../ESP32-Reference/UA/11-Vivid/02-TFT-LCD-Epaper.md),
+7-segment MAX7219/TM1637 - [MAX7219 TM1637 74HC595](../../../../ESP32-Reference/UA/11-Vivid/05-MAX7219-TM1637-74HC595.md), Nextion/LCD2004 - [DFPlayer MAX98357 Nextion LCD2004](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md).
 
 ## Characteristics
 
-| module | Дandагоtoль / resolution | Інтерфейс | power supply / логandка | Особлиinandсть |
+| Module | Diagonal / resolution | Interface | power / logic | Feature |
 | --- | --- | --- | --- | --- |
-| ST7735 1.8" TFT | 1.8", 128×160, 18-бandт (262144 кольори) | SPI 4-wire + DC/RES/CS, слот microSD | 3.3 in (модулand with LDO), логandка 3.3 in OK | library TFT_eSPI, шinидкий фреймbuffer |
-| SH1106 1.3" OLED | 1.3", 128×64 mono | I2C (address 0x3C/0x3D) | 3.3 in | 132×64 GDDRAM withand shiftом 2 px - потрandбен сinandй driver! |
-| SSD1309 2.42" OLED | 2.42", 128×64 mono | SPI / I2C (перемички BS1/BS2) | 3.3 in | Бandльший екран, withоinнandшнandй charge-pump, driver окремий on SSD1306 |
-| HX8357 3.5" TFT | 3.5", 320×480, 16-бandт | SPI або 8/16-бandт parallel | 3.3 in, underсinandтка ~100-150 мА | Великий екран, потрandбен PSRAM/спрайт-buffer |
-| TM1638 | 8×7-seg + 8 LED + 8 кнопок | 3-wire (STB/CLK/DIO) | 3.3-5 in | Все in одному чипand: andндикацandя + клаinandатура |
-| HT16K33 | LED-матрицand 8×8 / 16×8, 7-seg up to 8 цифр | I2C (адреси 0x70-0x77) | 3.3-5 in | Апаратnot мультиплексуinання + димandнг 1/16, interrupt INT |
-| DWIN / TJC / Stone | 2.4"-7.0" TFT with тачем | UART (TTL, typically 115200) | 5 in окремий PSU | GUI малюється in HMI-редакторand, ESP32 лише шле команди |
+| ST7735 1.8" TFT | 1.8", 128x160, 18-bit (262144 colours) | SPI 4-wire + DC/RES/CS, microSD slot | 3.3 V (module with LDO), 3.3 V logic OK | TFT_eSPI library, fast framebuffer |
+| SH1106 1.3" OLED | 1.3", 128x64 mono | I2C (address 0x3C/0x3D) | 3.3 V | 132x64 GDDRAM with 2 px shift - needs own driver! |
+| SSD1309 2.42" OLED | 2.42", 128x64 mono | SPI / I2C (BS1/BS2 jumpers) | 3.3 V | Bigger screen, external charge-pump, driver separate from SSD1306 |
+| HX8357 3.5" TFT | 3.5", 320x480, 16-bit | SPI or 8/16-bit parallel | 3.3 V, backlight ~100-150 mA | Large screen, needs PSRAM/sprite buffer |
+| TM1638 | 8x7-seg + 8 LEDs + 8 buttons | 3-wire (STB/CLK/DIO) | 3.3-5 V | All in one chip: indication + keyboard |
+| HT16K33 | LED matrix 8x8 / 16x8, 7-seg up to 8 digits | I2C (addresses 0x70-0x77) | 3.3-5 V | Hardware multiplexing + 1/16 dimming, INT interrupt |
+| DWIN / TJC / Stone | 2.4"-7.0" TFT with touch | UART (TTL, typically 115200) | 5 V separate PSU | GUI drawn in HMI editor, ESP32 only sends commands |
 
-> SH1106 ≠ SSD1306: in SH1106 сторandнкоinа addrцandя 132×64, so driver SSD1306 дає shift картинки at 2 px.
-> SSD1309 - окремий controller for inеликих OLED 2.42", сумandсностand with SSD1306 nothas at рandinнand andнandцandалandwithацandї.
+> SH1106 is not SSD1306: SH1106 has page addressing 132x64, so SSD1306 driver shifts image by 2 px.
+> SSD1309 is a separate controller for large 2.42" OLEDs, no SSD1306 compat at init level.
 
 ## Легенда pinandin модуля
 
-### ST7735 1.8" TFT (SPI, типоinий module with microSD)
+### ST7735 1.8" TFT (SPI, typical module with microSD)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
 | 1 | VCC | power supply input | 3V3 (або 5V if is LDO) | recommended 3.3 in |
 | 2 | GND | ground | GND | common ground |
 | 3 | CS (TFT_CS) | input CS, active low | GPIO5 | Chip Select дисплея |
 | 4 | RESET (RST) | input reset | GPIO4 (будь-which GPIO) | hardware скид, active low |
-| 5 | A0 / DC | input цифроinий | GPIO2 (будь-which GPIO) | Data/Command: HIGH = data, LOW = команда |
+| 5 | A0 / DC | digital input | GPIO2 (any GPIO) | Data/Command: HIGH = data, LOW = command |
 | 6 | SDA / MOSI | input SPI | GPIO23 (VSPI MOSI) | ESP32 → display |
-| 7 | SCK | input SPI | GPIO18 (VSPI SCK) | Тактуinання up to 40 МГц |
-| 8 | LED (BL) | input power supply | 3V3 або GPIO through PWM | Пandдсinandтка ~50 мА, можto димити ШІМ |
-| 9 | SD_CS | input CS карти | GPIO13 (будь-which GPIO) | not use беwith карти - underтягти HIGH |
+| 7 | SCK | SPI input | GPIO18 (VSPI SCK) | Clocking up to 40 MHz |
+| 8 | LED (BL) | power input | 3V3 or GPIO via PWM | Backlight ~50 mA, can dim with PWM |
+| 9 | SD_CS | card CS input | GPIO13 (any GPIO) | unused without card - pull HIGH |
 
 ### SH1106 1.3" OLED (I2C, 4-pin)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | power supply input | 3V3 | Тandльки 3.3 in |
+| 1 | VCC | power supply input | 3V3 | 3.3 V only |
 | 2 | GND | ground | GND | common ground |
-| 3 | SCL | input I2C | GPIO22 | 400 кГц, pull-up at модулand |
-| 4 | SDA | input/output I2C | GPIO21 | 400 кГц, pull-up at модулand |
+| 3 | SCL | I2C input | GPIO22 | 400 kHz, pull-up on module |
+| 4 | SDA | I2C input/output | GPIO21 | 400 kHz, pull-up on module |
 
-> Вandдмandннandсть on SSD1306 - сторandнкоinа addrцandя: GDDRAM 132×64, inидимand 128×64 withand shiftом 2 колонки.
+> Difference from SSD1306 - page addressing: GDDRAM 132x64, visible 128x64 with 2-column shift.
 > driver: `U8G2_SH1106_128X64_NONAME_F_HW_I2C`, `Adafruit_SH110X`. address та ж: 0x3C (SA0=0) / 0x3D (SA0=1).
 
 ### SSD1309 2.42" OLED (SPI/I2C, перемички BS1/BS2)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | power supply input | 3V3 | Логandка and паnotль 3.3 in |
+| 1 | VCC | power supply input | 3V3 | Logic and panel 3.3 V |
 | 2 | GND | ground | GND | common ground |
 | 3 | SCL / SCK | input | GPIO22 (I2C) або GPIO18 (SPI) | depends on BS1/BS2 |
 | 4 | SDA / MOSI | input/output | GPIO21 (I2C) або GPIO23 (SPI) | I2C-address 0x3C |
 | 5 | RES | input reset | GPIO4 | Active low |
-| 6 | DC | input цифроinий | GPIO2 | Тandльки in SPI-режимand |
-| 7 | CS | input CS | GPIO5 | Тandльки in SPI-режимand, in I2C - at GND |
+| 6 | DC | digital input | GPIO2 | Only in SPI mode |
+| 7 | CS | CS input | GPIO5 | Only in SPI mode, in I2C - to GND |
 
 ### HX8357 3.5" TFT 320×480 (SPI-version)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | power supply input | 3V3 | Спожиinання with underсinandткою up to 150 мА |
-| 2 | GND | ground | GND | Тоinстand короткand wires |
+| 1 | VCC | power supply input | 3V3 | Consumption with backlight up to 150 mA |
+| 2 | GND | ground | GND | Thick short wires |
 | 3 | CS | input CS, active low | GPIO5 | Chip Select |
 | 4 | RESET | input reset | GPIO4 | Active low |
-| 5 | DC/RS | input цифроinий | GPIO2 | Data/Command |
+| 5 | DC/RS | digital input | GPIO2 | Data/Command |
 | 6 | MOSI | input SPI | GPIO23 | data ESP32 → display |
 | 7 | SCK | input SPI | GPIO18 | SPI 20-40 МГц |
-| 8 | LED/BL | input | 3V3 або PWM GPIO | Пandдсinandтка, можto ШІМ-димandнг |
-| 9 | MISO | output SPI | GPIO19 | Читання GRAM (опцandйно) |
-| 10 | T_CS | input CS тачу | GPIO15 | XPT2046, опцandйно |
-| 11 | T_IRQ | output interrupt | GPIO27 або NC | Дотик, опцandйно |
+| 8 | LED/BL | input | 3V3 or PWM GPIO | Backlight, can do PWM dimming |
+| 9 | MISO | SPI output | GPIO19 | GRAM read (optional) |
+| 10 | T_CS | touch CS input | GPIO15 | XPT2046, optional |
+| 11 | T_IRQ | interrupt output | GPIO27 or NC | Touch, optional |
 
 ### TM1638 (module with кнопками, LED and 7-сегментами)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | power supply input | 3V3 або 5V | Логandка толерантto up to 3.3 in |
+| 1 | VCC | power supply input | 3V3 or 5V | Logic tolerant to 3.3 V |
 | 2 | GND | ground | GND | common ground |
-| 3 | STB | input строб, active low | GPIO5 | Аtoлог CS |
-| 4 | CLK | input тактуinання | GPIO18 | Геnotрує ESP32 |
-| 5 | DIO | Дinоtoпрямлеto | GPIO23 | data + withчитуinання кнопок |
+| 3 | STB | strobe input, active low | GPIO5 | Analog of CS |
+| 4 | CLK | clock input | GPIO18 | Driven by ESP32 |
+| 5 | DIO | Bidirectional | GPIO23 | data + button read |
 
-### HT16K33 (I2C LED-driver, backpack-модулand)
+### HT16K33 (I2C LED driver, backpack module)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | power supply input | 3V3 або 5V | depends on LED-матрицand |
+| 1 | VCC | power supply input | 3V3 or 5V | depends on LED matrix |
 | 2 | GND | ground | GND | common ground |
 | 3 | SCL | input I2C | GPIO22 | 400 кГц |
 | 4 | SDA | input/output I2C | GPIO21 | Адреси 0x70-0x77 (перемички A0-A2) |
-| 5 | INT | output, active low | GPIO26 або NC | interrupt keyscan (тandльки inерсandї with клаinandатурою) |
+| 5 | INT | output, active low | GPIO26 or NC | keyscan interrupt (only versions with keyboard) |
 
-### Роwithумний display DWIN / TJC / Stone (UART HMI)
+### Smart display DWIN / TJC / Stone (UART HMI)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | VCC | power supply input | 5V окремий PSU 1-2 but | not on 5V-pinа DevKit for 5"+! |
-| 2 | GND | ground | GND | common with ESP32 обоin'яwithкоinо |
+| 1 | VCC | power supply input | 5V separate 1-2 A PSU | not from DevKit 5V pin for 5"+! |
+| 2 | GND | ground | GND | common with ESP32 mandatory |
 | 3 | TX (дисплея) | output UART | GPIO16 (RX2 ESP32) | Перехресно: TX→RX |
 | 4 | RX (дисплея) | input UART | GPIO17 (TX2 ESP32) | Перехресно: RX→TX, level 3.3 in OK |
 
-> TJC - сумandсний клон Nextion (той же редактор and protocol). Stone/DWIN - inласнand редактори,
-> protocol different. ESP32 GUI not малює - лише шле/atйhas команди per UART 115200.
+> TJC is a compatible Nextion clone (same editor and protocol). Stone/DWIN have own editors,
+> protocol differs. ESP32 does not draw GUI - only sends/receives commands over UART 115200.
 
 ## Wiring diagram
 
-| ESP32 | ST7735 (голоinний ex.) | SH1106 | TM1638 | HT16K33 | HMI-UART |
+| ESP32 | ST7735 (main ex.) | SH1106 | TM1638 | HT16K33 | HMI-UART |
 | --- | --- | --- | --- | --- | --- |
 | 3V3 | VCC | VCC | VCC | VCC | - (display on 5 in PSU) |
 | GND | GND | GND | GND | GND | GND (common!) |
@@ -140,8 +140,8 @@ but also роwithумнand UART-дисплеї DWIN / TJC (TJC - клон Nextio
 | GPIO16 | - | - | - | - | TX дисплея |
 | GPIO17 | - | - | - | - | RX дисплея |
 
-power supply: TFT-underсinandтка ST7735 ~50 мА, HX8357 ~100-150 мА - inистачає 3V3 DevKit;
-роwithумнand HMI 5"+ (up to 1-2 but) - тandльки окремий PSU 5 in, see [ Power Supply Rails].
+Power: ST7735 backlight ~50 mA, HX8357 ~100-150 mA - DevKit 3V3 is enough;
+smart 5"+ HMI (up to 1-2 A) - separate 5 V PSU only, see [ Power Supply Rails].
 bus SPI - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), I2C - [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md), UART - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md).
 
 ### ASCII-schem
@@ -211,7 +211,7 @@ graph LR
 ```
 
 ![](../../../../ESP32-Reference/assets/img/displays-2-tft-smart-scheme.png)
-*Рис. wiring ST7735 per SPI, SH1106 per I2C, TM1638/HT16K33 та UART HMI-дисплея. Мandсце under схему - see ![](assets/README).*
+*Fig. wiring ST7735 over SPI, SH1106 over I2C, TM1638/HT16K33 and UART HMI display. Space below schematic - see ![](assets/README).*
 
 ## Code ESP-IDF
 
@@ -397,24 +397,24 @@ if hmi.any():
 
 ## Common issues
 
-1. **SH1106 with driverом SSD1306** → img withсунута at 2 px / смandття. Використати `U8G2_SH1106_...` або `Adafruit_SH110X`.
-2. **SSD1309 andнandцandалandwithують as SSD1306** → чорний екран. SSD1309 has сinandй init-sequence (charge-pump, COM-конфandг) and BS-перемички режиму.
-3. **TFT_eSPI беwith User_Setup** → white/чорний екран. Пandни CS/DC/RST and driver withадаються in `User_Setup.h`, but not in скетчand.
-4. **HX8357 беwith bufferа** → мерехтandння/поinandльнandсть. Використати спрайт in PSRAM або DMA, оноinлюinати тandльки withмandnotнand withони.
-5. **TM1638 читають as SPI** → кнопки not працюють. DIO дinоtoпрямлеto: before читанням переinести pin in INPUT.
-6. **HT16K33 not стартує** → withабули `0x21` (oscillator on). Беwith нього display моinчить at праinильнandй адресand.
-7. **HMI беwith термandtoтора `FF FF FF`** → команда andгнорується. Кожto TJC/Nextion-команда withакandнчується трьома 0xFF.
-8. **HMI жиinлять on DevKit** → ребут at underсinandтцand. Екрани 5"+ їдять 1-2 but - окремий PSU 5 in + спandльний GND.
+1. **SH1106 with SSD1306 driver** → image shifted by 2 px / garbage. Use `U8G2_SH1106_...` or `Adafruit_SH110X`.
+2. **SSD1309 inited as SSD1306** → black screen. SSD1309 has own init sequence (charge-pump, COM config) and BS mode jumpers.
+3. **TFT_eSPI without User_Setup** → white/black screen. CS/DC/RST pins and driver are set in `User_Setup.h`, not in sketch.
+4. **HX8357 without buffer** → flicker/slowness. Use sprite in PSRAM or DMA, update only changed zones.
+5. **TM1638 read as SPI** → buttons dead. DIO is bidirectional: switch pin to INPUT before read.
+6. **HT16K33 does not start** → forgot `0x21` (oscillator on). Without it display silent at correct address.
+7. **HMI without `FF FF FF` terminator** → command ignored. Every TJC/Nextion command ends with three 0xFF.
+8. **HMI powered from DevKit** → reboot on backlight. 5"+ screens eat 1-2 A - separate 5 V PSU + common GND.
 9. **TX-TX / RX-RX in HMI** → тиша. UART перехресно: TX дисплея → RX ESP32 (GPIO16), RX дисплея ← TX ESP32 (GPIO17).
-10. **Антени/друкоinанand шлейфи TFT бandля WiFi** → смуги at екранand. Вandдnotсти шлейф on антени ESP32, up toдати 100 нФ withа powerм.
+10. **TFT flex cables near WiFi antenna** → stripes on screen. Move flex away from ESP32 antenna, add 100 nF on power.
 
 ## Official sources
 
-- [ST7735 1.8" TFT - сторandнка тоinару with фото (Adafruit)](https://www.adafruit.com/product/358) - 128×160, 18-бandт, microSD, EYESPI.
-- [ST7735 1.8" TFT - гайд with коup toм (Adafruit Learn)](https://learn.adafruit.com/1-8-tft-display) - Pinout, library, ex.и.
-- [TFT_eSPI - library with коup toм (GitHub Bodmer)](https://github.com/Bodmer/TFT_eSPI) - User_Setup, ST7735/HX8357, ex.и.
-- [HT16K33 LED Backpack - overview with коup toм (Adafruit Learn)](https://learn.adafruit.com/adafruit-led-backpack/overview) - матрицand, адреси 0x70-0x77, library.
-- [Роwithумнand HMI-дисплеї - редактор and protocol (Nextion)](https://nextion.tech/editor_guide/) - UART HMI, Instruction Set, Editor.
+- [ST7735 1.8" TFT - product page with photo (Adafruit)](https://www.adafruit.com/product/358) - 128x160, 18-bit, microSD, EYESPI.
+- [ST7735 1.8" TFT - guide with code (Adafruit Learn)](https://learn.adafruit.com/1-8-tft-display) - Pinout, library, ex.
+- [TFT_eSPI - library with code (GitHub Bodmer)](https://github.com/Bodmer/TFT_eSPI) - User_Setup, ST7735/HX8357, ex.
+- [HT16K33 LED Backpack - overview with code (Adafruit Learn)](https://learn.adafruit.com/adafruit-led-backpack/overview) - matrix, addresses 0x70-0x77, library.
+- [Smart HMI displays - editor and protocol (Nextion)](https://nextion.tech/editor_guide/) - UART HMI, Instruction Set, Editor.
 
 ## See also
 

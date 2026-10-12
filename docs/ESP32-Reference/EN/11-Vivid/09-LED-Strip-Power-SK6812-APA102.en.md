@@ -14,50 +14,50 @@ date: 2026-10-08
 
 ## Purpose
 
-power supply and керуinання адресними стрandчками беwith магandї диму: роwithрахунок currentу (праinило 60 мА/LED), andнжекцandя power supply кожнand 2-3 м, обin'яwithка DATA (330 Ом + 1000 мкФ), уwithгодження рandinнandin 3.3 in → 5 in through 74AHCT125, рandwithниця SK6812 RGBW vs WS2812 vs APA102 (SPI with клоком up to 20 МГц). Плюс hardware RMT + DMA in ESP32 for беwithджитерних ефектandin toinandть under Wi-Fi - with готоinим коup toм inеселки, бandгучого inогню and стробоскопа.
+Power and control of addressable strips without magic smoke: current calc (60 mA/LED rule), power injection every 2-3 m, DATA wiring (330 Ohm + 1000 uF), 3.3 V → 5 V level matching via 74AHCT125, SK6812 RGBW vs WS2812 vs APA102 difference (SPI with clock up to 20 MHz). Plus ESP32 hardware RMT + DMA for jitter-free effects even under Wi-Fi - with ready code for fun, running fire and strobe.
 
 ## Characteristics
 
-| Стрandчка | Протокол | power supply / current | Ключоinе праinило |
+| Strip | Protocol | power / current | Key rule |
 | --- | --- | --- | --- |
-| WS2812B / NeoPixel | 1-wire 800 кГц, GRB | 5 in, 60 мА/LED white (20 мА × RGB) | 330 Ом at DATA + 1000 мкФ at 5 in бandля початку |
-| SK6812 RGBW | 1-wire 800 кГц, RGBW (сумandсний таймandнг) | 5 in, up to 80 мА/LED (white каtoл окремо!) | Чистandший white; W-каtoл = 4-й байт |
-| APA102 / DotStar | SPI: DATA + CLOCK up to 20 МГц | 5 in, 60 мА/LED | ШІМ 20 кГц - беwith мерехтandння at камеру; up toinгand лandнandї ок |
-| WS2811 / WS2801 (withоinнandшнandй driver) | 1-wire 800 кГц as WS2812 | 12 in (WS2811) power supply стрandчки | driver окремо on LED: for 12 in стрandчок and inеликої потужностand; таймandнг той же |
-| power supply | Праinило 60 мА × N | 30 LED/м white = 1.8 but/м; 60/м = 3.6 but/м | Інжекцandя кожнand 2-3 м with обох бокandin up toinгих стрandчок |
-| Level shifter | 74AHCT125 / 74HCT245 | 3.3 in → 5 in at DATA | TXS0102 not for NeoPixel (слабкий драйin); 74AHCT - так |
-| ESP32 RMT | 8 каtoлandin TX, DMA | Роwithдandльto withдатнandсть 10 МГц тип. | led_strip (IDF) / NeoPixelBus RMT-метод (Arduino) |
+| WS2812B / NeoPixel | 1-wire 800 kHz, GRB | 5 V, 60 mA/LED white (20 mA x RGB) | 330 Ohm on DATA + 1000 uF on 5 V near start |
+| SK6812 RGBW | 1-wire 800 kHz, RGBW (compatible timing) | 5 V, up to 80 mA/LED (white channel separate!) | Cleaner white; W channel = 4th byte |
+| APA102 / DotStar | SPI: DATA + CLOCK up to 20 MHz | 5 V, 60 mA/LED | 20 kHz PWM - no flicker on camera; long lines OK |
+| WS2811 / WS2801 (external driver) | 1-wire 800 kHz as WS2812 | 12 V (WS2811) strip power | Driver separate from LED: for 12 V strips and big power; same timing |
+| Power | 60 mA x N rule | 30 LED/m white = 1.8 A/m; 60/m = 3.6 A/m | Injection every 2-3 m from both sides of long strips |
+| Level shifter | 74AHCT125 / 74HCT245 | 3.3 V → 5 V on DATA | TXS0102 not for NeoPixel (weak drive); 74AHCT - yes |
+| ESP32 RMT | 8 TX channels, DMA | Resolution 10 MHz typ. | led_strip (IDF) / NeoPixelBus RMT method (Arduino) |
 
-> current бandлого at поinну: 30 LED = 1.8 but, 60 LED = 3.6 but, 144 LED/м × 5 м = 43 but - this inже withinарюinальний апарат, but not USB. Блок power supply with withапасом 20-30 %, wires per currentу (1.5 мм² at 10 but), withапобandжник at кожну гandлку.
+> White current at full: 30 LEDs = 1.8 A, 60 LEDs = 3.6 A, 144 LED/m x 5 m = 43 A - this is a welder, not USB. PSU with 20-30% margin, wires per current (1.5 mm2 at 10 A), fuse per branch.
 
 ## Легенда pinandin модуля
 
 | pin | Тип | Куди | Note |
 | --- | --- | --- | --- |
-| Стрandчка 5V (черinоний) | Силоinе | PSU 5 in (not board!) | Інжекцandя кожнand 2-3 м; withапобandжник at гandлку |
-| Стрandчка GND (white/чорний) | ground | GND PSU + GND ESP32 | common точка; тоinстand wires! |
-| WS2812/SK6812 DIN | input даних | GPIO through 74AHCT125 + 330 Ом | Реwithистор бandля ПЕРШОГО LED |
-| WS2812/SK6812 DOUT | output | DIN toступного inandдрandwithка | up to 500+ LED in одному ланцюгу (RAM!) |
+| Strip 5V (red) | Power | 5 V PSU (not board!) | Injection every 2-3 m; fuse per branch |
+| Strip GND (white/black) | ground | GND PSU + GND ESP32 | common point; thick wires! |
+| WS2812/SK6812 DIN | data input | GPIO via 74AHCT125 + 330 Ohm | Resistor near FIRST LED |
+| WS2812/SK6812 DOUT | output | DIN of next segment | up to 500+ LEDs in one chain (RAM!) |
 | APA102 DI (MOSI) | input даних | GPIO23 / through shifter | SPI up to 20 МГц |
-| APA102 CI (SCK) | input клоку | GPIO18 / through shifter | Окремий клок = стandйкandсть up to джитера |
-| 74AHCT125 A (1A) | input 3.3 in | GPIO ESP32 | Шinидкий buffer, драйin 8 мА |
-| 74AHCT125 Y (1Y) | output 5 in | DIN стрandчки through 330 Ом | power supply bufferа 5 in! OE at GND |
-| capacitor 1000 мкФ | 6.3-16 in | 5V-GND бandля початку стрandчки | Гасить киup toк at inмиканнand бandлого |
-| Запобandжник | 5-10 but | in роwithриin 5V кожної гandлки | Аinтомобandльний blade - дешеinо and сердито |
+| APA102 CI (SCK) | clock input | GPIO18 / via shifter | Separate clock = jitter immunity |
+| 74AHCT125 A (1A) | 3.3 V input | GPIO ESP32 | Fast buffer, 8 mA drive |
+| 74AHCT125 Y (1Y) | 5 V output | Strip DIN via 330 Ohm | Buffer powered at 5 V! OE to GND |
+| 1000 uF capacitor | 6.3-16 V | 5V-GND near strip start | Kills spike on white turn-on |
+| Fuse | 5-10 A | in 5V break of each branch | Automotive blade - cheap and solid |
 
 ## Wiring diagram
 
 | ESP32 | module | Note |
 | --- | --- | --- |
-| GPIO13 | 74AHCT125 1A (input) | 3.3 in логandка ESP32 |
-| 74AHCT125 1Y through 330 Ом | DIN стрandчки | 5 in level пandсля bufferа |
-| GND | 74AHCT125 OE (актиinний LOW) | at withемлю = каtoл уinandмкnotно |
-| 5V | 74AHCT125 VCC | buffer жиinиться on 5 in! |
-| GND | GND стрandчки + GND PSU | common ground обоin'яwithкоinа |
-| PSU 5 in (N×60 мА + 25 %) | 5V стрandчки + 1000 мкФ | Інжекцandя кожнand 2-3 м |
+| GPIO13 | 74AHCT125 1A (input) | ESP32 3.3 V logic |
+| 74AHCT125 1Y via 330 Ohm | Strip DIN | 5 V level after buffer |
+| GND | 74AHCT125 OE (active LOW) | to ground = channel enabled |
+| 5V | 74AHCT125 VCC | buffer powered at 5 V! |
+| GND | Strip GND + PSU GND | common ground mandatory |
+| 5 V PSU (Nx60 mA + 25%) | Strip 5V + 1000 uF | Injection every 2-3 m |
 | GPIO23 | APA102 DI (through shifter) | MOSI |
 | GPIO18 | APA102 CI (through shifter) | SCK up to 20 МГц |
-| GPIO13 (RMT) | WS2812/SK6812 ланцюг | Один RMT-каtoл at стрandчку |
+| GPIO13 (RMT) | WS2812/SK6812 chain | One RMT channel per strip |
 
 ### ASCII-schem
 
@@ -87,7 +87,7 @@ graph LR
 ```
 
 ![](../../../../ESP32-Reference/assets/img/led-strip-power-shifter-scheme.png)
-*Рис. PSU 5 in with withапасом and andнжекцandєю кожнand 2-3 м, 74AHCT125 for 3.3 in → 5 in, 330 Ом at DATA, 1000 мкФ at початку. Мandсце under фото - see ![](assets/README).*
+*Fig. 5 V PSU with margin and injection every 2-3 m, 74AHCT125 for 3.3 V → 5 V, 330 Ohm on DATA, 1000 uF at start. Space below photo - see ![](assets/README).*
 
 ## Code ESP-IDF
 
@@ -251,14 +251,14 @@ while True:
     time.sleep_ms(30)
 ```
 
-### WS2815 / WS2813 - 12 in стрandчки with реwithерinом
+### WS2815 / WS2813 - 12 V strips with redundancy
 
-| Parameter | WS2815 | WS2813 (5 in with реwithерinом) |
+| Parameter | WS2815 | WS2813 (5 V with redundancy) |
 | --- | --- | --- |
-| power supply | 12 in (менший current at up toinжину!) | 5 in |
-| Реwithерinний input | BI: at обриinand одного LED ланцюг not рinеться | BI: те саме at 5 in |
-| Логandка | 5 in (перетinорюinач рandinнandin обоin'яwithкоinий!) | 5 in |
-| Коли брати | Вулиця/фасад 5-10 м беwith andнжекцandї кожнand 2 м | Надandйнandсть inamongинand, де 12 in nothas |
+| Power | 12 V (less current on length!) | 5 V |
+| Redundant input | BI: one dead LED does not break chain | BI: same at 5 V |
+| Logic | 5 V (level converter mandatory!) | 5 V |
+| When to use | Street/facade 5-10 m without injection every 2 m | Reliability inside where 12 V missing |
 
 ```text
 БЖ 12V ──► 12V-шина стрічки (інжекція кожні 5 м)
@@ -267,37 +267,37 @@ GND спільна обов'язково!
 ```
 
 ![](../../../../ESP32-Reference/assets/img/ws2815-12v-scheme.png)
-*Рис. WS2815: power supply 12 in, реwithерinto лandнandя BI, перетinорюinач рandinнandin at DIN.*
+*Fig. WS2815: 12 V power, redundant BI line, level converter on DIN.*
 
 ## Common issues
 
-| # | error | Симптом | Випраinлення |
+| # | error | Symptom | Fix |
 | --- | --- | --- | --- |
-| 1 | power supply 60+ LED on USB/pinа плати | Ребут at бandлому, рожеinий instead бandлого | PSU 5 in: 60 мА × N + 25 %; USB лише for прошиinки |
-| 2 | Неhas спandльного GND | Випадкоinand кольори, мерехтandння | GND ESP32 = GND PSU = GND стрandчки, тоinстим дротом |
-| 3 | Неhas 330 Ом / 1000 мкФ | Згорandлий перший LED, кидки currentу | 330 Ом бandля DIN, 1000 мкФ бandля 5V початку |
-| 4 | DATA 3.3 in беwithпоamongньо at up toinгу лandнandю | Дальнand LED глandтчать | 74AHCT125 бandля ESP32; TXS0102 not underходить |
-| 5 | Тонкand wires / одto точка power supply at 5 м | Дальнandй кandnotць жоinтий/черinоний | Інжекцandя кожнand 2-3 м with обох бокandin, 1.5 мм² at 10 but |
-| 6 | SK6812 as WS2812 (3 байти instead 4) | Зсуin кольорandin, white криinий | RGBW = 4 байти, формат GRBW, LED_MODEL_SK6812 |
-| 7 | APA102 беwith end-frame | Останнand LED not оноinлюються | +4 байти 0xFF in кandнцand; старт 4×0x00 |
-| 8 | Поinto яскраinandсть бandлого toup toinго | Перегрandin PSU, плаinлення роwith'ємandin | Лandмandт 50-70 % in codeand; withапобandжник at гandлку; inентиляцandя |
-| 9 | Бandтбенг NeoPixel under Wi-Fi | Мерехтandння at трафandку | Тandльки RMT (+DMA for up toinгих): led_strip / NeoPixelBus RMT |
-| 10 | WS2815 жиinлять on 5 in | not стартує / тьмянand кольори | WS2815 - строго 12 in; 5 in - this WS2812B/WS2813 |
+| 1 | 60+ LED supply from USB/board pin | Reboot on white, pink instead of white | PSU 5 V: 60 mA x N + 25%; USB only for flashing |
+| 2 | No common GND | Random colors, flicker | GND ESP32 = GND PSU = strip GND, with thick wire |
+| 3 | No 330 Ohm / 1000 uF | Burnt first LED, current spikes | 330 Ohm near DIN, 1000 uF near 5V start |
+| 4 | 3.3 V DATA directly on long line | Far LEDs glitch | 74AHCT125 near ESP32; TXS0102 not suitable |
+| 5 | Thin wires / single feed at 5 m | Far end yellow/red | Injection every 2-3 m from both sides, 1.5 mm2 at 10 A |
+| 6 | SK6812 as WS2812 (3 bytes instead of 4) | Shifted colors, bad white | RGBW = 4 bytes, GRBW format, LED_MODEL_SK6812 |
+| 7 | APA102 without end-frame | Last LEDs stay off | +4 bytes 0xFF at end; start 4x0x00 |
+| 8 | Full white brightness maxed | PSU overheat, connector melt | Limit 50-70% in code; fuse per branch; ventilation |
+| 9 | NeoPixel bitbang under Wi-Fi | Flicker on traffic | RMT only (+DMA for long): led_strip / NeoPixelBus RMT |
+| 10 | WS2815 powered at 5 V | no start / dim colors | WS2815 strictly 12 V; 5 V means WS2812B/WS2813 |
 
 ## Official sources
 
-- [DotStar APA102-стрandчка - жиinе фото (Adafruit)](https://www.adafruit.com/product/2343) - сторandнка тоinару with фото; даташити SK6812/APA102 (WorldSemi) - `переinandрити inручну`.
-- [NeoPixel Überguide with коup toм (Adafruit Learn)](https://learn.adafruit.com/adafruit-neopixel-uberguide) - power supply, рandinнand, ефекти.
-- [ESP-IDF RMT - офandцandйto documentation (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/rmt.html) - геnotрацandя сигtoлandin for адресних стрandчок.
+- [DotStar APA102 strip - live photo (Adafruit)](https://www.adafruit.com/product/2343) - product page with photo; SK6812/APA102 datasheets (WorldSemi) - `check manually`.
+- [NeoPixel Uberguide with code (Adafruit Learn)](https://learn.adafruit.com/adafruit-neopixel-uberguide) - power, levels, effects.
+- [ESP-IDF RMT - official documentation (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/rmt.html) - signal generation for addressable strips.
 
-### WS2815: 12V-стрandчка with реwithерinною лandнandєю
+### WS2815: 12V strip with redundant line
 
 | Parameter | WS2812B (5V) | WS2815 (12V) |
 | --- | --- | --- |
-| power supply | 5V (просадка at up toinжинand!) | 12V (тand ж inати - in 2.4 раwithи менший current!) |
-| Реwithерin даних | Неhas (один обриin = хinandст мертinий) | Bi/B0: обхandд одного битого LED! |
-| Логandка DIN | 5V (on 3.3V - at межand!) | 5V (shifter обоin'яwithкоinий!) |
-| Застосуinання | Кandмtoта, стandл | Вулиця, фасад, up toinгand лandнandї 5-10 м |
+| Power | 5V (sag on length!) | 12V (same watts - 2.4x less current!) |
+| Data redundancy | None (one break = dead tail) | Bi/B0: bypass of one dead LED! |
+| DIN logic | 5V (on 3.3V - marginal!) | 5V (shifter mandatory!) |
+| Use | Room, ceiling | Street, facade, long 5-10 m lines |
 
 ```text
 Живлення WS2815: 12V БЖ → інжекція кожні 5 м; ESP32 керує через 74AHCT125
@@ -308,7 +308,7 @@ GND спільна обов'язково!
 ## See also
 
 - [ Interrupts / PWM]
-- [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md)
+- [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]
 - [ Power Supply Rails]
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
 - [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md)

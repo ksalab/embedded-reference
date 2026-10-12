@@ -5,6 +5,8 @@ tags: [esp32, diy, instruments, ad9833, gm328, cd74hc4067, ds2482, sc16is750, w2
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/24-DIY-Instruments.md
 ---
 
 # DIY-прилади for ESP32 (AD9833, GM328, мультиплексори, Flash)
@@ -382,7 +384,7 @@ void app_main(void) {
 | # | Symptom | Cause | Solution |
 | --- | --- | --- | --- |
 | 1 | AD9833 виводить 0В або шуми | Невірне живлення (not 3.3В) | verify напругу on VDD, додати конденсатори 100нФ + 10мкФ біля чіпа |
-| 2 | Нечитабельний сигнал on OSC'ї | error in налаштуванні FSCTRL1/FSCTRL0 | Використати калькулятор частот with даташиту, verify    bits |
+| 2 | Нечитабельний сигнал on OSC'ї | error in налаштуванні FSCTRL1/FSCTRL0 | Використати калькулятор частот with даташиту, verify bits |
 | 3 | GM328 not визначній транзистор | Неправильне with'єднання Base/Emitter/Collector | Повипрямити підключення, verify datasheet транзистора |
 | 4 | GM328 показує β = 0 або дуже високий | Транзистор згорів (burnt-out) | verify on тестері токів або замінювати транзистор |
 | 5 | CD74HC4067 виводить "захоплює" всі канали | error in бітових налаштуваннях S0-S3 | verify послідовність бітів (LSB first), verify живлення мультиплексора |
@@ -398,7 +400,7 @@ void app_main(void) {
 | --- | --- | --- | --- |
 | 13 | Загальна SPI взаємодія (AD9833 + W25Q32 + DS2482) | Спільна SPI-bus without роздільних CS | Додати окремі CS pine for кожного пристроя, викликати `spi.begin()` один раз |
 | 14 | Перемикань між модулями перезавантажує ESP32 | Зворотній ток між модулями живлення | Встановіть ізольовані LDO for кожного модуля або використайте спільну 3.3V шину (common bus) with діодною ізоляцією |
-| 15 | MicroPython AD9833 import error | not вірна бібліотека або версія MicroPython | Використати `from machine import SPI, Pin` та руčne реєстрування, див. даташит AD9833 |
+| 15 | MicroPython AD9833 import error | wrong library or MicroPython version | Use `from machine import SPI, Pin` with manual registration, see the AD9833 datasheet |
 | 16 | CD74HC4067 пошкоджений сигнал on високих частотах | Погіршення мультиплексування on ВЧ | Зменшити частоту перемикання каналів, додати тригер Шмітта on вихід for очищення сигналу |
 | 17 | DS2482 sporadically reset ESP32 | Підтяжковий резистор on 1-Wire лінії занадто малий | Використати 4.7кΩ-10kΩ pull-up до 3.3V, verify довжину дроту |
 | 18 | SC16IS750 not визначається in MicroPython | Відсутність pull-up on SDA/SCL | Додати 10kΩ pull-up резистори on шині I2C |

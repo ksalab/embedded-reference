@@ -29,7 +29,7 @@ When to use MQTT:
 
 When NOT to use:
 
-- передача файлів/OTA-прошивок - for цього HTTP(S), див. [[15-Protocols/02-HTTP-WebSocket.en | 02-HTTP-WebSocket]];
+- передача файлів/OTA-прошивок - for цього HTTP(S), див. [[EN/15-Protocols/03-HTTP-Client.en| 02-HTTP-WebSocket]];
 - local discovery without a server - use mDNS for that, see [[15-Protocols/03-mDNS-NTP-TLS.en | 03-mDNS-NTP-TLS]];
 - разове entry WiFi-облікових - for цього provisioning, див. [[15-Protocols/04-Provisioning.en | Provisioning]];
 - повний хмарний пайплайн with графіками - див. [[15-Protocols/05-Cloud-Pipeline.en | 05-Cloud-Pipeline]].
@@ -337,7 +337,7 @@ while True:
 - [[08-Memory/03-OTA.en | OTA]] - тригер оновлення via топік `fw`
 - [[08-Memory/01-Partitions-NVS.en | NVS]] - зберігання ID вузла and MQTT-password
 - [[EN/99-Additions/02-Troubleshooting-FAQ.en| FAQ]] - діагностика обривів
-- [[15-Protocols/02-HTTP-WebSocket.en | HTTP/WebSocket]] - REST and дашборди
+- [[EN/15-Protocols/03-HTTP-Client.en| HTTP/WebSocket]] - REST and дашборди
 - [[15-Protocols/03-mDNS-NTP-TLS.en | mDNS/NTP/TLS]] - час for TLS, локальні імена
 - [[15-Protocols/04-Provisioning.en | Provisioning]] - entry WiFi without reflashing
 - [[15-Protocols/05-Cloud-Pipeline.en | Cloud-Pipeline]] - MQTT → Node-RED → InfluxDB → Grafana

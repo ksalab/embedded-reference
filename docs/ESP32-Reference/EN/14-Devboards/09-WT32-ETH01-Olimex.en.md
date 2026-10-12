@@ -134,7 +134,7 @@ ESP-IDF: `esp_eth` + `esp_netif` components, `ethernet/basic` example. ESPHome: 
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-wt32-eth01.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-wt32-eth01.png)
 
 ```text
 WT32-ETH01: [FTDI 3.3V] ─TX─► GPIO3 / ─RX─◄ GPIO1 / GND──►GND

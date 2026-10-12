@@ -27,7 +27,7 @@ date: 2026-10-08
 # Environment choice - ESP-IDF vs Arduino vs MicroPython vs PlatformIO
 
 > [!tip] 10-second chooser
-> Production/work - **ESP-IDF**. Fast prototype/Arduino background - **Arduino-core**. Learning/5-min sensor test - **MicroPython**. Many libraries/team - **PlatformIO**. Hardware details - [Chip comparison](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md) and [DevKit boards](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md), terms - [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md), structure - [How to use it](../../../../ESP32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md), map - [Home map](../../../../ESP32-Reference/Home.md).
+> Production/work - **ESP-IDF**. Fast prototype/Arduino background - **Arduino-core**. Learning/5-min sensor test - **MicroPython**. Many libraries/team - **PlatformIO**. Hardware details - [ Chip comparison] and [ DevKit boards], terms - [ Glossary], structure - [ How to use it], map - [Home map](../../../../ESP32-Reference/Home.md).
 >
 > [!warning] 3.3V in every toolchain!
 > No SDK saves GPIO from 5V. `digitalWrite()`/`gpio_set_level()`/`Pin.value()` drive a 3.3V pin. Describe sensors via the [Component template](../../../../ESP32-Reference/_templates/Component-Template.md) with level matching.
@@ -51,7 +51,7 @@ date: 2026-10-08
 
 | Task | Advice |
 | --- | --- |
-| Serial device, µA deep-sleep, OTA with rollback | ESP-IDF, see [C3/S3 chip choice](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md) |
+| Serial device, µA deep-sleep, OTA with rollback | ESP-IDF, see [ C3/S3 chip choice] |
 | Fast MQTT sensor, WS2812, servo | Arduino-core |
 | Probe an I2C address in 2 minutes | MicroPython `i2c.scan()` |
 | One code for ESP32 + STM32 + AVR | PlatformIO |
@@ -61,13 +61,13 @@ date: 2026-10-08
 
 | Toolchain | Commands |
 | --- | --- |
-| ESP-IDF | `git clone esp-idf; ./install.sh esp32s3; . export.sh; idf.py create-project demo; idf.py -p /dev/ttyUSB0 flash monitor` |
+| ESP-IDF | `git clone esp-idf;./install.sh esp32s3;. export.sh; idf.py create-project demo; idf.py -p /dev/ttyUSB0 flash monitor` |
 | Arduino IDE | Boards Manager → `esp32 by Espressif` → board `DOIT ESP32 DEVKIT V1` → port → Upload |
 | MicroPython | `esptool --chip esp32 write_flash -z 0x1000 firmware.bin` → `mpremote connect /dev/ttyUSB0 repl` → `import machine` |
 | PlatformIO | `pio project init -b esp32dev -o demo; pio run -t upload -t monitor` |
 
 > [!tip] esptool - the common base
-> All toolchains call esptool underneath. Base commands: `esptool.py --port /dev/ttyUSB0 chip_id`, `read_mac`, `write_flash -z 0x1000 fw.bin`, `erase_flash`. Drop speed to 460800/115200 on clones [DevKit](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md).
+> All toolchains call esptool underneath. Base commands: `esptool.py --port /dev/ttyUSB0 chip_id`, `read_mac`, `write_flash -z 0x1000 fw.bin`, `erase_flash`. Drop speed to 460800/115200 on clones [ DevKit].
 >
 > [!example] Same Blink in 3 SDKs
 >
@@ -99,7 +99,7 @@ date: 2026-10-08
 | Wi-Fi STA | `esp_wifi_set_mode(WIFI_MODE_STA)` | `WiFi.begin(ssid,pass)` | `WLAN(STA_IF).connect()` |
 | NVS | `nvs_set_i32()` | `Preferences.putInt()` | `config.json` file |
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/placeholder.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/placeholder.png)
 > Bench to verify all SDKs (one LED + button):
 
 | ESP32 DevKit | Part | Note |
@@ -113,8 +113,8 @@ date: 2026-10-08
 ## See also
 
 - [Home map](../../../../ESP32-Reference/Home.md)
-- [How to use it](../../../../ESP32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md)
-- [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md)
-- [Chip comparison](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
-- [DevKit boards](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md)
+- [ How to use it]
+- [ Glossary]
+- [ Chip comparison]
+- [ DevKit boards]
 - [Component template](../../../../ESP32-Reference/_templates/Component-Template.md)

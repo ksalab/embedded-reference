@@ -12,7 +12,7 @@ date: 2026-10-08
 # WebRadio and Streaming on ESP32 - Icecast/Shoutcast, AAC, Buffers, Squeezelite, Snapcast, AirPlay, DLNA, VS1053, PSRAM
 
 > [!info] Where this is
-> Sound base: [[04-Interfaces/04-I2S.en.md|I2S]], simpler solution [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|DFPlayer/MAX98357A]], codecs [[11-Vivid/13-Audio-Codecs.en.md|Audio-Codecs]], MP3/TTS [[11-Vivid/18-MP3-TTS-Amps.en.md|MP3/TTS/Amps]], start [[Home.en.md|Home]].
+> Sound base: [[04-Interfaces/04-I2S.en|I2S]], simpler solution [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|DFPlayer/MAX98357A]], codecs [[11-Vivid/13-Audio-Codecs.en|Audio-Codecs]], MP3/TTS [[11-Vivid/18-MP3-TTS-Amps.en|MP3/TTS/Amps]], start [[Home.en|Home]].
 
 ## Purpose
 
@@ -25,7 +25,7 @@ When to choose:
 - high-quality decode - VS1053 (hardware MP3 decoder);
 - large buffer for high-bitrate streams - PSRAM (8/16 MB).
 
-When NOT: just play local files - see [[11-Vivid/18-MP3-TTS-Amps.en.md]]; need codec/I2S sound - see [[11-Vivid/13-Audio-Codecs.en.md]].
+When NOT: just play local files - see [[11-Vivid/18-MP3-TTS-Amps.en]]; need codec/I2S sound - see [[11-Vivid/13-Audio-Codecs.en]].
 
 ## Key parameters
 
@@ -161,7 +161,7 @@ flowchart LR
 ```
 ## See also
 
-- [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|DFPlayer / MAX98357A]] - simpler audio.
-- [[11-Vivid/13-Audio-Codecs.en.md|Audio Codecs]] - I2S codec sound.
-- [[11-Vivid/18-MP3-TTS-Amps.en.md|MP3 / TTS / Amps]] - local MP3 and amplifiers.
-- [[04-Interfaces/04-I2S.en.md|I2S]] - digital sound interface.
+- [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|DFPlayer / MAX98357A]] - simpler audio.
+- [[11-Vivid/13-Audio-Codecs.en|Audio Codecs]] - I2S codec sound.
+- [[11-Vivid/18-MP3-TTS-Amps.en|MP3 / TTS / Amps]] - local MP3 and amplifiers.
+- [[04-Interfaces/04-I2S.en|I2S]] - digital sound interface.

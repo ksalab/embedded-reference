@@ -245,7 +245,7 @@ Tests with faked stamps near the top catch the error in a minute.
 
 Long-life nodes truly live to see overflow.
 
-Sleep with supervision is described in [sleep and watchdog](../../../../ARDUINO-Reference/UA/07-Timeri-Son/02-Son-WDT.md).
+Sleep with supervision is described in [sleep and watchdog].
 
 ## 6. Servo on timer one
 
@@ -399,4 +399,4 @@ A free loop lets all tasks combine.
 - [Home](../../../../ARDUINO-Reference/Home.md)
 - [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
 - [board interrupts]
-- [sleep and watchdog](../../../../ARDUINO-Reference/UA/07-Timeri-Son/02-Son-WDT.md)
+- [sleep and watchdog]

@@ -19,7 +19,7 @@ original: 01-Hardware/05-Moduli-WROOM-WROVER-MINI.md
 
 ## Purpose
 
-WROOM vs WROVER vs MINI-1 modules: comparison; selection table; antennas and current. Related topics: module supply - [power supply chains](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), memory - [Flash and PSRAM](../../../../ESP32-Reference/UA/01-Hardware/06-Flash-PSRAM.md), chip comparison - [chip comparison](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md). WROOM is the default with a PCB antenna; WROVER adds PSRAM for cameras and GUI; MINI-1 is tiny with U.FL for an external antenna.
+WROOM vs WROVER vs MINI-1 modules: comparison; selection table; antennas and current. Related topics: module supply - [ power supply chains], memory - [Flash and PSRAM](../../../../ESP32-Reference/UA/01-Hardware/06-Flash-PSRAM.md), chip comparison - [ chip comparison]. WROOM is the default with a PCB antenna; WROVER adds PSRAM for cameras and GUI; MINI-1 is tiny with U.FL for an external antenna.
 
 ## Comparison
 
@@ -135,7 +135,7 @@ void setup() {
 void loop() {}
 ```
 
-Related topics: module supply - [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), memory - [06-Flash-PSRAM](../../../../ESP32-Reference/UA/01-Hardware/06-Flash-PSRAM.md), chip comparison - [03-Porivnyannya-chipiv](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md).
+Related topics: module supply - [EN/02-Power-Supply/01-Power-Rails.en], memory - [06-Flash-PSRAM](../../../../ESP32-Reference/UA/01-Hardware/06-Flash-PSRAM.md), chip comparison - [EN/00-Start/03-Chip-Comparison.en].
 
 ### Board mounting and footprint compatibility
 
@@ -182,9 +182,9 @@ flowchart TB
 ## See also
 
 - [Home](../../../../ESP32-Reference/Home.md)
-- [03-Porivnyannya-chipiv](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
-- [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
+- [EN/00-Start/03-Chip-Comparison.en]
+- [EN/03-GPIO/01-GPIO-Overview.en]
+- [EN/03-GPIO/02-Strapping-Pins.en]
+- [EN/02-Power-Supply/01-Power-Rails.en]
 - [01-ESP32-Classic](../../../../ESP32-Reference/UA/01-Hardware/01-ESP32-Classic.md)
 - [EN/08-Antennas-RF.en]

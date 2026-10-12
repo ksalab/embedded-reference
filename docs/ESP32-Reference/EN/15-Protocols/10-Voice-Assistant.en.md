@@ -611,7 +611,7 @@ while True:
         # echo "<text>" | piper --model uk_UA-medium.onnx --output_file out.wav
 ```
 
-Детальніше про середовища: [Вибір середовища](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md).
+Детальніше про середовища: [Вибір середовища].
 
 ## typical errors
 

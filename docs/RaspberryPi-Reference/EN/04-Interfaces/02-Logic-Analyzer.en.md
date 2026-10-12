@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Analyzer listens to the bus in parallel: clone ground to board ground, channels to signals, decoder shows bytes.*
 
 > [!tip] What this note is
-> Tool number 1 when "the bus stays silent": we see who is guilty - software, address, levels or wires. A 10-dollar clone plus PulseView covers 95 % of tasks. Base: [I2C/SPI/UART buses](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md), [header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md).
+> Tool number 1 when "the bus stays silent": we see who is guilty - software, address, levels or wires. A 10-dollar clone plus PulseView covers 95% of tasks. Base: [I2C/SPI/UART buses](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md), [header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md).
 
 ## 1. Goal
 
@@ -151,7 +151,7 @@ Self-check before the analyzer: half the problems are inattention, not hardware.
 - [I2C/SPI/UART buses](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md) - what we listen to.
 - [header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md) - where to clip.
 - [USB-C power](../../../../RaspberryPi-Reference/UA/02-Zhivlennya/01-USB-C-PD.md) - when power is guilty.
-- [instrument room](../../../../RaspberryPi-Reference/UA/17-Lab/01-Priladi.md) - full lab bench.
+- [ instrument room] - full lab bench.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## Official sources

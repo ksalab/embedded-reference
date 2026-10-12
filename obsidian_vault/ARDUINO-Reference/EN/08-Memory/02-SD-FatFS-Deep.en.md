@@ -183,7 +183,7 @@ The `sdcard` module - in firmwares with SD support or as a separate file. Short 
 
 - [[EN/08-Memory/01-Memory-EEPROM.en|EEPROM memory]] - small data with no card.
 - [[EN/12-Comm-Modules/06-Ethernet-W5500-Deep.en|Ethernet shield]] - web from the card.
-- [[EN/16-Proekti/04-SD-Logger.en|SD logger]] - ready project.
+- [[EN/16-Projects/04-SD-Logger.en|SD logger]] - ready project.
 - [[EN/04-Interfaces/02-SPI.en|SPI bus]] - card transport.
 - [[Home.en|main map]] - full navigation.
 

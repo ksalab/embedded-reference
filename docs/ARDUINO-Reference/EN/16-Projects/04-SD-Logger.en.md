@@ -4,14 +4,14 @@ description: Explains SD card logger with timestamps, sensors and file format; s
 tags: [arduino, logger, sd, data, card, storage]
 category: Proekti
 lang: en
-original: 16-Projects/04-Loger-SD.md
+original: 16-Proekti/04-Loger-SD.md
 date-created: 2026-10-05
 date: 2026-10-09
 ---
 
 # SD Logger - Data Logging to Card
 
-![[assets/img/arduino-logger-scheme.png|600]]
+![](../../../../ARDUINO-Reference/assets/img/arduino-logger-scheme.png)
 *Fig. Logger: board, SD module, sensors, file with time and values.*
 
 > [!tip] Purpose
@@ -162,4 +162,4 @@ Keep firmware version in header comment for later decode.
 
 ## See also
 
-- [[Home.en]]
+- [Home](../../../../ARDUINO-Reference/Home.md)

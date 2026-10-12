@@ -195,5 +195,5 @@ GPIOC->ODR ^= GPIO_ODR_OD13;
 
 - [[Home.en]]
 - [[EN/09-Firmware/01-CubeIDE-CubeMX.en|CubeIDE]]
-- [[EN/09-Firmware/03-ST-Link-Proshivka.en|ST-Link]]
-- [[EN/00-Start/05-Vibir-seredovischa.en|environment choice]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|ST-Link]]
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]]

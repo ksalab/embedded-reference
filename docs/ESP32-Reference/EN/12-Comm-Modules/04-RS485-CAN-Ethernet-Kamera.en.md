@@ -5,15 +5,16 @@ title: RS485 CAN Ethernet Камера
 description: RS485 / CAN / Ethernet / Камера - RS485 - MAX485 (DE/RE); Легенда пінів модуля MAX485; ASCII-схема (MAX485); shows schematics, code and tables.
 tags: [esp32, rs485, can, ethernet, lan8720, ov2640, camera]
 date: 2026-10-08
+original: 12-Moduli-zvyazku/04-RS485-CAN-Ethernet-Kamera.md
 ---
 
 # RS485 / CAN / Ethernet / Камера
 
-Навігація: UART [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), живлення [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), піни [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start [Home](../../../../ESP32-Reference/Home.md), рівні [02-Level-Shifters](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shifters.md).
+Навігація: UART [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), живлення [EN/02-Power-Supply/01-Power-Rails.en], піни [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start [Home](../../../../ESP32-Reference/Home.md), рівні [02-Level-Shifters](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shifters.md).
 
 ## Purpose
 
-RS485 / CAN / Ethernet / Камера - RS485 - MAX485 (DE/RE); Легенда пінів модуля MAX485; ASCII-схема (MAX485). Навігація: UART [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), живлення [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), піни [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start Home, рівні 13-Power-Modules/02-Level-Shifters. MAX485: напівдуплекс, DE=Driver Enable HIGH=передача, RE=Receiver Enable LOW=прийом. Зазвичай DE+RE with'єднані and керуються одним GPIO. Термінатор 120 Ом on кінцях лінії A-B. Fail-safe bias 680 Ом for потреби.
+RS485 / CAN / Ethernet / Камера - RS485 - MAX485 (DE/RE); Легенда пінів модуля MAX485; ASCII-схема (MAX485). Навігація: UART [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), живлення [EN/02-Power-Supply/01-Power-Rails.en], піни [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start Home, рівні 13-Power-Modules/02-Level-Shifters. MAX485: напівдуплекс, DE=Driver Enable HIGH=передача, RE=Receiver Enable LOW=прийом. Зазвичай DE+RE with'єднані and керуються одним GPIO. Термінатор 120 Ом on кінцях лінії A-B. Fail-safe bias 680 Ом for потреби.
 
 ## 1. RS485 - MAX485 (DE/RE)
 
@@ -216,7 +217,7 @@ void setup(){ twai_general_config_t g = TWAI_GENERAL_CONFIG_DEFAULT((gpio_num_t)
 
 Пояснення RMII:
 
-- **RMII vs MII:** RMII - урізана версія with тактом 50 МГц and 2-бітними busми TX/RX замість 4-бітних. Менше пінів, але таймінги жорсткіші - дроти Dupont not годяться, тільки плата типу WT32-ETH01 або коротка розводка.
+- **RMII vs MII:** RMII is a reduced version with a 50 MHz clock and 2-bit TX/RX buses instead of 4-bit ones. Fewer pins, but tighter timing - Dupont wires are not suitable, only a WT32-ETH01 style board or short PCB routing.
 - **REF_CLK 50 МГц:** генерує PHY with власного кварца and віддає ESP32 on GPIO0. without цього клоку MAC мовчить. Перевіряється осцилографом/логіканалізатором 50 МГц.
 - **MDC/MDIO (SMI):** двопровідний менеджмент for налаштування швидкості/дуплексу PHY. MDIO without pull-up 1.5к not працює.
 - **Тільки classic:** in ESP32-S3/C3 немає апаратного EMAC під RMII - for них брати SPI-Ethernet W5500. LAN8720 купувати лише під classic D0WD / WT32-ETH01.
@@ -367,8 +368,8 @@ Arduino: example CameraWebServer (вибрати CAMERA_MODEL_... + PSRAM). ESP-
 - [Home](../../../../ESP32-Reference/Home.md)
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
+- [EN/02-Power-Supply/01-Power-Rails.en]
+- [EN/03-GPIO/01-GPIO-Overview.en]
 - [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md)
 - [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md)
 - [02-NRF24-LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md)

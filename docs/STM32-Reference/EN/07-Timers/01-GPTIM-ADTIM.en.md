@@ -227,7 +227,7 @@ void ll_capture_irq(void)
 }
 ```
 
-Pin setup for channels goes via alternate functions. For the mapping table see [alternate function mapping](../../../../STM32-Reference/UA/03-GPIO/02-AF-maping.md). Without the correct function number the pin stays silent.
+Pin setup for channels goes via alternate functions. For the mapping table see [alternate function mapping]. Without the correct function number the pin stays silent.
 
 ## 14. Mode selection chart
 
@@ -281,7 +281,7 @@ flowchart TB
 - [Home](../../../../STM32-Reference/Home.md)
 - [time and watchdog timers](../../../../STM32-Reference/UA/07-Timeri-Son/02-LPTIM-RTC-WDT.md)
 - [sleep modes](../../../../STM32-Reference/UA/07-Timeri-Son/03-Sleep-Stop-Standby.md)
-- [alternate function mapping](../../../../STM32-Reference/UA/03-GPIO/02-AF-maping.md)
+- [alternate function mapping]
 - [comparators and op-amps](../../../../STM32-Reference/UA/06-Analog/03-COMP-OPAMP.md)
 - [measurement via ADC](../../../../STM32-Reference/UA/06-Analog/01-ADC.md)
 - [HAL and LL layers](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)

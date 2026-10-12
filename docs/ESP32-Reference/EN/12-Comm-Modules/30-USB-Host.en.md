@@ -1,9 +1,11 @@
 ---
+lang: en
 title: ESP32 how USB-хост - флешки, HID and CDC via TinyUSB
 description: Перетворює ESP32-S3/P4 on USB-хост - читає флешки, клавіатури and модеми via TinyUSB with робочими прикладами IDF.; shows schematics, code and tables.
 tags: [esp32, usb-host, tinyusb, hid, msc, cdc, s3, p4, otg]
 category: Moduli-zvyazku
 date: 2026-10-06
+original: 12-Moduli-zvyazku/30-USB-Host.md
 ---
 
 # ESP32 how USB-хост - флешки, HID and CDC via TinyUSB
@@ -12,7 +14,7 @@ date: 2026-10-06
 *Fig. S3/P4 in ролі хоста: опитує флешку, клавіатуру and модем - живлення 5V on VBUS обов'язкове.*
 
 > [!tip] that this for нота
-> Зворотний бік USB: ESP32 not пристрій for ПК, but хост for периферії - логер on флешку without SD-слота, штрих-code сканером, модем per CDC. Працює on S3 (OTG FS) and P4 (OTG HS). База: [USB-OTG and JTAG](../../../../ESP32-Reference/UA/04-Shini/06-USB-OTG-JTAG.md), [карти SD](../../../../ESP32-Reference/UA/04-Shini/07-SD-SDIO.md), [налаштування ESP-IDF](../../../../ESP32-Reference/UA/09-Proshivka/01-ESP-IDF-setup.md).
+> Зворотний бік USB: ESP32 not пристрій for ПК, but хост for периферії - логер on флешку without SD-слота, штрих-code сканером, модем per CDC. Працює on S3 (OTG FS) and P4 (OTG HS). База: [USB-OTG and JTAG](../../../../ESP32-Reference/UA/04-Shini/06-USB-OTG-JTAG.md), [карти SD](../../../../ESP32-Reference/UA/04-Shini/07-SD-SDIO.md), [налаштування ESP-IDF].
 
 ## 1. Мета
 

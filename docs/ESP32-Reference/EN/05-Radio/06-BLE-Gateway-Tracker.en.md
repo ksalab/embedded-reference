@@ -150,7 +150,7 @@ ESPresense is ESP32 node firmware: it scans BLE, computes distance from RSSI, pu
 | ESPresense setting | Default | What to tune |
 | --- | --- | --- |
 | `max_distance` | 16.0 m | 8-12 m for an apartment, otherwise catches neighbours |
-| `absorption` (factor n) | 2.7 | 2.0 (open space) ... 3.5 (concrete walls) |
+| `absorption` (factor n) | 2.7 | 2.0 (open space)... 3.5 (concrete walls) |
 | `ref_rssi` / `tx_ref_rssi` | -65 / -59 | calibrate with a phone at 1 m (see below) |
 | `rx_adj_rssi` | 0 (S3 bare - 20) | correction for the weak antenna of a specific board |
 | `skip_ms` / `skip_distance` | 5000 ms / 0.5 m | cut MQTT noise: do not send if it did not move |

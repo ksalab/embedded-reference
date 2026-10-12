@@ -4,6 +4,7 @@ title: Нове покоління кліматичних сенсорів (BMP5
 tags: [esp32, sensor, climate, bmp585, bme690, sen66, aht21, ens161, i2c]
 category: Sensori
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Нове покоління кліматичних сенсорів (BMP585, BME690, SEN66, AHT21, ENS161)

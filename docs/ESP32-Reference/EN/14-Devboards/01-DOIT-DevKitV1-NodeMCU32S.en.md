@@ -133,7 +133,7 @@ MicroPython: flashes normally over USB-UART, see [MicroPython](../../../../ESP32
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-doit-v1.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-doit-v1.png)
 
 ```text
 [USB 5V / Зарядка 5V 2A] ──► Micro-USB ──► AMS1117-3.3 ──► 3.3V (ESP32 + піни 3V3)

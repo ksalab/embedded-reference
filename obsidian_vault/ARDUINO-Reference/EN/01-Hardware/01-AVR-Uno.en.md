@@ -205,9 +205,9 @@ Settings go to EEPROM rarely and in small portions, because the number of write 
 ## See also
 
 - [[Home.en]]
-- [[EN/00-Start/03-Porivnyannya-plat.en|board comparison]]
-- [[EN/00-Start/04-Devkit-plati.en|board overview]]
-- [[EN/00-Start/05-Vibir-seredovischa.en|environment choice]]
+- [[EN/00-Start/03-Board-Comparison.en|board comparison]]
+- [[EN/00-Start/04-Dev-Boards.en|board overview]]
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]]
 - [[EN/01-Hardware/02-Nano-Mega.en|compact and pins]]
 - [[EN/01-Hardware/04-Uno-R4.en|modern Uno]]
 - [[EN/09-Firmware/02-Bootloader-AVRDUDE.en|bootloader and avrdude]]

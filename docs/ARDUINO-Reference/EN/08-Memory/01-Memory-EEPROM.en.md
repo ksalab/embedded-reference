@@ -221,8 +221,8 @@ The diagram reads top down. First gauge, then fast wins through F and types, the
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [long-range radio](../../../../ARDUINO-Reference/UA/05-Radio/01-LoRa-moduli.md)
+- [long-range radio]
 - [levels and charge](../../../../ARDUINO-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shift-TP4056.md)
 - [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
 - [serial port](../../../../ARDUINO-Reference/UA/04-Shini/01-UART.md)
-- [pulse power supply](../../../../ARDUINO-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-peretvoryuvach.md)
+- [pulse power supply]

@@ -153,4 +153,4 @@ else if (co2 < 1100) fan = MIN;
 - [climate over I2C](../../../../STM32-Reference/UA/10-Sensori/02-BME280-SHT3x.md)
 - [pressure and altitude]
 - [serial port](../../../../STM32-Reference/UA/04-Shini/01-UART.md)
-- [weather node](../../../../STM32-Reference/UA/16-Proekti/01-Meteostantsiya.md)
+- [weather node]

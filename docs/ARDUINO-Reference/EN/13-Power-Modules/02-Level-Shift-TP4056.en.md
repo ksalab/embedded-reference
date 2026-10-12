@@ -184,7 +184,7 @@ flowchart TB
 
 The wiring reads top to bottom. One direction is closed by a divider, a two-way bus by a bridge, many lines by TXS. Battery power and control stay common to all branches.
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -195,7 +195,7 @@ The wiring reads top to bottom. One direction is closed by a divider, a two-way 
 | 5 | TP4056 version with no protection | Overdischarge kills the cell | Board with DW01 and OUT output |
 | 6 | Battery measure with no divider on 3.3V reference | ADC input overload | 100k and 27k divider plus calibration |
 
-## Official Sources
+## Official sources
 
 - [TP4056 datasheet (Top Power)](https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf) - charge current, 4.2 V voltage, indication.
 - [Arduino analogRead reference](https://docs.arduino.cc/learn/electronics/adc/) - ADC inputs, reference, and resolution.

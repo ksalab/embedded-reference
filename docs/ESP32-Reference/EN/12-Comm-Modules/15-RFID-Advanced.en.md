@@ -12,14 +12,14 @@ date-created: 2026-09-29
 # RFID Advanced - Mifare Classic Deep, LF Rewritable, HID, UHF, Wiegand/OSDP, Upgrade Readers
 
 > [!warning] Law and Ethics
-> All information about keys, Crypto-1, nested attacks, T5577 cloning — **only for your own cards / key fobs and your own systems**. Do not use for third-party access control or payment cards.
+> All information about keys, Crypto-1, nested attacks, T5577 cloning - **only for your own cards / key fobs and your own systems**. Do not use for third-party access control or payment cards.
 
 This note is an in-depth continuation of [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md) and [05-PN532-RDM6300-Fingerprint-GM65](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/05-PN532-RDM6300-Fingerprint-GM65.md) and [20-NFC-Biometry-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/20-NFC-Biometry-2.md): Mifare Classic deep (geometry, keys, nested attack, Clone / RLF / darkside), anticollision / cascade, Ultralight / NTAG vs DESFire vs FeliCa, rewritable LF 125 kHz (T5577 / EM4305 vs EM4100), HID Prox / Indala, animal FDX-B / HDX (134 kHz), UHF EPC Gen2 (R2000 / YRM100), Wiegand deep / OSDP, upgrade readers (PN5180 / ST25R3911 / TRF7970A / CLRC663), ESP32 connection, code examples, common errors, references.
 
 ![](../../../../ESP32-Reference/assets/img/rfid-advanced-mifare-scheme.png)
 *Fig. Mifare Classic memory map: sectors -> blocks -> sector trailer (KeyA / AccessBits / KeyB), value blocks, linked sectors, Anti-collision / cascade flow.*
 
-Links to [Home](../../../../ESP32-Reference/Home.md), [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md), [05-PN532-RDM6300-Fingerprint-GM65](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/05-PN532-RDM6300-Fingerprint-GM65.md), [03-Projects/01-Smart-Home], [20-NFC-Biometry-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/20-NFC-Biometry-2.md), [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md).
+Links to [Home](../../../../ESP32-Reference/Home.md), [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md), [05-PN532-RDM6300-Fingerprint-GM65](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/05-PN532-RDM6300-Fingerprint-GM65.md), [Access Control](../../../../ESP32-Reference/UA/16-Proekti/03-Access-Control.md), [20-NFC-Biometry-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/20-NFC-Biometry-2.md), [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), [EN/02-Power-Supply/01-Power-Rails.en].
 
 ## Purpose
 
@@ -66,7 +66,7 @@ Sector trailer (block 3 of each sector for 1K; block 15 / 31 / 47 / ... for 4K):
 Access bits determine: read Key A (always needed for selection), write Key A, read / write data, read / write Key B, transport config. The 3-byte access structure is: C1-x / C2-x / C3-x per segment (data / trailer / key), giving 8 conditions per block.
 
 > [!warning] Default Keys Are Public
-> Key A = FF FF FF FF FF FF, Key B = FF FF FF FF FF FF on factory cards. Change immediately after first read. Never leave Key B as data if access bits allow public access — attackers can rewrite sector trailers.
+> Key A = FF FF FF FF FF FF, Key B = FF FF FF FF FF FF on factory cards. Change immediately after first read. Never leave Key B as data if access bits allow public access - attackers can rewrite sector trailers.
 
 ### 1.3. Value Blocks (Value / Backup / Nested)
 
@@ -291,17 +291,41 @@ def parse_wiegand():
 
 ## 12. Official Sources
 
-- Mifare Classic datasheet (NXP) — geometry, keys, access bits
-- DESFire EV2/EV3 datasheet — AES, file system, key diversification
-- PN5180 / ST25R3911 / TRF7970A / CLRC663 datasheets — frontend, antenna design
-- ISO/IEC 14443-2 / -3 / -4 — types A / B / FeliCa / anticollision
-- ISO/IEC 15693 — vicinity cards (NTAG, DESFire)
-- ISO/IEC 18000-63 — UHF EPC Gen2
-- OSDP IEC 60839-11-5 / SIA OSDP spec — secure RS-485
-- HID Prox / Indala datasheets — 125 kHz access
-- T5577 / EM4305 datasheets — LF rewritable
-- FDX-B / HDX ISO 11784 / 11785 — animal identification
+- Mifare Classic datasheet (NXP) - geometry, keys, access bits
+- DESFire EV2/EV3 datasheet - AES, file system, key diversification
+- PN5180 / ST25R3911 / TRF7970A / CLRC663 datasheets - frontend, antenna design
+- ISO/IEC 14443-2 / -3 / -4 - types A / B / FeliCa / anticollision
+- ISO/IEC 15693 - vicinity cards (NTAG, DESFire)
+- ISO/IEC 18000-63 - UHF EPC Gen2
+- OSDP IEC 60839-11-5 / SIA OSDP spec - secure RS-485
+- HID Prox / Indala datasheets - 125 kHz access
+- T5577 / EM4305 datasheets - LF rewritable
+- FDX-B / HDX ISO 11784 / 11785 - animal identification
 
+### Reader chain
+
+```mermaid
+flowchart LR
+    ESP["ESP32<br/>SPI UART"]
+    FE["Frontend<br/>PN5180 ST25R3911"]
+    ANT["Antenna<br/>13.56 MHz tuned"]
+    TAG["Card or tag<br/>MIFARE NTAG"]
+    SAM["SAM or keys<br/>AES diversify"]
+    ESP --> FE
+    FE --> ANT
+    ANT --> TAG
+    ESP --> SAM
+```
+
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| No card detected near metal | Antenna detuned by metal, wrong frequency match | Retune with VNA, add ferrite shield behind antenna |
+| SPI phantom reads | Shared noisy 3V3 rail, long wires | Separate LDO, ferrite plus 10 uF and 100 nF at chip |
+| Nested attack succeeds | Default keys, same key every sector | Rotate unique keys per card, migrate to DESFire AES |
+| Clone works on reader | UID-only check, T5577 rewritable | Authenticate with AES, monitor duplicates, use DESFire |
+| UHF range too short | Tag orientation, water, metal, low EIRP | Directional antenna above door, check regional EIRP limit |
 ## 13. See Also
 
 - [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md) - RC522 basics
@@ -310,4 +334,4 @@ def parse_wiegand():
 - [03-Access-Control](../../../../ESP32-Reference/UA/16-Proekti/03-Access-Control.md) - Access control with DESFire + SAM
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md) - SPI details
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md) - UART details
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) - Power branches
+- [EN/02-Power-Supply/01-Power-Rails.en] - Power branches

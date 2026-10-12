@@ -17,7 +17,7 @@ date: 2026-10-08
 ESP32: interrupts on **any GPIO**, LEDC - **16 channels**, frequency 1 Hz - 40 MHz.
 
 > [!info] Two independent mechanisms
-> `attachInterrupt` - reaction to an edge. LEDC - hardware PWM with no CPU load. Do not confuse with [MCPWM for motors](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md).
+> `attachInterrupt` - reaction to an edge. LEDC - hardware PWM with no CPU load. Do not confuse with [ MCPWM for motors].
 
 ## Purpose
 
@@ -121,7 +121,7 @@ while True:
 - [Home](../../../../ESP32-Reference/Home.md)
 - [ GPIO overview]
 - [ Pull-ups]
-- [Timers MCPWM PCNT RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md)
+- [ Timers MCPWM PCNT RMT]
 - [LED and NeoPixel](../../../../ESP32-Reference/UA/11-Vivid/03-NeoPixel-Servo-Rele-MOSFET.md)
 - [ Buttons and encoders]
 - [01-ESP32-Classic](../../../../ESP32-Reference/UA/01-Hardware/01-ESP32-Classic.md)

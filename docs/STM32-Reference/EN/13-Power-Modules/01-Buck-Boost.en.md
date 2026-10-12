@@ -107,7 +107,7 @@ Battery practice:
 | 3 | Sweep from 10 to 100 percent of current |
 | 4 | Check ripple with oscilloscope at full load |
 
-## Common errors
+## Common issues
 
 | # | Error | Why bad | How right |
 | --- | --- | --- | --- |

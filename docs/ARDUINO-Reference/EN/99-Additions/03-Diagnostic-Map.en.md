@@ -54,7 +54,7 @@ date: 2026-10-08
 
 ## Mermaid: diagnostic route```mermaid
 flowchart TB
-S[Symptom] --> T{What class?}T -->|Not sewn| PORT[Cable, driver, BOOT]T -->|Does not start| BLINK[Naked Blink]T -->|Bugs| MON[Monitor and RAM]T -->|Tyres| SCAN[Scanner and speed]T -->|Food| MM[Multimeter under load]PORT --> SIG [There is a signal - continue]    BLINK --> SIG
+S[Symptom] --> T{What class?}T -->|Not sewn| PORT[Cable, driver, BOOT]T -->|Does not start| BLINK[Naked Blink]T -->|Bugs| MON[Monitor and RAM]T -->|Tyres| SCAN[Scanner and speed]T -->|Food| MM[Multimeter under load]PORT --> SIG [There is a signal - continue] BLINK --> SIG
     MON --> SIG
     SCAN --> SIG
     MM --> SIG
@@ -137,7 +137,7 @@ SIG --> LOC[Localized to one node]```
 ## See also- [Home](../../../../ARDUINO-Reference/Home.md)
 - [answers to questions](../../../../ARDUINO-Reference/UA/99-Dodatki/01-Troubleshooting-FAQ.md)
 - [lists and datasheets](../../../../ARDUINO-Reference/UA/99-Dodatki/02-Cheklisti-Datasheet.md)
-- [measuring devices](../../../../ARDUINO-Reference/UA/17-Lab/01-Priladi.md)
+- [ measuring devices]
 - [environment and CLI](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md)
 
 

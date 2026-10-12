@@ -98,7 +98,7 @@ flowchart TB
 | Need enclosure | Solder |
 | Second copy needed | Solder two at once |
 
-## Common errors
+## Common issues
 
 | # | Error | Why bad | How right |
 | --- | --- | --- | --- |

@@ -151,5 +151,5 @@ jobs:
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
-- [DevKit boards](../../../../STM32-Reference/UA/00-Start/04-Devkit-plati.md)
+- [ Chip comparison]
+- [ DevKit boards]

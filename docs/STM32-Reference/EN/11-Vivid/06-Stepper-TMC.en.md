@@ -91,7 +91,7 @@ void TIM2_IRQHandler(void) {
 // кожен крок: порівнюємо eCAP_read() з планом; різниця > N → повернути крок
 ```
 
-Microsteps: MS1 MS2 MS3 = 0/1/1 gives 1/16; 1/32 only at low speeds (torque falls about 30 %).
+Microsteps: MS1 MS2 MS3 = 0/1/1 gives 1/16; 1/32 only at low speeds (torque falls about 30%).
 
 ## 5. TMC2300: Short Note
 
@@ -110,7 +110,7 @@ Microsteps: MS1 MS2 MS3 = 0/1/1 gives 1/16; 1/32 only at low speeds (torque fall
 
 Slip: too high an accel drops the motor out of step (knock, position drift). Control: encoder against the plan; a difference over N steps returns the cycle.
 
-## 7. Common Issues
+## 7. Common issues
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -144,7 +144,7 @@ Extra:
 - TMC2209 logic is 3.3 V - never tie 5 V to UART;
 - keep STEP/DIR on one timer, never move between TIM units.
 
-## Official Sources
+## Official sources
 
 - [TMC2209-Stepper (DigiKey)](https://www.digikey.com/en/products/detail/trinamic/TMC2209STEPPERTN/4989751) - UART driver, 2.2 A.
 - [TMC2300-Stepper (DigiKey)](https://www.digikey.com/en/products/detail/trinamic/TMC2300STEPPERTN/6815382) - two-motor carriage, SPI.

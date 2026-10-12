@@ -200,7 +200,7 @@ flowchart TB
     Send --> Done
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -211,7 +211,7 @@ flowchart TB
 | 5 | Refresh every loop with no need | Bus stays busy and slows tasks | Change flag and partial update |
 | 6 | Cyrillic with no own table | Garbage instead of letters | Add a glyph table and encoding |
 
-## Official Sources
+## Official sources
 
 - [SSD1306 datasheet (Solomon Systech)](https://www.adafruit.com/datasheets/SSD1306_1.0.pdf) - frame memory, commands, pages and power supply.
 - [STM32 I2C HAL manual (ST)](https://www.st.com/en/embedded-software/stm32cube-mcu-packages.html) - bus transfer, memory and timeouts.

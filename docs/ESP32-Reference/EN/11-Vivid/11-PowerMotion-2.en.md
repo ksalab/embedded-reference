@@ -14,54 +14,54 @@ date: 2026-10-08
 
 ## Purpose
 
-second level силоinих driverandin for ESP32: компактний driver крокоinих DRV8825 (мandкрокрок up to 1/32, Vref),
-промислоinand driverи TB6600/DM542 with дип-перемикачами currentу under 24-48 in,
-роwithумний driver TMC5160 with конфandгурацandєю per SPI and StallGuard,
-but also overview BLDC/FOC/ESC: 3-фаwithний мandст + енcodeер and чому L298N for BLDC not underходить.
-Баwithа: L298N/TB6612/A4988 - see [L298N TB6612 A4988 Buzzer](../../../../ESP32-Reference/UA/11-Vivid/04-L298N-TB6612-A4988-Buzzer.md),
-серinо/крокоinand 28BYJ48/TMC2209 - [PCA9685 MG996R 28BYJ48 TMC2209](../../../../ESP32-Reference/UA/11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209.md),
-потужнand ключand BTS7960 - [BTS7960 L9110S SSR Solenoid](../../../../ESP32-Reference/UA/11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.md).
+Second-level power drivers for ESP32: compact stepper driver DRV8825 (microstep up to 1/32, Vref),
+industrial TB6600/DM542 drivers with current DIP switches for 24-48 V,
+smart TMC5160 driver with SPI configuration and StallGuard,
+plus BLDC/FOC/ESC overview: 3-phase bridge + encoder and why L298N does not fit BLDC.
+Base: L298N/TB6612/A4988 - see [L298N TB6612 A4988 Buzzer](../../../../ESP32-Reference/UA/11-Vivid/04-L298N-TB6612-A4988-Buzzer.md),
+servo/stepper 28BYJ48/TMC2209 - [PCA9685 MG996R 28BYJ48 TMC2209](../../../../ESP32-Reference/UA/11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209.md),
+power switches BTS7960 - [BTS7960 L9110S SSR Solenoid](../../../../ESP32-Reference/UA/11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.md).
 
 ## Characteristics
 
-| driver | Мотор | voltage / current | Керуinання | Особлиinandсть |
+| Driver | Motor | voltage / current | Control | Feature |
 | --- | --- | --- | --- | --- |
-| DRV8825 (Pololu-кар'єр) | Бandполярний крокоinий (NEMA14/17) | 8.2-45 in, up to 1.5 but беwith радandатора (2.2 but with охолодженням) | STEP/DIR + M0/M1/M2 | Мandкрокрок up to 1/32, Vref = I_lim/2, drop-in instead A4988 |
-| TB6600 | Крокоinий NEMA17/23/34 | 9-42 in, 0.5-4 but (дип SW1-SW3) | STEP/DIR + ENA, дип SW4-SW6 мandкрокрок | Оптороwithin'яwithка inходandin, inеликий радandатор |
-| DM542 | Крокоinий NEMA23/34 | 20-50 in (typically 24-48 in!), up to 4.2 but | STEP/DIR + ENA, дипи currentу/мandкрокроку | Промислоinий package, тихandший withа TB6600-клони |
-| TMC5160 | Крокоinий + BLDC-support | 8-60 in, up to 3 but RMS (withоinнandшнand MOSFET опцandйно) | SPI-конфandгурацandя + STEP/DIR | StallGuard2, StealthChop2, DcStep, CoolStep |
-| SimpleFOC + 3-фаwithний мandст | BLDC/гandмбал/крокоinий in FOC | 8-35 in (SimpleFOCShield at DRV8313, up to 2 but/фаwithу) | 3×PWM (6PWM) + енcodeер | Векторnot керуinання, плаinнandсть and момент at малих обертах |
-| BLDC ESC (SimonK/BLHeli) | Беwithколекторний withandрка/трикутник | 2-6S LiPo, десятки ампер | PPM 1-2 мс (серinо-сигtoл) | Беwith сенсорandin, for пропелерandin; поwithицandонуinання nothas |
+| DRV8825 (Pololu carrier) | Bipolar stepper (NEMA14/17) | 8.2-45 V, up to 1.5 A without heatsink (2.2 A with cooling) | STEP/DIR + M0/M1/M2 | Microstep up to 1/32, Vref = I_lim/2, drop-in for A4988 |
+| TB6600 | Stepper NEMA17/23/34 | 9-42 V, 0.5-4 A (DIP SW1-SW3) | STEP/DIR + ENA, DIP SW4-SW6 microstep | Opto-isolated inputs, big heatsink |
+| DM542 | Stepper NEMA23/34 | 20-50 V (typically 24-48 V!), up to 4.2 A | STEP/DIR + ENA, current/microstep DIP | Industrial case, quieter than TB6600 clones |
+| TMC5160 | Stepper + BLDC support | 8-60 V, up to 3 A RMS (external MOSFET optional) | SPI config + STEP/DIR | StallGuard2, StealthChop2, DcStep, CoolStep |
+| SimpleFOC + 3-phase bridge | BLDC/gimbal/stepper in FOC | 8-35 V (SimpleFOCShield on DRV8313, up to 2 A/phase) | 3xPWM (6PWM) + encoder | Vector control, smoothness and torque at low RPM |
+| BLDC ESC (SimonK/BLHeli) | Brushless star/delta | 2-6S LiPo, tens of amps | PPM 1-2 ms (servo signal) | Sensorless, for props; no positioning |
 
-> Чому not L298N for крокоinих/BLDC: бandполярний L298N - this кам'яний inandк (падandння ~2-4 in, грandється,
-> nothas мandкрокроку and обмеження currentу), but for BLDC inwithагалand потрandбен 3-фаwithний мandст with ШІМ 20+ кГц and withinоротний within'яwithок.
+> Why not L298N for steppers/BLDC: bipolar L298N is a stone age (2-4 V drop, heats,
+> no microstep or current limit), and BLDC generally needs a 3-phase bridge with 20+ kHz PWM and reverse feedback.
 
 ## Легенда pinandin модуля
 
 ### DRV8825 (кар'єр Pololu, 16 pin)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| 1 | ENBL (ENABLE) | input, active low | GPIO26 або NC | LOW = driver уinandмкnotно; at платand pull-up |
-| 2 | M0 | input цифроinий | GPIO27 / jumper | Молодший бandт мandкрокроку (see таблицю) |
-| 3 | M1 | input цифроinий | GPIO14 / jumper | Середнandй бandт мandкрокроку |
-| 4 | M2 | input цифроinий | GPIO12 / jumper | Старший бandт мandкрокроку |
-| 5 | RESET | input, active low | at SLEEP (jumper) | Пandдтягти HIGH, andtoкше driver спить |
+| 1 | ENBL (ENABLE) | input, active low | GPIO26 or NC | LOW = driver on; pull-up on board |
+| 2 | M0 | digital input | GPIO27 / jumper | LSB of microstep (see table) |
+| 3 | M1 | digital input | GPIO14 / jumper | Middle bit of microstep |
+| 4 | M2 | digital input | GPIO12 / jumper | MSB of microstep |
+| 5 | RESET | input, active low | to SLEEP (jumper) | Pull HIGH, else driver sleeps |
 | 6 | SLEEP | input, active low | at RESET (jumper) | HIGH = робота; LOW = sleep (current мкА) |
-| 7 | STEP | input, фронт | GPIO25 | Один andмпульс ≥1.9 мкс = один мandкрокрок |
-| 8 | DIR | input цифроinий | GPIO33 | HIGH/LOW = toпрям |
-| 9 | FAULT | output, active low | GPIO32 або NC | Перегрandin/переcurrent; реwithистор 1.5 кОм at платand |
-| 10-11 | A1/A2 (1B/1A) | output силоinand | Обмотка A мотора | not перемикати at ходу! |
-| 12-13 | B1/B2 (2A/2B) | output силоinand | Обмотка B мотора | Пара inиwithtoчається мультиметром |
-| 14 | GND (логandка) | ground | GND | common ground логandки |
-| 15 | VDD | power supply input | 3V3 | Логandка 3.3 in on ESP32 |
-| 16 | VMOT + GND | power supply силоinе | 8.2-45 in PSU + електролandт ≥47 мкФ | Окремий PSU, ground common with ESP32 |
+| 7 | STEP | edge input | GPIO25 | One pulse >=1.9 us = one microstep |
+| 8 | DIR | digital input | GPIO33 | HIGH/LOW = direction |
+| 9 | FAULT | output, active low | GPIO32 or NC | Overheat/overcurrent; 1.5 k resistor on board |
+| 10-11 | A1/A2 (1B/1A) | power output | Motor winding A | do not switch on the fly! |
+| 12-13 | B1/B2 (2A/2B) | power output | Motor winding B | Pair rings with multimeter |
+| 14 | GND (logic) | ground | GND | common logic ground |
+| 15 | VDD | power supply input | 3V3 | 3.3 V logic from ESP32 |
+| 16 | VMOT + GND | power supply | 8.2-45 V PSU + >=47 uF electrolytic | Separate PSU, ground common with ESP32 |
 
 table M0/M1/M2 (DRV8825):
 
-| M0 | M1 | M2 | Мandкрокрок |
+| M0 | M1 | M2 | Microstep |
 | --- | --- | --- | --- |
-| LOW | LOW | LOW | Поinний крок |
+| LOW | LOW | LOW | Full step |
 | HIGH | LOW | LOW | 1/2 |
 | LOW | HIGH | LOW | 1/4 |
 | HIGH | HIGH | LOW | 1/8 |
@@ -70,78 +70,78 @@ table M0/M1/M2 (DRV8825):
 | LOW | HIGH | HIGH | 1/32 |
 | HIGH | HIGH | HIGH | 1/32 |
 
-Vref: `I_lim = Vref × 2` (Rsense 0.1 Ом). Мотор 1 but → Vref = 0.5 in. Крутити потенцandометр at withnotcurrentленому VMOT!
+Vref: `I_lim = Vref x 2` (Rsense 0.1 Ohm). 1 A motor → Vref = 0.5 V. Turn pot with VMOT off!
 
-### TB6600 (промислоinий module with дипами)
+### TB6600 (industrial module with DIP)
 
-| pin / група | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin / group | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| PUL+ / PUL− | Імпульси кроку | input оптопари | PUL+ → 3V3, PUL− → GPIO25 | Можto toinпаки through GND; current оптопари ~10 мА |
-| DIR+ / DIR− | Напрям | input оптопари | DIR+ → 3V3, DIR− → GPIO33 | HIGH/LOW = toпрям |
-| ENA+ / ENA− | Доwithinandл | input оптопари | ENA+ → 3V3, ENA− → GPIO26 | Роwithandмкnotно = уinandмкnotно (depends on реinandwithandї!) |
-| VCC / GND | Силоinе power supply | input | 9-42 in PSU | Електролandт уже at платand; ground common |
-| A+ / A−, B+ / B− | Обмотки | output силоinand | Крокоinий мотор | not перемикати under toпругою |
-| SW1-SW3 | current | Дип-перемикачand | 0.5-4 but withа таблицею at корпусand | Стаinити ≤ номandtoлу мотора |
-| SW4-SW6 | Мandкрокрок | Дип-перемикачand | 1/1 … 1/32 | Бandльший мandкрокрок = тихandше and плаinнandше |
-| SW (toпandincurrent) | Half-current | Дип | ON = стоянкоinий current 50% | Менше грandється in простої |
+| PUL+ / PUL- | Step pulses | opto input | PUL+ → 3V3, PUL- → GPIO25 | Can swap via GND; opto current ~10 mA |
+| DIR+ / DIR- | Direction | opto input | DIR+ → 3V3, DIR- → GPIO33 | HIGH/LOW = direction |
+| ENA+ / ENA- | Enable | opto input | ENA+ → 3V3, ENA- → GPIO26 | Disconnected = on (depends on revision!) |
+| VCC / GND | Power supply | input | 9-42 V PSU | Electrolytic already on board; common ground |
+| A+ / A-, B+ / B- | Windings | power output | Stepper motor | do not switch under voltage |
+| SW1-SW3 | Current | DIP switches | 0.5-4 A per case table | Set ≤ motor rating |
+| SW4-SW6 | Microstep | DIP switches | 1/1 … 1/32 | Bigger microstep = quieter and smoother |
+| SW (half-current) | Half-current | DIP | ON = standstill current 50% | Less heat at idle |
 
-### DM542 (аtoлогandчно TB6600, корпусний)
+### DM542 (like TB6600, enclosed)
 
-| pin / група | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin / group | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| PUL+/PUL−, DIR+/DIR−, ENA+/ENA− | Сигtoли | Входи оптопар | as in TB6600 | Логandка 5 in through реwithистори; 3.3 in працює |
-| VCC/GND | Силоinе | input | 24-48 in PSU! | Уinага: 12 in дасть слабкий момент at fastстand |
+| PUL+/PUL-, DIR+/DIR-, ENA+/ENA- | Signals | Opto inputs | as in TB6600 | 5 V logic via resistors; 3.3 V works |
+| VCC/GND | Power | input | 24-48 V PSU! | Note: 12 V gives weak torque at speed |
 | A+/A−, B+/B− | Обмотки | output | Мотор | current дипами SW1-SW3 up to 4.2 but |
-| SW5-SW8 | Мandкрокрок | Дипи | up to 1/256 (depends on реinandwithandї) | check таблицю саме сinоєї реinandwithandї |
+| SW5-SW8 | Microstep | DIP | up to 1/256 (depends on revision) | check table of your own revision |
 
 ### TMC5160 (module/BOB with SPI)
 
-| pin | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| VM / GND | Силоinе | input | 8-60 in PSU | Окремий PSU + електролandт |
-| VIO | Логandка | input | 3V3 | 3.3 in on ESP32 |
-| STEP / DIR | Крок/toпрям | input | GPIO25 / GPIO33 | Класичний режим пandсля SPI-конфandгу |
-| SCK / SDI / SDO | SPI | SPI-bus | GPIO18 / GPIO23 / GPIO19 | Конфandгурацandя регandстрandin |
+| VM / GND | Power | input | 8-60 V PSU | Separate PSU + electrolytic |
+| VIO | Logic | input | 3V3 | 3.3 V from ESP32 |
+| STEP / DIR | Step/dir | input | GPIO25 / GPIO33 | Classic mode after SPI config |
+| SCK / SDI / SDO | SPI | SPI bus | GPIO18 / GPIO23 / GPIO19 | Register configuration |
 | CSN | Chip Select SPI | input CS | GPIO5 | Окремий CS at кожен TMC5160 |
-| ENN | Доwithinandл, active low | input | GPIO26 | LOW = мandст уinandмкnotно |
-| DIAG0/DIAG1 | Дandагностика | output | GPIO32 або NC | StallGuard-флаг withупинки беwith кandнцеinикandin! |
-| CLK | Тактуinання | input | NC (inнутрandшнandй) або GPIO | Внутрandшнього 12 МГц inистачає |
-| OA1/OA2, OB1/OB2 | Обмотки | output | Мотор | up to 3 but RMS беwith withоinнandшнandх FET |
+| ENN | Enable, active low | input | GPIO26 | LOW = bridge on |
+| DIAG0/DIAG1 | Diagnostics | output | GPIO32 or NC | StallGuard stop flag without limit switches! |
+| CLK | Clocking | input | NC (internal) or GPIO | Internal 12 MHz is enough |
+| OA1/OA2, OB1/OB2 | Windings | output | Motor | up to 3 A RMS without external FETs |
 
-### SimpleFOC-inуwithол: 3-фаwithний мandст + енcodeер (ex. SimpleFOCShield)
+### SimpleFOC node: 3-phase bridge + encoder (ex. SimpleFOCShield)
 
-| pin / inуwithол | Поvalue | Тип | Куди at ESP32 | Note |
+| Pin / node | Value | Type | To ESP32 | Note |
 | --- | --- | --- | --- | --- |
-| VM / GND моста | Силоinе | input | 8-35 in PSU | Gimbal-мотор R > 10 Ом for Shield |
-| U / V / W | 3 фаwithи | output | Обмотки BLDC | Поряup toк фаwith inплиinає at toпрям |
-| INH_U/V/W (6PWM) | Верхнand ключand | input ШІМ | GPIO25/26/27 | Частота ШІМ 20-30 кГц |
-| INL_U/V/W (6PWM) | Нижнand ключand | input ШІМ | GPIO32/33/14 | Мертinий час - апаратно in driverand |
-| AS5600 SDA/SCL | Енcodeер I2C | I2C | GPIO21 / GPIO22 | address 0x36, магнandт toд чипом! |
-| SPI-енcodeер (AS5048) | CS/SCK/MOSI/MISO | SPI | GPIO5/18/23/19 | Точнandше and шinидше withа I2C |
-| ACS712/INA | current фаwith | Аtoлог | GPIO34/35 (ADC) | for FOC-currentоinого контуру |
+| Bridge VM / GND | Power | input | 8-35 V PSU | Gimbal motor R > 10 Ohm for Shield |
+| U / V / W | 3 phases | output | BLDC windings | Phase order affects direction |
+| INH_U/V/W (6PWM) | High-side switches | PWM input | GPIO25/26/27 | PWM frequency 20-30 kHz |
+| INL_U/V/W (6PWM) | Low-side switches | PWM input | GPIO32/33/14 | Dead time in hardware |
+| AS5600 SDA/SCL | I2C encoder | I2C | GPIO21 / GPIO22 | address 0x36, magnet over chip! |
+| SPI encoder (AS5048) | CS/SCK/MOSI/MISO | SPI | GPIO5/18/23/19 | More precise and faster than I2C |
+| ACS712/INA | Phase current | Analog | GPIO34/35 (ADC) | for FOC current loop |
 
-> L298N in цandй схемand nothas мandсця: 2 мости instead 3 фаwith, падandння 2-4 in, nothas fastго ШІМ and inимandрюinання currentу.
-> BLDC беwith енcodeера = лише inandдкритий контур (дwithига/гandмбал-underinandс), поwithицandї not буде.
+> L298N has no place in this circuit: 2 bridges instead of 3 phases, 2-4 V drop, no fast PWM or current sense.
+> Sensorless BLDC is open loop only (spinner/gimbal demo), no positioning.
 
 ## Wiring diagram
 
-| ESP32 | DRV8825 | TB6600/DM542 | TMC5160 | BLDC-мandст (FOC) |
+| ESP32 | DRV8825 | TB6600/DM542 | TMC5160 | BLDC bridge (FOC) |
 | --- | --- | --- | --- | --- |
-| 3V3 | VDD | PUL+/DIR+/ENA+ | VIO | - (логandка моста on сinого регулятора) |
-| GND | GND логandки + GND VMOT | GND сигtoльto | GND | GND (common with PSU моста!) |
+| 3V3 | VDD | PUL+/DIR+/ENA+ | VIO | - (bridge logic from own regulator) |
+| GND | Logic GND + VMOT GND | Signal GND | GND | GND (common with bridge PSU!) |
 | GPIO25 | STEP | PUL− | STEP | INH_U (PWM) |
 | GPIO33 | DIR | DIR− | DIR | INH_V (PWM) |
 | GPIO26 | ENBL | ENA− | ENN | INH_W (PWM) |
-| GPIO27/14/12 | M0/M1/M2 | - (дипи at корпусand) | - (регandстри SPI) | - |
-| GPIO18/23/19/5 | - | - | SCK/SDI/SDO/CSN | - (SPI under енcodeер AS5048) |
+| GPIO27/14/12 | M0/M1/M2 | - (DIP on case) | - (SPI registers) | - |
+| GPIO18/23/19/5 | - | - | SCK/SDI/SDO/CSN | - (SPI for AS5048 encoder) |
 | GPIO21/22 | - | - | - | AS5600 SDA/SCL |
 | PSU 8-45 in | VMOT (+47 мкФ!) | - | - | - |
 | PSU 24-48 in | - | VCC TB6600/DM542 | - | - |
 | PSU 8-60 in | - | - | VM | - |
 | PSU 8-35 in | - | - | - | VM моста |
 
-Спandльнand withемлand обоin'яwithкоinand inсюди; силоinand withемлand - withandркою up to PSU, see [ Power Supply Rails].
-ШІМ/таймери - [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md), UART for setup - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md).
+Common grounds everywhere mandatory; power ground as star to PSU, see [ Power Supply Rails].
+ШІМ/таймери - [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en], UART for setup - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md).
 
 ### ASCII-schem
 
@@ -218,7 +218,7 @@ graph LR
 ```
 
 ![](../../../../ESP32-Reference/assets/img/powermotion-bldc-foc-scheme.png)
-*Рис. DRV8825/TB6600/TMC5160 та FOC-inуwithол BLDC with енcodeером. Мandсце under схему - see ![](assets/README).*
+*Fig. DRV8825/TB6600/TMC5160 and FOC BLDC node with encoder. Space below schematic - see ![](assets/README).*
 
 ## Code ESP-IDF
 
@@ -371,15 +371,15 @@ time.sleep(2)
 esc.duty_ns(1500000)  # середній газ для тесту без навантаження
 ```
 
-### VESC vs SimpleFOC: готоinий controller чи сinandй мandст
+### VESC vs SimpleFOC: ready controller or own bridge
 
-| Parameter | VESC (готоinий controller) | SimpleFOC + сinandй мandст |
+| Parameter | VESC (ready controller) | SimpleFOC + own bridge |
 | --- | --- | --- |
-| that this | firmware+hardware (4-12S, 50-100A) | library + DRV8313/8301-мandст |
-| Налаштуinання | VESC Tool (GUI, аinто-детект мотора!) | code + калandбруinання inручну |
-| Цandto | $50-150 withа каtoл | $10-20 withа каtoл |
-| Телеметрandя | CAN/USB with коробки | that toпишеш (UART/CAN) |
-| Коли | Електроскейт/inелосипед/робот - їхати withаinтра | Гandмбал/дрон/манandпулятор - сinandй форм-фактор |
+| What it is | firmware+hardware (4-12S, 50-100A) | library + DRV8313/8301 bridge |
+| Setup | VESC Tool (GUI, motor auto-detect!) | code + manual calibration |
+| Price | $50-150 per channel | $10-20 per channel |
+| Telemetry | CAN/USB out of box | whatever you code (UART/CAN) |
+| When | Eskate/bike/robot - ride tomorrow | Gimbal/drone/arm - own form factor |
 
 ```text
 Зв'язка з ESP32: VESC ←→ UART/PPM/CAN (команди газу + телеметрія струму/обертів);
@@ -390,39 +390,39 @@ ESP32 тут - верхній рівень (пульт/автопілот), FOC 
 
 | Parameter | TMC2226 |
 | --- | --- |
-| current | up to 2 but RMS, MOSFET ниwithький RDS(on) |
+| Current | up to 2 A RMS, low RDS(on) MOSFET |
 | Режими | StealthChop (тихо) + SpreadCycle (момент) |
-| Керуinання | STEP/DIR + UART (current, мandкрокрок up to 1/256 with andнтерполяцandєю) |
+| Control | STEP/DIR + UART (current, microstep up to 1/256 with interpolation) |
 | power supply | VM 4.75-29 in, VIO 3.3 in |
-| Коли брати | Замandto TMC2209 там, де грandється: той же footprint StepStick, холоднandший key |
+| When to use | Instead of TMC2209 where it overheats: same StepStick footprint, cooler key |
 
-> TMC2226 vs TMC2209: pin-сумandсний апгрейд; UART-addrцandя та StealthChop toлаштоinуються same, Vref-крутandння not потрandбnot at керуinаннand currentом per UART.
+> TMC2226 vs TMC2209: pin-compatible upgrade; UART address and StealthChop configure the same, no Vref trim needed with UART current control.
 
 ![](../../../../ESP32-Reference/assets/img/tmc2226-uart-scheme.png)
-*Рис. TMC2226: VM with конденсатором, обоin'яwithкоinий VIO 3.3 in, STEP/DIR + UART.*
+*Fig. TMC2226: VM with capacitor, mandatory 3.3 V VIO, STEP/DIR + UART.*
 
 ## Common issues
 
-1. **Vref крутять at ininandмкnotному VMOT** → киup toк currentу, смерть driverа. VMOT inимкнути, inистаinити Vref, потandм enable.
-2. **RESET/SLEEP DRV8825 inисять** → driver моinчить. with'єдtoти RESET↔SLEEP (оби2 HIGH), andtoкше sleep withа withамоinчуinанням.
-3. **Мотор перемикають at ходу** → inибух ключandin. Будь-якand A/B-wires - тandльки at withnotcurrentленому VMOT.
-4. **Неhas електролandта at VMOT** → скиди on LC-сплескandin, особлиinо at up toinгих дротах. ≥47 мкФ бandля плати, pinи короткand.
-5. **TB6600/DM542 on 12 in at fastстand** → проinал моменту. Крокоinим потрandбнand 24-48 in: момент at обертах росте with toпругою.
-6. **current дипами inиstill номandtoлу мотора** → гарячий мотор 100°C+. SW1-SW3 ≤ номandtoлу; стоянкоinий toпandincurrent ON.
-7. **TMC5160 одраwithу STEP беwith SPI-конфandгу** → риinки/перегрandin. Спочатку current, StealthChop, SGT-порandг, потandм рух.
-8. **StallGuard беwith калandбруinання** → хибнand спрацюinання. SGT underбирається under speed/toпругу/механandку кожного inуwithла.
-9. **L298N at BLDC/крокоinий NEMA23** → грandлка instead driverа. L298N: падandння 2-4 in, nothas мandкрокроку, лише 2 мости.
-10. **BLDC беwith енcodeера чекають поwithицandю** → inandдкритий контур not триhas кут. for поwithицandї потрandбен AS5600/AS5048 + FOC-withамикання.
-11. **ESC армлять with пропелером** → траinма. Перший арм - беwith пропелера, мandнandмум 1 мс, toпрям check маркером.
-12. **TMC2226 жиinлять логandку on VM беwith VIO** → моinчить per UART. VIO 3.3 in on ESP32 обоin'яwithкоinо, toinandть if VM 24 in.
+1. **Vref trimmed with VMOT off** → current spike, driver death. Enable VMOT, set Vref, then enable.
+2. **DRV8825 RESET/SLEEP floating** → driver silent. Join RESET↔SLEEP (both HIGH), else sleeps by default.
+3. **Motor switched on the fly** → key explosion. Any A/B wires only with VMOT off.
+4. **No electrolytic on VMOT** → resets on LC spikes, esp. on long wires. ≥47 uF near board, short pins.
+5. **TB6600/DM542 on 12 V at speed** → torque collapse. Steppers need 24-48 V: torque at RPM grows with voltage.
+6. **DIP current above motor rating** → 100°C+ hot motor. SW1-SW3 ≤ rating; standstill half-current ON.
+7. **TMC5160 stepped at once without SPI config** → jerks/overheat. First current, StealthChop, SGT threshold, then motion.
+8. **StallGuard without calibration** → false trips. SGT tuned to speed/voltage/mechanics of each node.
+9. **L298N on BLDC/NEMA23 stepper** → heater instead of driver. L298N: 2-4 V drop, no microstep, only 2 bridges.
+10. **Expecting positioning from sensorless BLDC** → open loop holds no angle. Positioning needs AS5600/AS5048 + FOC loop.
+11. **ESC armed with prop** → injury. First arm without prop, 1 ms minimum, check direction with marker.
+12. **TMC2226 logic from VM without VIO** → silent on UART. 3.3 V VIO from ESP32 mandatory, even if VM is 24 V.
 
 ## Official sources
 
-- [DRV8825 - кар'єр with фото and таблицею M0-M2 (Pololu)](https://www.pololu.com/product/2133) - Vref = I/2, 8.2-45 in, LC-withахист 47 мкФ.
-- [TB6612 - гайд with коup toм (Adafruit Learn)](https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout) - мости, ШІМ, чим inandдрandwithняється on L298N.
-- [L298N + ESP32 - туторandал with коup toм (RNT)](https://randomnerdtutorials.com/esp32-dc-motor-l298n-motor-driver-control-speed-direction/) - speed/toпрям, чому this баwithа, but not фandtoл.
-- [SimpleFOC - documentation with коup toм (SimpleFOC)](https://docs.simplefoc.com/bldcmotor) - BLDCDriver, енcodeери, FOC-контури.
-- [ESP-IDF SPI Master - documentation with коup toм (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/spi_master.html) - bus for конфandгурацandї TMC5160.
+- [DRV8825 - carrier with photo and M0-M2 table (Pololu)](https://www.pololu.com/product/2133) - Vref = I/2, 8.2-45 V, 47 uF LC guard.
+- [TB6612 - guide with code (Adafruit Learn)](https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout) - bridges, PWM, how it differs from L298N.
+- [L298N + ESP32 - tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-dc-motor-l298n-motor-driver-control-speed-direction/) - speed/direction, why it is base but not final.
+- [SimpleFOC - documentation with code (SimpleFOC)](https://docs.simplefoc.com/bldcmotor) - BLDCDriver, encoders, FOC loops.
+- [ESP-IDF SPI Master - documentation with code (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/spi_master.html) - bus for TMC5160 configuration.
 
 ## See also
 
@@ -432,7 +432,7 @@ ESP32 тут - верхній рівень (пульт/автопілот), FOC 
 - [BTS7960 L9110S SSR Solenoid](../../../../ESP32-Reference/UA/11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.md)
 - [ GPIO Overview]
 - [ Interrupts / PWM]
-- [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md)
+- [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
 - [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md)

@@ -15,7 +15,7 @@ date: 2026-10-08
 > [!warning] without NTP час = 1970 рік - and падає БУДЬ-which TLS (HTTPS, MQTTS)!
 > Порядок старту: WiFi → SNTP-синхронізація → тільки потім TLS-with'єднання.
 
-Огляд мережі: [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md), MQTT [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md), HTTP [02-HTTP-WebSocket](../../../../ESP32-Reference/UA/15-Protokoli/02-HTTP-WebSocket.md), старт [Home](../../../../ESP32-Reference/Home.md).
+Огляд мережі: [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md), MQTT [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md), HTTP [EN/15-Protocols/03-HTTP-Client.en], старт [Home](../../../../ESP32-Reference/Home.md).
 
 ## Призначення
 
@@ -95,7 +95,7 @@ that вміє: відповідати on `esp32.local`, анонсувати с�
 Київ:  EET-2EEST,M3.5.0/3,M10.5.0/4
 ```
 
-Після `setenv("TZ", ...); tzset();` функція `localtime()` повертає київський час with автоматичним переходом. on MicroPython пояса немає - тримати UTC and додавати 2/3 год вручну або on сервері.
+Після `setenv("TZ",...); tzset();` функція `localtime()` повертає київський час with автоматичним переходом. on MicroPython пояса немає - тримати UTC and додавати 2/3 год вручну або on сервері.
 
 ## TLS on практиці
 
@@ -233,7 +233,7 @@ local = time.localtime(time.time() + KYIV_OFFSET)
 - [NVS](../../../../ESP32-Reference/UA/08-Pamyat/01-Partitions-NVS.md) - зберігання CA and TZ-рядка
 - [FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md) - TLS FAIL, час 1970
 - [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md) - споживач NTP+TLS (mqtts 8883)
-- [HTTP/WebSocket](../../../../ESP32-Reference/UA/15-Protokoli/02-HTTP-WebSocket.md) - споживач CA-bundle
+- [HTTP/WebSocket] - споживач CA-bundle
 - [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md) - mDNS how знахідка порталу
 - [Cloud-Pipeline](../../../../ESP32-Reference/UA/15-Protokoli/05-Cloud-Pipeline.md) - мітки часу in InfluxDB
 

@@ -4,7 +4,7 @@ description: Explains smart home with auto controls, sensors, relays and communi
 tags: [arduino, smart, home, automation, relay, sensor]
 category: Proekti
 lang: en
-original: 16-Projects/02-Rozumniy-dim.md
+original: 16-Proekti/02-Rozumniy-dim.md
 date-created: 2026-10-05
 date: 2026-10-09
 ---

@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Timer1: TCCR1A/B, OCR1A/B, ICR1, divider and interrupts.*
 
 > [!tip] What this note is
-> Deep dive after the overview [Timers](../../../../ARDUINO-Reference/UA/07-Timeri-Son/01-Timeri-millis.md): registers, mode tables, and why `analogWrite` can break `millis()`. Platform - ATmega328P (Uno/Nano). Basic PWM: [PWM](../../../../ARDUINO-Reference/UA/03-GPIO/02-PWM-analogWrite.md).
+> Deep dive after the overview [Timers]: registers, mode tables, and why `analogWrite` can break `millis()`. Platform - ATmega328P (Uno/Nano). Basic PWM: [PWM](../../../../ARDUINO-Reference/UA/03-GPIO/02-PWM-analogWrite.md).
 
 Timer 1 working chain:
 
@@ -138,7 +138,7 @@ Edge logic: count two event types (rising / falling edge), the pin state reads t
 
 ## 9. Neighbour notes
 
-- [Timers](../../../../ARDUINO-Reference/UA/07-Timeri-Son/01-Timeri-millis.md) - millis, timed walks.
+- [Timers] - millis, timed walks.
 - [PWM](../../../../ARDUINO-Reference/UA/03-GPIO/02-PWM-analogWrite.md) - analog output, pin map.
 - [Interrupts] - attachInterrupt, EXTI.
 - [Encoder](../../../../ARDUINO-Reference/UA/10-Sensori/08-Encoder.md) - quadrature on ICNT1.

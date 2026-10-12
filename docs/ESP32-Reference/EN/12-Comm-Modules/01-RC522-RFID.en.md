@@ -6,6 +6,7 @@ lang: en
 title: RC522 RFID 13.56 MHz
 description: RC522 RFID (MFRC522) - SPI 13.56 MHz - Module pin legend; ESP32 to RC522 connection; ASCII schematic; shows schematics, code and tables.
 tags: [esp32, rfid, rc522, spi]
+original: 12-Moduli-zvyazku/01-RC522-RFID.md
 ---
 
 # RC522 RFID (MFRC522) - SPI 13.56 MHz
@@ -21,7 +22,7 @@ Specifications: NXP MFRC522, 13.56 MHz, ISO14443A, SPI до 10 МГц. Applicati
 ![](../../../../ESP32-Reference/assets/img/rc522-scheme.png)
 *Fig. RC522 - схема connection to ESP32 over VSPI, separate 3.3V power supply.*
 
-Links to [Home](../../../../ESP32-Reference/Home.md), [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md), [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), [02-NRF24-LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md).
+Links to [Home](../../../../ESP32-Reference/Home.md), [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), [EN/02-Power-Supply/01-Power-Rails.en], [EN/03-GPIO/01-GPIO-Overview.en], [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), [02-NRF24-LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md).
 
 ## Purpose
 
@@ -44,10 +45,10 @@ The RC522 module (board with MFRC522 chip) has 8 pins. Note: on some boards the 
 
 Pin details:
 
-- **VCC 3.3V:** MFRC522 chip powered from 3.0-3.6V. RC522 board has no 5V→3.3V regulator, so 5V is forbidden - internal LDO breakdown and 13.56 MHz antenna degradation. If DevKit sags - separate LDO 3.3V 300 mA + electrolytic 10 µF + ceramic 100 nF near module, see [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md).
+- **VCC 3.3V:** MFRC522 chip powered from 3.0-3.6V. RC522 board has no 5V→3.3V regulator, so 5V is forbidden - internal LDO breakdown and 13.56 MHz antenna degradation. If DevKit sags - separate LDO 3.3V 300 mA + electrolytic 10 µF + ceramic 100 nF near module, see [EN/02-Power-Supply/01-Power-Rails.en].
 - **RST:** active low level. In library `MFRC522(SS, RST)` this pin initializes the chip during `PCD_Init()`. Without RST connection the module sometimes "hangs" after brownout.
 - **GND:** common ground is mandatory. Long "tails" GND = SPI errors `Version 0x00/0xFF`.
-- **IRQ:** open-drain output: pulls to ground itself, pulled up to 3.3V by external 10k resistor. Can be omitted entirely - then `PICC_IsNewCardPresent()` polls in `loop()`. Needed only for ESP32 sleep/wakeup by card, see [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md).
+- **IRQ:** open-drain output: pulls to ground itself, pulled up to 3.3V by external 10k resistor. Can be omitted entirely - then `PICC_IsNewCardPresent()` polls in `loop()`. Needed only for ESP32 sleep/wakeup by card, see [EN/03-GPIO/01-GPIO-Overview.en].
 - **MISO / MOSI / SCK:** classic SPI, see [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md). Order `SPI.begin(SCK, MISO, MOSI, SS)` in Arduino - do not swap MISO/MOSI positions.
 - **SDA (SS):** in SPI mode this is Chip Select. When only RC522 on bus - any free GPIO works (typically GPIO5). When NRF24/LoRa/SD also on bus - each has its own CS, SCK/MOSI/MISO shared.
 
@@ -64,7 +65,7 @@ Pin details:
 | GPIO22 | RST | Reset |
 | GPIO21 | IRQ | optional pull-up 10k |
 
-RST/IRQ details: RST active low, hold HIGH. IRQ open-drain for wakeup, see [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md).
+RST/IRQ details: RST active low, hold HIGH. IRQ open-drain for wakeup, see [EN/03-GPIO/01-GPIO-Overview.en].
 
 ### ASCII schematic
 
@@ -150,7 +151,7 @@ while True:
 
 1. Check 3.3V at VCC pin with multimeter during card presentation (must not drop below 3.0V).
 2. Place ceramic 100 nF + electrolytic 10 µF directly on VCC/GND of module.
-3. Do not power RC522 from 3V3 pin with WiFi at max + bright LEDs - better separate LDO, see [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md).
+3. Do not power RC522 from 3V3 pin with WiFi at max + bright LEDs - better separate LDO, see [EN/02-Power-Supply/01-Power-Rails.en].
 4. Board antenna must not touch metal; read distance 2-4 cm for key fobs, 4-6 cm for cards.
 5. If several devices on SPI bus - each has its own CS, and `SPI.begin()` called once, see [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md).
 
@@ -158,7 +159,7 @@ while True:
 | --- | --- | --- |
 | Version 0x00/0xFF | no SPI | check MOSI/MISO, wires <20cm |
 | Читає via раз | power sag | 3.3V only + caps 100nF+10µF |
-| Reboot at картці | weak LDO | separate LDO, see [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) |
+| Reboot at картці | weak LDO | separate LDO, see [EN/02-Power-Supply/01-Power-Rails.en] |
 | IRQ not спрацьовує | no pull-up | 10k resistor to 3.3V or poll without IRQ |
 | Плутанина SDA/SS | SDA label on board | SDA = SS/CS on GPIO5 |
 
@@ -174,8 +175,8 @@ while True:
 - [Home](../../../../ESP32-Reference/Home.md)
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
+- [EN/02-Power-Supply/01-Power-Rails.en]
+- [EN/03-GPIO/01-GPIO-Overview.en]
 - [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md)
 - [02-NRF24-LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md)
 - [03-SIM800L-GPS](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/03-SIM800L-GPS.md)

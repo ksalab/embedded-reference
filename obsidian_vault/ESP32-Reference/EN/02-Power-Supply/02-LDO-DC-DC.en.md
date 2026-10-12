@@ -194,8 +194,8 @@ flowchart TB
 
 - [[EN/Home.en]]
 - [[EN/00-Start/03-Chip-Comparison.en]]
-- [[EN/03-GPIO/01-GPIO-oglyad.en]]
-- [[EN/03-GPIO/02-Strapping-pini.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/03-GPIO/02-Strapping-Pins.en]]
 - [[EN/02-Power-Supply/01-Power-Rails.en]]
 - [[EN/03-Power-Consumption.en]]
 - [[EN/04-Batteries-TP4056.en]]

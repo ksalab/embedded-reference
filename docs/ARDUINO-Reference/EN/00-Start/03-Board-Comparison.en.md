@@ -187,5 +187,5 @@ The pins branch leads to the giant without doubt when signals are many. The netw
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [reference guide](../../../../ARDUINO-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md)
-- [glossary of terms](../../../../ARDUINO-Reference/UA/00-Start/02-Glosariy.md)
+- [ reference guide]
+- [ glossary of terms]

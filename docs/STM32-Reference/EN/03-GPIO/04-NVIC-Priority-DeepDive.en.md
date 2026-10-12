@@ -154,6 +154,6 @@ __enable_irq();
 
 - [Home](../../../../STM32-Reference/Home.md)
 - [External interrupts](../../../../STM32-Reference/UA/03-GPIO/03-EXTI-NVIC.md)
-- [Pin modes](../../../../STM32-Reference/UA/03-GPIO/01-GPIO-rezhimi.md)
+- [ Pin modes]
 - [Timers and PWM](../../../../STM32-Reference/UA/07-Timeri-Son/01-GPTIM-ADTIM.md)
 - [Code layers](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)

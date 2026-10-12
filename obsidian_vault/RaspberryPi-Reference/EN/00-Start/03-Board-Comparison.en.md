@@ -141,7 +141,7 @@ Extra for batches:
 ## 9. Related notes
 
 - [[EN/00-Start/04-Dev-Boards.en|boards and accessories]] - what to buy extra.
-- [[EN/14-Devboards/01-Pi5-Flagman.en|Pi 5 flagship]] - board in detail.
+- [[EN/14-Devboards/01-Pi5-Flagship.en|Pi 5 flagship]] - board in detail.
 - [[EN/14-Devboards/03-Pico-W-Family.en|Pico family]] - microcontrollers.
 - [[EN/14-Devboards/05-CM4-CM5.en|CM modules]] - embedding.
 - [[EN/00-Start/05-Environment-Choice.en|environment choice]] - OS for the board.

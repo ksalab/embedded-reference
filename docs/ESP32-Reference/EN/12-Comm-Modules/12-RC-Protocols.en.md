@@ -5,6 +5,8 @@ tags: [esp32, rc, sbus, crsf, elrs, ibus, mavlink, dshot, telemetry, uart, fails
 category: Moduli
 lang: en
 date-created: 2026-09-28
+date: 2026-10-10
+original: 12-Moduli-zvyazku/12-RC-Protocols.md
 ---
 
 # RC-протоколи - SBUS / CRSF-ELRS / IBUS / MAVLink / DShot
@@ -33,7 +35,7 @@ ESP32 часто працює другим бортовим контролеро
 
 > DShot - not UART-протокол: this синхронна цифрова послідовність with власним таймінгом
 > (біт = 1.67 мкс at DShot600). on ESP32 генерується via RMT або MCPWM,
-> див. [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md).
+> див. [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en].
 
 ## SBUS - інвертований UART 100к 8E2
 
@@ -165,7 +167,7 @@ ESP32-роль: міст UART→WiFi (MAVLink with польотника in UDP �
   (beacon, реверс 3D, налаштування).
 - **CRC on кожен кадр:** пошкоджений кадр відкидається замість смикання мотором.
 - **Bidirectional DShot:** телеметрія with ESC (eRPM, errors) тією ж лінією in вікні
-  після кадру - потрібен вхід захоплення (PCNT/RMT), див. [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md).
+  після кадру - потрібен вхід захоплення (PCNT/RMT), див. [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en].
 - **Чому not PWM on ESP32:** LEDC-PWM має джитер APB-клоку and роздільність, прив'язану
   до частоти; DShot via RMT дає біт-точний таймінг without участі CPU.
 
@@ -442,6 +444,15 @@ while True:
 10. **Спільний UART for SBUS and логів** → `Serial` (USB) тримати for дебага, RC -
     строго on UART1/UART2, див. [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md).
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| SBUS garbage or silence | Missing inversion, 8N1 instead of 8E2 at 100k | Enable inverse mask or one transistor stage, set 100k 8E2 |
+| CRSF link but no telemetry | Wrong 420k baud or TX/RX swapped | Set 420k baud both sides, cross TX to RX, check ELRS version |
+| IBUS reads zeros | FlySky needs plain 115200 without inversion | Use non-inverted UART at 115200, bind receiver first |
+| Motors spin at boot | No failsafe set, DShot armed by noise | Set failsafe hold/off, calibrate endpoints, arm switch only |
+| ESC beeps, no spin | PWM protocol on DShot-only ESC or vice versa | Match protocol to ESC type, check 3.3V signal level shift |
 ## Official sources
 
 - [MAVLink Developer Guide](https://mavlink.io/en/) - формат кадрів v1/v2, HEARTBEAT, GPS_RAW, extra-CRC.
@@ -456,7 +467,7 @@ while True:
 
 - [Home](../../../../ESP32-Reference/Home.md)
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
-- [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md)
+- [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]
 - [06-PCA9685-MG996R-28BYJ48-TMC2209](../../../../ESP32-Reference/UA/11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209.md)
 - [13-Camera-Streaming](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/13-Camera-Streaming.md)
 - [12-LVGL-SquareLine](../../../../ESP32-Reference/UA/11-Vivid/12-LVGL-SquareLine.md)

@@ -1,6 +1,6 @@
 ---
 title: Raspberry Pi Reference - Change Log
-description: Reference metadata — notes list, version history, component overview; shows links and tables.
+description: Reference metadata - notes list, version history, component overview; shows links and tables.
 category: Meta
 tags: [reference, meta]
 lang: en

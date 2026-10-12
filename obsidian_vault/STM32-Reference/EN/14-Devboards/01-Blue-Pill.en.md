@@ -217,6 +217,6 @@ flowchart TB
 
 - [[Home.en]]
 - [[01-Hardware/01-F0-F1-Classic.en | F0/F1 classic]]
-- [[09-Firmware/03-ST-Link-Proshivka.en | ST-Link flashing]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en| ST-Link flashing]]
 - [[14-Devboards/02-Black-Pill.en | Black Pill board]]
 - [[00-Start/04-Dev-Boards.en | Dev board overview]]

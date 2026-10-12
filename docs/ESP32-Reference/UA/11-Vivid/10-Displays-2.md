@@ -4,6 +4,7 @@ title: TFT/ST7735/SH1106/SSD1309/HX8357/TM1638/HT16K33/Smart HMI - диспле�
 tags: [esp32, display, tft, st7735, sh1106, ssd1309, hx8357, tm1638, ht16k33, hmi, spi, i2c, uart]
 category: Vivid
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Дисплеї 2 - TFT SPI, SH1106/SSD1309, HX8357, TM1638, HT16K33, розумні HMI

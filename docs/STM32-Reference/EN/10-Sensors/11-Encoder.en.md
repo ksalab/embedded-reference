@@ -149,4 +149,4 @@ void encoder_poll(void)
 - [timers and PWM](../../../../STM32-Reference/UA/07-Timeri-Son/01-GPTIM-ADTIM.md)
 - [motion and orientation](../../../../STM32-Reference/UA/10-Sensori/03-MPU6050-IMU.md)
 - [pin modes]
-- [power outputs](../../../../STM32-Reference/UA/11-Vivid/03-Servo-Rele-MOSFET-WS2812.md)
+- [power outputs]

@@ -109,7 +109,7 @@ journalctl -u climate.service -f
 | --- | --- | --- |
 | Temperature | `vcgencmd measure_temp` | > 75 C - act |
 | Throttling | `vcgencmd get_throttled` | not 0x0 - power/heat |
-| Disk | `df -h` | > 85 % - clean |
+| Disk | `df -h` | > 85% - clean |
 | Memory | `free -h` | swap grows - add RAM/zram |
 | Services | `systemctl --failed` | empty |
 

@@ -171,8 +171,8 @@ EE_ReadVariable(VIRT_ADDR, &value); // читання змінної
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [power supply rails](../../../../STM32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
+- [power supply rails]
 - [firmware update](../../../../STM32-Reference/UA/15-Protokoli/02-DFU-Bootloader.md)
-- [product protection](../../../../STM32-Reference/UA/15-Protokoli/03-Bezpeka.md)
-- [external loaders](../../../../STM32-Reference/UA/08-Pamyat/02-Zovnishni-Loadery.md)
+- [product protection]
+- [external loaders]
 - [filesystems](../../../../STM32-Reference/UA/08-Pamyat/03-Filesystem-LittleFS.md)

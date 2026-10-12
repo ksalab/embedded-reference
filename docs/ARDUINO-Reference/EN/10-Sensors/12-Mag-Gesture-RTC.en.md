@@ -133,7 +133,7 @@ Take the calibration six from your own figure-eight (calibration sample sketch i
 - NEO-6M - coordinates plus speed plus PPS second;
 - GPS course in motion checks the magnetic course;
 - logger: DS3231 time plus coordinates plus course - full track;
-- [tracker](../../../../ARDUINO-Reference/UA/16-Proekti/03-Treker.md) - where to fit the kit.
+- [tracker] - where to fit the kit.
 
 ## 7. Compass calibration
 
@@ -162,7 +162,7 @@ Take the calibration six from your own figure-eight (calibration sample sketch i
 - [GPS module](../../../../ARDUINO-Reference/UA/12-Moduli-zvyazku/04-GPS-NEO.md) - coordinates and PPS.
 - [encoders](../../../../ARDUINO-Reference/UA/10-Sensori/08-Encoder.md) - robot wheel course.
 - [EEPROM memory] - compass calibration.
-- [tracker](../../../../ARDUINO-Reference/UA/16-Proekti/03-Treker.md) - ready project.
+- [tracker] - ready project.
 
 ## Official sources
 

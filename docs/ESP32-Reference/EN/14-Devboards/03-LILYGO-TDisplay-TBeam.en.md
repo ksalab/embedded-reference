@@ -157,7 +157,7 @@ ESP-IDF: `esp32` (Classic) / `esp32s3` (Supreme) targets. MicroPython runs on T-
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-ttgo-tdisplay-tbeam.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-ttgo-tdisplay-tbeam.png)
 
 ```text
 T-Display: [USB-C 5V / LiPo JST 3.7V] ──► LDO ──► 3.3V ──► ESP32 + ST7789

@@ -136,7 +136,7 @@ SCB_InvalidateDCache_by_Addr((uint32_t*)rx_buf, sizeof(rx_buf));
 HAL_UART_Receive_DMA(&huart1, rx_buf, sizeof(rx_buf));
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Fix |
 | --- | --- | --- | --- |
@@ -148,7 +148,7 @@ HAL_UART_Receive_DMA(&huart1, rx_buf, sizeof(rx_buf));
 | 6 | Two streams on one channel | Request conflict | One request - one stream |
 | 7 | TC flag never cleared | Repeat firing | Clear the flag in the handler |
 
-## Official Sources
+## Official sources
 
 - [AN4031 Using DMA controller (ST)](https://www.st.com/resource/en/application_note/an4031.pdf) - modes, FIFO, burst.
 - [AN4666 DMA tutorial (ST)](https://www.st.com/resource/en/application_note/an4666.pdf) - setup examples.

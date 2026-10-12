@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. PD chain: charger to CC lines to TPS25750 to negotiated 15V to buck to 5V/3.3V of the board.*
 
 > [!tip] What this note is
-> Modern power instead of "dumb" 5V: the board asks the charger for the needed profile and gets watts with margin. Base: [Power supply chains](../../../../STM32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), [Power supply calculation](../../../../STM32-Reference/UA/02-Zhivlennya/03-Power-Design.md).
+> Modern power instead of "dumb" 5V: the board asks the charger for the needed profile and gets watts with margin. Base: [ Power supply chains], [Power supply calculation](../../../../STM32-Reference/UA/02-Zhivlennya/03-Power-Design.md).
 
 ## 1. Goal
 
@@ -63,7 +63,7 @@ TPS25750 negotiates on its own (resistor/EEPROM config), STM32 only reads status
 
 - profile picked with pins/resistors (datasheet table);
 - EEPROM option - for series with identical demands;
-- ask the minimum that covers peak + 30 %;
+- ask the minimum that covers peak + 30%;
 - 5V fallback - if the charger is not PD (plain port);
 - contract LED - visible proof of agreement.
 
@@ -146,13 +146,13 @@ VBUS divider 4:1 - 20V fits into the 3.3V ADC. Contract check before relay turn-
 | Always 5V though 15V asked | charger not PD / cable without CC | PD charger + full cable |
 | Reset at contract moment | load enabled too early | VBUS switch after contract |
 | Works every other time | CC contact dirty | connector cleaning, another cable |
-| Buck heats | efficiency at current limit | 30 % margin, heatsink |
+| Buck heats | efficiency at current limit | 30% margin, heatsink |
 | Status lies | GPIO pull | explicit pull-down, filter |
 | 20V on the board | config mistake | verify profile before turn-on! |
 
 ## 9. PD cheat sheet
 
-- profile = peak + 30 %;
+- profile = peak + 30%;
 - load after contract;
 - TVS + fuse on VBUS;
 - 5V fallback always planned;
@@ -160,7 +160,7 @@ VBUS divider 4:1 - 20V fits into the 3.3V ADC. Contract check before relay turn-
 
 ## 10. Related notes
 
-- [Power supply chains](../../../../STM32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) - power base.
+- [ Power supply chains] - power base.
 - [Power supply calculation](../../../../STM32-Reference/UA/02-Zhivlennya/03-Power-Design.md) - currents and heat.
 - [Buck/Boost modules](../../../../STM32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost.md) - converters.
 - [Analog ADC](../../../../STM32-Reference/UA/06-Analog/01-ADC.md) - VBUS measurement.

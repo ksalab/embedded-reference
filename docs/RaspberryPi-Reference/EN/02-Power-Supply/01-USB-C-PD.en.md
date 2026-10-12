@@ -121,7 +121,7 @@ A nonzero flag after a day is a reason to swap the PSU/cable, even if it "seems 
 | USB disk disappears | port current limit | powered hub |
 | Flag after a night | night peak/heat | throttled log, cooler |
 | Does not start at all | 4.0V on the input | measure on TP1/header, swap PSU |
-| PSU itself heats up | overload/fake | 30 % current headroom, original |
+| PSU itself heats up | overload/fake | 30% current headroom, original |
 
 ## 9. Power cheat sheet
 
@@ -135,8 +135,8 @@ A nonzero flag after a day is a reason to swap the PSU/cable, even if it "seems 
 
 - [boards and accessories] - PSU choice.
 - [BCM2712 and Pi 5](../../../../RaspberryPi-Reference/UA/01-Hardware/02-BCM2712-Pi5.md) - flagship appetites.
-- [Pi 5 flagship](../../../../RaspberryPi-Reference/UA/14-Devboards/01-Pi5-Flagman.md) - board USB limits.
-- [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md) - health monitoring.
+- [Pi 5 flagship] - board USB limits.
+- [OS setup] - health monitoring.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## 9.1 Five-minute diagnostics

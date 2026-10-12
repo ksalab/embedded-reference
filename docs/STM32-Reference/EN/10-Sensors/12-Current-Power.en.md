@@ -28,9 +28,9 @@ Cover current measurement for three scenarios:
 
 | Sensor | Range | Accuracy | Interface |
 | --- | --- | --- | --- |
-| ACS712-05/20/30 | 5/20/30 A DC+AC | About 1.5 %, noise about 20 mA | analog, 185/100/66 mV/A |
-| INA226 | 0-36V, shunt of choice | 0.1 %, 16 bit | I2C, alerts |
-| PZEM-004T | 220V, up to 100 A with CT | About 1 % | UART Modbus, ready |
+| ACS712-05/20/30 | 5/20/30 A DC+AC | About 1.5%, noise about 20 mA | analog, 185/100/66 mV/A |
+| INA226 | 0-36V, shunt of choice | 0.1%, 16 bit | I2C, alerts |
+| PZEM-004T | 220V, up to 100 A with CT | About 1% | UART Modbus, ready |
 
 ## 2. Architecture
 
@@ -127,7 +127,7 @@ The module counts energy (kWh) alone and never resets it on reboot - a ready met
 
 - ACS712: zero with no load, scale with a 1 A reference load (lamp plus multimeter);
 - INA226: calibration register = 0.00512 / (Rshunt x Imax), check with a lab PSU;
-- PZEM: compare against a home meter over a day, mismatch up to 2 % is normal;
+- PZEM: compare against a home meter over a day, mismatch up to 2% is normal;
 - Hall temperature drift - re-calibrate zero once a season.
 
 ## 8. Common issues
@@ -146,7 +146,7 @@ The module counts energy (kWh) alone and never resets it on reboot - a ready met
 - [INA219 and strain gauges](../../../../STM32-Reference/UA/10-Sensori/04-INA219-HX711.md) - the younger brother of INA226.
 - [shunt and op amp](../../../../STM32-Reference/UA/06-Analog/05-Shunt-OPAMP.md) - analog front end.
 - [STM32 ADC](../../../../STM32-Reference/UA/06-Analog/01-ADC.md) - resolution, VREF, DMA.
-- [energy monitor](../../../../STM32-Reference/UA/16-Proekti/03-Energomonitor.md) - ready project.
+- [energy monitor] - ready project.
 - [Modbus protocol](../../../../STM32-Reference/UA/15-Protokoli/01-Modbus.md) - PZEM as slave.
 
 ## Official sources

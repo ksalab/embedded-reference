@@ -145,7 +145,7 @@ Paho Gateway або ChirpStack + MQTT-інтеграцію.
 
 - [Головна](../../../../ESP32-Reference/Home.md)
 - [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md)
-- [MQTT-клієнт](../../../../ESP32-Reference/UA/15-Protokoli/11-Cloud-2.md)
+- [MQTT-клієнт]
 - [Matter/Thread/Zigbee](../../../../ESP32-Reference/UA/15-Protokoli/09-Matter-Thread-Zigbee.md)
 - [LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md)
 - [Cat-1 (буфер)](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/18-Cellular-LoRa-2.md)

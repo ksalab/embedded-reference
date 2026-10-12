@@ -48,11 +48,11 @@ Feed MH-Z19B with 5 V (150 mA peak!), 3.3 V logic - tolerant to the 5 V Uno inpu
 
 ## 3. MH-Z19B protocol
 
-Read request: `FF 01 86 00 00 00 00 00 79`. 9-byte reply: `FF 86 HIGH LOW ... CHECK`.
+Read request: `FF 01 86 00 00 00 00 00 79`. 9-byte reply: `FF 86 HIGH LOW... CHECK`.
 
 - concentration = HIGHx256 + LOW;
 - checksum: `0xFF - byte sum 1-7 + 1`;
-- zero calibration: 20 minutes outdoors plus the `FF 01 87 ...` command;
+- zero calibration: 20 minutes outdoors plus the `FF 01 87...` command;
 - ABC auto-base - once per 24 hours seeks the minimum (turn off in a bedroom!);
 - 3 minute warm-up after power-on - throw first readings away.
 
@@ -145,8 +145,8 @@ The BME680 gas function is simplified to a stub: full driver (heater profile plu
 - [BME280 sensor](../../../../ARDUINO-Reference/UA/10-Sensori/02-BME280.md) - younger brother with no gas.
 - [MQ gas sensors](../../../../ARDUINO-Reference/UA/10-Sensori/06-MQ-Gas.md) - why MQ is not for CO2.
 - [UART bus](../../../../ARDUINO-Reference/UA/04-Shini/01-UART.md) - SoftwareSerial vs hardware.
-- [weather station](../../../../ARDUINO-Reference/UA/16-Proekti/01-Meteostantsiya.md) - where to fit the monitor.
-- [power and relay](../../../../ARDUINO-Reference/UA/11-Vivid/03-NeoPixel-Servo-Rele.md) - fan control.
+- [weather station] - where to fit the monitor.
+- [power and relay] - fan control.
 
 ## Official sources
 

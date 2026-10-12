@@ -146,7 +146,7 @@ server.on("/metrics", []() {
 
 - [[Home.en | Home]]
 - [[15-Protocols/01-MQTT.en | MQTT]]
-- [[15-Protocols/02-HTTP-WebSocket.en | HTTP/WebSocket]]
+- [[EN/15-Protocols/03-HTTP-Client.en| HTTP/WebSocket]]
 - [[15-Protocols/03-mDNS-NTP-TLS.en | TLS/NTP]]
 - [[15-Protocols/05-Cloud-Pipeline.en | Cloud-Pipeline]]
 - [[15-Protocols/12-AWS-IoT.en | 12-AWS-IoT]]

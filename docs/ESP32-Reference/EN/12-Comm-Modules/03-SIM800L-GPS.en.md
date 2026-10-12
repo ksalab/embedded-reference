@@ -5,13 +5,14 @@ title: SIM800L GSM та NEO-6M GPS
 description: SIM800L GSM + NEO-6M GPS - SIM800L - живлення (найважливіше); Легенда пінів модуля SIM800L; ASCII-схема (SIM800L); shows schematics, code and tables.
 tags: [esp32, sim800l, gsm, gps, neo-6m, uart, at]
 date: 2026-10-08
+original: 12-Moduli-zvyazku/03-SIM800L-GPS.md
 ---
 
 # SIM800L GSM + NEO-6M GPS
 
 > [!danger] SIM800L not живити from 5V and not from 3.3V ESP32! Норма: 3.7-4.2V, пік 2A in TX-бурсті. without потужного живлення - вічні перезавантаження and мережа not реєструється.
 
-Контекст: UART див. [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), живлення [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) та [01-Buck-Boost-Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md), рівні [02-Level-Shifters](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shifters.md), піни [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start [Home](../../../../ESP32-Reference/Home.md).
+Контекст: UART див. [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), живлення [EN/02-Power-Supply/01-Power-Rails.en] та [01-Buck-Boost-Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md), рівні [02-Level-Shifters](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shifters.md), піни [01-Pinout-tablici](../../../../ESP32-Reference/UA/99-Dodatki/01-Pinout-tablici.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start [Home](../../../../ESP32-Reference/Home.md).
 
 ## Purpose
 
@@ -48,7 +49,7 @@ SIM800L GSM + NEO-6M GPS - SIM800L - живлення (найважливіше)
 
 1. **not 5V:** абсолютний максимум чипа 4.4V. Подача 5V пробиває RF-підсилювач - module гріється and вмирає for секунди. Виняток - лише червона плата EVB with власним стабілізатором and micro-USB: їй можна 5V, because on платі стоїть buck. Перевіряй свою версію візуально!
 2. **not 3.3V ESP32:** нижня межа чипа 3.4V, but in TX-бурсті 2A просадка on тонких доріжках DevKit сягає 0.3-0.5V → 2.8V on чипі → brownout and перезапуск саме in момент реєстрації in мережі. Symptom класичний: «AT OK, but AT+CREG ніколи not 0,1».
-3. **Правильно:** окремий buck LM2596 (або MP1584) with 5V 2A адаптера, on виході рівно 4.0V під навантаженням, електроліт 1000 мкФ low-ESR + кераміка 100 нФ біля SIM800L, товсті короткі дроти, див. [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) and [01-Buck-Boost-Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md).
+3. **Правильно:** окремий buck LM2596 (або MP1584) with 5V 2A адаптера, on виході рівно 4.0V під навантаженням, електроліт 1000 мкФ low-ESR + кераміка 100 нФ біля SIM800L, товсті короткі дроти, див. [EN/02-Power-Supply/01-Power-Rails.en] and [01-Buck-Boost-Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md).
 4. **UART перехресно:** TX модуля → RX ESP32, RX модуля → TX ESP32. Швидкість for замовчуванням 115200, див. [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md). RX SIM800L not 5V-толерантний - дільник обов'язковий.
 5. **AT-повідомлення:** після `AT+CMGF=1` and `AT+CMGS` module відповідає `>` and чекає текст + Ctrl+Z (0x1A). Довгі AT-сесії вести via міст Serial↔Serial2 for відладки.
 
@@ -335,7 +336,7 @@ RING                          <- гудок 2 …
 | MIC_P / MIC_N | Електретний мікрофон | Безпосередньо капсуль, живлення дає сам module |
 | SPK_P / SPK_N | Динамік 8 Ом | Диференційно, not садити один кінець on GND! |
 | `AT+CMIC=0,10` | Чутливість мікрофона (канал 0, рівень 0-15) | Підбирати: фон/луна |
-| `AT+CLVL=60` | Гучність динаміка 0-100 | 60 - startова |
+| `AT+CLVL=60` | Speaker volume 0-100 | 60 - initial value |
 | `AT+CHFA=1` | Перемикання аудіоканалу (гарнітура/гучномовець on EVB) | on синій платі зазвичай один канал |
 
 ## 6. USSD and APN українських операторів
@@ -609,8 +610,8 @@ while True:
 - [Home](../../../../ESP32-Reference/Home.md)
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
+- [EN/02-Power-Supply/01-Power-Rails.en]
+- [EN/03-GPIO/01-GPIO-Overview.en]
 - [01-Buck-Boost-Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md)
 - [02-Level-Shifters](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shifters.md)
 - [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md)

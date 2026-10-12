@@ -514,6 +514,10 @@ flowchart TB
 - TPS737 Datasheet (TI): <https://www.ti.com/product/TPS737> - LDO with microamp Iq.
 - PPK2 Power Profiler Kit II (Nordic): <https://www.nordicsemi.com/Products/Development-hardware/Power-Profiler-Kit-2> - sleep current measurement.
 
+## Official sources
+
+- [ESP32 Sleep Modes (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/sleep_modes.html) - deep sleep, light sleep, wakeup sources and ULP.
+- [ESP32 Datasheet (Espressif)](https://www.espressif.com/sites/default/files/esp32-datasheet-en.pdf) - sleep current figures and RTC peripheral limits.
 ## See also
 
 - [Home](../../../../ESP32-Reference/Home.md)

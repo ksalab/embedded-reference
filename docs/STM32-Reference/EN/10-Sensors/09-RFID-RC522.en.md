@@ -152,4 +152,4 @@ RC522_AntennaOn();   // без цього карток не видно!
 - [motion and orientation](../../../../STM32-Reference/UA/10-Sensori/03-MPU6050-IMU.md)
 - [exchange bus](../../../../STM32-Reference/UA/04-Shini/02-SPI.md)
 - [product protection]
-- [accounting and log](../../../../STM32-Reference/UA/16-Proekti/03-Energomonitor.md)
+- [accounting and log]

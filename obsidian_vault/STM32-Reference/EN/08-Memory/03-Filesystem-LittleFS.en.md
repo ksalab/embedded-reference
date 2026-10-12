@@ -147,6 +147,6 @@ if (mount_fs() != FS_OK) {
 
 - [[Home.en]]
 - [[EN/08-Memory/01-Flash-OTP-EEPROM.en|internal memory]]
-- [[EN/08-Memory/02-Zovnishni-Loadery.en|external loaders]]
+- [[EN/08-Memory/02-External-Loaders.en|external loaders]]
 - [[EN/04-Interfaces/06-SDMMC-QUADSPI.en|memory cards]]
 - [[EN/16-Projects/05-USB-Logger.en|data logger]]

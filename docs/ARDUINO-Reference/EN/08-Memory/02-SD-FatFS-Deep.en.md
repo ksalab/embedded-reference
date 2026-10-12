@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Card as a disk: logs append, pages read, power never breaks mid-write.*
 
 > [!tip] What this note is
-> SD-topic depth: not "write a string", but logs for years, web face from the card, rotation and survival. Base: [EEPROM memory](../../../../ARDUINO-Reference/UA/08-Pamyat/01-Pamyat-EEPROM.md), [Ethernet shield](../../../../ARDUINO-Reference/UA/12-Moduli-zvyazku/06-Ethernet-W5500-Deep.md).
+> SD-topic depth: not "write a string", but logs for years, web face from the card, rotation and survival. Base: [EEPROM memory], [Ethernet shield](../../../../ARDUINO-Reference/UA/12-Moduli-zvyazku/06-Ethernet-W5500-Deep.md).
 
 ## 1. Goal
 
@@ -181,9 +181,9 @@ The `sdcard` module - in firmwares with SD support or as a separate file. Short 
 
 ## 10. Neighbour notes
 
-- [EEPROM memory](../../../../ARDUINO-Reference/UA/08-Pamyat/01-Pamyat-EEPROM.md) - small data with no card.
+- [EEPROM memory] - small data with no card.
 - [Ethernet shield](../../../../ARDUINO-Reference/UA/12-Moduli-zvyazku/06-Ethernet-W5500-Deep.md) - web from the card.
-- [SD logger](../../../../ARDUINO-Reference/UA/16-Proekti/04-Loger-SD.md) - ready project.
+- [SD logger] - ready project.
 - [SPI bus](../../../../ARDUINO-Reference/UA/04-Shini/02-SPI.md) - card transport.
 - [main map](../../../../ARDUINO-Reference/Home.md) - full navigation.
 

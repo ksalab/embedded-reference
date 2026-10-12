@@ -159,6 +159,15 @@ flowchart TB
     DBG -->|Yes| JTAG[Debug button + JTAG adapter]
 ```
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| No COM port / upload fails | CH340/CP2102 driver missing or charge-only cable | Install vendor driver, use data cable under 1 m, check Device Manager |
+| Stuck in download mode or boot loop | BOOT/EN strapping held or weak auto-reset | Press BOOT+RST manually, add 100 nF EN cap, check DTR/RTS wiring |
+| Sketch too big / OTA fails | Wrong partition scheme for flash size | Set matching flash size and Minimal SPIFFS or OTA scheme |
+| Library compiles on one PC only | Unpinned lib_deps versions drift | Pin exact versions in platformio.ini, commit platformio.lock if used |
+| LittleFS image will not mount | Built for SPIFFS or wrong offset | Use matching filesystem image tool and partition table entry |
 ## Official sources
 
 - [Arduino-ESP32 (GitHub)](https://github.com/espressif/arduino-esp32) - core, boards, 2.x to 3.x migration.

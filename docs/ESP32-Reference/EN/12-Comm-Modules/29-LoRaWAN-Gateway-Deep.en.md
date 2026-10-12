@@ -1,9 +1,11 @@
 ---
+lang: en
 title: ESP32 LoRaWAN-шлюз глибоко - SX1302, TTN and мультиканальний вузол
 description: Будує глибокий LoRaWAN-шлюз on ESP32 - SX1302 8-канал, TTN-протокол, MQTT-мост, розподіл живлення with кодом.; shows schematics, code and tables.
 tags: [esp32, lora, sx1302, loranwan, gateway, ttn, mqtt, multi-channel]
 category: Moduli-zvyazku
 date: 2026-10-06
+original: 12-Moduli-zvyazku/29-LoRaWAN-Gateway-Deep.md
 ---
 
 # ESP32 LoRaWAN-шлюз глибоко - SX1302, TTN and мультиканальний вузол
@@ -31,7 +33,7 @@ flowchart TB
 - SX1302 приймає 8 каналів одночасно (SF7-SF12);
 - ESP32-S3 обробляє пакети, формує MQTT;
 - Веб-інтерфейс стану - чи працює кожен канал;
-- Живлення: 5V 3A for SX1302 (пиk 2A) + ESP32.
+- Power: 5V 3A for SX1302 (peak 2A) + ESP32.
 
 ## 2. Розпіновка шлюзу (ESP32-S3 + SX1302)
 
@@ -52,7 +54,7 @@ flowchart TB
 | 1 | 868.3 МГц | 125 кГц | 9 | Середня |
 | 2 | 868.5 МГц | 125 кГц | 12 | Далека |
 | 3 | 868.3 МГц | 250 кГц | 7 | Швидкий довгий |
-| ... | ... | ... | ... | ... |
+|... |... |... |... |... |
 
 Кожен канал - окремий SX1302-module? Ні, один чип with 8 приймачами. Прийом одночасний.
 
@@ -121,7 +123,7 @@ while True:
 - [NRF24/LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md) - вузол із LoRa.
 - [WiFi-STA/AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md) - WiFi in вузлі.
 - [передача in хмару](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md) - broker.
-- [чипи C3/C6/H2](../../../../ESP32-Reference/UA/01-Hardware/04-ESP32-C3-C6-H2.md) - радіо-versії.
+- [C3/C6/H2 chips](../../../../ESP32-Reference/UA/01-Hardware/04-ESP32-C3-C6-H2.md) - radio versions.
 - [головна карта](../../../../ESP32-Reference/Home.md) - повна навігація.
 
 ## 9.1 Антена and корпус шлюзу

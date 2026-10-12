@@ -151,7 +151,7 @@ lib_deps =
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-hmi-guition-scheme.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-hmi-guition-scheme.png)
 
 ```text
 [Блок 5V/2A] ──► плата HMI ──► LDO 3.3V ──► S3-логіка

@@ -146,7 +146,7 @@ server.on("/metrics", []() {
 
 - [Home](../../../../ESP32-Reference/Home.md)
 - [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md)
-- [HTTP/WebSocket](../../../../ESP32-Reference/UA/15-Protokoli/02-HTTP-WebSocket.md)
+- [ HTTP/WebSocket]
 - [TLS/NTP](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md)
 - [Cloud-Pipeline](../../../../ESP32-Reference/UA/15-Protokoli/05-Cloud-Pipeline.md)
 - [12-AWS-IoT](../../../../ESP32-Reference/UA/15-Protokoli/12-AWS-IoT.md)

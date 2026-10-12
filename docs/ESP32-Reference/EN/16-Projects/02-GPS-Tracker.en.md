@@ -50,10 +50,10 @@ Requirements:
 
 | Component | Reference note | Price, approx. |
 | --- | --- | --- |
-| ESP32 DevKit (WROOM-32) | [DevKit](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md) | $6 |
+| ESP32 DevKit (WROOM-32) | [ DevKit] | $6 |
 | NEO-M8N module with antenna | [SIM800L/GPS](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/03-SIM800L-GPS.md) | $10 |
 | A7670E/SA 4G module + LTE antenna | [4G](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/07-SIM7600-W5500-MCP2515.md) | $25 |
-| LiPo 2000 mAh + TP4056 (protected) | [Batteries](../../../../ESP32-Reference/UA/02-Zhivlennya/04-Akumulyatori-TP4056.md) | $8 |
+| LiPo 2000 mAh + TP4056 (protected) | [ Batteries] | $8 |
 | Buck LM2596 → 3.8V for A7670 | [Buck/Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md) | $2 |
 | MPU6050 (wake by motion) | [MPU6050](../../../../ESP32-Reference/UA/10-Sensori/04-MPU6050.md) | $2 |
 | SIM card IoT/M2M | [4G](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/07-SIM7600-W5500-MCP2515.md) | $3 |

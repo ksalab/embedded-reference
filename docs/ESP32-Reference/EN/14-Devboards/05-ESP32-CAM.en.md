@@ -147,7 +147,7 @@ ESP-IDF: `esp-idf/examples/peripherals/camera` example. MicroPython with camera 
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-esp32cam.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-esp32cam.png)
 
 ```text
 [БЖ 5V 2A] ──► пін 5V + GND плати (+ 470–1000 мкФ між 5V і GND!)

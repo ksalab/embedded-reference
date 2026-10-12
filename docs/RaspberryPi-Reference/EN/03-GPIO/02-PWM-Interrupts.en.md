@@ -138,7 +138,7 @@ For music/servo without trembling - only hardware PWM or PCA9685.
 - [pin header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md) - first pins.
 - [HAT and EEPROM](../../../../RaspberryPi-Reference/UA/03-GPIO/03-HAT-EEPROM.md) - expansion boards.
 - External ADCs for analog sensors - queue 3 note.
-- [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md) - groups and rights.
+- [OS setup] - groups and rights.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## 9.1 Choice: gpiozero or lgpio

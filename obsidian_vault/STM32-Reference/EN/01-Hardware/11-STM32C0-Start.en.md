@@ -170,6 +170,6 @@ int main(void) {
 ## See also
 
 - [[Home.en]]
-- [[00-Start/03-Porivnyannya-chipiv.en | Chip comparison]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]
 - [[01-Hardware/01-F0-F1-Classic.en | F0/F1]]
 - [[01-Hardware/03-G0-G4.en | G0/G4]]

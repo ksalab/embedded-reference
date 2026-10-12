@@ -206,8 +206,8 @@ Grounds of the board and the supply join together, otherwise the control signal 
 ## See also
 
 - [[Home.en]]
-- [[EN/00-Start/03-Porivnyannya-plat.en|board comparison]]
-- [[EN/00-Start/04-Devkit-plati.en|board overview]]
+- [[EN/00-Start/03-Board-Comparison.en|board comparison]]
+- [[EN/00-Start/04-Dev-Boards.en|board overview]]
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
 - [[EN/01-Hardware/03-Due-Zero-ARM.en|ARM boards]]
 - [[EN/09-Firmware/01-IDE-CLI.en|environment and CLI]]

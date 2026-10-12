@@ -164,6 +164,6 @@ flowchart TB
 - [01-Partitions-NVS](../../../../ESP32-Reference/UA/08-Pamyat/01-Partitions-NVS.md)
 - [Filesystems](../../../../ESP32-Reference/UA/08-Pamyat/02-Filesystem.md)
 - [OTA](../../../../ESP32-Reference/UA/08-Pamyat/03-OTA.md)
-- [01-ESP-IDF-setup](../../../../ESP32-Reference/UA/09-Proshivka/01-ESP-IDF-setup.md)
+- [EN/09-Firmware/01-ESP-IDF-Setup.en]
 - [04-Esptool-Flash](../../../../ESP32-Reference/UA/09-Proshivka/04-Esptool-Flash.md)
 - [05-JTAG-Debug](../../../../ESP32-Reference/UA/09-Proshivka/05-JTAG-Debug.md)

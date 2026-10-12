@@ -48,7 +48,7 @@ Requirements:
 
 | Component | Reference note | Price, approx. |
 | --- | --- | --- |
-| ESP32 DevKit (WROOM-32) | [[00-Start/04-Devkit-plati.en | DevKit]] | $6 |
+| ESP32 DevKit (WROOM-32) | [[EN/00-Start/04-Dev-Boards.en| DevKit]] | $6 |
 | PZEM-004T v3 + CT 100A | [[10-Sensors/15-ACS712-ZMPT101B-PZEM-AS5600-FSR.en | Current]] | $12 |
 | 5V 1A isolated PSU (Hi-Link) | [[EN/02-Power-Supply/02-LDO-DC-DC.en| LDO]] | $5 |
 | Fuse 1A + DIN holder | [[13-Power-Modules/04-LDO-Buck-XL4015-Protect.en | Protection]] | $2 |

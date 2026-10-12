@@ -11,7 +11,7 @@ date: 2026-10-08
 
 # Project 6 - C5/C61 Robotics: DRV8833 + Encoders + PID + ToF + IR
 
-![](../../../../ESP32-Reference/assets/img/cookbook-robotics-scheme.png)
+![](../../../../ESP32-Reference/assets/img/c5c61-robot-scheme.png)
 *Fig. Robot: ESP32-C5 brain + DRV8833 dual H-bridge + encoders + VL53L0X + IR sensors; C61 observer with BME280 + ToF.*
 
 > [!tip] What we are building
@@ -29,7 +29,7 @@ C5 = motor control + local decision; C61 = environment observer + telemetry.
 | ESP32-C61 MINI-1 | [C5/C61](../../../../ESP32-Reference/UA/01-Hardware/10-ESP32-C5-C61.md) | observer |
 | DRV8833 dual H-bridge | Official sources | 2× to 1.5 A, 3.3 V logic |
 | 2 × DC motor 4.8-6 V with encoder | [Drivers](../../../../ESP32-Reference/UA/11-Vivid/04-L298N-TB6612-A4988-Buzzer.md) | ~300 rpm |
-| 4×AA 6 V or 2S Li-ion 7.4 V | [Rails](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) | motors only |
+| 4×AA 6 V or 2S Li-ion 7.4 V | [ Rails] | motors only |
 | 3.3 V LDO (ME6211, better than AMS1117) | [LDO](../../../../ESP32-Reference/UA/02-Zhivlennya/02-LDO-DC-DC.md) | 6 V → 3.3 V |
 | VL53L0X (I2C 0x29) | [ToF/Color](../../../../ESP32-Reference/UA/10-Sensori/10-VL53L0X-TCS34725-TSL2561.md) | on C61 |
 | BME280 (I2C 0x76) | [BME280](../../../../ESP32-Reference/UA/10-Sensori/03-BME280-BMP280-SHT31.md) | on C61 |
@@ -82,7 +82,7 @@ void loop() {
 | --- | --- | --- |
 | 1 | Wheel lifted, set 50 rpm | motor rotates ~50 rpm no load |
 | 2 | Set Kp = 2, Ki = 0.5, Kd = 0.1 | stable within 5-10 s |
-| 3 | Add load (battery or edge) | adjust Kp +20 %; Ki unchanged |
+| 3 | Add load (battery or edge) | adjust Kp +20%; Ki unchanged |
 | 4 | Test full circle 1 m | deviation < 10 cm |
 
 ## 7. Troubleshooting
@@ -118,7 +118,7 @@ void loop() {
 
 ## Extended notes
 
-PID tuning guidelines: start with Kp = 2, Ki = 0.5, Kd = 0.1; increase Kp until oscillation begins then back off 30 %; Ki removes steady-state error for constant speed; Kd dampens overshoot but amplifies noise - keep low if encoder resolution is 4× quadrature; use filter on encoder input to avoid jitter.
+PID tuning guidelines: start with Kp = 2, Ki = 0.5, Kd = 0.1; increase Kp until oscillation begins then back off 30%; Ki removes steady-state error for constant speed; Kd dampens overshoot but amplifies noise - keep low if encoder resolution is 4× quadrature; use filter on encoder input to avoid jitter.
 
 Encoder wiring: twist pairs; pull-ups 10k to 3.3 V; do not run encoder wires parallel to motor power wires to avoid EMI; shield with aluminum tape if needed.
 
@@ -142,7 +142,7 @@ void loop() {
 
 ## Calibration table
 
-| Mode | PWM % | Speed rpm | Current mA | Battery V | Note |
+| Mode | PWM% | Speed rpm | Current mA | Battery V | Note |
 | --- | --- | --- | --- | --- | --- |
 | Slow | 30 | 90 | 120 | 6.0 | indoor floor |
 | Normal | 50 | 150 | 300 | 5.8 | carpet / tile |
@@ -162,3 +162,18 @@ void loop() {
 ## Communication between nodes
 
 C5 and C61 connect via UART (GPIO17/18) at 115200 baud; protocol: JSON line with `{"t":"env","temp":22,"dist":120,"rssi":-65}"; C61 sends every 200 ms; C5 parses in non-blocking loop; if UART error > 3 in 1 s, drop observer for 5 s.
+
+### Robot nodes
+
+```mermaid
+flowchart LR
+    C5["ESP32-C5 brain<br/>PID motors"]
+    DRV["DRV8833<br/>dual H-bridge"]
+    MOT["DC motors<br/>encoders"]
+    C61["ESP32-C61 observer<br/>BME280 ToF"]
+    OBS["Obstacles<br/>UART JSON"]
+    C5 --> DRV
+    DRV --> MOT
+    C61 --> OBS
+    OBS --> C5
+```

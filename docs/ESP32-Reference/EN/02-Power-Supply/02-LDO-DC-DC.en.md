@@ -194,8 +194,8 @@ flowchart TB
 
 - [Home](../../../../ESP32-Reference/Home.md)
 - [EN/00-Start/03-Chip-Comparison.en]
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
-- [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md)
+- [EN/03-GPIO/01-GPIO-Overview.en]
+- [EN/03-GPIO/02-Strapping-Pins.en]
 - [EN/02-Power-Supply/01-Power-Rails.en]
 - [EN/03-Power-Consumption.en]
 - [EN/04-Batteries-TP4056.en]

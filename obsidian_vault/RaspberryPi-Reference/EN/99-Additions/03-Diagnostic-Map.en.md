@@ -43,7 +43,7 @@ date: 2026-10-08
 | Tears every hour | PM | disable, watchdog |
 | Slowly | channel/signal | scanner, wire |
 
-## See also- [[EN/99-Additions/01-Troubleshooting-FAQ.en| FAQ]] - detailed answers.- [[EN/99-Additions/02-Datasheet-Links.en| links to datasheets]] - documents.- [[EN/17-Lab/01-Instruments.en| laboratory devices]] - arsenal.- [[Home | main map]] - full navigation.
+## See also- [[EN/99-Additions/01-Troubleshooting-FAQ.en| FAQ]] - detailed answers.- [[EN/99-Additions/02-Datasheet-Links.en| links to datasheets]] - documents.- [[EN/17-Lab/01-Instruments.en| laboratory devices]] - arsenal.- [[Home.en | main map]] - full navigation.
 
 ## Common issues
 

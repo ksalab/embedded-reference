@@ -212,7 +212,7 @@ w.connect("SSID", "PASS")
 ```
 
 > [!warning] IP conflict
-> Check that the address is outside the router DHCP pool (e.g. pool .100-.200, ESP32 at .50). Two devices with one IP = both "blink".
+> Check that the address is outside the router DHCP pool (e.g. pool.100-.200, ESP32 at.50). Two devices with one IP = both "blink".
 
 ## Promiscuous sniffer (short)
 

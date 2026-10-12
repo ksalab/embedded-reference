@@ -95,7 +95,7 @@ Practice:
   confirming every packet doubles airtime - confirm important ones.
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -107,7 +107,7 @@ Practice:
 | 6 | Join in a loop without pauses | Clogs the air on weak signal | Exponential pause between attempts |
 | 7 | Single gateway in a basement | Nodes cannot be heard | Gateway higher, antenna outside |
 
-## Official Sources
+## Official sources
 
 - [LoRaWAN Specification (LoRa Alliance)](https://lora-alliance.org/resource-hub/lorawan-specification-v101/) - classes, OTAA, frames.
 - [STM32WL LoRaWAN stack (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32wl-series.html) - end-node examples.

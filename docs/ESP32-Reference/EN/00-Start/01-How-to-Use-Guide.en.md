@@ -24,7 +24,7 @@ date: 2026-10-08
 > [!tip] 30-second finder
 > Any answer can be found in 30 seconds: `Ctrl+P` for files, `Ctrl+Shift+F` for text, click a `#esp32/*` tag or hop from [Home map](../../../../ESP32-Reference/Home.md).
 
-The reference follows the MOC principle: [Home map](../../../../ESP32-Reference/Home.md) links everything. Deep theory lives in the [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md), hardware choice in [Chip comparison](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md) and [DevKit boards](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md), SDK choice in [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md), new sensors follow the [Component template](../../../../ESP32-Reference/_templates/Component-Template.md).
+The reference follows the MOC principle: [Home map](../../../../ESP32-Reference/Home.md) links everything. Deep theory lives in the [ Glossary], hardware choice in [ Chip comparison] and [ DevKit boards], SDK choice in [ Environment choice], new sensors follow the [Component template](../../../../ESP32-Reference/_templates/Component-Template.md).
 
 > [!warning] Core power setup
 > The whole reference assumes ESP32 logic is **3.3V**. Examples from 5V Arduino boards (Uno/Nano) do not transfer literally: dividers and level-shifters are mandatory. Feeding 5V into any GPIO causes irreversible damage.
@@ -33,10 +33,10 @@ The reference follows the MOC principle: [Home map](../../../../ESP32-Reference/
 
 | Folder | Contents | Example |
 | --- | --- | --- |
-| `00-Start/` | Entry, glossary, choice | This note, [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md), [Chips](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md) |
+| `00-Start/` | Entry, glossary, choice | This note, [ Glossary], [ Chips] |
 | `01-Hardware/` | Chips and differences | [C3/C6/H2 chips](../../../../ESP32-Reference/UA/01-Hardware/04-ESP32-C3-C6-H2.md), [C5/C61](../../../../ESP32-Reference/UA/01-Hardware/10-ESP32-C5-C61.md) |
-| `02-Power-Supply/` | Power, batteries | [Batteries](../../../../ESP32-Reference/UA/02-Zhivlennya/04-Akumulyatori-TP4056.md), [Power consumption](../../../../ESP32-Reference/UA/02-Zhivlennya/03-Spozhivannya.md) |
-| `03-GPIO/` | Pins, strapping | [GPIO overview](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md), [Strapping](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md) |
+| `02-Power-Supply/` | Power, batteries | [ Batteries], [ Power consumption] |
+| `03-GPIO/` | Pins, strapping | [ GPIO overview], [ Strapping] |
 | `04-Interfaces/` | UART, SPI, I2C | [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md) |
 | `05-Radio/` | WiFi STA/AP, BLE | [WiFi STA/AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md), [BLE](../../../../ESP32-Reference/UA/05-Radio/02-BLE-Bluetooth.md) |
 | `06-Analog/` | ADC, DAC | [ADC](../../../../ESP32-Reference/UA/06-Analog/01-ADC.md) |
@@ -99,15 +99,15 @@ Obsidian search:
 
 | Level | Labels | Example |
 | --- | --- | --- |
-| 🟢 Beginner | `#esp32/beginner` | Blinking an LED, [connecting a DevKit over USB](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md) |
-| 🟡 Intermediate | - | I2C sensor, [PlatformIO](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md), Wi-Fi STA |
+| 🟢 Beginner | `#esp32/beginner` | Blinking an LED, [ connecting a DevKit over USB] |
+| 🟡 Intermediate | - | I2C sensor, [ PlatformIO], Wi-Fi STA |
 | 🔴 Advanced | `#esp32/advanced` | OTA, ULP, TWAI, eFuse |
 
 > [!tip] Suggested path
 >
-> 1. [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md) - 10 min on terms. 2. [Chip comparison](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md) - picking silicon. 3. [DevKit boards](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md) - which board to buy. 4. [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md) - ESP-IDF or Arduino. 5. [Home map](../../../../ESP32-Reference/Home.md) - back to the map.
+> 1. [ Glossary] - 10 min on terms. 2. [ Chip comparison] - picking silicon. 3. [ DevKit boards] - which board to buy. 4. [ Environment choice] - ESP-IDF or Arduino. 5. [Home map](../../../../ESP32-Reference/Home.md) - back to the map.
 >
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/placeholder.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/placeholder.png)
 > Reference wiring for all guide examples:
 
 | ESP32 DevKit | Module / PC | Note |
@@ -120,8 +120,8 @@ Obsidian search:
 ## See also
 
 - [Home map](../../../../ESP32-Reference/Home.md)
-- [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md)
-- [Chip comparison](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
-- [DevKit boards](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md)
-- [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ Glossary]
+- [ Chip comparison]
+- [ DevKit boards]
+- [ Environment choice]
 - [Component template](../../../../ESP32-Reference/_templates/Component-Template.md)

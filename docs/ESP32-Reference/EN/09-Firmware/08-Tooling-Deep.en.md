@@ -41,7 +41,7 @@ Version range table:
 | `example/cmp: "^1.2.3"` | `>=1.2.3, <2.0.0` (recommended) |
 | `example/cmp: "~1.2.3"` | `>=1.2.3, <1.3.0` |
 | `example/cmp: "<=3.3.3"` | No newer than 3.3.3 |
-| `test_component: {git: ..., path: ...}` | Dependency from a Git monorepo |
+| `test_component: {git:..., path:...}` | Dependency from a Git monorepo |
 
 ESP-IDF code - own component `components/sensor_hub/idf_component.yml`:
 
@@ -148,7 +148,7 @@ Common option table:
 | File | Minimum |
 | --- | --- |
 | Root `CMakeLists.txt` | 3 lines: `cmake_minimum_required` + `include(project.cmake)` + `project()` |
-| `main/CMakeLists.txt` | `idf_component_register(SRCS ... REQUIRES ...)` |
+| `main/CMakeLists.txt` | `idf_component_register(SRCS... REQUIRES...)` |
 | `components/foo/CMakeLists.txt` | Same + `INCLUDE_DIRS` |
 | `Kconfig` / `Kconfig.projbuild` | Optional, `menuconfig` items |
 | `project_include.cmake` | Rare, global flags before configuration |
@@ -547,7 +547,7 @@ esp_err_t sensor_init(sensor_t *dev) {
 | `set-target` wiped the config | Normal behavior, `sdkconfig.old` | Restore needed lines to `sdkconfig.defaults.*` |
 | `REQUIRES` cycle A to B | Both include each other public `.h` | Split shared into component C, or `PRIV_REQUIRES` + forward-decl |
 | PIO: `board not found: esp32-s3-devkitc-1` | Old platform | `platform = espressif32 @ 6.7.0` or new board name from registry |
-| PIO: `partition too big` | Custom CSV not picked up | `board_build.partitions = ...csv`, `pio run -t erase` |
+| PIO: `partition too big` | Custom CSV not picked up | `board_build.partitions =...csv`, `pio run -t erase` |
 | PIO OTA: `No response` | Wrong port/password, board asleep | `upload_port = *.local`, `--auth`, wake the board |
 | MP: `ImportError: no module ulab` | Stock firmware with no ulab | Custom build or pure Python fallback |
 | MP: `ENOMEM` after frozen+mpy | Too many modules in RAM | Frozen for core, `.mpy` for the rest, drop duplicates from `/lib` |

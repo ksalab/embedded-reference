@@ -149,5 +149,5 @@ flowchart TB
 - [Home](../../../../STM32-Reference/Home.md)
 - [Productive F3 and F4](../../../../STM32-Reference/UA/01-Hardware/02-F3-F4.md)
 - [Flagships](../../../../STM32-Reference/UA/01-Hardware/04-H5-H7.md)
-- [Errata and migrations](../../../../STM32-Reference/UA/01-Hardware/07-Errata-Migratsiya.md)
+- [ Errata and migrations]
 - [Speed measurement](../../../../STM32-Reference/UA/09-Proshivka/07-Performance-Optimization.md)

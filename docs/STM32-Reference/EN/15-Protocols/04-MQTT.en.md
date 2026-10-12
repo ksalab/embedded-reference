@@ -41,8 +41,8 @@ MQTT is mail for sensors: a node publishes to a topic, whoever wants subscribes.
 | Rule | Example |
 | --- | --- |
 | Tree per object | shop1/line2/temperature |
-| Status apart | .../status: online and offline |
-| Commands down | .../cmd with confirmation |
+| Status apart |.../status: online and offline |
+| Commands down |.../cmd with confirmation |
 | No spaces or Cyrillic | ASCII only! |
 
 ## LWT: a will on disconnect

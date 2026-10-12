@@ -4,6 +4,7 @@ title: CANopen DMX512 KNX DALI 4-20мА 0-10V TRIAC-димер BACnet OPC-UA MCP
 tags: [esp32, industrial, canopen, dmx512, knx, dali, 4-20ma, 0-10v, triac, moc3021, bacnet, opc-ua, mqtt-sn, can-fd, mcp2518fd, rs485, modbus]
 category: Moduli-zvyazku
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Industrial fieldbus: CANopen / DMX512 / KNX / DALI / 4-20 мА / 0-10 В / TRIAC / BACnet / CAN-FD
@@ -361,7 +362,7 @@ while True:
 | Параметр | PC817 (Sharp) | EL817 (Everlight) |
 | --- | --- | --- |
 | Призначення | Універсальна оптоізоляція цифра/аналог | Pin-to-pin аналог PC817 |
-| CTR | 50-600 % (ранги A-D) | 50-600 % (ранги A-D) |
+| CTR | 50-600% (ранги A-D) | 50-600% (ранги A-D) |
 | Напруга ізоляції | 5 кВ | 5 кВ |
 | Коли брати | Що є в наявності - взаємозамінні; ранг CTR дивитись в маркуванні (C/D для малих струмів) |
 

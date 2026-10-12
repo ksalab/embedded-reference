@@ -124,7 +124,7 @@ Do not move to the next rectangle until the previous one is green. Haste at the 
   шукати коротке: переплутаний LDO, намистина припою, TVS навпаки;
   гріється - винуватець знайдений пальцем.
 ```
-## See also- [[Home | Home]]
+## See also- [[Home.en | Home]]
 - [[02-Power-Supply/01-Power-Supply-Rails.en | board power supply circuits]]
 - [[09-Firmware/01-CubeIDE-CubeMX.en | CubeMX settings]]
 - [[09-Firmware/03-ST-Link-Flashing.en | firmware via ST-Link]]

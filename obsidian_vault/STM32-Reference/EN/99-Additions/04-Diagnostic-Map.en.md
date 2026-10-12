@@ -227,7 +227,7 @@ Package for a question on the forum:minimal code repeating the bug;connection di
   мультиметр -> ST-Link -> аналізатор -> осцилограф -> БЖ з обмеженням.
   Кожен наступний відкриває новий клас багів.
 ```
-## See also- [[Home | Home]]
+## See also- [[Home.en | Home]]
 - [[EN/99-Additions/01-Troubleshooting-FAQ.en| answers to questions]]
 - [[EN/99-Additions/02-Cheklisti.en| checklists]]
 - [[EN/17-Lab/01-Instruments.en| measuring devices]]

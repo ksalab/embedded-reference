@@ -78,7 +78,7 @@ Nano ESP32: classic Nano header (Arduino-shield pitch compatible, but 3.3V logic
 
 QT Py / Lolin mini: native USB-CDC only. No driver needed, but the cable must carry data. First flash: hold BOOT to plug USB to flash to Reset. After deep-sleep the port "vanishes" - press Reset. Lolin ships with MicroPython firmware - the port shows as CDC at once.
 
-TinyS3/FeatherS3: native USB + USB Serial/JTAG. Out of the box CircuitPython with UF2 bootloader: double-click Reset gives a drag-and-drop .uf2 disk. Moving between CircuitPython/MicroPython/Arduino: erase Flash to BOOT+Reset to flash new. RX/TX pins are NOT tied to USB - that is a free UART0 for modules! Details - [USB-UART](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/05-USB-UART-AutoReset.md).
+TinyS3/FeatherS3: native USB + USB Serial/JTAG. Out of the box CircuitPython with UF2 bootloader: double-click Reset gives a drag-and-drop.uf2 disk. Moving between CircuitPython/MicroPython/Arduino: erase Flash to BOOT+Reset to flash new. RX/TX pins are NOT tied to USB - that is a free UART0 for modules! Details - [USB-UART](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/05-USB-UART-AutoReset.md).
 
 Nano ESP32: classic bridge (driver needed) + native S3. Arduino IDE flashes via the bridge with no BOOT dance. For MicroPython use the official Arduino Lab for MicroPython installer.
 
@@ -146,7 +146,7 @@ framework = arduino
 monitor_speed = 115200
 ```
 
-MicroPython/CircuitPython: Lolin mini has MicroPython preload (WebREPL/ampy at once); Nano ESP32 gets official MicroPython via Arduino Lab; QT Py / UM run CircuitPython + UF2 (drag .uf2 onto the mounted disk). ESP-IDF: `esp32s2` / `esp32s3` targets. Environment details - [Arduino/PlatformIO](../../../../ESP32-Reference/UA/09-Proshivka/02-Arduino-PlatformIO.md).
+MicroPython/CircuitPython: Lolin mini has MicroPython preload (WebREPL/ampy at once); Nano ESP32 gets official MicroPython via Arduino Lab; QT Py / UM run CircuitPython + UF2 (drag.uf2 onto the mounted disk). ESP-IDF: `esp32s2` / `esp32s3` targets. Environment details - [Arduino/PlatformIO](../../../../ESP32-Reference/UA/09-Proshivka/02-Arduino-PlatformIO.md).
 
 ## Common issues
 
@@ -165,7 +165,7 @@ MicroPython/CircuitPython: Lolin mini has MicroPython preload (WebREPL/ampy at o
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-mini-s2s3-scheme.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-mini-s2s3-scheme.png)
 
 ```text
 QT Py: [USB-C native] ─► S2/S3-USB (BOOT при вмиканні для 1-ї firmwares).
@@ -300,14 +300,14 @@ Premium 36.3x18 mm baby: S3FN8, **8 MB Flash + 8 MB PSRAM**, TinyPICO-compatible
 | 5V | Input/output 4.8-5.2V | External 5V / output ~4.9V on USB (diode drop!) | Input range is strict: 4.8-5.2V |
 | 3V3 | Output 700 mA (LDO) | Sensors, periphery | Beefy LDO, no sag |
 | VBUS-sense pin | Digital input | "5V present" flag | Code decides: mains or battery work |
-| Fuel gauge (internal I2C) | Battery monitor | Charge %, voltage + INT to RTC-IO | Wake on low charge! |
+| Fuel gauge (internal I2C) | Battery monitor | Charge%, voltage + INT to RTC-IO | Wake on low charge! |
 | RGB LED (power via IO!) | Status | NeoPixel-like | **Pull the power IO HIGH first**, else dark! |
 | RX / TX | UART0 (free!) | Modules, GPS, RS485 | NOT tied to USB - for periphery! |
 | USB-C | Native + USB Serial/JTAG | Flashing, JTAG debug, OTG | UF2 bootloader out of the box (CircuitPython) |
 
 Power: USB-C to charging-IC to JST-LiPo; power/charge LEDs **isolated on the 5V domain** (they do not glow or eat from battery - by design!). Empty battery: orange charge LED blinks - normal (the chip cannot tell "full" from "missing"). No boost converter: from battery the 5V pin carries **no voltage** - 5V sensors need their own step-up.
 
-Buttons/BOOT: BOOT + Reset. UF2 mode (CircuitPython on board): Reset to wait for purple RGB to press BOOT to green means disk mounted, drag .uf2. Environment change (CircuitPython to MicroPython to Arduino to IDF): **erase Flash** to hold BOOT to click Reset to release BOOT to flash new.
+Buttons/BOOT: BOOT + Reset. UF2 mode (CircuitPython on board): Reset to wait for purple RGB to press BOOT to green means disk mounted, drag.uf2. Environment change (CircuitPython to MicroPython to Arduino to IDF): **erase Flash** to hold BOOT to click Reset to release BOOT to flash new.
 
 USB: native CDC (no drivers) + USB Serial/JTAG (debug with no probe!, see [JTAG](../../../../ESP32-Reference/UA/09-Proshivka/05-JTAG-Debug.md)).
 
@@ -541,7 +541,7 @@ while True:
     time.sleep(2)
 ```
 
-Fuel gauge on TinyS3/FeatherS3 (exact % and wake on discharge - better than a divider!):
+Fuel gauge on TinyS3/FeatherS3 (exact% and wake on discharge - better than a divider!):
 
 ```cpp
 // 1) VBUS-sense: чи є 5V? Номер піна — З PINOUT-КАРТКИ вашої ревізії UM!
@@ -557,7 +557,7 @@ esp_deep_sleep_start();
 ```
 
 > [!tip] Divider vs fuel gauge
-> A divider is cheap but lies (LiPo voltage is nonlinear + drifts with temperature/current). A fuel gauge counts coulombs and gives an honest %. For "set and forget for half a year" take gauge + wake on INT only.
+> A divider is cheap but lies (LiPo voltage is nonlinear + drifts with temperature/current). A fuel gauge counts coulombs and gives an honest%. For "set and forget for half a year" take gauge + wake on INT only.
 
 ## Antennas: PCB vs chip vs u.FL + orientation
 

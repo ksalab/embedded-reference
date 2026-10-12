@@ -152,7 +152,7 @@ flowchart LR
 ## See also
 
 - [[EN/Home.en]]
-- [[09-Firmware/01-ESP-IDF-setup.en | IDF]]
+- [[EN/09-Firmware/01-ESP-IDF-Setup.en| IDF]]
 - [[16-Projects/01-Weather-Station.en | Weather Station]]
 - [[16-Projects/02-GPS-Tracker.en | GPS Tracker]]
 - [[EN/09-Firmware/03-MicroPython.en| MicroPython]]

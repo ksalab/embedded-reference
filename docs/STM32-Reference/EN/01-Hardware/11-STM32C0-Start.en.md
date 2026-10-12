@@ -170,6 +170,6 @@ int main(void) {
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
+- [ Chip comparison]
 - [F0/F1](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md)
 - [G0/G4](../../../../STM32-Reference/UA/01-Hardware/03-G0-G4.md)

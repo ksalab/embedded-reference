@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. U5: M33 sleeps in Stop 3 with SRAM, wakes from LPUART/RTC, secrets live in TrustZone.*
 
 > [!tip] What this note is
-> Successor of L4 for years of battery life: M33, sub-microamp sleep, hardware security. Family: [[01-Hardware/05-L0-L4-U5.en | L0/L4/U5 overview]], power supply: [[02-Power-Supply/02-Batareyne-zhivlennya.en | Battery power supply]].
+> Successor of L4 for years of battery life: M33, sub-microamp sleep, hardware security. Family: [[01-Hardware/05-L0-L4-U5.en | L0/L4/U5 overview]], power supply: [[EN/02-Power-Supply/02-Battery-Power.en| Battery power supply]].
 
 ## 1. Goal
 
@@ -152,7 +152,7 @@ while True:
 ## 10. Related Notes
 
 - [[01-Hardware/05-L0-L4-U5.en | L0/L4/U5 overview]] - place in the lineup.
-- [[02-Power-Supply/02-Batareyne-zhivlennya.en | Battery power supply]] - current sources.
+- [[EN/02-Power-Supply/02-Battery-Power.en| Battery power supply]] - current sources.
 - [[07-Timers/03-Sleep-Stop-Standby.en | Sleep modes]] - sleep details.
 - [[15-Protocols/06-Secure-Boot.en | Secure boot]] - production security.
 - [[Home.en | Main map]] - full navigation.

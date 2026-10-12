@@ -5,17 +5,18 @@ title: NRF24L01 та LoRa SX1276 Ra-02
 description: NRF24L01+ та LoRa SX1276 (Ra-02) - NRF24L01+PA+LNA; Легенда пінів модуля NRF24L01; Підключення ESP32 до NRF24; shows schematics, code and tables.
 tags: [esp32, nrf24, lora, sx1276, spi, radio]
 date: 2026-10-08
+original: 12-Moduli-zvyazku/02-NRF24-LoRa.md
 ---
 
 # NRF24L01+ та LoRa SX1276 (Ra-02)
 
 > [!warning] Both modules - 3.3V only! NRF24 with PA+LNA draws up to 250 mA in TX - needs 10 µF capacitor. LoRa without antenna DO NOT turn on - output stage will burn!
 
-Radio overview: [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md), bus [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), живлення [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), піни [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start [Home](../../../../ESP32-Reference/Home.md).
+Radio overview: [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md), bus [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), живлення [EN/02-Power-Supply/01-Power-Rails.en], піни [EN/03-GPIO/01-GPIO-Overview.en], diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start [Home](../../../../ESP32-Reference/Home.md).
 
 ## Purpose
 
-NRF24L01+ та LoRa SX1276 (Ra-02) - NRF24L01+PA+LNA; Легенда пінів модуля NRF24L01; Підключення ESP32 до NRF24. Both modules - 3.3V only! NRF24 with PA+LNA draws up to 250 mA in TX - needs 10 µF capacitor. LoRa without antenna DO NOT turn on - output stage will burn! Radio overview: [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md), bus [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), живлення [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), піни [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md), diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start Home.
+NRF24L01+ та LoRa SX1276 (Ra-02) - NRF24L01+PA+LNA; Легенда пінів модуля NRF24L01; Підключення ESP32 до NRF24. Both modules - 3.3V only! NRF24 with PA+LNA draws up to 250 mA in TX - needs 10 µF capacitor. LoRa without antenna DO NOT turn on - output stage will burn! Radio overview: [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md), bus [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), живлення [EN/02-Power-Supply/01-Power-Rails.en], піни [EN/03-GPIO/01-GPIO-Overview.en], diagnostics [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md), start Home.
 
 ## 1. NRF24L01+PA+LNA
 
@@ -55,7 +56,7 @@ Standard NRF24 vs PA+LNA:
 
 - **Standard (PCB antenna):** TX current ~12 mA, range 30-100 m, works from DevKit 3V3, 10 µF sufficient.
 - **PA+LNA (external SMA antenna):** TX current up to 250 mA, range up to 1 km at 250 kbps, mandatory 47-100 µF or adapter, start with `RF24_PA_LOW`/`RF24_PA_MIN`, otherwise sag.
-- Powering PA+LNA from ESP32 3V3 without capacitor - main reason "does not work" on forums. Power is power, and logic levels in both - 3.3V, see [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) and [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md).
+- Powering PA+LNA from ESP32 3V3 without capacitor - main reason "does not work" on forums. Power is power, and logic levels in both - 3.3V, see [EN/02-Power-Supply/01-Power-Rails.en] and [EN/03-GPIO/01-GPIO-Overview.en].
 
 ### Connecting ESP32 to NRF24
 
@@ -141,7 +142,7 @@ Specifications: SX1276, частоти 433 / 868 / 915 МГц (версія пл
 - **NSS vs DIO0:** NSS вибирає чип on SPI (how CSN), but DIO0 сигналізує «пакет прийнято/передано». without DIO0 бібліотека Sandeep Mistry висить in `endPacket()`. therefore DIO0 обов'язковий, but DIO1/DIO2 - опційні.
 - **RST:** SX1276 скидається низьким імпульсом at `LoRa.setPins(NSS, RST, DIO0)`. not вішати RST on strap-піни ESP32 (GPIO0/2/12/15).
 - **Антена обов'язкова:** передавач +20 дБм (100 мВт) without навантаження відбиває потужність назад in PA - перегрів and деградація. Правило: накрутив антену → потім живлення → потім TX. Антена строго on частоту плати: 433 МГц антена on 868 МГц платі = дальність метри and КСХ > 3.
-- **Живлення:** 3.3V стабільне, піки TX 120 мА - вистачає DevKit, але електроліт 10-47 мкФ not завадить. Логіка 3.3V безпосередньо до ESP32, див. [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md).
+- **Живлення:** 3.3V стабільне, піки TX 120 мА - вистачає DevKit, але електроліт 10-47 мкФ not завадить. Логіка 3.3V безпосередньо до ESP32, див. [EN/03-GPIO/01-GPIO-Overview.en].
 
 ### Connecting ESP32 to Ra-02
 
@@ -273,7 +274,7 @@ lora.send(b"hello")
 1. NRF24: почати with `RF24_PA_MIN`, канал подалі from WiFi (напр. 108-й), швидкість 250 кбіт for дальності.
 2. NRF24 PA+LNA: антена закручена до упору, блок живлення with запасом, `setPALevel(HIGH/MAX)` лише після конденсатора.
 3. LoRa: SF9/BW125 for балансу, SF12 for максимуму дальності; антена вертикально, подалі from металу.
-4. Обидва модулі - SPI, див. [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md); not ділити один CS між NRF24 and LoRa; живлення - [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md).
+4. Обидва модулі - SPI, див. [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md); not ділити один CS між NRF24 and LoRa; живлення - [EN/02-Power-Supply/01-Power-Rails.en].
 5. Два радіо on одній платі: рознести антени мінімум on 10 см, not вмикати TX одночасно.
 
 | Symptom | Cause | Solution |
@@ -296,8 +297,8 @@ lora.send(b"hello")
 - [Home](../../../../ESP32-Reference/Home.md)
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
+- [EN/02-Power-Supply/01-Power-Rails.en]
+- [EN/03-GPIO/01-GPIO-Overview.en]
 - [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md)
 - [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md)
 - [02-NRF24-LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md)

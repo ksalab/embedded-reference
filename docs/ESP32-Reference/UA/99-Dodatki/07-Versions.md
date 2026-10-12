@@ -1,5 +1,6 @@
 ---
 title: Матриця версій - IDF, Arduino-core, MicroPython
+description: Матриця версій IDF, Arduino-core та MicroPython: штампи свіжості Перевірено та відповідність статей гілкам екосистем.
 tags: [esp32, versions, esp-idf, arduino, micropython, changelog]
 date: 2026-09-29
 ---
@@ -314,8 +315,6 @@ timerAlarm(t, 1000000, true, 0);              // write+enable одним вик�
 - [05-JTAG-Debug](../../../../ESP32-Reference/UA/09-Proshivka/05-JTAG-Debug.md)
 - [CHANGELOG](../../../../ESP32-Reference/CHANGELOG.md)
 
-```text
-
 Перевірено: 2026-09
 
-> English twin: [[99-Dodatki/07-Versions.en.md | EN]]
+> English twin: [EN](../../../../ESP32-Reference/EN/99-Additions/07-Versions.en.md)

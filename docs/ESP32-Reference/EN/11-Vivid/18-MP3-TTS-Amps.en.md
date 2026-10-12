@@ -12,8 +12,8 @@ date: 2026-10-08
 # MP3 Modules, TTS Speech Synthesis and Amplifiers - JQ6500/KT403A/BY8301/DY-SV5W/SOMO-14D, SYN6288/XFS5152, PAM8403/TPA3116/LM386, MAX4466/MAX9814, MSGEQ7, PT2399
 
 > [!info] Where this is in the reference
-> Sound base: [I2S](../../../../ESP32-Reference/EN/04-Interfaces/04-I2S.en.md), simpler solution [DFPlayer/MAX98357A](../../../../ESP32-Reference/EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md), codecs [Audio-Codecs](../../../../ESP32-Reference/EN/11-Vivid/13-Audio-Codecs.en.md), start [Home](../../../../ESP32-Reference/EN/Home.en.md).
-> Network audio - parallel note: [WebRadio-Streaming](../../../../ESP32-Reference/EN/11-Vivid/19-WebRadio-Streaming.en.md).
+> Sound base: [I2S](../../../../ESP32-Reference/UA/04-Shini/04-I2S.md), simpler solution [DFPlayer/MAX98357A](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md), codecs [Audio-Codecs](../../../../ESP32-Reference/UA/11-Vivid/13-Audio-Codecs.md), start [Home](../../../../ESP32-Reference/Home.md).
+> Network audio - parallel note: [WebRadio-Streaming](../../../../ESP32-Reference/UA/11-Vivid/19-WebRadio-Streaming.md).
 
 ## Purpose
 
@@ -30,7 +30,7 @@ When to choose what:
 - color music - **MSGEQ7** (7 bands on one analog pin);
 - echo - **PT2399** (analog delay 30-340 ms).
 
-When NOT to choose: need HiFi stereo from network - see [19-WebRadio-Streaming.en](../../../../ESP32-Reference/EN/11-Vivid/19-WebRadio-Streaming.en.md); need record + headphones + I2S - see [13-Audio-Codecs.en](../../../../ESP32-Reference/EN/11-Vivid/13-Audio-Codecs.en.md).
+When NOT to choose: need HiFi stereo from network - see [19-WebRadio-Streaming](../../../../ESP32-Reference/UA/11-Vivid/19-WebRadio-Streaming.md); need record + headphones + I2S - see [13-Audio-Codecs](../../../../ESP32-Reference/UA/11-Vivid/13-Audio-Codecs.md).
 
 ## Characteristics
 
@@ -41,7 +41,7 @@ When NOT to choose: need HiFi stereo from network - see [19-WebRadio-Streaming.e
 | BY8301-16P | UART 9600 + IO/ADKEY | 5 V | SPK 2-3 W | Frame `7E … EF` with own command table - verify revision! |
 | DY-SV5W | UART + IO buttons, USB | 5 V (up to 2 A peak!) | Built-in amp 5 W mono | SD + USB flash + SPI-flash; BUSY pin for track queue |
 | SOMO-14D | UART 9600 (3.3 V!) + BUSY | 3.3 V | Linear stereo out (needs amp!) | 4D Systems; 3.3 V logic tolerant to ESP32 |
-| DFPlayer Mini (reference) | UART 9600 + BUSY + ADKEY | 5 V | SPK 3 W diff. | See [note 08](../../../../ESP32-Reference/EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md) |
+| DFPlayer Mini (reference) | UART 9600 + BUSY + ADKEY | 5 V | SPK 3 W diff. | See [note 08](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md) |
 | SYN6288 | UART 9600 (TX/RX) + BUSY | 3.3-5 V | Linear out (to amp!) | GB2312 encoding! Cyrillic - pinyin/translit or English phrases |
 | XFS5152 (XF-S5152CE) | UART 9600/115200 + BUSY | 3.3-5 V | Linear out | GBK/UTF-8/Unicode modes; volume/tone/speed by commands |
 | PAM8403 | Analog input (stereo) | 5 V (2.5-5.5 V) | 3 W × 2, class-D | Noise from 5 V supply! LC filter or separate DC-DC; input not above 1 V |
@@ -100,7 +100,7 @@ Serial.write(0xB8); Serial.write(0xEF);
 ## SD card and FAT32 for MP3 modules
 
 - Format microSD as FAT32 (not exFAT); cluster size 4096-8192.
-- File names: 3-digit number with leading zeros (`001.mp3` ... `999.mp3`).
+- File names: 3-digit number with leading zeros (`001.mp3`... `999.mp3`).
 - Bitrate: 128-320 kbps MP3; 44.1 kHz; stereo/mono both work.
 - BY8301 / DY-SV5W may support USB flash instead of SD.
 - Do not use long file names or folders; put in root.
@@ -210,9 +210,27 @@ void readSpectrum() {
 - [MSGEQ7 datasheet](https://www.sparkfun.com/products/110) - spectrum analyzer timing.
 - [PT2399 datasheet](https://www.datasheetarchive.com) - analog delay specs.
 
+![](../../../../ESP32-Reference/assets/img/placeholder.png)
+*Fig. 1. MP3/TTS amplifier chain: ESP32 UART control, MP3 module SD playback, amplifier to speaker, mic preamp return.*
+
+### Sound chain
+
+```mermaid
+flowchart LR
+    ESP["ESP32<br/>UART control"]
+    MP3["MP3 module<br/>JQ6500 KT403A<br/>SD FAT32"]
+    TTS["TTS module<br/>SYN6288<br/>UART text"]
+    AMP["Amplifier<br/>PAM8403 TPA3116"]
+    SPK["Speaker<br/>4-8 Ohm"]
+    ESP --> MP3
+    ESP --> TTS
+    MP3 --> AMP
+    TTS --> AMP
+    AMP --> SPK
+```
 ## See also
 
-- [DFPlayer / MAX98357A](../../../../ESP32-Reference/EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md) - simpler MP3 + amp.
-- [Audio Codecs](../../../../ESP32-Reference/EN/11-Vivid/13-Audio-Codecs.en.md) - I2S / codec sound.
-- [WebRadio / Streaming](../../../../ESP32-Reference/EN/11-Vivid/19-WebRadio-Streaming.en.md) - network audio.
-- [I2S](../../../../ESP32-Reference/EN/04-Interfaces/04-I2S.en.md) - digital sound signals.
+- [DFPlayer / MAX98357A](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md) - simpler MP3 + amp.
+- [Audio Codecs](../../../../ESP32-Reference/UA/11-Vivid/13-Audio-Codecs.md) - I2S / codec sound.
+- [WebRadio / Streaming](../../../../ESP32-Reference/UA/11-Vivid/19-WebRadio-Streaming.md) - network audio.
+- [I2S](../../../../ESP32-Reference/UA/04-Shini/04-I2S.md) - digital sound signals.

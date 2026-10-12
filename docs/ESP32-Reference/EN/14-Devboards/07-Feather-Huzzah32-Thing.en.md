@@ -141,7 +141,7 @@ ESP-IDF: `esp32` targets. CircuitPython on Feather HUZZAH32 is supported by Adaf
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-feather-huzzah32.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-feather-huzzah32.png)
 
 ```text
 [USB 5V] ─┬─► 5V шина ──► AP2112 ──► 3.3V (плата + Wings/Qwiic ≤400 мА)

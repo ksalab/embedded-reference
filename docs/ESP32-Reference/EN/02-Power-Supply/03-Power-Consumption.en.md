@@ -32,7 +32,7 @@ ESP32 power consumption - mode table; INA219 measurement; ESP32-to-module wiring
 | Hibernation | 2.5 uA | off | RTC only |
 
 > [!info] ADC2 and modem-sleep
-> In modem-sleep ADC2 is free - you can measure. In active with WiFi - only ADC1. See [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md), [01-ESP32-Classic](../../../../ESP32-Reference/UA/01-Hardware/01-ESP32-Classic.md).
+> In modem-sleep ADC2 is free - you can measure. In active with WiFi - only ADC1. See [EN/03-GPIO/01-GPIO-Overview.en], [01-ESP32-Classic](../../../../ESP32-Reference/UA/01-Hardware/01-ESP32-Classic.md).
 
 ## INA219 measurement
 
@@ -202,8 +202,8 @@ flowchart TB
 
 - [Home](../../../../ESP32-Reference/Home.md)
 - [EN/00-Start/03-Chip-Comparison.en]
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
-- [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md)
+- [EN/03-GPIO/01-GPIO-Overview.en]
+- [EN/03-GPIO/02-Strapping-Pins.en]
 - [EN/02-Power-Supply/01-Power-Rails.en]
 - [02-LDO-DC-DC](../../../../ESP32-Reference/UA/02-Zhivlennya/02-LDO-DC-DC.md)
 - [EN/04-Batteries-TP4056.en]

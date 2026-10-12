@@ -159,7 +159,7 @@ V --> OK[Save PDF locally with version in name]```
 - [ATmega328P datasheet - chip manufacturer](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf) - a complete passport of a classic chip.
 - [Arduino UNO R3 - schematic and board files](https://docs.arduino.cc/hardware/uno-rev3/) - sample circuit, solution and power supply.
 
-## See also- [[Home | Home]]
+## See also- [[Home.en | Home]]
 - [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]]
 - [[EN/01-Hardware/01-AVR-Uno.en| classic AVR]]
 - [[EN/17-Lab/02-Breadboard-PCB.en| layout and board]]

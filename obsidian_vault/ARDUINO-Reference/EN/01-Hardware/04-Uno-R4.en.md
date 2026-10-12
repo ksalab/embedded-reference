@@ -238,8 +238,8 @@ Old microsecond timing tricks are recalibrated, because the core frequency is th
 ## See also
 
 - [[Home.en]]
-- [[EN/00-Start/03-Porivnyannya-plat.en|board comparison]]
-- [[EN/00-Start/05-Vibir-seredovischa.en|environment choice]]
+- [[EN/00-Start/03-Board-Comparison.en|board comparison]]
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]]
 - [[EN/01-Hardware/01-AVR-Uno.en|classic AVR]]
 - [[EN/01-Hardware/03-Due-Zero-ARM.en|ARM boards]]
 - [[EN/09-Firmware/01-IDE-CLI.en|environment and CLI]]

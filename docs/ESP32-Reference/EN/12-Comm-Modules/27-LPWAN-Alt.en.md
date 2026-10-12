@@ -6,6 +6,7 @@ category: Moduli
 lang: en
 date-created: 2026-09-30
 date: 2026-10-08
+original: 12-Moduli-zvyazku/27-LPWAN-Alt.md
 ---
 
 # LPWAN-альтернативи LoRa: Sigfox, Weightless, MIOTY, Wize
@@ -108,7 +109,7 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 | Мережа | Місто | Поле/траса | Коментар |
 | --- | --- | --- | --- |
 | LoRa своя | Свій шлюз - своє покриття | Щогла 15 м ≈ 20 км | Контроль in своїх руках |
-| NB-IoT | Оператори трійки (перевіряти карту!) | Вздовж трас - так, глуbus - ні | eSIM/M2M-тариф окремо! |
+| NB-IoT | Big-three operators (check coverage map!) | Along highways - yes, remote areas - no | eSIM/M2M tariff separately! |
 | Sigfox | Колишні зони (стискаються!) | Рідко | Перед проєктом - тестовий девайс on місцевості |
 | Wize/MIOTY | Точково (проєкти) | Ні | Тільки під конкретний тендер |
 
@@ -151,6 +152,15 @@ Sigfox: вузли $12×100 + $1.5/рік×100×5 = $1200 + $750 = $1950 (ЯКЩ
 | 0G | Мережа оператора without роумінгу даних (Sigfox-модель) |
 | Duty cycle | Ліміт ефіру 1% (EU868!) - стосується ВСІХ технологій |
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Sigfox payload rejected | Over 12 bytes uplink or downlink limit hit | Pack to 12 B, respect 140 messages per day cap |
+| No coverage at site | 0G operator absent in region | Check coverage map before hardware, keep LoRa fallback |
+| Weightless gateway too costly | Gateway price kills small pilots | Start with LoRa gateway, migrate if scale demands |
+| MIOTY telegram loss | Wrong sub-GHz profile or antenna | Verify 868 MHz profile, matched antenna, TSMA timing |
+| Wize range too short | 169 MHz needs long whip, wrong matching | Use quarter-wave whip, check matching network |
 ## See also
 
 - [Головна](../../../../ESP32-Reference/Home.md)

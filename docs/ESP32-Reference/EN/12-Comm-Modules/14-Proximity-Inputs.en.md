@@ -5,6 +5,8 @@ tags: [esp32, proximity, inductive, capacitive, photoelectric, npn, pnp, optocou
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/14-Proximity-Inputs.md
 ---
 
 # Промислові дискретні входи: індуктивні LJ12A3, ємнісні, фотоелектричні E18-D80NK, NPN/PNP, PC817 for 12/24 in, сухий контакт, ізольовані 8ch
@@ -437,7 +439,7 @@ while True:
 ## See also
 
 - [Головна карта довідника](../../../../ESP32-Reference/Home.md)
-- [Підтяжки та рівні 3.3V/5V](../../../../ESP32-Reference/UA/03-GPIO/03-Pidtyaguvannya-rivni.md)
+- [Підтяжки та рівні 3.3V/5V]
 - [Level-shifters та опторозв'язка](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/02-Level-Shifters.md)
 - [Industrial fieldbus: CAN/DMX/4-20мА/TRIAC](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/10-Industrial.md)
 - [Кнопки, тумблери, E-Stop, потенціометри](../../../../ESP32-Reference/UA/10-Sensori/34-Buttons-Switches-Pots.md)

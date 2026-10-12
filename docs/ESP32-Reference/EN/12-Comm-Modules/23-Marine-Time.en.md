@@ -5,6 +5,8 @@ tags: [esp32, marine, nmea2000, pgn, can, seatalk, dcf77, wwvb, msf, gpsdo, hold
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/23-Marine-Time.md
 ---
 
 # Marine-Time - NMEA2000, SeaTalk, DCF77/WWVB/MSF, GPSDO, корпус IP67, живлення 12/24V
@@ -25,7 +27,7 @@ date-created: 2026-09-29
 Links to [Home](../../../../ESP32-Reference/Home.md), [05-CAN-TWAI-RS485](../../../../ESP32-Reference/UA/04-Shini/05-CAN-TWAI-RS485.md), [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md),
 [19-Wired-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/19-Wired-2.md), [17-GNSS-RTK](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/17-GNSS-RTK.md),
 [22-Automotive](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/22-Automotive.md), [21-Motion-Control](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/21-Motion-Control.md),
-[01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md).
+[EN/02-Power-Supply/01-Power-Rails.en].
 
 > [!warning] Море not пробачає макетування
 > Солона вода + 12/24V + вібрація = корозія for тижні. Жодних «соплів» DuPont
@@ -45,7 +47,7 @@ Links to [Home](../../../../ESP32-Reference/Home.md), [05-CAN-TWAI-RS485](../../
 | MSF-приймач (60 кГц) | Точний час UK (NPL) | GPIO цифровий | 3.3-5V | 1 біт/с | Британія/Північне море |
 | GPSDO (напр. on ZED-F9T) | 10 МГц + 1PPS, прив'язані до GPS | UART-конфіг + 1PPS-вхід + 10 МГц-вихід | 3.3V + чисте живлення | дрейф holdover 1-10 мкс/добу (OCXO) | Маяк, SDR-база, наукові виміри |
 | Корпус IP67 | Вижити in бризках/дощі | гермовводи PG7/PG9, клеми | - | IP67 (30 хв під 1 м) | Будь-which installation on палубі |
-| Живлення 12/24V морське | Стабільні 5V/3.3V with 9-36V | ізольований DC-DC + TVS + фільтр | 12V (10-16V) / 24V (20-32V) | струм ESP32-вузла 0.2-1A | Яхта with двома busми, гальваніка обов'язкова |
+| Marine 12/24V power | Stable 5V/3.3V from 9-36V | Isolated DC-DC + TVS + filter | 12V (10-16V) / 24V (20-32V) | ESP32 node current 0.2-1A | Yacht with two buses, galvanics mandatory |
 
 ## 1. NMEA2000 - CAN 250 кбіт, PGN, термінатори, живлення шини
 
@@ -84,7 +86,7 @@ but **PGN** каже, how тлумачити 8 байт даних (single-frame
 
 | PGN | Назва | Період | Зміст (скорочено) |
 | --- | --- | --- | --- |
-| 60928 | ISO Address Claim | at startі | Хто я (адреса, клас, виробник) |
+| 60928 | ISO Address Claim | at startup | Who I am (address, class, manufacturer) |
 | 126992 | System Time | 1 с | Дата/час UTC (source часу!) |
 | 127250 | Vessel Heading | 10 Гц | Курс HDG, девіація/варіація |
 | 127251 | Rate of Turn | 10 Гц | Кутова швидкість повороту |
@@ -269,7 +271,7 @@ which контролер постійно **підтягує** for фазою 1P
 
 ## 6. Живлення 12/24V морське - ізоляція, фільтри, резерв
 
-Суднова мережа: **12V** (10-16V, startерні просадки до 7V!) або **24V**
+Ship mains: **12V** (10-16V, starter dips down to 7V!) or **24V**
 (20-32V), загальна земля with двигуном, берегове зарядне дає пульсації,
 гроза - наведення in такелажі. Схема:
 
@@ -650,4 +652,4 @@ while True:
 - [17-GNSS-RTK](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/17-GNSS-RTK.md) - GNSS-антени, NMEA-речення, ZED-серія (база for GPSDO)
 - [22-Automotive](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/22-Automotive.md) - сусідня нота (CAN-трансивери, живлення 12V buck+TVS)
 - [21-Motion-Control](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/21-Motion-Control.md) - автопілот/рульові приводи (споживачі PGN курсу)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) - ланцюги живлення, DC-DC, TVS, protection
+- [EN/02-Power-Supply/01-Power-Rails.en] - ланцюги живлення, DC-DC, TVS, protection

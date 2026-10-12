@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Power tree: USB 5 V to buck SY8113 to 3.3 V to VDDA LDO 1.8 V plus VDDIO domains.*
 
 > [!tip] What this note is
-> A deep dive above [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Power supply chains]] and [[02-Power-Supply/02-Batareyne-zhivlennya.en | Batteries]]: there - "how to connect", here - "how much to give and why this choice". All with numbers: currents, losses, layout, protection.
+> A deep dive above [[EN/02-Power-Supply/01-Power-Supply-Rails.en| Power supply chains]] and [[EN/02-Power-Supply/02-Battery-Power.en| Batteries]]: there - "how to connect", here - "how much to give and why this choice". All with numbers: currents, losses, layout, protection.
 
 A typical board power tree:
 
@@ -154,7 +154,7 @@ Rules:
 ## 8. Related notes
 
 - [[EN/13-Power-Modules/01-Buck-Boost.en| Buck/Boost]] - modules of ready regulators.
-- [[02-Power-Supply/02-Batareyne-zhivlennya.en | Batteries]] - LiPo, 18650, solar.
+- [[EN/02-Power-Supply/02-Battery-Power.en| Batteries]] - LiPo, 18650, solar.
 - [[EN/06-Analog/01-ADC.en| ADC]] - VREF noise and calibration.
 - [[EN/06-Analog/05-Shunt-OPAMP.en| Current shunt]] - shunt current measurement.
 

@@ -50,7 +50,7 @@ Result requirements:
 
 | Component | Reference note | Price, approx. |
 | --- | --- | --- |
-| ESP32 DevKit (WROOM-32) | [[00-Start/04-Devkit-plati.en | DevKit]] | $6 |
+| ESP32 DevKit (WROOM-32) | [[EN/00-Start/04-Dev-Boards.en| DevKit]] | $6 |
 | BME280 module (I2C, 3.3V) | [[10-Sensors/03-BME280-BMP280-SHT31.en | BME280]] | $3 |
 | SHT40 module (I2C 0x44) | [[EN/10-Sensors/07-AHT10-AHT20-SHT40.en| SHT40]] | $5 |
 | TP4056 with DW01 protection | [[EN/13-Power-Modules/03-TP4056-IP5306-BMS-UPS.en| Charge/BMS]] | $1 |

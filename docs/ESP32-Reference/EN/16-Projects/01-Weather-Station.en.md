@@ -30,7 +30,7 @@ Usage scenarios:
 Result requirements:
 
 - runtime without sun - minimum 7 days;
-- temperature error ±0.5 °C, humidity ±3 %RH;
+- temperature error ±0.5 °C, humidity ±3%RH;
 - one MQTT topic, one JSON - no format zoo;
 - IP65 enclosure: rain and dust are not dangerous, condensation is drained.
 
@@ -50,11 +50,11 @@ Result requirements:
 
 | Component | Reference note | Price, approx. |
 | --- | --- | --- |
-| ESP32 DevKit (WROOM-32) | [DevKit](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md) | $6 |
+| ESP32 DevKit (WROOM-32) | [ DevKit] | $6 |
 | BME280 module (I2C, 3.3V) | [BME280](../../../../ESP32-Reference/UA/10-Sensori/03-BME280-BMP280-SHT31.md) | $3 |
 | SHT40 module (I2C 0x44) | [SHT40](../../../../ESP32-Reference/UA/10-Sensori/07-AHT10-AHT20-SHT40.md) | $5 |
 | TP4056 with DW01 protection | [Charge/BMS](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/03-TP4056-IP5306-BMS-UPS.md) | $1 |
-| 18650 3000 mAh (protected) | [Batteries](../../../../ESP32-Reference/UA/02-Zhivlennya/04-Akumulyatori-TP4056.md) | $5 |
+| 18650 3000 mAh (protected) | [ Batteries] | $5 |
 | Solar panel 5V 1A (5W) | [Buck/Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md) | $8 |
 | MT3608 boost 18650→5V (optional) | [Buck/Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md) | $1 |
 | IP65 enclosure 150×110×70 + cable glands | [Assembly checklists](../../../../ESP32-Reference/UA/99-Dodatki/03-Cheklisti-montazhu.md) | $7 |
@@ -118,7 +118,7 @@ Loop logic:
 
 ## 4. Power and calculation
 
-Energy balance (see [Consumption](../../../../ESP32-Reference/UA/02-Zhivlennya/03-Spozhivannya.md)):
+Energy balance (see [ Consumption]):
 
 - sleep: 50 µA × 600 s ≈ 0.008 mAh per cycle;
 - active: 100 mA × 15 s ≈ 0.42 mAh per cycle;
@@ -202,7 +202,7 @@ void setup() {
 void loop() {}
 ```
 
-Step 6 - ESP-IDF variant: same steps through esp-mqtt + `esp_sleep` (see [IDF](../../../../ESP32-Reference/UA/09-Proshivka/01-ESP-IDF-setup.md)).
+Step 6 - ESP-IDF variant: same steps through esp-mqtt + `esp_sleep` (see [ IDF]).
 
 Step 7 - MicroPython variant: `umqtt.robust` + `machine.deepsleep(600000)` (see [MicroPython](../../../../ESP32-Reference/UA/09-Proshivka/03-MicroPython.md)).
 
@@ -245,7 +245,7 @@ JSON example for Node-RED (see [Cloud](../../../../ESP32-Reference/UA/15-Protoko
 - [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md)
 - [Cloud-Pipeline](../../../../ESP32-Reference/UA/15-Protokoli/05-Cloud-Pipeline.md)
 - [Sleep](../../../../ESP32-Reference/UA/07-Timeri-Son/03-Sleep-ULP.md)
-- [Batteries](../../../../ESP32-Reference/UA/02-Zhivlennya/04-Akumulyatori-TP4056.md)
+- [ Batteries]
 - [FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md)
 - [GPS Tracker](../../../../ESP32-Reference/UA/16-Proekti/02-GPS-Tracker.md)
 - [Energy Monitor](../../../../ESP32-Reference/UA/16-Proekti/04-Energy-Monitor.md)

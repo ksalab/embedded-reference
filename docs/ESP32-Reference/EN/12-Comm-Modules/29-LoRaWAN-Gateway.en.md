@@ -6,6 +6,7 @@ category: Moduli
 lang: en
 date-created: 2026-09-30
 date: 2026-10-08
+original: 12-Moduli-zvyazku/29-LoRaWAN-Gateway.md
 ---
 
 # LoRaWAN-шлюз: single-channel пастка, SX1302, ChirpStack, TTN

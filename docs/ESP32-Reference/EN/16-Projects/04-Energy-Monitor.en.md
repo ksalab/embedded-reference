@@ -48,7 +48,7 @@ Requirements:
 
 | Component | Reference note | Price, approx. |
 | --- | --- | --- |
-| ESP32 DevKit (WROOM-32) | [DevKit](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md) | $6 |
+| ESP32 DevKit (WROOM-32) | [ DevKit] | $6 |
 | PZEM-004T v3 + CT 100A | [Current](../../../../ESP32-Reference/UA/10-Sensori/15-ACS712-ZMPT101B-PZEM-AS5600-FSR.md) | $12 |
 | 5V 1A isolated PSU (Hi-Link) | [LDO](../../../../ESP32-Reference/UA/02-Zhivlennya/02-LDO-DC-DC.md) | $5 |
 | Fuse 1A + DIN holder | [Protection](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/04-LDO-Buck-XL4015-Protect.md) | $2 |
@@ -111,7 +111,7 @@ Logic:
 
 ## 5. Firmware step by step
 
-Step 1 - PZEM init: `Serial2.begin(9600, SERIAL_8N1, 16, 17)`; send `0x01 0x03 ...`; parse response.
+Step 1 - PZEM init: `Serial2.begin(9600, SERIAL_8N1, 16, 17)`; send `0x01 0x03...`; parse response.
 
 Step 2 - Buffer: `Preferences` / `LittleFS`; 50 JSON lines; timestamp; flush if count > 45.
 

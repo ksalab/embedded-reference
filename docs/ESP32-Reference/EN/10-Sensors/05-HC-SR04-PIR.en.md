@@ -225,8 +225,6 @@ while True:
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
 - [Motors / Buzzer](../../../../ESP32-Reference/UA/11-Vivid/04-L298N-TB6612-A4988-Buzzer.md)
 
-```text
-
 ## ESP-IDF code (PIR wake-up)
 
 ```c

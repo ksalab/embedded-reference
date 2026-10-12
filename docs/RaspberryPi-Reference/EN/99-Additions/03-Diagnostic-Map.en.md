@@ -43,7 +43,7 @@ date: 2026-10-08
 | Tears every hour | PM | disable, watchdog |
 | Slowly | channel/signal | scanner, wire |
 
-## See also- [FAQ](../../../../RaspberryPi-Reference/UA/99-Dodatki/01-Troubleshooting-FAQ.md) - detailed answers.- [links to datasheets](../../../../RaspberryPi-Reference/UA/99-Dodatki/02-Datasheet-Links.md) - documents.- [laboratory devices](../../../../RaspberryPi-Reference/UA/17-Lab/01-Priladi.md) - arsenal.- [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
+## See also- [FAQ](../../../../RaspberryPi-Reference/UA/99-Dodatki/01-Troubleshooting-FAQ.md) - detailed answers.- [links to datasheets](../../../../RaspberryPi-Reference/UA/99-Dodatki/02-Datasheet-Links.md) - documents.- [ laboratory devices] - arsenal.- [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## Common issues
 

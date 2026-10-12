@@ -230,9 +230,9 @@ Practical order: low speed for LEDs and relays, medium for UART and slow SPI, hi
 ## See also
 
 - [[Home.en]]
-- [[03-GPIO/02-AF-maping.en | Alternate function mapping]]
+- [[EN/03-GPIO/02-AF-Mapping.en| Alternate function mapping]]
 - [[03-GPIO/03-EXTI-NVIC.en | EXTI interrupts]]
 - [[01-Hardware/01-F0-F1-Classic.en | F0/F1 classics]]
 - [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
 - [[EN/09-Firmware/01-CubeIDE-CubeMX.en| CubeMX setup]]
-- [[00-Start/05-Vibir-seredovischa.en | Environment choice]]
+- [[EN/00-Start/05-Environment-Choice.en| Environment choice]]

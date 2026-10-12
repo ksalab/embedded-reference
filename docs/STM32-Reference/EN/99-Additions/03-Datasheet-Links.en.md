@@ -65,7 +65,7 @@ All numbers above exist on st.com. If you see a different number on the blog, ch
 | 3-7 | Pinout | Power, NRST, BOOT0, SWD, FT foam |
 | 7-12 | Electrical characteristics | Power supply range, foam current, temperature |
 | 12-16 | Clock and timing | HSE, LSE, requirements for capacitors |
-| 16-20 | Package drawings Landing place and thermal requirements |Start with the classics [classic F0 and F1](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md) and the beast from [chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md).
+| 16-20 | Package drawings Landing place and thermal requirements |Start with the classics [classic F0 and F1](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md) and the beast from [ chip comparison].
 ## 5. How to read errata before ordering a fee
 
 | Step | Action | Example |
@@ -106,9 +106,9 @@ Move from top to bottom. Do not get into the reference manual until you have cov
 | 3 | Ignore footnote FT | 5 V burns input | Check the FT column for each pin |
 | 4 | Do not open errata | Bug catches silicon in series | Read errata to tracing |
 | 5 | Believe copies from the forum | Legacy tables bootloader | Only AN2606 from the manufacturer's website |
-| 6 | Do not save PDF | A year later, the solution cannot be proved | Dated docs folder in repository |for старту with нуля відкрий [reference guide](../../../../STM32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md) and оновлення [firmware update](../../../../STM32-Reference/UA/15-Protokoli/02-DFU-Bootloader.md).
+| 6 | Do not save PDF | A year later, the solution cannot be proved | Dated docs folder in repository |for старту with нуля відкрий [ reference guide] and оновлення [firmware update](../../../../STM32-Reference/UA/15-Protokoli/02-DFU-Bootloader.md).
 ## See also- [Home](../../../../STM32-Reference/Home.md)
-- [reference guide](../../../../STM32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md)
+- [ reference guide]
 - [classic F0 and F1](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md)
 - [I2C bus](../../../../STM32-Reference/UA/04-Shini/03-I2C.md)
 - [measurement via ADC](../../../../STM32-Reference/UA/06-Analog/01-ADC.md)

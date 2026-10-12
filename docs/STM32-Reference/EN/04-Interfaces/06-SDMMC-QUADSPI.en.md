@@ -275,7 +275,7 @@ flowchart TB
 
 A memory card eats in gulps: microamps idle, tens of milliamps writing. A weak regulator sags supply right at write time, so place an electrolytic and ceramic near the socket. Flash is calmer but also loves clean power and short ground. A shared ferrite at the memory supply input cuts digital-part noise.
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Fix |
 | --- | --- | --- | --- |
@@ -287,7 +287,7 @@ A memory card eats in gulps: microamps idle, tens of milliamps writing. A weak r
 | 6 | Long uneven traces | Ringing and crosstalk | Short level traces over solid ground |
 | 7 | No loader of your own | Programmer misses external flash | Build an external loader for your board and flash |
 
-## Official Sources
+## Official sources
 
 - [SDMMC overview STM32 (ST)](https://www.st.com/en/interfaces-and-transceivers/secure-digital.html) - card controllers and bus modes.
 - [AN5122 QUADSPI on STM32 (ST)](https://www.st.com/resource/en/application_note/an5122-quadspi-memory-interface-on-stm32-microcontrollers-stmicroelectronics.pdf) - modes, mapping, examples.
@@ -299,6 +299,6 @@ A memory card eats in gulps: microamps idle, tens of milliamps writing. A weak r
 - [Modern G0 and G4](../../../../STM32-Reference/UA/01-Hardware/03-G0-G4.md)
 - [CubeMX setup](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
 - [HAL and LL layers](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)
-- [GPIO modes](../../../../STM32-Reference/UA/03-GPIO/01-GPIO-rezhimi.md)
+- [ GPIO modes]
 - [FDCAN bus](../../../../STM32-Reference/UA/04-Shini/04-FDCAN.md)
 - [USB port](../../../../STM32-Reference/UA/04-Shini/05-USB.md)

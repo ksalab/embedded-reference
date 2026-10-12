@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. PD chain: charger to CC lines to TPS25750 to negotiated 15V to buck to 5V/3.3V of the board.*
 
 > [!tip] What this note is
-> Modern power instead of "dumb" 5V: the board asks the charger for the needed profile and gets watts with margin. Base: [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Power supply chains]], [[02-Power-Supply/03-Power-Design.en | Power supply calculation]].
+> Modern power instead of "dumb" 5V: the board asks the charger for the needed profile and gets watts with margin. Base: [[EN/02-Power-Supply/01-Power-Supply-Rails.en| Power supply chains]], [[02-Power-Supply/03-Power-Design.en | Power supply calculation]].
 
 ## 1. Goal
 
@@ -160,7 +160,7 @@ VBUS divider 4:1 - 20V fits into the 3.3V ADC. Contract check before relay turn-
 
 ## 10. Related notes
 
-- [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Power supply chains]] - power base.
+- [[EN/02-Power-Supply/01-Power-Supply-Rails.en| Power supply chains]] - power base.
 - [[02-Power-Supply/03-Power-Design.en | Power supply calculation]] - currents and heat.
 - [[EN/13-Power-Modules/01-Buck-Boost.en| Buck/Boost modules]] - converters.
 - [[EN/06-Analog/01-ADC.en| Analog ADC]] - VBUS measurement.

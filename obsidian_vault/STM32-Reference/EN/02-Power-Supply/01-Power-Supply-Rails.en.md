@@ -272,7 +272,7 @@ The PVD interrupt gets high priority to make it before the reset circuit fires. 
 
 If the board draws many times the calculated current, look for a pin in short circuit, an unterminated input floating in the air, or an unprogrammed port in a level fight. For sleep and wakeup details see [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]].
 
-The battery continuation of the topic with chemistries and charging is given in [[02-Power-Supply/02-Batareyne-zhivlennya.en | Node battery power]].
+The battery continuation of the topic with chemistries and charging is given in [[EN/02-Power-Supply/02-Battery-Power.en| Node battery power]].
 
 ## Common issues
 
@@ -296,7 +296,7 @@ The battery continuation of the topic with chemistries and charging is given in 
 ## See also
 
 - [[Home.en]]
-- [[02-Power-Supply/02-Batareyne-zhivlennya.en | Node battery power]]
+- [[EN/02-Power-Supply/02-Battery-Power.en| Node battery power]]
 - [[01-Hardware/04-H5-H7.en | H5 and H7 flagships]]
 - [[01-Hardware/05-L0-L4-U5.en | Low-power chips]]
 - [[EN/06-Analog/01-ADC.en| ADC measurements]]

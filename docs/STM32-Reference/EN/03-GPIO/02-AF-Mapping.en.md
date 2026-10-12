@@ -210,9 +210,9 @@ When silent, walk the list: GPIO and module clocking on, MODER equals 10, AF num
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [GPIO modes](../../../../STM32-Reference/UA/03-GPIO/01-GPIO-rezhimi.md)
+- [ GPIO modes]
 - [EXTI interrupts](../../../../STM32-Reference/UA/03-GPIO/03-EXTI-NVIC.md)
 - [F0/F1 classics](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md)
 - [CubeMX setup](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
 - [HAL and LL layers](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)
-- [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
+- [ Chip comparison]

@@ -12,7 +12,7 @@ date: 2026-10-08
 # WebRadio and Streaming on ESP32 - Icecast/Shoutcast, AAC, Buffers, Squeezelite, Snapcast, AirPlay, DLNA, VS1053, PSRAM
 
 > [!info] Where this is
-> Sound base: [I2S](../../../../ESP32-Reference/EN/04-Interfaces/04-I2S.en.md), simpler solution [DFPlayer/MAX98357A](../../../../ESP32-Reference/EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md), codecs [Audio-Codecs](../../../../ESP32-Reference/EN/11-Vivid/13-Audio-Codecs.en.md), MP3/TTS [MP3/TTS/Amps](../../../../ESP32-Reference/EN/11-Vivid/18-MP3-TTS-Amps.en.md), start [Home](../../../../ESP32-Reference/EN/Home.en.md).
+> Sound base: [I2S](../../../../ESP32-Reference/UA/04-Shini/04-I2S.md), simpler solution [DFPlayer/MAX98357A](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md), codecs [Audio-Codecs](../../../../ESP32-Reference/UA/11-Vivid/13-Audio-Codecs.md), MP3/TTS [MP3/TTS/Amps](../../../../ESP32-Reference/UA/11-Vivid/18-MP3-TTS-Amps.md), start [Home](../../../../ESP32-Reference/Home.md).
 
 ## Purpose
 
@@ -25,7 +25,7 @@ When to choose:
 - high-quality decode - VS1053 (hardware MP3 decoder);
 - large buffer for high-bitrate streams - PSRAM (8/16 MB).
 
-When NOT: just play local files - see [18-MP3-TTS-Amps.en](../../../../ESP32-Reference/EN/11-Vivid/18-MP3-TTS-Amps.en.md); need codec/I2S sound - see [13-Audio-Codecs.en](../../../../ESP32-Reference/EN/11-Vivid/13-Audio-Codecs.en.md).
+When NOT: just play local files - see [18-MP3-TTS-Amps](../../../../ESP32-Reference/UA/11-Vivid/18-MP3-TTS-Amps.md); need codec/I2S sound - see [13-Audio-Codecs](../../../../ESP32-Reference/UA/11-Vivid/13-Audio-Codecs.md).
 
 ## Key parameters
 
@@ -142,9 +142,26 @@ player.begin();
 - [AirPlay / Shairport](https://github.com/mikebrady/shairport-sync) - AirPlay receiver.
 - [ESP-ADF Streaming examples](https://docs.espressif.com/projects/esp-adf/en/latest/) - network audio pipeline.
 
+![](../../../../ESP32-Reference/assets/img/placeholder.png)
+*Fig. 1. WebRadio pipeline: Icecast stream, WiFi buffer in PSRAM, MP3/AAC decode, I2S output to DAC or amp.*
+
+### Streaming chain
+
+```mermaid
+flowchart LR
+    NET["Icecast/Shoutcast<br/>MP3 AAC stream"]
+    WIFI["ESP32 WiFi<br/>HTTP client"]
+    BUF["Buffer<br/>PSRAM 64KB+"]
+    DEC["Decoder<br/>Helix VS1053"]
+    OUT["I2S output<br/>DAC or amp"]
+    NET --> WIFI
+    WIFI --> BUF
+    BUF --> DEC
+    DEC --> OUT
+```
 ## See also
 
-- [DFPlayer / MAX98357A](../../../../ESP32-Reference/EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md) - simpler audio.
-- [Audio Codecs](../../../../ESP32-Reference/EN/11-Vivid/13-Audio-Codecs.en.md) - I2S codec sound.
-- [MP3 / TTS / Amps](../../../../ESP32-Reference/EN/11-Vivid/18-MP3-TTS-Amps.en.md) - local MP3 and amplifiers.
-- [I2S](../../../../ESP32-Reference/EN/04-Interfaces/04-I2S.en.md) - digital sound interface.
+- [DFPlayer / MAX98357A](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md) - simpler audio.
+- [Audio Codecs](../../../../ESP32-Reference/UA/11-Vivid/13-Audio-Codecs.md) - I2S codec sound.
+- [MP3 / TTS / Amps](../../../../ESP32-Reference/UA/11-Vivid/18-MP3-TTS-Amps.md) - local MP3 and amplifiers.
+- [I2S](../../../../ESP32-Reference/UA/04-Shini/04-I2S.md) - digital sound interface.

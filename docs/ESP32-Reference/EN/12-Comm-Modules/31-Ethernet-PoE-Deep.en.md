@@ -1,9 +1,11 @@
 ---
+lang: en
 title: ESP32 Ethernet глибоко - W5500, PoE and провідний шлюз
 description: Будує провідний вузол on ESP32 - W5500 per SPI, PoE-живлення, Ethernet+WiFi резервування and MQTT-шлюз with кодом.; shows schematics, code and tables.
 tags: [esp32, ethernet, w5500, poe, spi, gateway, mqtt, wired]
 category: Moduli-zvyazku
 date: 2026-10-06
+original: 12-Moduli-zvyazku/31-Ethernet-PoE-Deep.md
 ---
 
 # ESP32 Ethernet глибоко - W5500, PoE and провідний шлюз
@@ -63,7 +65,7 @@ W5500 тримає 8 сокетів апаратно: TCP/IP not їсть CPU. S
 
 - спліттер 5V 2A: стандартний 802.3af вхід, USB-C/гребінка вихід;
 - гальванічна розв'язка всередині - земля мережі not йде in плату;
-- бюджет: плата + датчики + запас 30 %;
+- бюджет: плата + датчики + запас 30%;
 - грозозахист on вуличних прольотах;
 - тестер PoE показує клас пристрою до вмикання.
 

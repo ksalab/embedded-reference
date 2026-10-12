@@ -12,8 +12,8 @@ date: 2026-10-08
 # MP3 Modules, TTS Speech Synthesis and Amplifiers - JQ6500/KT403A/BY8301/DY-SV5W/SOMO-14D, SYN6288/XFS5152, PAM8403/TPA3116/LM386, MAX4466/MAX9814, MSGEQ7, PT2399
 
 > [!info] Where this is in the reference
-> Sound base: [[04-Interfaces/04-I2S.en.md|I2S]], simpler solution [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|DFPlayer/MAX98357A]], codecs [[11-Vivid/13-Audio-Codecs.en.md|Audio-Codecs]], start [[Home.en.md|Home]].
-> Network audio - parallel note: [[11-Vivid/19-WebRadio-Streaming.en.md|WebRadio-Streaming]].
+> Sound base: [[04-Interfaces/04-I2S.en|I2S]], simpler solution [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|DFPlayer/MAX98357A]], codecs [[11-Vivid/13-Audio-Codecs.en|Audio-Codecs]], start [[Home.en|Home]].
+> Network audio - parallel note: [[11-Vivid/19-WebRadio-Streaming.en|WebRadio-Streaming]].
 
 ## Purpose
 
@@ -30,7 +30,7 @@ When to choose what:
 - color music - **MSGEQ7** (7 bands on one analog pin);
 - echo - **PT2399** (analog delay 30-340 ms).
 
-When NOT to choose: need HiFi stereo from network - see [[11-Vivid/19-WebRadio-Streaming.en.md]]; need record + headphones + I2S - see [[11-Vivid/13-Audio-Codecs.en.md]].
+When NOT to choose: need HiFi stereo from network - see [[11-Vivid/19-WebRadio-Streaming.en]]; need record + headphones + I2S - see [[11-Vivid/13-Audio-Codecs.en]].
 
 ## Characteristics
 
@@ -41,7 +41,7 @@ When NOT to choose: need HiFi stereo from network - see [[11-Vivid/19-WebRadio-S
 | BY8301-16P | UART 9600 + IO/ADKEY | 5 V | SPK 2-3 W | Frame `7E … EF` with own command table - verify revision! |
 | DY-SV5W | UART + IO buttons, USB | 5 V (up to 2 A peak!) | Built-in amp 5 W mono | SD + USB flash + SPI-flash; BUSY pin for track queue |
 | SOMO-14D | UART 9600 (3.3 V!) + BUSY | 3.3 V | Linear stereo out (needs amp!) | 4D Systems; 3.3 V logic tolerant to ESP32 |
-| DFPlayer Mini (reference) | UART 9600 + BUSY + ADKEY | 5 V | SPK 3 W diff. | See [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|note 08]] |
+| DFPlayer Mini (reference) | UART 9600 + BUSY + ADKEY | 5 V | SPK 3 W diff. | See [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|note 08]] |
 | SYN6288 | UART 9600 (TX/RX) + BUSY | 3.3-5 V | Linear out (to amp!) | GB2312 encoding! Cyrillic - pinyin/translit or English phrases |
 | XFS5152 (XF-S5152CE) | UART 9600/115200 + BUSY | 3.3-5 V | Linear out | GBK/UTF-8/Unicode modes; volume/tone/speed by commands |
 | PAM8403 | Analog input (stereo) | 5 V (2.5-5.5 V) | 3 W × 2, class-D | Noise from 5 V supply! LC filter or separate DC-DC; input not above 1 V |
@@ -230,7 +230,7 @@ flowchart LR
 ```
 ## See also
 
-- [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|DFPlayer / MAX98357A]] - simpler MP3 + amp.
-- [[11-Vivid/13-Audio-Codecs.en.md|Audio Codecs]] - I2S / codec sound.
-- [[11-Vivid/19-WebRadio-Streaming.en.md|WebRadio / Streaming]] - network audio.
-- [[04-Interfaces/04-I2S.en.md|I2S]] - digital sound signals.
+- [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|DFPlayer / MAX98357A]] - simpler MP3 + amp.
+- [[11-Vivid/13-Audio-Codecs.en|Audio Codecs]] - I2S / codec sound.
+- [[11-Vivid/19-WebRadio-Streaming.en|WebRadio / Streaming]] - network audio.
+- [[04-Interfaces/04-I2S.en|I2S]] - digital sound signals.

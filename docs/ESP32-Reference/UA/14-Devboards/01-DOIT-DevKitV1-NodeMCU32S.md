@@ -4,6 +4,7 @@ title: DOIT DevKitV1 / NodeMCU-32S - класична плата ESP32 на 30 �
 tags: [esp32, devboards, doit, nodemcu, devkit, cp2102, ch340]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # DOIT DevKitV1 / NodeMCU-32S - класика 30pin
@@ -130,7 +131,7 @@ MicroPython: прошивається стандартно через USB-UART, 
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![](../../../../ESP32-Reference/assets/img/devboard-doit-v1.png)
+> [!example] Фото/схема:![](../../../../ESP32-Reference/assets/img/devboard-doit-v1.png)
 
 ```text
 [USB 5V / Зарядка 5V 2A] ──► Micro-USB ──► AMS1117-3.3 ──► 3.3V (ESP32 + піни 3V3)

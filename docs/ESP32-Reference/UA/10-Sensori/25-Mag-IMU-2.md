@@ -4,6 +4,7 @@ title: MMC5983MA TLV493D A3144 BMI270 BMA400 LIS3DH - магнітометри, 
 tags: [esp32, sensor, mmc5983ma, tlv493d, a3144, hall, compass, bmi270, bma400, lis3dh, imu, accelerometer, i2c, spi]
 category: Sensori
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # MMC5983MA / TLV493D / A3144 / BMI270 / BMA400 / LIS3DH - магнітометрія та always-on рух

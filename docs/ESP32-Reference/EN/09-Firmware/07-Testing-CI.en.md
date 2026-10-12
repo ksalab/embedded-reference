@@ -379,7 +379,7 @@ CONFIG_LOG_DEFAULT_LEVEL_DEBUG=y
 | `ESP_LOGW` | Degradation, retry | `W (456) i2c: NACK addr=0x76, retry 2/5` |
 | `ESP_LOGI` | Lifecycle: boot, OTA, version | `I (789) ota: updated to 2.5.0, reboot` |
 | `ESP_LOGD` | Rig diagnostics | `D (...) sens: raw=519888 comp=25.01` |
-| `ESP_LOGV` | Byte dumps, HIL only | `V (...) i2c: >> 88 01 ...` |
+| `ESP_LOGV` | Byte dumps, HIL only | `V (...) i2c: >> 88 01...` |
 | Control | `esp_log_level_set("sens", ESP_LOG_DEBUG)` | `beta`=DEBUG, `stable`=INFO |
 
 ESP-IDF code:

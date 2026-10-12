@@ -220,9 +220,9 @@ Brightness and motor speed control go through timers in pulse-width modulation m
 ## See also
 
 - [[Home.en]]
-- [[03-GPIO/01-GPIO-rezhimi.en | GPIO modes]]
-- [[03-GPIO/02-AF-maping.en | Alternate function mapping]]
+- [[EN/03-GPIO/01-GPIO-Modes.en| GPIO modes]]
+- [[EN/03-GPIO/02-AF-Mapping.en| Alternate function mapping]]
 - [[01-Hardware/01-F0-F1-Classic.en | F0/F1 classics]]
 - [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
 - [[EN/09-Firmware/03-ST-Link-Flashing.en| ST-Link flashing]]
-- [[00-Start/03-Porivnyannya-chipiv.en | Chip comparison]]
+- [[EN/00-Start/03-Chip-Comparison.en| Chip comparison]]

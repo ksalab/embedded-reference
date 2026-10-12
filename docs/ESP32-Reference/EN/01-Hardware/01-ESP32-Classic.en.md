@@ -35,7 +35,7 @@ ESP32 Classic (ESP32-D0WD-V3) basics: WROOM-32 pinout (30-pin DevKit); WROOM vs 
 | WiFi TX current | peak up to 500 mA |
 
 > [!info] ADC2 and WiFi do not work at the same time
-> When WiFi is enabled, the driver occupies ADC2. For analog measurements while WiFi runs, use only [ADC1](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md) channels (GPIO32-39). See also [03-Porivnyannya-chipiv](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md).
+> When WiFi is enabled, the driver occupies ADC2. For analog measurements while WiFi runs, use only [ ADC1] channels (GPIO32-39). See also [EN/00-Start/03-Chip-Comparison.en].
 
 ## WROOM-32 pinout (30-pin DevKit)
 
@@ -52,7 +52,7 @@ ESP32 Classic (ESP32-D0WD-V3) basics: WROOM-32 pinout (30-pin DevKit); WROOM vs 
 | 9 | GPIO26 | DAC2, ADC2_CH9 | 3.3V logic |
 | 10 | GPIO27 | ADC2_CH7, touch | 3.3V, conflicts with WiFi |
 | 11 | GPIO14 | ADC2_CH6, HSPI-CLK | 3.3V, conflicts with WiFi |
-| 12 | GPIO12 | ADC2_CH5, strapping | 3.3V, see [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md) |
+| 12 | GPIO12 | ADC2_CH5, strapping | 3.3V, see [EN/03-GPIO/02-Strapping-Pins.en] |
 | 13 | GND | Ground | GND |
 | 14 | GPIO13 | ADC2_CH4 | 3.3V, conflicts with WiFi |
 | 15 | GND | Ground | GND |
@@ -61,13 +61,13 @@ ESP32 Classic (ESP32-D0WD-V3) basics: WROOM-32 pinout (30-pin DevKit); WROOM vs 
 | 18 | GPIO21 | I2C SDA | 3.3V, pull-up to 3.3V |
 | 19 | GPIO19 | UART0 CTS / VSPI-MISO | 3.3V logic |
 | 20 | GPIO18 | VSPI-CLK | 3.3V logic |
-| 21 | GPIO5 | VSPI-SS, strapping | 3.3V, see [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md) |
+| 21 | GPIO5 | VSPI-SS, strapping | 3.3V, see [EN/03-GPIO/02-Strapping-Pins.en] |
 | 22 | TX2 (GPIO17) | UART2 TX | 3.3V level |
 | 23 | RX2 (GPIO16) | UART2 RX | 3.3V level |
 | 24 | GPIO4 | ADC2_CH0, touch | 3.3V, conflicts with WiFi |
-| 25 | GPIO0 | BOOT, strapping | 3.3V, see [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md) |
+| 25 | GPIO0 | BOOT, strapping | 3.3V, see [EN/03-GPIO/02-Strapping-Pins.en] |
 | 26 | GPIO2 | Strapping, LED | Must be floating / low at boot |
-| 27 | GPIO15 | ADC2_CH3, strapping | 3.3V, see [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md) |
+| 27 | GPIO15 | ADC2_CH3, strapping | 3.3V, see [EN/03-GPIO/02-Strapping-Pins.en] |
 | 28 | SD1 (GPIO8) | Flash SPI | Do not use, 3.3V flash |
 | 29 | SD0 (GPIO7) | Flash SPI | Do not use, 3.3V flash |
 | 30 | CLK (GPIO6) | Flash SPI | Do not use, 3.3V flash |
@@ -85,7 +85,7 @@ ESP32 Classic (ESP32-D0WD-V3) basics: WROOM-32 pinout (30-pin DevKit); WROOM vs 
 | Power supply | 3.3V | 3.3V |
 | Use | IoT, sensors | Camera, LVGL, audio |
 
-Details: [05-Moduli-WROOM-WROVER-MINI](../../../../ESP32-Reference/UA/01-Hardware/05-Moduli-WROOM-WROVER-MINI.md), [06-Flash-PSRAM](../../../../ESP32-Reference/UA/01-Hardware/06-Flash-PSRAM.md).
+Details: [EN/01-Hardware/05-WROOM-WROVER-MINI-Modules.en], [06-Flash-PSRAM](../../../../ESP32-Reference/UA/01-Hardware/06-Flash-PSRAM.md).
 
 ## ESP32 to module wiring table
 
@@ -99,7 +99,7 @@ Details: [05-Moduli-WROOM-WROVER-MINI](../../../../ESP32-Reference/UA/01-Hardwar
 
 ## 3.3V power supply
 
-The Classic runs from a [5V to 3.3V LDO chain](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md). The WiFi peak is 500 mA, so the LDO must hold 600+ mA, with 100 nF + 10 uF capacitors near the module plus a 470 uF electrolytic. Details: [02-LDO-DC-DC](../../../../ESP32-Reference/UA/02-Zhivlennya/02-LDO-DC-DC.md), [03-Spozhivannya](../../../../ESP32-Reference/UA/02-Zhivlennya/03-Spozhivannya.md).
+The Classic runs from a [ 5V to 3.3V LDO chain]. The WiFi peak is 500 mA, so the LDO must hold 600+ mA, with 100 nF + 10 uF capacitors near the module plus a 470 uF electrolytic. Details: [02-LDO-DC-DC](../../../../ESP32-Reference/UA/02-Zhivlennya/02-LDO-DC-DC.md), [EN/02-Power-Supply/03-Power-Consumption.en].
 
 ## Official sources
 
@@ -198,7 +198,7 @@ void setup() {
 ```
 
 > [!tip] Crystal and WiFi link
-> A cheap crystal with 40 ppm deviation cuts range and causes dropouts. The symptom is `wifi: recalibration` in the logs. Only a module replacement fixes it. RF details: [08-Anteni-RF](../../../../ESP32-Reference/UA/01-Hardware/08-Anteni-RF.md).
+> A cheap crystal with 40 ppm deviation cuts range and causes dropouts. The symptom is `wifi: recalibration` in the logs. Only a module replacement fixes it. RF details: [EN/01-Hardware/08-Antennas-RF.en].
 
 ## Boot mode (Classic)
 
@@ -209,7 +209,7 @@ void setup() {
 | JTAG-debug | HIGH | - | HIGH | LOW | HIGH | HIGH | boot + `openocd` connects |
 | SDIO boot | HIGH | HIGH* | LOW* | LOW | LOW* | HIGH | Rare, for slave mode |
 
-`*` - MTDI/MTDO combinations (GPIO12/15) and GPIO5 for the SDIO slave, see [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md).
+`*` - MTDI/MTDO combinations (GPIO12/15) and GPIO5 for the SDIO slave, see [EN/03-GPIO/02-Strapping-Pins.en].
 
 ```bash
 # Розшифровка логу download:
@@ -224,7 +224,7 @@ esptool.py --port /dev/ttyUSB0 read_flash_status
 | `boot:0x13` | Normal, boot from flash | Keep working |
 | `waiting for download` | GPIO0 pulled to GND | Release BOOT, press EN |
 | `flash read err, 1000` | Wrong flash size/mode | Check [06-Flash-PSRAM](../../../../ESP32-Reference/UA/01-Hardware/06-Flash-PSRAM.md) |
-| `rst:0x10 (RTCWDT_RTC_RESET)` | 3.3V sag / weak LDO | See [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) |
+| `rst:0x10 (RTCWDT_RTC_RESET)` | 3.3V sag / weak LDO | See [EN/02-Power-Supply/01-Power-Rails.en] |
 
 ### Mermaid: when Classic fits and when it does not
 
@@ -250,10 +250,10 @@ flowchart TB
 ## See also
 
 - [Home](../../../../ESP32-Reference/Home.md)
-- [03-Porivnyannya-chipiv](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
-- [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
+- [EN/00-Start/03-Chip-Comparison.en]
+- [EN/03-GPIO/01-GPIO-Overview.en]
+- [EN/03-GPIO/02-Strapping-Pins.en]
+- [EN/02-Power-Supply/01-Power-Rails.en]
 - [02-ESP32-S2](../../../../ESP32-Reference/UA/01-Hardware/02-ESP32-S2.md)
 - [03-ESP32-S3](../../../../ESP32-Reference/UA/01-Hardware/03-ESP32-S3.md)
 - [07-Boot-Strapping-Reset](../../../../ESP32-Reference/UA/01-Hardware/07-Boot-Strapping-Reset.md)

@@ -299,6 +299,6 @@ A memory card eats in gulps: microamps idle, tens of milliamps writing. A weak r
 - [[01-Hardware/03-G0-G4.en | Modern G0 and G4]]
 - [[EN/09-Firmware/01-CubeIDE-CubeMX.en| CubeMX setup]]
 - [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
-- [[03-GPIO/01-GPIO-rezhimi.en | GPIO modes]]
+- [[EN/03-GPIO/01-GPIO-Modes.en| GPIO modes]]
 - [[04-Interfaces/04-FDCAN.en | FDCAN bus]]
 - [[04-Interfaces/05-USB.en | USB port]]

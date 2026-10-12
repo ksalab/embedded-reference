@@ -206,7 +206,7 @@ Such a loop average current falls hundreds of times.
 
 See battery voltage measurement in [voltage measurement](../../../../ARDUINO-Reference/UA/06-Analog/01-ADC.md).
 
-The millisecond clock is described in [timers and time](../../../../ARDUINO-Reference/UA/07-Timeri-Son/01-Timeri-millis.md).
+The millisecond clock is described in [timers and time].
 
 ## 5. Wake-up: button or guard
 
@@ -412,5 +412,5 @@ The budget shows true months of life.
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
 - [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
-- [timers and time](../../../../ARDUINO-Reference/UA/07-Timeri-Son/01-Timeri-millis.md)
+- [timers and time]
 - [voltage measurement](../../../../ARDUINO-Reference/UA/06-Analog/01-ADC.md)

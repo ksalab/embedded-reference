@@ -4,6 +4,7 @@ title: Ретро і носимі ESP32 - FabGL/VGA32, Odroid-GO, T-Watch S3, T-
 tags: [esp32, devboards, retro, wearable, fabgl, vga, odroid-go, t-watch, t-deck, lora, gps, ps2, emulator, s3]
 category: Devboards
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Retro-Wearable: FabGL / Odroid-GO / T-Watch S3 / T-Deck
@@ -73,7 +74,7 @@ T-Deck (повний мапінг з вікі): SPI-шина спільна - TF
 
 ## Особливості USB-UART
 
-VGA32: класичний міст + BOOT/RESET (старі плати) або native-завантаження. FabGL-приклади шиються як звичайний Arduino-скетч; термінал спілкується поверх Serial. Odroid-GO: Micro-USB (заряд + UART), прошивка esptool/Arduino, лаунчери - .bin через фабричну утиліту або SD! T-Watch S3: USB-C native S3 (USB CDC On Boot Enabled), BOOT при першій прошивці. T-Deck: USB-C native; якщо не шиється - трекбол-центр (BOOT) + вставити USB + шити + RST. Meshtastic-вебфлешер уміє «1200bps reset» для авто-входу в download. Деталі - [USB-UART](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/05-USB-UART-AutoReset.md).
+VGA32: класичний міст + BOOT/RESET (старі плати) або native-завантаження. FabGL-приклади шиються як звичайний Arduino-скетч; термінал спілкується поверх Serial. Odroid-GO: Micro-USB (заряд + UART), прошивка esptool/Arduino, лаунчери -.bin через фабричну утиліту або SD! T-Watch S3: USB-C native S3 (USB CDC On Boot Enabled), BOOT при першій прошивці. T-Deck: USB-C native; якщо не шиється - трекбол-центр (BOOT) + вставити USB + шити + RST. Meshtastic-вебфлешер уміє «1200bps reset» для авто-входу в download. Деталі - [USB-UART](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/05-USB-UART-AutoReset.md).
 
 ## Кнопки
 
@@ -141,7 +142,7 @@ T-Deck + Meshtastic: найпростіше - вебфлешер (вибрати
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![](../../../../ESP32-Reference/assets/img/devboard-retro-wearable-scheme.png)
+> [!example] Фото/схема:![](../../../../ESP32-Reference/assets/img/devboard-retro-wearable-scheme.png)
 
 ```text
 FabGL/VGA32: [Блок 5V] ─► ESP32 ─► VGA-резистори ─► монітор (8/64 кольори!).
@@ -323,7 +324,7 @@ SPI SD-слота - до 20 МГц, карти FAT32 ≤32 ГБ. Швидкіс�
 
 ### Лаунчери і прошивки
 
-Лаунчер - прошивка-«трамплін», яка запускає .bin/емулятори прямо з RAM/SD без перепрошивки через USB щоразу.
+Лаунчер - прошивка-«трамплін», яка запускає.bin/емулятори прямо з RAM/SD без перепрошивки через USB щоразу.
 
 - Stock/заводська - тест кнопок/екрана/звуку/SD.
 - GO-Play (OtherCrashOverride) - мінімалістичне меню, швидкий запуск, NES/GB/SMS.
@@ -331,7 +332,7 @@ SPI SD-слота - до 20 МГц, карти FAT32 ≤32 ГБ. Швидкіс�
 - MicroPython (loboris-порт) - дисплей/кнопки як модулі, зручно для навчання: `import odroid_go` і малюєте.
 - Arduino «з нуля» - ваша гра як звичайний скетч (див. нижче).
 
-Як ставити: варіант 1 - .bin через фабричну утиліту/esptool (`esptool.py write_flash 0x10000 go-play.bin`); варіант 2 - скопіювати `firmware.bin` + папку `roms/` (підпапки `nes/`, `gb/`, `sms/`) в корінь FAT32-SD і перезавантажитися з утриманим Menu. ROMи - тільки власні дампи!
+Як ставити: варіант 1 -.bin через фабричну утиліту/esptool (`esptool.py write_flash 0x10000 go-play.bin`); варіант 2 - скопіювати `firmware.bin` + папку `roms/` (підпапки `nes/`, `gb/`, `sms/`) в корінь FAT32-SD і перезавантажитися з утриманим Menu. ROMи - тільки власні дампи!
 
 ### Своя гра покроково (7 кроків)
 
@@ -544,7 +545,7 @@ digitalWrite(10, HIGH);  // POWERON — обов'язково на батаре�
 | 13 | FabGL зібрався, але падає в boot-loop | Core >2.0.17 або S3/C3 вибрано в Tools→Board | Пакет ESP32 2.0.17, плата `ESP32 Dev Module`, PSRAM Enabled |
 | 14 | USB-клавіатура через перехідник мовчить | Пасивний перехідник без конвертера (USB≠PS/2!) | Native PS/2-клавіатура або активний USB→PS/2 адаптер |
 | 15 | Odroid-GO: SDXC 64 ГБ не видно | exFAT замість FAT32 | Карта ≤32 ГБ, форматувати FAT32 (не швидке!), ROMи в `/roms/` |
-| 16 | RetroESP32 висне на заставці | Битий .bin / не та адреса флеш / сіла батарея | Перекачати реліз, `esptool erase_flash` + чиста прошивка, зарядити |
+| 16 | RetroESP32 висне на заставці | Битий.bin / не та адреса флеш / сіла батарея | Перекачати реліз, `esptool erase_flash` + чиста прошивка, зарядити |
 | 17 | T-Watch після «швидкої» зарядки 1A здувся | Струм >>130 мА для 470 мА·г | Обмежити заряд у PMU <130 мА, заряджати комплектним кабелем, не залишати на ніч |
 | 18 | Пробудження тапом не працює | Тач поклали спати, а reset не підключений - будити нічим! | Не присипляти тач або будити кнопкою/BMA/таймером |
 | 19 | BMA423 завжди «0 кроків» | Не ініціалізовано / не той I2C-адрес / стара lib | Приклад з гілки t-watch-s3, I2C-сканер, оновити SensorsLib |

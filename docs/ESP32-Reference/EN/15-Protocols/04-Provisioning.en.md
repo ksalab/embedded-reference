@@ -241,7 +241,7 @@ except OSError:
 - [NVS](../../../../ESP32-Reference/UA/08-Pamyat/01-Partitions-NVS.md) - де лежать облікові, стирання
 - [FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md) - портал not стартує, цикли
 - [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md) - наступний крок після WiFi
-- [HTTP/WebSocket](../../../../ESP32-Reference/UA/15-Protokoli/02-HTTP-WebSocket.md) - наступний крок після WiFi
+- [HTTP/WebSocket] - наступний крок після WiFi
 - [mDNS/NTP/TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md) - знахідка пристрою після provision
 - [Cloud-Pipeline](../../../../ESP32-Reference/UA/15-Protokoli/05-Cloud-Pipeline.md) - куди течуть дані
 

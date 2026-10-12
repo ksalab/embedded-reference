@@ -25,7 +25,7 @@ The note collects practice: comparing chemistries from coin lithium to lithium w
 
 A calculation of the average current budget and its conversion into years of work from a common coin cell is shown separately. The example adapts easily to your wakeup period and packet.
 
-Board mains power and decoupling are described in [Board power supply chains](../../../../STM32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), and low-consumption modes in [Sleep modes](../../../../STM32-Reference/UA/07-Timeri-Son/03-Sleep-Stop-Standby.md).
+Board mains power and decoupling are described in [ Board power supply chains], and low-consumption modes in [Sleep modes](../../../../STM32-Reference/UA/07-Timeri-Son/03-Sleep-Stop-Standby.md).
 
 ## 2. Battery chemistries for STM32 nodes
 
@@ -305,9 +305,9 @@ Panel power is calculated for winter sun, not summer. If the node draws 5 mAh pe
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [Board power supply chains](../../../../STM32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
+- [ Board power supply chains]
 - [Low-power chips](../../../../STM32-Reference/UA/01-Hardware/05-L0-L4-U5.md)
 - [ADC measurements](../../../../STM32-Reference/UA/06-Analog/01-ADC.md)
 - [Sleep modes](../../../../STM32-Reference/UA/07-Timeri-Son/03-Sleep-Stop-Standby.md)
 - [H5 and H7 flagships](../../../../STM32-Reference/UA/01-Hardware/04-H5-H7.md)
-- [ST-Link flashing](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md)
+- [ ST-Link flashing]

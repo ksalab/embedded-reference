@@ -134,7 +134,7 @@ ADS1115 gain: 2/3 (±6.144V), 1 (±4.096V), 2 (±2.048V), 4/8/16 - for the signa
 
 - [RP2040 and RP2350](../../../../RaspberryPi-Reference/UA/01-Hardware/03-RP2040-RP2350.md) - Pico built-in ADC.
 - [I2C/SPI/UART buses](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md) - buses in detail.
-- [INA219 current](../../../../RaspberryPi-Reference/UA/10-Sensori/04-INA219-Strum.md) - ready measurement on the bus.
+- [INA219 current] - ready measurement on the bus.
 - [USB-C power supply](../../../../RaspberryPi-Reference/UA/02-Zhivlennya/01-USB-C-PD.md) - reference stability.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 

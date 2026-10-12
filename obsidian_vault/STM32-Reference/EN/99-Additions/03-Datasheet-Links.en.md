@@ -107,7 +107,7 @@ Move from top to bottom. Do not get into the reference manual until you have cov
 | 4 | Do not open errata | Bug catches silicon in series | Read errata to tracing |
 | 5 | Believe copies from the forum | Legacy tables bootloader | Only AN2606 from the manufacturer's website |
 | 6 | Do not save PDF | A year later, the solution cannot be proved | Dated docs folder in repository |for старту with нуля відкрий [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]] and оновлення [[EN/15-Protocols/02-DFU-Bootloader.en| firmware update]].
-## See also- [[Home | Home]]
+## See also- [[Home.en | Home]]
 - [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]]
 - [[EN/01-Hardware/01-F0-F1-Classic.en| classic F0 and F1]]
 - [[EN/04-Interfaces/03-I2C.en| I2C bus]]

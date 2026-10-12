@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. SoC evolution: CPU grows from A53 to A76, VideoCore VI to VII graphics, Pi 5 peripherals moved to RP1.*
 
 > [!tip] What this note is
-> Chip map: what sits inside each board and why Pi 5 is so fast. Chip details: [BCM2712 and Pi 5](../../../../RaspberryPi-Reference/UA/01-Hardware/02-BCM2712-Pi5.md), [RP2040 and RP2350](../../../../RaspberryPi-Reference/UA/01-Hardware/03-RP2040-RP2350.md). Board choice: [model comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md).
+> Chip map: what sits inside each board and why Pi 5 is so fast. Chip details: [BCM2712 and Pi 5](../../../../RaspberryPi-Reference/UA/01-Hardware/02-BCM2712-Pi5.md), [RP2040 and RP2350](../../../../RaspberryPi-Reference/UA/01-Hardware/03-RP2040-RP2350.md). Board choice: [model comparison].
 
 ## 1. Goal
 
@@ -123,8 +123,8 @@ More about memory:
 
 - [BCM2712 and Pi 5](../../../../RaspberryPi-Reference/UA/01-Hardware/02-BCM2712-Pi5.md) - flagship in detail.
 - [RP2040 and RP2350](../../../../RaspberryPi-Reference/UA/01-Hardware/03-RP2040-RP2350.md) - microcontrollers.
-- [model comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md) - board choice.
-- [Pi 5 flagship](../../../../RaspberryPi-Reference/UA/14-Devboards/01-Pi5-Flagman.md) - board in detail.
+- [model comparison] - board choice.
+- [Pi 5 flagship] - board in detail.
 - [EEPROM boot](../../../../RaspberryPi-Reference/UA/09-Proshivka/02-EEPROM-Boot.md) - bootloader firmware.
 
 ## 9.1 Quick SoC cheat sheet

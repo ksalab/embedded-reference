@@ -4,6 +4,7 @@ title: Тачскріни - ємнісні CST816/GT911/FT6236, резистив
 tags: [esp32, touch, cst816, gt911, ft6236, xpt2046, tsc2007, lvgl, indev, sunton, crowpanel, i2c, spi, esp32-s3]
 category: Vivid
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Тачскріни - ємнісні, резистивні, калібрування, LVGL

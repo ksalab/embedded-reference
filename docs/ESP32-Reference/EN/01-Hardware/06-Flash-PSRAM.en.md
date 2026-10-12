@@ -16,7 +16,7 @@ original: 01-Hardware/06-Flash-PSRAM.md
 *Fig. Flash/PSRAM: modes from the datasheet, PSRAM in menuconfig, OTA from 4 MB.*
 
 > [!warning] Flash runs on 3.3V!
-> ESP32 SPI flash runs at **3.3V** (3.3V mode, not 1.8V). A wrong VDD_SPI strapping kills the boot. See [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md).
+> ESP32 SPI flash runs at **3.3V** (3.3V mode, not 1.8V). A wrong VDD_SPI strapping kills the boot. See [EN/03-GPIO/02-Strapping-Pins.en].
 
 ## Purpose
 
@@ -45,7 +45,7 @@ Flash and PSRAM: flash QD / QIO and sizes; PSRAM SPI vs Octal; partitions table 
 | No PSRAM | - | WROOM | Enough for sensors |
 
 > [!info] Partitions link
-> PSRAM is not part of partitions, but the flash layout depends on flash size: factory + OTA + SPIFFS/LittleFS. For 4 MB use default.csv, for 8/16 MB a custom file with a bigger app. Chip comparison: [03-Porivnyannya-chipiv](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md).
+> PSRAM is not part of partitions, but the flash layout depends on flash size: factory + OTA + SPIFFS/LittleFS. For 4 MB use default.csv, for 8/16 MB a custom file with a bigger app. Chip comparison: [EN/00-Start/03-Chip-Comparison.en].
 
 ## Partitions table (4 MB example)
 
@@ -209,9 +209,9 @@ flowchart TB
 ## See also
 
 - [Home](../../../../ESP32-Reference/Home.md)
-- [03-Porivnyannya-chipiv](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
-- [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
-- [05-Moduli-WROOM-WROVER-MINI](../../../../ESP32-Reference/UA/01-Hardware/05-Moduli-WROOM-WROVER-MINI.md)
+- [EN/00-Start/03-Chip-Comparison.en]
+- [EN/03-GPIO/01-GPIO-Overview.en]
+- [EN/03-GPIO/02-Strapping-Pins.en]
+- [EN/02-Power-Supply/01-Power-Rails.en]
+- [EN/01-Hardware/05-WROOM-WROVER-MINI-Modules.en]
 - [07-Boot-Strapping-Reset](../../../../ESP32-Reference/UA/01-Hardware/07-Boot-Strapping-Reset.md)

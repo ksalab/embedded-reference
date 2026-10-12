@@ -160,7 +160,7 @@ Haversine computes the distance between points. Filter: ignore jumps above 200 k
 
 - [I2C/SPI/UART buses](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md) - UART in detail.
 - [MPU6050 motion] - heading with no satellites.
-- [ready GPS tracker](../../../../RaspberryPi-Reference/UA/16-Proekti/02-GPS-Treker.md) - full project.
+- [ready GPS tracker] - full project.
 - [OS setup] - chrony and time.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 

@@ -5,6 +5,8 @@ tags: [esp32, automotive, obd2, elm327, lin, tja1020, sent, flexray, 100base-t1,
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/22-Automotive.md
 ---
 
 # Automotive - OBD-II (ELM327), LIN, SENT, FlexRay, 100BASE-T1, K-line, TPMS, KeeLoq, живлення 12V
@@ -28,7 +30,7 @@ date-created: 2026-09-29
 Links to [Home](../../../../ESP32-Reference/Home.md), [05-CAN-TWAI-RS485](../../../../ESP32-Reference/UA/04-Shini/05-CAN-TWAI-RS485.md), [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md),
 [19-Wired-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/19-Wired-2.md), [17-GNSS-RTK](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/17-GNSS-RTK.md),
 [23-Marine-Time](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/23-Marine-Time.md), [21-Motion-Control](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/21-Motion-Control.md),
-[01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md).
+[EN/02-Power-Supply/01-Power-Rails.en].
 
 > [!warning] ESP32 - not блок керування безпекою!
 > ESP32 not має автомобільної кваліфікації (AEC-Q100), детермінованого
@@ -44,7 +46,7 @@ Links to [Home](../../../../ESP32-Reference/Home.md), [05-CAN-TWAI-RS485](../../
 | --- | --- | --- | --- | --- | --- |
 | ELM327-клон (BT/USB/UART) | OBD-II інтерпретатор AT-команд | UART 38400 або BT SPP | 5V (всередині автоадаптера) | 10.4 кбод K-line / 500 кбіт CAN | Швидкий доступ до PIDs without писання CAN-стека |
 | OBD-II PIDs (режим 01) | Стандартні параметри (RPM, швидкість, ECT) | via ELM327 або безпосередньо TWAI ISO 15765-4 | - | запит/відповідь ~20-50 мс | Діагностика, борткомп'ютер, логер |
-| LIN (TJA1020) | Дешева підbus дверей/сидінь/клімату | UART + TX/RX до TJA1020 | 12V bus / 3.3-5V логіка | 2.4-19.2 кбод | Керування актуаторами LIN, емуляція master |
+| LIN (TJA1020) | Cheap sub-bus for doors/seats/climate | UART + TX/RX to TJA1020 | 12V bus / 3.3-5V logic | 2.4-19.2 kbaud | LIN actuator control, master emulation |
 | SENT (SAE J2716) | Датчики (тиск, положення, педаль) | GPIO + RMT/PCNT вхід | 5V живлення датчика | tick 3-90 мкс, ~1-4 кГц кадрів | Читання штатних SENT-датчиків |
 | FlexRay | Детермінована магістраль шасі | оглядово (ESP32 without контролера!) | - | до 10 Мбіт, 2 канали | Розуміти топологію, not підключати ESP32 безпосередньо |
 | 100BASE-T1 | Автомобільний Ethernet (1 пара) | оглядово (потрібен PHY типу DP83TC811) | - | 100 Мбіт, 1 вита пара | Розуміти DoIP, diagnostics via шлюз |
@@ -118,23 +120,23 @@ ELM327 -> ESP32 : "41 0C 1A F8\r>"    ASCII hex + промпт '>'
 
 ### 2.2. Автотаблиця PIDs режиму 01 (найпотрібніші)
 
-Формула застосовується до байтів відповіді `41 <PID> <A> <B> ...`.
+Формула застосовується до байтів відповіді `41 <PID> <A> <B>...`.
 `A` - перший байт даних, `B` - другий.
 
 | PID | Назва | Байти | Формула | example | Одиниці |
 | --- | --- | --- | --- | --- | --- |
 | 00 | Підтримувані PIDs 01-20 (бітова маска!) | 4 | біти A..D | `BE 1F A8 13` | маска |
-| 04 | Навантаження двигуна (LOAD) | 1 (A) | `A*100/255` | `A=0x7F` → 49.8% | % |
+| 04 | Навантаження двигуна (LOAD) | 1 (A) | `A*100/255` | `A=0x7F` → 49.8% |% |
 | 05 | Температура охолоджувача (ECT) | 1 (A) | `A-40` | `A=0x5A` → 50°C | °C |
 | 0B | Тиск in впуску (MAP) | 1 (A) | `A` | `A=0x64` → 100 кПа | кПа |
 | 0C | Оберти (RPM) | 2 (A,B) | `((A*256)+B)/4` | `1A F8` → 1726 | об/хв |
 | 0D | Швидкість авто (VSS) | 1 (A) | `A` | `A=0x3C` → 60 | км/г |
 | 0F | Температура впуску (IAT) | 1 (A) | `A-40` | `A=0x46` → 30°C | °C |
 | 10 | Витрата повітря (MAF) | 2 (A,B) | `((A*256)+B)/100` | `01 7C` → 3.8 | г/с |
-| 11 | Положення дроселя (TP) | 1 (A) | `A*100/255` | `A=0x33` → 20% | % |
-| 1F | Час from startу | 2 (A,B) | `A*256+B` | `00 B4` → 180 | с |
+| 11 | Положення дроселя (TP) | 1 (A) | `A*100/255` | `A=0x33` → 20% |% |
+| 1F | Time since engine start | 2 (A,B) | `A*256+B` | `00 B4` → 180 | s |
 | 20 | Підтримувані PIDs 21-40 (маска) | 4 | біти | - | маска |
-| 2F | Рівень палива | 1 (A) | `A*100/255` | `A=0x99` → 60% | % |
+| 2F | Рівень палива | 1 (A) | `A*100/255` | `A=0x99` → 60% |% |
 | 33 | Тиск барометра | 1 (A) | `A` | `A=0x65` → 101 | кПа |
 | 42 | Напруга модуля керування | 2 (A,B) | `((A*256)+B)/1000` | `30 D4` → 12.5 | in |
 | 46 | Температура навколишня (AMB) | 1 (A) | `A-40` | `A=0x4A` → 34°C | °C |
@@ -179,7 +181,7 @@ example: `01 33` → біти `00` + `0x133` → **P0133** (повільний �
 
 ## 4. LIN-bus - master/slave, checksum, TJA1020
 
-**LIN** (Local Interconnect Network, ISO 17987) - дешева однодротова підbus:
+**LIN** (Local Interconnect Network, ISO 17987) - cheap single-wire sub-bus:
 один **master** (зазвичай BCM/блок комфорту) опитує до 16 **slave**
 (кнопки дверей, мотори склопідйомників, клімат-заслінки, датчики дощу).
 ESP32 виступає або **слухачем-логером**, або **master** on стенді
@@ -370,7 +372,7 @@ ID + check лічильника монотонності (анти-replay on с�
 | Зворотний діод | protection from переполюсовки | SS34 Schottky (падіння 0.4V) |
 | Buck | Вхід 7-40V+, вихід 5V 1A, AEC-практика | MP1584EN, LM2596HV (HV-версія!), XL1509-5 |
 | LDO 3.3V | Після buck, чисті 3.3V for ESP32/RF | AMS1117-3.3 (with запасом) / ME6211 |
-| Фільтр | LC on вході buck (100 мкГн + 100 мкФ) | Проти кидків startера |
+| Filter | LC at buck input (100 uH + 100 uF) | Against starter cranking dips |
 | Детект запалювання | Дільник + стабілітрон 3.6V on GPIO | 12V→2.2V on GPIO34 (тільки вхід!) |
 
 > Вимірювання: сплячий ESP32-логер має брати <5 мА from АКБ (deep-sleep +
@@ -853,4 +855,4 @@ def tpms_handle(pkt_id, press_raw, temp_raw):
 - [17-GNSS-RTK](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/17-GNSS-RTK.md) - GNSS-трекер до автомобільного логера
 - [23-Marine-Time](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/23-Marine-Time.md) - сусідня нота (NMEA2000/CAN 250 кбіт, спільний TWAI-досвід)
 - [21-Motion-Control](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/21-Motion-Control.md) - керування моторами/актуаторами (продовження LIN-тематики)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) - ланцюги живлення, buck, TVS, protection
+- [EN/02-Power-Supply/01-Power-Rails.en] - ланцюги живлення, buck, TVS, protection

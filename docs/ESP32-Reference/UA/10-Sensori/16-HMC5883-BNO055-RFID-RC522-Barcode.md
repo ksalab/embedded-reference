@@ -4,6 +4,7 @@ title: QMC5883L компас, BNO055 9-DOF, RFID-RC522 міст, IR VS1838, ск
 tags: [esp32, sensor, qmc5883l, hmc5883l, compass, bno055, mpu9250, rfid, rc522, vs1838, barcode, gm65, i2c, spi, uart]
 category: Sensori
 date-created: 2026-09-27
+date: 2026-09-27
 ---
 
 # QMC5883L компас, BNO055 9-DOF, RFID-RC522 міст, IR VS1838, сканер GM65

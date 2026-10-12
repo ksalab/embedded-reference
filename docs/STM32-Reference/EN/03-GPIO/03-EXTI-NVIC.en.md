@@ -220,9 +220,9 @@ Brightness and motor speed control go through timers in pulse-width modulation m
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [GPIO modes](../../../../STM32-Reference/UA/03-GPIO/01-GPIO-rezhimi.md)
-- [Alternate function mapping](../../../../STM32-Reference/UA/03-GPIO/02-AF-maping.md)
+- [ GPIO modes]
+- [ Alternate function mapping]
 - [F0/F1 classics](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md)
 - [HAL and LL layers](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)
-- [ST-Link flashing](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md)
-- [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
+- [ ST-Link flashing]
+- [ Chip comparison]

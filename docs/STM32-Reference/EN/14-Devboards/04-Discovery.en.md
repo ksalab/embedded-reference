@@ -198,27 +198,27 @@ flowchart TB
 
 for батарейного вузла екран гасять між показами. Підсвітку керують широтно-імпульсною модуляцією for економії.
 
-## typical errors
+## Common issues
 
-| # | error | Чому погано | how правильно |
-| --- | --- | --- | --- |
-| 1 | Драйвери від іншої ревізії | Інші адреси and екран білий | Брати пакет саме під свою плату |
-| 2 | Кадр у внутрішній пам'яті | not влазить and падає | Буфер у зовнішній пам'яті |
-| 3 | Опитування датчика in циклі без пауз | Шина забита, графіка гальмує | Таймер кожні 20 мс |
-| 4 | Гучність on максимум одразу | Спотворення and переляк | Починати with малої and додавати |
-| 5 | Перенос коду on свою плату без змін | Адреси and піни інші | Переписати рівень плати під свою схему |
-| 6 | Стерта заводська прошивка | Немає that показати швидко | Злити образ перед своєю заливкою |
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Drivers from another revision | Different addresses and white screen | Take the package for your own board |
+| Frame in internal memory | Does not fit and crashes | Buffer in external memory |
+| Polling the sensor in a loop without pauses | Bus clogged, graphics slow | Timer every 20 ms |
+| Volume at maximum at once | Distortion and fright | Start low and add up |
+| Moving code to your board unchanged | Addresses and pins differ | Rewrite the board layer for your schematic |
+| Erased factory firmware | Nothing to show quickly | Dump the image before your own flashing |
 
-## official джерела
+## Official sources
 
-- [Демо-плата with контролером F429 (ST)](https://www.st.com/en/evaluation-tools/32f429idiscovery.html) - схема, дисплей and приклади.
-- [Пакет драйверів for демо-плат (ST)](https://www.st.com/en/embedded-software/stm32cubef4.html) - драйвери екрана, звуку and датчиків.
-- [Керівництво швидкого старту демо (ST)](https://www.st.com/resource/en/user_manual/um1670-discovery-kit-with-stm32f429zi-mcu-stmicroelectronics.pdf) - перше ввімкнення and режими.
+- [Demo board with F429 controller (ST)](https://www.st.com/en/evaluation-tools/32f429idiscovery.html) - schematic, display and examples.
+- [Driver package for demo boards (ST)](https://www.st.com/en/embedded-software/stm32cubef4.html) - display, audio and sensor drivers.
+- [Demo quick-start manual (ST)](https://www.st.com/resource/en/user_manual/um1670-discovery-kit-with-stm32f429zi-mcu-stmicroelectronics.pdf) - first power-on and modes.
 
-## Див. також
+## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
 - [плати Nucleo](../../../../STM32-Reference/UA/14-Devboards/03-Nucleo.md)
 - [продуктивні F3 and F4](../../../../STM32-Reference/UA/01-Hardware/02-F3-F4.md)
 - [шина SPI](../../../../STM32-Reference/UA/04-Shini/02-SPI.md)
-- [огляд плат](../../../../STM32-Reference/UA/00-Start/04-Devkit-plati.md)
+- [огляд плат]

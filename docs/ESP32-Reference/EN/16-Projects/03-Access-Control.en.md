@@ -49,13 +49,13 @@ Requirements:
 
 | Component | Reference note | Price, approx. |
 | --- | --- | --- |
-| ESP32 DevKit (WROOM-32) | [DevKit](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md) | $6 |
+| ESP32 DevKit (WROOM-32) | [ DevKit] | $6 |
 | RC522 module 13.56 MHz | [RC522](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md) | $2 |
 | Relay module 5V (opto, LOW trigger) | [Relay](../../../../ESP32-Reference/UA/11-Vivid/03-NeoPixel-Servo-Rele-MOSFET.md) | $2 |
 | Electric lock 12V + 12V PSU 2A | [Power](../../../../ESP32-Reference/UA/11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.md) | $20 |
 | Diode 1N4007 parallel to lock | [Power](../../../../ESP32-Reference/UA/11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.md) | $0.2 |
 | Buzzer + red/green LED | [Sound](../../../../ESP32-Reference/UA/11-Vivid/04-L298N-TB6612-A4988-Buzzer.md) | $1 |
-| Exit button (NO) | [GPIO](../../../../ESP32-Reference/UA/03-GPIO/04-Pererivannya-PWM.md) | $1 |
+| Exit button (NO) | [ GPIO] | $1 |
 | 5V 2A PSU for ESP32+relay | [LDO](../../../../ESP32-Reference/UA/02-Zhivlennya/02-LDO-DC-DC.md) | $5 |
 | Enclosure + UTP cable to reader | [Assembly checklists](../../../../ESP32-Reference/UA/99-Dodatki/03-Cheklisti-montazhu.md) | $4 |
 

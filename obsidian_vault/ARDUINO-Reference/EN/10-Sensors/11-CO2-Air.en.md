@@ -145,7 +145,7 @@ The BME680 gas function is simplified to a stub: full driver (heater profile plu
 - [[EN/10-Sensors/02-BME280.en|BME280 sensor]] - younger brother with no gas.
 - [[EN/10-Sensors/06-MQ-Gas.en|MQ gas sensors]] - why MQ is not for CO2.
 - [[EN/04-Interfaces/01-UART.en|UART bus]] - SoftwareSerial vs hardware.
-- [[EN/16-Proekti/01-Weather-Station.en|weather station]] - where to fit the monitor.
+- [[EN/16-Projects/01-Weather-Station.en|weather station]] - where to fit the monitor.
 - [[EN/11-Vivid/03-NeoPixel-Servo-Relay.en|power and relay]] - fan control.
 
 ## Official sources

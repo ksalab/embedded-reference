@@ -152,5 +152,5 @@ flowchart TB
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
-- [Environment choice](../../../../STM32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ Chip comparison]
+- [ Environment choice]

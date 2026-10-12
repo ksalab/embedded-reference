@@ -165,7 +165,7 @@ Honestly: MicroPython on H7 is for tests and scripts, not 480-MHz production. Di
 - [[01-Hardware/08-F7-Bridge.en | F7 bridge]] - stepping stone to H7.
 - [[01-Hardware/04-H5-H7.en | H5/H7 overview]] - place in the lineup.
 - [[07-Timers/01-GPTIM-ADTIM.en | STM32 timers]] - triggers and DMA.
-- [[08-Memory/02-Zovnishni-Loadery.en | External loaders]] - XIP from QSPI.
+- [[EN/08-Memory/02-External-Loaders.en| External loaders]] - XIP from QSPI.
 - [[Home.en | Main map]] - full navigation.
 
 ## Official sources

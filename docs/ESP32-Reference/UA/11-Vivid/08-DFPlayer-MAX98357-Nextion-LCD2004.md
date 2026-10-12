@@ -4,6 +4,7 @@ title: DFPlayer Mini, MAX98357A, Nextion, LCD2004 - звук і HMI
 tags: [esp32, vivid, dfplayer, max98357, i2s, nextion, hmi, uart, lcd2004, pcf8574, audio]
 category: Vivid
 date-created: 2026-09-27
+date: 2026-09-27
 ---
 
 # DFPlayer Mini, MAX98357A, Nextion, LCD2004 - звук і HMI

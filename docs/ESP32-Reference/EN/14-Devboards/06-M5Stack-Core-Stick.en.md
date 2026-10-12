@@ -147,7 +147,7 @@ ESP-IDF: supported via M5Unified. MicroPython: UIFlow is MicroPython with a wrap
 
 ## Power and flashing schematic
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devboard-m5stack.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devboard-m5stack.png)
 
 ```text
 [USB-C 5V] ──► PMU (IP5306/AXP192) ──► заряд батареї + 5V/3.3V шини

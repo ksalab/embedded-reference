@@ -147,6 +147,6 @@ if (mount_fs() != FS_OK) {
 
 - [Home](../../../../STM32-Reference/Home.md)
 - [internal memory](../../../../STM32-Reference/UA/08-Pamyat/01-Flash-OTP-EEPROM.md)
-- [external loaders](../../../../STM32-Reference/UA/08-Pamyat/02-Zovnishni-Loadery.md)
+- [external loaders]
 - [memory cards](../../../../STM32-Reference/UA/04-Shini/06-SDMMC-QUADSPI.md)
 - [data logger](../../../../STM32-Reference/UA/16-Proekti/05-USB-Logger.md)

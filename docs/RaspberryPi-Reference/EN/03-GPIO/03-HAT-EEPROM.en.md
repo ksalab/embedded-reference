@@ -136,7 +136,7 @@ if __name__ == '__main__':
 - [pin header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md) - pin base.
 - [PWM and interrupts] - HAT signals.
 - [PoE power supply](../../../../RaspberryPi-Reference/UA/02-Zhivlennya/02-PoE-HAT.md) - PoE-HAT boards.
-- [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md) - overlays in config.txt.
+- [OS setup] - overlays in config.txt.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## 9.1 Own HAT in a weekend

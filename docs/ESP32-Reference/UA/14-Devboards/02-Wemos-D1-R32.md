@@ -4,6 +4,7 @@ title: WeMos D1 R32 (ESP32) - форм-фактор Arduino UNO, сумісні�
 tags: [esp32, devboards, wemos, d1-r32, arduino-uno, shields]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # WeMos D1 R32 - форм-фактор UNO
@@ -119,7 +120,7 @@ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 write_flash -z 0x1000 
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![](../../../../ESP32-Reference/assets/img/devboard-wemos-d1r32.png)
+> [!example] Фото/схема:![](../../../../ESP32-Reference/assets/img/devboard-wemos-d1r32.png)
 
 ```text
 [DC 7.5V (краще) / USB 5V] ──► стаб. 5V ──► AMS1117 ──► 3.3V (ESP32)

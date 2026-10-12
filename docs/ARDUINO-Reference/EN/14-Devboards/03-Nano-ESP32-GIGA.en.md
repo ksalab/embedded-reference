@@ -134,7 +134,7 @@ Feed both boards 5V (USB-C / VIN): built-in bucks give 3.3V. Smooth WiFi peaks w
 - BLE on Nano ESP32 plus WiFi at once, watch the heap;
 - Arduino Cloud wants board registration, the free plan stays limited.
 
-## 8. Common Issues
+## 8. Common issues
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -153,7 +153,7 @@ Feed both boards 5V (USB-C / VIN): built-in bucks give 3.3V. Smooth WiFi peaks w
 - [IDE and CLI environment](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md) - cores and board managers.
 - [HTTP and web client](../../../../ARDUINO-Reference/UA/15-Protokoli/03-HTTP-Web.md) - way to the cloud.
 
-## Official Sources
+## Official sources
 
 - [Nano ESP32 (Arduino docs)](https://docs.arduino.cc/hardware/nano-esp32/) - pins, S3, MicroPython.
 - [GIGA R1 WiFi (Arduino docs)](https://docs.arduino.cc/hardware/giga-r1-wifi/) - H747, display, camera.

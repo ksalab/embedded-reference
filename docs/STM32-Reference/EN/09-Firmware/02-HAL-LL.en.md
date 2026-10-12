@@ -195,5 +195,5 @@ GPIOC->ODR ^= GPIO_ODR_OD13;
 
 - [Home](../../../../STM32-Reference/Home.md)
 - [CubeIDE](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
-- [ST-Link](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md)
-- [environment choice](../../../../STM32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ST-Link]
+- [environment choice]

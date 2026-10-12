@@ -6,6 +6,7 @@ category: Moduli
 lang: en
 date-created: 2026-09-30
 date: 2026-10-08
+original: 12-Moduli-zvyazku/26-SIM-Power.md
 ---
 
 # SIM-карти та живлення стільникових модулів - холдери, eSIM, TX-бурсти, суперкап
@@ -14,7 +15,7 @@ date: 2026-10-08
 
 half «мертвих» GSM-проєктів - this not прошивка, but дві залізні теми: SIM-карта (формат, PIN, холдер, детект) and живлення (піки 2-3A in TX-бурсті, які not тримає жоден LDO DevKit-плати). Нота збирає обидві in одному місці how фундамент під практику.
 
-База: перший GSM - [03-SIM800L-GPS](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/03-SIM800L-GPS.md), 4G - [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/07-SIM7600-W5500-MCP2515.md), Cat-1 - [18-Cellular-LoRa-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/18-Cellular-LoRa-2.md), NB-IoT - [09-Cellular-NBIoT-UARTLoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/09-Cellular-NBIoT-UARTLoRa.md), UART - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), живлення - [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), protection - [04-LDO-Buck-XL4015-Protect](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/04-LDO-Buck-XL4015-Protect.md), start - [Home](../../../../ESP32-Reference/Home.md).
+База: перший GSM - [03-SIM800L-GPS](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/03-SIM800L-GPS.md), 4G - [07-SIM7600-W5500-MCP2515](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/07-SIM7600-W5500-MCP2515.md), Cat-1 - [18-Cellular-LoRa-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/18-Cellular-LoRa-2.md), NB-IoT - [09-Cellular-NBIoT-UARTLoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/09-Cellular-NBIoT-UARTLoRa.md), UART - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), живлення - [EN/02-Power-Supply/01-Power-Rails.en], protection - [04-LDO-Buck-XL4015-Protect](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/04-LDO-Buck-XL4015-Protect.md), start - [Home](../../../../ESP32-Reference/Home.md).
 
 > [!danger] Два вбивці стільникових модулів
 >
@@ -380,6 +381,16 @@ print(atq("AT+CREG?"))   # 0,1 або 0,5
 | 11 | APN with великої літери | Мережа відхиляє PDP-контекст | Буквально with таблиці 6.2 ноти 03 (`kyivstar`, `internet`) |
 | 12 | Вимір піків кліщами/on око | not видно 577 мкс слотів | Шунт 0.05 Ом + скоп with тригером, розділ 7 |
 
+## Common issues
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Reboots at CREG attach | 2 A TX burst sags 3V3 DevKit rail | Dedicated 4.0 V buck plus 1000 uF, measure with shunt and scope |
+| Blue SIM800 board dead | 5 V applied to 4 V-only RF board | Feed 4.0 V only; red EVB alone has its own regulator |
+| SIM PIN loop after reboot | PIN enabled on IoT card | Disable once with AT+CLCK SC,0 during commissioning |
+| SIM not inserted errors | Long SIM_DATA near VBAT, no ESD guard | Route under 30 mm, TVS at holder, no power neighbours |
+| Supercap trips protection | Inrush without charge resistor | 10 Ohm 1 W in series, verify charge curve |
+| Peaks invisible on meter | 577 us slots need scope, not DMM | 0.05 Ohm shunt plus triggered scope capture |
 ## Official sources
 
 - [SIM800 Hardware Design V1.09 (SIMCom)](https://www.simcom.com/product/SIM800.html) - VBAT 3.4-4.4V, піки 2A, SIM-інтерфейс, ESD.
@@ -396,7 +407,7 @@ print(atq("AT+CREG?"))   # 0,1 або 0,5
 - [Cat-1 + LoRa-2](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/18-Cellular-LoRa-2.md)
 - [GNSS-RTK](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/17-GNSS-RTK.md)
 - [GPS-трекер](../../../../ESP32-Reference/UA/16-Proekti/02-GPS-Tracker.md)
-- [Ланцюги живлення](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md)
+- [Ланцюги живлення]
 - [LDO/buck/protection](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/04-LDO-Buck-XL4015-Protect.md)
 - [Buck/Boost/Solar](../../../../ESP32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost-Solar.md)
 - [Прилади](../../../../ESP32-Reference/UA/17-Lab/01-Instruments.md)

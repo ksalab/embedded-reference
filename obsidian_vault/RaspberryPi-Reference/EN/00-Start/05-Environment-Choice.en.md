@@ -141,7 +141,7 @@ Backup check:
 ## 9. Related notes
 
 - [[EN/09-Firmware/01-Imager-Headless.en|Imager flashing]] - first flash step by step.
-- [[EN/09-Firmware/03-OS-Nalashtuvannya.en|OS setup]] - system after start.
+- [[EN/09-Firmware/03-OS-Setup.en|OS setup]] - system after start.
 - [[EN/14-Devboards/03-Pico-W-Family.en|Pico family]] - microcontroller boards.
 - [[EN/03-GPIO/01-Header-Gpiozero.en|pin header and gpiozero]] - first code.
 - [[EN/00-Start/03-Board-Comparison.en|board comparison]] - hardware for software.

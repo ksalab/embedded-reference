@@ -14,7 +14,7 @@ date: 2026-10-08
 > [!info] Codec ≠ just a DAC
 > A codec (ES8388/AC101/WM8978) is ADC + DAC: microphone/line to input, headphones/speaker to output, controlled over I2C. PCM5102A is DAC only (output), but without MCLK and with linear output for an amplifier.
 
-Audio base: [I2S](../../../../ESP32-Reference/EN/04-Interfaces/04-I2S.en.md), simpler solution [DFPlayer/MAX98357A](../../../../ESP32-Reference/EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md), start [Home](../../../../ESP32-Reference/EN/Home.en.md).
+Audio base: [I2S](../../../../ESP32-Reference/UA/04-Shini/04-I2S.md), simpler solution [DFPlayer/MAX98357A](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md), start [Home](../../../../ESP32-Reference/Home.md).
 
 ## Purpose
 
@@ -254,7 +254,7 @@ while True:
 | PCM5102A silent | expecting I2C/MCLK that do not exist | normal: only BCLK/LRCK/DIN; check FMT=GND (I2S mode) |
 | Clicking on start / stop | amp enabled before DAC | first `es8388_ctrl_state(START)`, then `PA_CTRL=1`; mute ramp |
 | Bass crackle | power sag (4 Ω speaker!) | separate 5 V / 2 A supply for amp; 470+ µF near supply |
-| WAV does not play | MP3 renamed to .wav; 8-bit / mono without conversion | only PCM 16-bit; convert: `ffmpeg -i in.mp3 -ar 44100 -ac 2 out.wav` |
+| WAV does not play | MP3 renamed to.wav; 8-bit / mono without conversion | only PCM 16-bit; convert: `ffmpeg -i in.mp3 -ar 44100 -ac 2 out.wav` |
 | Recording noisy (WiFi background) | analog mic traces near antenna | short screened mic wires; AGC/ALC in registers; separate antenna |
 | Volume "0 or 100" | writing to wrong volume register | ES8388: LOUT1/ROUT1 (0x2E/0x2F) for headphones, DAC-volume separate |
 
@@ -267,10 +267,10 @@ while True:
 
 ## See also
 
-- [Home](../../../../ESP32-Reference/EN/Home.en.md)
-- [I2S](../../../../ESP32-Reference/EN/04-Interfaces/04-I2S.en.md) - signals, DMA, microphone INMP441 + MAX98357A
-- [DFPlayer/MAX98357A](../../../../ESP32-Reference/EN/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md) - sound without codecs
-- [BLE Mesh / A2DP / HID](../../../../ESP32-Reference/EN/05-Radio/05-BLE-Mesh-A2DP-HID.en.md) - A2DP sink to same DAC
-- [Matter/Thread/Zigbee](../../../../ESP32-Reference/EN/15-Protocols/09-Matter-Thread-Zigbee.en.md) - voice devices in ecosystems
-- [SD/SDIO](../../../../ESP32-Reference/EN/04-Interfaces/07-SD-SDIO.en.md) - source for WAV/MP3
-- [I2C](../../../../ESP32-Reference/EN/04-Interfaces/03-I2C.en.md) - address scanner, pull-ups for codec config
+- [Home](../../../../ESP32-Reference/Home.md)
+- [I2S](../../../../ESP32-Reference/UA/04-Shini/04-I2S.md) - signals, DMA, microphone INMP441 + MAX98357A
+- [DFPlayer/MAX98357A](../../../../ESP32-Reference/UA/11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.md) - sound without codecs
+- [BLE Mesh / A2DP / HID](../../../../ESP32-Reference/UA/05-Radio/05-BLE-Mesh-A2DP-HID.md) - A2DP sink to same DAC
+- [Matter/Thread/Zigbee](../../../../ESP32-Reference/UA/15-Protokoli/09-Matter-Thread-Zigbee.md) - voice devices in ecosystems
+- [SD/SDIO](../../../../ESP32-Reference/UA/04-Shini/07-SD-SDIO.md) - source for WAV/MP3
+- [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md) - address scanner, pull-ups for codec config

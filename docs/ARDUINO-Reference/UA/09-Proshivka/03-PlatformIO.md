@@ -1,5 +1,5 @@
 ---
-title: PlatformIO : збірка і прошивка Arduino
+title: PlatformIO: збірка і прошивка Arduino
 description: Пояснює PlatformIO для Arduino: platformio.ini, lib_deps, build/upload/monitor; показує конфіги, команди і таблиці.
 tags: [arduino, platformio, atmelavr, cli, ini]
 category: Proshivka
@@ -7,7 +7,7 @@ date-created: 2026-10-07
 date: 2026-10-07
 ---
 
-# PlatformIO : збірка і прошивка Arduino
+# PlatformIO: збірка і прошивка Arduino
 
 ![](../../../../ARDUINO-Reference/assets/img/platformio-flow-scheme.png)
 *Рис. Схема збирання через PlatformIO: ini -> ядро -> компілятор -> прошивка.*
@@ -40,7 +40,7 @@ PlatformIO зберігає проект у папці з файлом platformi
 
 ## 3. Структура проекту
 
-Папка проекту має мінімум три елементи: platformio.ini з описом платформи та плати; папка src з файлом .ino або .cpp; папка lib якщо є локальні бібліотеки. Прошивка не потребує додаткових файлів якщо скетч самодостатній.
+Папка проекту має мінімум три елементи: platformio.ini з описом платформи та плати; папка src з файлом.ino або.cpp; папка lib якщо є локальні бібліотеки. Прошивка не потребує додаткових файлів якщо скетч самодостатній.
 
 ```text
 my_project/
@@ -51,7 +51,7 @@ my_project/
     MyLib/
 ```
 
-Код може використовувати розширення .ino або .cpp. При .ino PlatformIO додає прототипи автоматично як класичний редактор. При .cpp треба оголосити функції до використання. Для простоти в ноті беремо .ino з розширеним скетчем.
+Код може використовувати розширення.ino або.cpp. При.ino PlatformIO додає прототипи автоматично як класичний редактор. При.cpp треба оголосити функції до використання. Для простоти в ноті беремо.ino з розширеним скетчем.
 
 ## 4. Налаштування ini
 
@@ -71,7 +71,7 @@ lib_deps =
 
 ## 5. Скетч Arduino
 
-Скетч використовує стандартний шаблон setup і loop з виведенням у Serial і керуванням світлодіодом. Код сумісний з класичним Arduino та PlatformIO без змін якщо використано .ino. При .cpp треба додати #include <Arduino.h>.
+Скетч використовує стандартний шаблон setup і loop з виведенням у Serial і керуванням світлодіодом. Код сумісний з класичним Arduino та PlatformIO без змін якщо використано.ino. При.cpp треба додати #include <Arduino.h>.
 
 ```cpp
 #include <Arduino.h>
@@ -135,7 +135,7 @@ flowchart LR
 | 2 | framework пропущено | Не підключається Arduino API і функції отсутствують | Додати framework = arduino |
 | 3 | lib_deps без версії | На іншому компʼютері інша версія бібліотеки | Вказати @версія в ini |
 | 4 | Порт зайнятий монітором | Прошивка не може відкриті порт для запису | Закрити монітор перед upload |
-| 5 | src без .ino або .cpp | PlatformIO не знаходить точку входу | Розмістити файл у папці src |
+| 5 | src без.ino або.cpp | PlatformIO не знаходить точку входу | Розмістити файл у папці src |
 | 6 | upload_port не вказано | Прошивка не знає куди передавати файл | Вказати порт або залишити автоматично |
 | 7 | Швидкість монітора невідповідна | У моніторі сміття замість даних | Встановити monitor_speed як у Serial.begin |
 
@@ -143,11 +143,11 @@ flowchart LR
 
 ## 9. Офіційні джерела
 
-- [PlatformIO quickstart](https://docs.platformio.org/en/latest/core/quickstart.html) : створення проекту і перша збірка.
-- [PlatformIO installation](https://docs.platformio.org/en/latest/installation.html) : встановлення CLI та розширення.
-- [Project configuration](https://docs.platformio.org/en/latest/projectconf/index.html) : опис ini параметрів board framework lib_deps.
-- [Library manager](https://docs.platformio.org/en/latest/librarymanager/index.html) : встановлення бібліотек з версіями.
-- [Platformio.org/docs](https://docs.platformio.org/en/latest/) : корінь документації з розділами для AVR.
+- [PlatformIO quickstart](https://docs.platformio.org/en/latest/core/quickstart.html): створення проекту і перша збірка.
+- [PlatformIO installation](https://docs.platformio.org/en/latest/installation.html): встановлення CLI та розширення.
+- [Project configuration](https://docs.platformio.org/en/latest/projectconf/index.html): опис ini параметрів board framework lib_deps.
+- [Library manager](https://docs.platformio.org/en/latest/librarymanager/index.html): встановлення бібліотек з версіями.
+- [Platformio.org/docs](https://docs.platformio.org/en/latest/): корінь документації з розділами для AVR.
 
 ## Див. також
 
@@ -155,4 +155,4 @@ flowchart LR
 - [Uno-класика](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
 - [компакт і ноги](../../../../ARDUINO-Reference/UA/01-Hardware/02-Nano-Mega.md)
 - [завантажувач і avrdude](../../../../ARDUINO-Reference/UA/09-Proshivka/02-Bootloader-AVRDUDE.md)
-- [IDE і CLI : збірка скетчів](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md)
+- [IDE і CLI: збірка скетчів](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md)

@@ -14,7 +14,7 @@ date: 2026-10-08
 > [!info] Codec ≠ just a DAC
 > A codec (ES8388/AC101/WM8978) is ADC + DAC: microphone/line to input, headphones/speaker to output, controlled over I2C. PCM5102A is DAC only (output), but without MCLK and with linear output for an amplifier.
 
-Audio base: [[04-Interfaces/04-I2S.en.md|I2S]], simpler solution [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|DFPlayer/MAX98357A]], start [[Home.en.md|Home]].
+Audio base: [[04-Interfaces/04-I2S.en|I2S]], simpler solution [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|DFPlayer/MAX98357A]], start [[Home.en|Home]].
 
 ## Purpose
 
@@ -267,10 +267,10 @@ while True:
 
 ## See also
 
-- [[Home.en.md|Home]]
-- [[04-Interfaces/04-I2S.en.md|I2S]] - signals, DMA, microphone INMP441 + MAX98357A
-- [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en.md|DFPlayer/MAX98357A]] - sound without codecs
-- [[05-Radio/05-BLE-Mesh-A2DP-HID.en.md|BLE Mesh / A2DP / HID]] - A2DP sink to same DAC
-- [[15-Protocols/09-Matter-Thread-Zigbee.en.md|Matter/Thread/Zigbee]] - voice devices in ecosystems
-- [[04-Interfaces/07-SD-SDIO.en.md|SD/SDIO]] - source for WAV/MP3
-- [[04-Interfaces/03-I2C.en.md|I2C]] - address scanner, pull-ups for codec config
+- [[Home.en|Home]]
+- [[04-Interfaces/04-I2S.en|I2S]] - signals, DMA, microphone INMP441 + MAX98357A
+- [[11-Vivid/08-DFPlayer-MAX98357-Nextion-LCD2004.en|DFPlayer/MAX98357A]] - sound without codecs
+- [[05-Radio/05-BLE-Mesh-A2DP-HID.en|BLE Mesh / A2DP / HID]] - A2DP sink to same DAC
+- [[15-Protocols/09-Matter-Thread-Zigbee.en|Matter/Thread/Zigbee]] - voice devices in ecosystems
+- [[04-Interfaces/07-SD-SDIO.en|SD/SDIO]] - source for WAV/MP3
+- [[04-Interfaces/03-I2C.en|I2C]] - address scanner, pull-ups for codec config

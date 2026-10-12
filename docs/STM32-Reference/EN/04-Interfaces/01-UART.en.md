@@ -354,7 +354,7 @@ flowchart TB
     POLL --> ERR
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Fix |
 | --- | --- | --- | --- |
@@ -366,7 +366,7 @@ flowchart TB
 | 6 | printf sends straight from interrupt | Millisecond block breaks real time | Ring buffer plus TX via DMA |
 | 7 | No common ground with partner | Floating zero gives garbage instead of bytes | Join grounds or move to RS485 |
 
-## Official Sources
+## Official sources
 
 - [USART manual in RM0008 for STM32F1 (ST)](https://www.st.com/resource/en/reference_manual/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf) - frames, BRR, ORE and FE flags.
 - [USART manual in RM0444 for STM32G0 (ST)](https://www.st.com/resource/en/reference_manual/rm0444-stm32g0x1-advanced-armbased-32bit-mcus-stmicroelectronics.pdf) - FIFO, DEAT and DEDT, reset via ICR.
@@ -378,5 +378,5 @@ flowchart TB
 - [I2C bus](../../../../STM32-Reference/UA/04-Shini/03-I2C.md)
 - [CubeMX setup](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
 - [HAL and LL layers](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)
-- [Alternate function mapping](../../../../STM32-Reference/UA/03-GPIO/02-AF-maping.md)
-- [Flashing via ST-Link](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md)
+- [ Alternate function mapping]
+- [ Flashing via ST-Link]

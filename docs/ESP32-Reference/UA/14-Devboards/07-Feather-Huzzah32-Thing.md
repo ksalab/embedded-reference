@@ -4,6 +4,7 @@ title: Adafruit Feather HUZZAH32 і SparkFun ESP32 Thing - LiPo та Qwiic
 tags: [esp32, devboards, feather, huzzah32, sparkfun, thing, lipo, qwiic, stemma]
 category: Devboards
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Feather HUZZAH32 / Thing
@@ -138,7 +139,7 @@ ESP-IDF: цілі `esp32`. CircuitPython на Feather HUZZAH32 підтриму�
 
 ## Схема живлення та прошивки
 
-> [!example] Фото/схема: ![](../../../../ESP32-Reference/assets/img/devboard-feather-huzzah32.png)
+> [!example] Фото/схема:![](../../../../ESP32-Reference/assets/img/devboard-feather-huzzah32.png)
 
 ```text
 [USB 5V] ─┬─► 5V шина ──► AP2112 ──► 3.3V (плата + Wings/Qwiic ≤400 мА)

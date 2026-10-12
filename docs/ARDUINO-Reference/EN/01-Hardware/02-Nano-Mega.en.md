@@ -206,8 +206,8 @@ Grounds of the board and the supply join together, otherwise the control signal 
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [board comparison](../../../../ARDUINO-Reference/UA/00-Start/03-Porivnyannya-plat.md)
-- [board overview](../../../../ARDUINO-Reference/UA/00-Start/04-Devkit-plati.md)
+- [board comparison]
+- [board overview]
 - [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
 - [ARM boards](../../../../ARDUINO-Reference/UA/01-Hardware/03-Due-Zero-ARM.md)
 - [environment and CLI](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md)

@@ -115,7 +115,7 @@ for (int i = 0; i < 3; i++) {
 | Power supply | Relay from mains, not battery |
 | Delay | Every hop adds seconds |
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -127,7 +127,7 @@ for (int i = 0; i < 3; i++) {
 | 6 | Duty-cycle ignored | Outside the law | Pauses per band |
 | 7 | One-way test | Reverse is worse | Both directions! |
 
-## Official Sources
+## Official sources
 
 - [SX126x datasheet (Semtech)](https://www.semtech.com/products/wireless-rf/lora-connect/sx1262) - registers, parameters, CAD.
 - [AN1200 LoRa modulation (Semtech)](https://www.semtech.com/design-support) - SF, sensitivity, budget.

@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. One radio - three roles: router client, access point, BLE beacon; the antenna decides half of it.*
 
 > [!tip] What this note is
-> WiFi and BT are already on the board: no dongles needed for 90 % of tasks. Modes, speeds, coexistence and antennas. Node network: [OS setup], cloud: queue protocols 4.
+> WiFi and BT are already on the board: no dongles needed for 90% of tasks. Modes, speeds, coexistence and antennas. Node network: [OS setup], cloud: queue protocols 4.
 
 ## 1. Goal
 

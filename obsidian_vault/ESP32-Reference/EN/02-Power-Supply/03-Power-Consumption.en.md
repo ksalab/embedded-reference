@@ -32,7 +32,7 @@ ESP32 power consumption - mode table; INA219 measurement; ESP32-to-module wiring
 | Hibernation | 2.5 uA | off | RTC only |
 
 > [!info] ADC2 and modem-sleep
-> In modem-sleep ADC2 is free - you can measure. In active with WiFi - only ADC1. See [[EN/03-GPIO/01-GPIO-oglyad.en]], [[EN/01-Hardware/01-ESP32-Classic.en]].
+> In modem-sleep ADC2 is free - you can measure. In active with WiFi - only ADC1. See [[EN/03-GPIO/01-GPIO-Overview.en]], [[EN/01-Hardware/01-ESP32-Classic.en]].
 
 ## INA219 measurement
 
@@ -202,8 +202,8 @@ flowchart TB
 
 - [[EN/Home.en]]
 - [[EN/00-Start/03-Chip-Comparison.en]]
-- [[EN/03-GPIO/01-GPIO-oglyad.en]]
-- [[EN/03-GPIO/02-Strapping-pini.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/03-GPIO/02-Strapping-Pins.en]]
 - [[EN/02-Power-Supply/01-Power-Rails.en]]
 - [[EN/02-LDO-DC-DC.en]]
 - [[EN/04-Batteries-TP4056.en]]

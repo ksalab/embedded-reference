@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. LVGL stack: widgets → styles → events → flush to display; buffers in PSRAM, logic in tasks.*
 
 > [!tip] What this note is
-> Deep dive beyond basic LVGL overview: widgets by hand (without SquareLine), styles and themes, events, memory for screens. Displays: [[11-Vivid/02-TFT-LCD-Epaper.en.md|TFT and LCD]], SquareLine start: [[11-Vivid/12-LVGL-SquareLine.en.md|LVGL and SquareLine]].
+> Deep dive beyond basic LVGL overview: widgets by hand (without SquareLine), styles and themes, events, memory for screens. Displays: [[11-Vivid/02-TFT-LCD-Epaper.en|TFT and LCD]], SquareLine start: [[11-Vivid/12-LVGL-SquareLine.en|LVGL and SquareLine]].
 
 ## 1. Purpose
 
@@ -171,11 +171,11 @@ Double buffer - smoothness without tearing, cost ×2. DMA-flush - without CPU in
 
 ## 10. Related notes
 
-- [[11-Vivid/12-LVGL-SquareLine.en.md|LVGL and SquareLine]] - start with mouse.
-- [[11-Vivid/02-TFT-LCD-Epaper.en.md|TFT and LCD]] - display hardware.
-- [[01-Hardware/03-ESP32-S3.en.md|S3 chip]] - PSRAM for buffers.
-- [[10-Sensors/20-Bio-IR-Temp.en.md|bio and IR temp]] - data for widgets.
-- [[Home.en.md|home map]] - full navigation.
+- [[11-Vivid/12-LVGL-SquareLine.en|LVGL and SquareLine]] - start with mouse.
+- [[11-Vivid/02-TFT-LCD-Epaper.en|TFT and LCD]] - display hardware.
+- [[01-Hardware/03-ESP32-S3.en|S3 chip]] - PSRAM for buffers.
+- [[10-Sensors/20-Bio-IR-Temp.en|bio and IR temp]] - data for widgets.
+- [[Home.en|home map]] - full navigation.
 
 ## 7.1 Output pinout (for developer)
 

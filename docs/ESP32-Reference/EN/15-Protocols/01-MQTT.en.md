@@ -18,7 +18,7 @@ Network overview: [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-Wi
 
 ## Purpose
 
-MQTT - lightweight publish/subscribe protocol for IoT: node does not hold direct connections with dozens of clients, but speaks with one broker. Broker distributes message subscriberам for топіками.
+MQTT - lightweight publish/subscribe protocol for IoT: node does not hold direct connections with dozens of clients, but speaks with one broker. Broker distributes messages to subscribers by topics.
 
 When to use MQTT:
 
@@ -29,8 +29,8 @@ When to use MQTT:
 
 When NOT to use:
 
-- передача файлів/OTA-прошивок - for цього HTTP(S), див. [02-HTTP-WebSocket](../../../../ESP32-Reference/UA/15-Protokoli/02-HTTP-WebSocket.md);
-- локальний discovery without serverа - for цього mDNS, див. [03-mDNS-NTP-TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md);
+- передача файлів/OTA-прошивок - for цього HTTP(S), див. [ 02-HTTP-WebSocket];
+- local discovery without a server - use mDNS for that, see [03-mDNS-NTP-TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md);
 - разове entry WiFi-облікових - for цього provisioning, див. [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md);
 - повний хмарний пайплайн with графіками - див. [05-Cloud-Pipeline](../../../../ESP32-Reference/UA/15-Protokoli/05-Cloud-Pipeline.md).
 
@@ -39,8 +39,8 @@ When NOT to use:
 | Параметр | Value for ESP32 | Note |
 | --- | --- | --- |
 | Бібліотеки | esp-mqtt (IDF), PubSubClient (Arduino), umqtt.simple/robust (MP) | API різне, логіка одна |
-| Broker | Mosquitto 2.x | portи 1883 (plain) / 8883 (TLS) |
-| Версія protocolу | MQTT 3.1.1 (скрізь), MQTT 5 частково in esp-mqtt | PubSubClient тільки 3.1.1 |
+| Broker | Mosquitto 2.x | ports 1883 (plain) / 8883 (TLS) |
+| Protocol version | MQTT 3.1.1 (everywhere), MQTT 5 partly in esp-mqtt | PubSubClient 3.1.1 only |
 | QoS | 0 / 1 / 2 (див. таблицю нижче) | PubSubClient публікує тільки QoS 0 |
 | Keepalive | 15-60 с | пінгує broker, ловить обрив |
 | LWT | топік `device/<id>/status` = `offline` | retained, спрацьовує at обриві |
@@ -50,7 +50,7 @@ When NOT to use:
 | Power supply | WiFi TX пік 500 мА | див. [ 01-Lancjugi-zhivlennya] |
 
 ![](../../../../ESP32-Reference/assets/img/mqtt-broker-lwt-scheme.png)
-*Fig. MQTT-топологія: вузли публікують телеметрію, broker роздає subscriberам, LWT повідомляє про відвал.*
+*Fig. MQTT topology: nodes publish telemetry, broker fans out to subscribers, LWT reports dropouts.*
 
 ### ASCII-схема
 
@@ -151,11 +151,11 @@ device/esp32-01/config         → конфіг з хмари (QoS 1, retain)
 device/esp32-01/fw             → тригер OTA (QoS 1, без retain)
 ```
 
-Заборони: пробіли and кирилиця in топіках, `#`/`+` тільки in підписках, глибина not більше 4-5 рівнів. ID вузла - MAC або flashй серійник with NVS, див. [01-Partitions-NVS](../../../../ESP32-Reference/UA/08-Pamyat/01-Partitions-NVS.md).
+Prohibitions: spaces and Cyrillic in topics, `#`/`+` only in subscriptions, depth no more than 4-5 levels. Node ID - MAC or flash serial with NVS, see [01-Partitions-NVS](../../../../ESP32-Reference/UA/08-Pamyat/01-Partitions-NVS.md).
 
 ## TLS: mqtts on port 8883
 
-on brokerі додати слухач:
+on the broker add a listener:
 
 ```conf
 listener 8883
@@ -325,7 +325,7 @@ while True:
 - [OTA](../../../../ESP32-Reference/UA/08-Pamyat/03-OTA.md) - тригер оновлення via топік `fw`
 - [NVS](../../../../ESP32-Reference/UA/08-Pamyat/01-Partitions-NVS.md) - зберігання ID вузла and MQTT-password
 - [FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md) - діагностика обривів
-- [HTTP/WebSocket](../../../../ESP32-Reference/UA/15-Protokoli/02-HTTP-WebSocket.md) - REST and дашборди
+- [ HTTP/WebSocket] - REST and дашборди
 - [mDNS/NTP/TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md) - час for TLS, локальні імена
 - [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md) - entry WiFi without reflashing
 - [Cloud-Pipeline](../../../../ESP32-Reference/UA/15-Protokoli/05-Cloud-Pipeline.md) - MQTT → Node-RED → InfluxDB → Grafana

@@ -5,6 +5,8 @@ tags: [esp32, secure-element, cryptography, authentication, i2c, spi]
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/25-Secure-Elements.md
 ---
 
 # Secure Elements - захищені елементи for ESP32
@@ -341,7 +343,7 @@ except ImportError:
 
 - [Home](../../../../ESP32-Reference/Home.md)
 - [04-Secure-Boot-Encrypt](../../../../ESP32-Reference/UA/08-Pamyat/04-Secure-Boot-Encrypt.md)
-- [08-Security-Hardening](../../../../ESP32-Reference/UA/15-Protokoli/08-Security-Hardening.md)
+- [EN/15-Protocols/06-Secure-Boot.en]
 - [03-mDNS-NTP-TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md)
 
-25→(Home, [04-Secure-Boot-Encrypt](../../../../ESP32-Reference/UA/08-Pamyat/04-Secure-Boot-Encrypt.md), [08-Security-Hardening](../../../../ESP32-Reference/UA/15-Protokoli/08-Security-Hardening.md), [03-mDNS-NTP-TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md))
+25→(Home, [04-Secure-Boot-Encrypt](../../../../ESP32-Reference/UA/08-Pamyat/04-Secure-Boot-Encrypt.md), [EN/15-Protocols/06-Secure-Boot.en], [03-mDNS-NTP-TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md))

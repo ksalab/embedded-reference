@@ -44,7 +44,7 @@ Batteries and TP4056 - chain; ESP32+TP4056+buck schematic; ESP32-to-module wirin
 | Solar 5-6V | TP4056 IN+ (via diode) |
 
 > [!tip] Solar
-> A 5V 1-2 W panel via a Schottky diode to TP4056 IN. Set the charge current with the Rprog resistor (1.2 kOhm = 1A, 0.5A is better for 18650). Compute node consumption per [EN/03-Power-Consumption.en]. The battery-monitor divider goes to ADC at 0-3.3V only, see [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md).
+> A 5V 1-2 W panel via a Schottky diode to TP4056 IN. Set the charge current with the Rprog resistor (1.2 kOhm = 1A, 0.5A is better for 18650). Compute node consumption per [EN/03-Power-Consumption.en]. The battery-monitor divider goes to ADC at 0-3.3V only, see [EN/03-GPIO/01-GPIO-Overview.en].
 
 ## ESP32 to module wiring table
 
@@ -126,7 +126,7 @@ void loop() {
 }
 ```
 
-ADC and levels: [ADC](../../../../ESP32-Reference/UA/06-Analog/01-ADC.md), [03-Pidtyaguvannya-rivni](../../../../ESP32-Reference/UA/03-GPIO/03-Pidtyaguvannya-rivni.md).
+ADC and levels: [ADC](../../../../ESP32-Reference/UA/06-Analog/01-ADC.md), [EN/03-GPIO/03-Pull-Ups-Levels.en].
 
 ## Charging in frost is FORBIDDEN + heat
 
@@ -192,8 +192,8 @@ flowchart TB
 
 - [Home](../../../../ESP32-Reference/Home.md)
 - [EN/00-Start/03-Chip-Comparison.en]
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
-- [02-Strapping-pini](../../../../ESP32-Reference/UA/03-GPIO/02-Strapping-pini.md)
+- [EN/03-GPIO/01-GPIO-Overview.en]
+- [EN/03-GPIO/02-Strapping-Pins.en]
 - [EN/02-Power-Supply/01-Power-Rails.en]
 - [02-LDO-DC-DC](../../../../ESP32-Reference/UA/02-Zhivlennya/02-LDO-DC-DC.md)
 - [EN/03-Power-Consumption.en]

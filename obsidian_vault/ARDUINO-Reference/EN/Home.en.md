@@ -35,6 +35,6 @@ date: 2026-10-08
 | `EN/13-Power-Modules` | Power modules (2 notes) | [[EN/13-Power-Modules/01-Buck-Converter.en| Buck]], [[EN/13-Power-Modules/02-Level-Shift-TP4056.en| Levels]] |
 | `EN/14-Devboards` | Boards (4 notes) | [[EN/14-Devboards/01-Shields.en| Shields]], [[EN/14-Devboards/02-Clones-CH340.en| Clones]], [[EN/14-Devboards/03-Nano-ESP32-GIGA.en| Flagships]], [[EN/14-Devboards/04-RP2040.en| RP2040]] |
 | `EN/15-Protocols` | Protocols (3 notes) | [[EN/15-Protocols/01-Modbus.en| Modbus]], [[EN/15-Protocols/02-MQTT-ESP.en| MQTT]], [[EN/15-Protocols/03-HTTP-Web.en| HTTP client]] |
-| `EN/16-Proekti` | Projects (4 notes) | [[EN/16-Proekti/01-Weather-Station.en| Weather station]], [[EN/16-Proekti/02-Smart-Home.en| Smart home]], [[EN/16-Proekti/03-Tracker.en| Tracker]], [[EN/16-Proekti/04-SD-Logger.en| Logger]] |
+| `EN/16-Projects` | Projects (4 notes) | [[EN/16-Projects/01-Weather-Station.en| Weather station]], [[EN/16-Projects/02-Smart-Home.en| Smart home]], [[EN/16-Projects/03-Tracker.en| Tracker]], [[EN/16-Projects/04-SD-Logger.en| Logger]] |
 | `EN/17-Lab` | Lab (2 notes) | [[EN/17-Lab/01-Instruments.en| Instruments]], [[EN/17-Lab/02-Breadboard-PCB.en| Breadboard]] |
 | `EN/99-Additions` | Appendices (3 notes) | [[EN/99-Additions/01-Troubleshooting-FAQ.en| FAQ]], [[EN/99-Additions/02-Cheklisti-Datasheet.en| Checklists]], [[EN/99-Additions/03-Diagnostic-Map.en| Map]] |

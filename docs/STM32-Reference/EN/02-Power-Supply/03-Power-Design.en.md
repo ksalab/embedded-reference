@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Power tree: USB 5 V to buck SY8113 to 3.3 V to VDDA LDO 1.8 V plus VDDIO domains.*
 
 > [!tip] What this note is
-> A deep dive above [Power supply chains](../../../../STM32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) and [Batteries](../../../../STM32-Reference/UA/02-Zhivlennya/02-Batareyne-zhivlennya.md): there - "how to connect", here - "how much to give and why this choice". All with numbers: currents, losses, layout, protection.
+> A deep dive above [ Power supply chains] and [ Batteries]: there - "how to connect", here - "how much to give and why this choice". All with numbers: currents, losses, layout, protection.
 
 A typical board power tree:
 
@@ -53,9 +53,9 @@ Example: USB 5 V, STM32F4 + W5500 + OLED + LoRa peak = ~550 mA.
 
 | Option | Loss at 550 mA, 5 V to 3.3 V | Efficiency | Heat |
 | --- | --- | --- | --- |
-| AMS1117 (LDO, drop ~1.1 V) | (5-3.3)x0.55 = 0.94 W | ~66 % | 0.94 W in SOT-223 - hot |
-| ME6211 (LDO, low drop) | ~0.85 W | ~69 % | still hot |
-| SY8113 (buck 3 A, 500 kHz) | ~0.07 W | ~94 % | cold, +4...+6 °C |
+| AMS1117 (LDO, drop ~1.1 V) | (5-3.3)x0.55 = 0.94 W | ~66% | 0.94 W in SOT-223 - hot |
+| ME6211 (LDO, low drop) | ~0.85 W | ~69% | still hot |
+| SY8113 (buck 3 A, 500 kHz) | ~0.07 W | ~94% | cold, +4...+6 °C |
 
 Conclusion: at I > 200 mA from 5 V - buck only. LDO - for VDDA and for input from 18650 (3 V to 3.3 V: unlike 5 V, the loss is very small).
 
@@ -111,7 +111,7 @@ Conclusion: LDO from 5 V - only when I < 150 mA (loss < 0.25 W). Otherwise - buc
 | Item | Acceptance criterion |
 | --- | --- |
 | VDD on MCU pin | 3.13-3.47 V under load |
-| Sag at SPI burst | < 5 % |
+| Sag at SPI burst | < 5% |
 | Ripple on VOUT (buck) | < 20 mV |
 | VDDA / VREF noise | < 1 mV |
 | Battery voltage (18650) | > 3.0 V |
@@ -119,19 +119,19 @@ Conclusion: LDO from 5 V - only when I < 150 mA (loss < 0.25 W). Otherwise - buc
 | USB current before config | 100 mA (descriptor) |
 
 > [!warning] Battery + buck
-> LiPo (4.2 V) to buck 3.3 V: respect the input range, and keep load below 50 % of buck current, otherwise thermal protection.
+> LiPo (4.2 V) to buck 3.3 V: respect the input range, and keep load below 50% of buck current, otherwise thermal protection.
 
 ## 6.3 Autonomy calculation: example
 
-Board: F407 + LoRa (30 % duty), average load 200 mA at 3.3 V.
+Board: F407 + LoRa (30% duty), average load 200 mA at 3.3 V.
 
 | Parameter | Value |
 | --- | --- |
 | Battery | 18650 3000 mAh, usable ~2400 mAh |
 | Autonomy without sleep | 2400 / 200 = 12 h |
-| 10 % duty (deep-sleep 90 % of time) | ~3 days |
+| 10% duty (deep-sleep 90% of time) | ~3 days |
 | L4-class deep-sleep current | ~30 uA |
-| 2x18650 (7.4 V) + buck | ~14 h at 300 mA, eta 94 % |
+| 2x18650 (7.4 V) + buck | ~14 h at 300 mA, eta 94% |
 
 Rules:
 
@@ -154,7 +154,7 @@ Rules:
 ## 8. Related notes
 
 - [Buck/Boost](../../../../STM32-Reference/UA/13-Moduli-zhivlennya-rivniv/01-Buck-Boost.md) - modules of ready regulators.
-- [Batteries](../../../../STM32-Reference/UA/02-Zhivlennya/02-Batareyne-zhivlennya.md) - LiPo, 18650, solar.
+- [ Batteries] - LiPo, 18650, solar.
 - [ADC](../../../../STM32-Reference/UA/06-Analog/01-ADC.md) - VREF noise and calibration.
 - [Current shunt](../../../../STM32-Reference/UA/06-Analog/05-Shunt-OPAMP.md) - shunt current measurement.
 

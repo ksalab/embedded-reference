@@ -147,7 +147,7 @@ Test points for measuring buses with a multimeter and oscilloscope are planned o
 
 Bus monitoring via ADC is described in [ADC measurements](../../../../STM32-Reference/UA/06-Analog/01-ADC.md). It also shows how to measure the internal reference voltage and recalculate the supply level with no external divider.
 
-Board firmware after assembly is flashed via the debug interface, details at [ST-Link flashing](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md).
+Board firmware after assembly is flashed via the debug interface, details at [ ST-Link flashing].
 
 ## 8. Analog ground and single-point joining
 
@@ -272,7 +272,7 @@ The PVD interrupt gets high priority to make it before the reset circuit fires. 
 
 If the board draws many times the calculated current, look for a pin in short circuit, an unterminated input floating in the air, or an unprogrammed port in a level fight. For sleep and wakeup details see [Sleep modes](../../../../STM32-Reference/UA/07-Timeri-Son/03-Sleep-Stop-Standby.md).
 
-The battery continuation of the topic with chemistries and charging is given in [Node battery power](../../../../STM32-Reference/UA/02-Zhivlennya/02-Batareyne-zhivlennya.md).
+The battery continuation of the topic with chemistries and charging is given in [ Node battery power].
 
 ## Common issues
 
@@ -296,9 +296,9 @@ The battery continuation of the topic with chemistries and charging is given in 
 ## See also
 
 - [Home](../../../../STM32-Reference/Home.md)
-- [Node battery power](../../../../STM32-Reference/UA/02-Zhivlennya/02-Batareyne-zhivlennya.md)
+- [ Node battery power]
 - [H5 and H7 flagships](../../../../STM32-Reference/UA/01-Hardware/04-H5-H7.md)
 - [Low-power chips](../../../../STM32-Reference/UA/01-Hardware/05-L0-L4-U5.md)
 - [ADC measurements](../../../../STM32-Reference/UA/06-Analog/01-ADC.md)
 - [Sleep modes](../../../../STM32-Reference/UA/07-Timeri-Son/03-Sleep-Stop-Standby.md)
-- [ST-Link flashing](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md)
+- [ ST-Link flashing]

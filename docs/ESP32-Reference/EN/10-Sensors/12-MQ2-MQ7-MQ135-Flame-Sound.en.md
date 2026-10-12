@@ -28,7 +28,7 @@ Gas and environmental sensors for simple monitoring: MQ-2 (smoke/propane/butane)
 | Load resistor RL | 5 kΩ (recommended) | 20 kΩ | 20 kΩ |
 | Operating temp | −20…+50 °C | −20…+50 °C | −20…+50 °C |
 | Warm-up time | 24-48 h | 24-48 h | 24-48 h |
-| Response / recovery | < 10 s / < 30 s | < 30 s | — |
+| Response / recovery | < 10 s / < 30 s | < 30 s | - |
 
 | KY-026 Flame | Function |
 | --- | --- |
@@ -232,6 +232,8 @@ while True:
 - KY-026 Flame Datasheet (module manufacturer) - `check manually`.
 - LM393 Datasheet (TI): <https://www.ti.com/product/LM393> - dual comparator (thresholds DO).
 
+![](../../../../ESP32-Reference/assets/img/placeholder.png)
+*Fig. 1. Gas and event sensing: MQ-2/MQ-7/MQ-135 heaters, KY-026 flame IR, KY-038 sound envelope, rain comb, all into ESP32 ADC and interrupt pins.*
 ## See also
 
 - [ADC](../../../../ESP32-Reference/UA/06-Analog/01-ADC.md)

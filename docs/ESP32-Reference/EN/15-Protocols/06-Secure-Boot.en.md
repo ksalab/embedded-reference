@@ -18,7 +18,7 @@ Base: flash and signature [04-Secure-Boot-Encrypt](../../../../ESP32-Reference/U
 
 ## Purpose
 
-Hardening - this shifting device with "easy to develop" mode in "hard to break" mode. Document gives one checklist: what to enable, what to disable, where it impactsться and чим доведеться заплатити (гроші, час, ризик цегли). Охоплює Secure Boot, шифрування Flash, protection OTA, JTAG-лок та унікальні паролі on виріб.
+Hardening - this shifting device with "easy to develop" mode in "hard to break" mode. Document gives one checklist: what to enable, what to disable, where it impacts and what you will pay (money, time, brick risk). Covers Secure Boot, Flash encryption, OTA protection, JTAG lock and unique per-device passwords.
 
 ## 1. Threat model: who we defend against
 
@@ -30,7 +30,7 @@ Physical access - main difference embedded from server. Device is placed in entr
 | Firmware substitution (своя with бекдором) | reflashing via UART або підміна OTA-файла | Secure Boot V2 + signed OTA |
 | Rollback to old vulnerable version | flash signed but old binary | Anti-rollback, secure version in eFuse |
 | Сніфінг ефіру (WiFi, BLE, MQTT) | читає паролі, підміняє команди | WPA2/WPA3 + PMF, MQTTS/TLS, BLE bonding with шифруванням |
-| Перехоплення provisioning | підключається до відкритого Setup-AP | Пароль on portал, таймаут, PoP (див. [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md)) |
+| Provisioning interception | connects to open Setup-AP | Password on portal, timeout, PoP (see [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md)) |
 | Клонування пристроїв batches | копіює одну прошивку on 100 плат | Унікальні паролі/ключі on пристрій (mfg-партиція) |
 | Витяг секретів with логів | UART-консоль сипле токенами | Level логів without секретів, консоль вимкнена in релізі |
 | Віддалена експлуатація старої версії | ботнет with незапатчених вузлів | OTA тільки per HTTPS with підписом + rollback |
@@ -52,11 +52,11 @@ Physical access - main difference embedded from server. Device is placed in entr
 | 8 | WiFi: WPA2/WPA3 + PMF required | `pmf_cfg.required`, `WIFI_AUTH_WPA2_PSK` and вище | Старі роутери without PMF not підключаться - протестувати |
 | 9 | BLE: privacy (RPA) + bonding + шифрування характеристик | `esp_ble_gap_config_local_privacy`, `ESP_LE_AUTH_REQ_SC_MITM_BOND` | Складніше pairing UX; without цього трекінг for MAC |
 | 10 | OTA тільки per HTTPS + signature образу | `esp_https_ota` with CA-bundle, Secure Boot перевіряє signature | Потрібен PKI and server; HTTP-OTA заборонено in проді |
-| 11 | Унікальні паролі/PoP on пристрій (mfg-партиція) | заводський стенд пише `mfg` (серійник, PoP, токен) | Інфраструктура перsleepалізації; один пароль on партію - заборонено |
+| 11 | Unique passwords/PoP per device (mfg partition) | factory rig writes `mfg` (serial, PoP, token) | Personalization infrastructure; one password per batch - forbidden |
 | 12 | Ротація TLS-сертифікатів and API-токенів | server віддає новий токен per старій сесії; CA-bundle оновлюється with OTA | Прострочений CA = відвал флоту; тримати запасний корінь |
 | 13 | UART-консоль вимкнена або without команд запису | `CONFIG_ESP_CONSOLE_NONE` / level логу `Error`, прибрати `console_repl` | Втрата польової діагностики - компенсувати coredump and хмарою |
 | 14 | Debug-логи without секретів | рев'ю `ESP_LOGI` on `password/token/key/ssid-pass`, маскування `***` | 30 хв grep-рев'ю; один токен in логах = компрометація |
-| 15 | Пароль on `/update` and provisioning-portал | `AsyncElegantOTA.begin(&server, "admin", per-device-pass)`, таймаут 180 с | Див. [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md); відкритий portал = чужа firmware |
+| 15 | Password on `/update` and provisioning portal | `AsyncElegantOTA.begin(&server, "admin", per-device-pass)`, timeout 180 s | See [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md); open portal = foreign firmware |
 | 16 | Фінальний прогон: `espefuse summary` + OTA-тест with підписом | стенд QA, 3+ жертовні модулі перед Release | Час QA; зате партія not стане цеглою |
 
 ![](../../../../ESP32-Reference/assets/img/security-hardening-scheme.png)
@@ -145,7 +145,7 @@ that коли відрізається:
 | Біт / дія | that закриває | Коли палити |
 | --- | --- | --- |
 | JTAG-disable (автоматично with Secure Boot / Flash Encryption) | апаратний дебаг, дамп RAM via адаптер | після останньої дебаг-сесії |
-| `DIS_DOWNLOAD_MODE` / `DISABLE_DL_*` | `esptool write_flash`, читання flash via UART | тільки коли OTA with підписом протестована on 3+ boardх |
+| `DIS_DOWNLOAD_MODE` / `DISABLE_DL_*` | `esptool write_flash`, flash read via UART | only when signed OTA is tested on 3+ boards |
 | `RD_DIS` on ключах | навіть власник not прочитає eFuse | разом with релізом, після запису бекапів |
 
 Мінімальний безпечний порядок: дебаг and QA → бекап ключів → Development-шифрування → підписана OTA → Release → and тільки потім JTAG/UART-lock.
@@ -166,7 +166,7 @@ nvs_keys, data, nvs_keys, 0xF000, 0x1000, encrypted
 // ключі генеруються в nvs_keys при першому старті.
 ```
 
-Заборони: not класти секрети in `phy_init`, in незашифровані `data`-партиції, in LittleFS-файли without шифрування, in code (`const char *PASS = ...` читається with бінарника!). Унікальні секрети - in `mfg`-партицію із заводу (наступний розділ).
+Заборони: not класти секрети in `phy_init`, in незашифровані `data`-партиції, in LittleFS-файли without шифрування, in code (`const char *PASS =...` читається with бінарника!). Унікальні секрети - in `mfg`-партицію із заводу (наступний розділ).
 
 ## 7. WiFi PMF + WPA3 and BLE privacy/bonding
 
@@ -200,10 +200,10 @@ BLE-мінімум for носимих/кімнатних пристроїв:
 
 Прод-правила (механіка слотів - [OTA](../../../../ESP32-Reference/UA/08-Pamyat/03-OTA.md)):
 
-1. Трансport - тільки HTTPS with перевіркою CA and hostname. Чистий HTTP - стенд.
+1. Transport - HTTPS only with CA and hostname verification. Plain HTTP - test rig.
 2. Образ підписаний тим самим ключем, that in eFuse; непідписаний відхиляє bootloader.
 3. `secure_version` монотонно зростає on security-релізах.
-4. Після старту - self-test (WiFi, сенсори, дотягнувся до OTA-serverа) and тільки потім `mark_valid`, інакше rollback.
+4. After start - self-test (WiFi, sensors, reached OTA server) and only then `mark_valid`, otherwise rollback.
 5. `/update`-ендпоінт під паролем, унікальним on пристрій.
 
 ```c
@@ -272,7 +272,7 @@ esptool.py --port /dev/ttyUSB0 read_flash 0x10000 256 dump.bin
 | Пристрій not стартує після підпису | key not той / secure_version нижче eFuse | `verify_signature` офлайн, звірити `CONFIG_BOOTLOADER_APP_SECURE_VERSION` |
 | OTA падає with TLS-ошибкою | час 1970 (немає NTP) або прострочений CA | Спочатку SNTP-синк, потім TLS; ротувати CA-bundle (див. [03-mDNS-NTP-TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md)) |
 | MQTT-пароль витягли with дампа | NVS лежала in plaintext | Увімкнути NVS-шифрування, переписати секрети, старі відкликати |
-| Один пароль on партію злили | немає mfg-перsleepалізації | Відкликати спільний секрет, ввести mfg + ротацію токенів |
+| One password per batch leaked | no mfg personalization | Revoke shared secret, introduce mfg + token rotation |
 | Токен світиться in логах on форумі | `LOGI` with секретом | Маскувати, знизити level, відкликати засвічений токен |
 | PMF-required ні до чого not чіпляється | старі AP without PMF | Fallback: capable without required + WPA2, або оновити парк AP |
 | Після ввімкнення захисту `esptool` мовчить | відрізано download / not той port | verify port and біти via `summary`; якщо біти цілі - this цегла |
@@ -285,7 +285,7 @@ esptool.py --port /dev/ttyUSB0 read_flash 0x10000 256 dump.bin
 - [NVS Encryption - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/storage/nvs_encryption.html) - `nvs_keys`-партиція, шифрування облікових.
 - [OTA / Anti-rollback - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/ota.html) - rollback, secure version, стани слотів.
 - [Wi-Fi Security - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/wifi-security.html) - PMF, WPA3, Enterprise.
-- [ESP-TLS - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_tls.html) - CA, SNI, check serverа.
+- [ESP-TLS - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_tls.html) - CA, SNI, server check.
 - [ESP x509 Certificate Bundle - ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/esp_crt_bundle.html) - bundle Mozilla for OTA and MQTTS.
 
 ## See also
@@ -296,6 +296,6 @@ esptool.py --port /dev/ttyUSB0 read_flash 0x10000 256 dump.bin
 - [JTAG-дебаг](../../../../ESP32-Reference/UA/09-Proshivka/05-JTAG-Debug.md) - дебажити до запаювання бітів
 - [mDNS/NTP/TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md) - час for TLS and CA-bundle
 - [NVS](../../../../ESP32-Reference/UA/08-Pamyat/01-Partitions-NVS.md) - партиції `nvs`, `nvs_keys`, `mfg`
-- [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md) - паролі brokerа зберігати шифровано
-- [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md) - PoP, пароль portалу, таймаут
+- [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md) - store broker passwords encrypted
+- [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md) - PoP, portal password, timeout
 - [FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md) - розбір зальотів

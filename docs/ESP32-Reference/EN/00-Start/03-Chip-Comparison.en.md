@@ -24,7 +24,7 @@ date: 2026-10-08
 # ESP32 chip comparison
 
 > [!tip] Quick pick
-> Universal - **ESP32-Classic** or **S3**. Cheap Wi-Fi sensor - **C3**. Camera/ML/USB - **S3**. Zigbee/Thread - **C6/H2**. Look terms up in the [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md), boards in [DevKit boards](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md), SDK in [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md). Reference structure - [How to use it](../../../../ESP32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md), map - [Home map](../../../../ESP32-Reference/Home.md).
+> Universal - **ESP32-Classic** or **S3**. Cheap Wi-Fi sensor - **C3**. Camera/ML/USB - **S3**. Zigbee/Thread - **C6/H2**. Look terms up in the [ Glossary], boards in [ DevKit boards], SDK in [ Environment choice]. Reference structure - [ How to use it], map - [Home map](../../../../ESP32-Reference/Home.md).
 >
 > [!warning] All chips are 3.3V!
 > No ESP32 (Classic/S2/S3/C3/C6/H2) has 5V-tolerant GPIO. They differ only in pin count and peripherals, but the setup is one: HIGH = 3.3V max. 5V sensors only via [template level matching](../../../../ESP32-Reference/_templates/Component-Template.md).
@@ -59,10 +59,10 @@ date: 2026-10-08
 | OV2640 camera, TinyML, LCD | S3 (DevKitC-1) | Octal PSRAM, AI vector instructions, USB |
 | Cheap Wi-Fi/MQTT sensor | C3 SuperMini | $2-3, BLE 5, low draw |
 | Matter / Thread / Zigbee | C6 or H2 | 802.15.4, Wi-Fi 6 (C6) |
-| Battery sensor for years | C3 / H2 + deep-sleep | 5 µA sleep, see [DevKit power](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md) |
+| Battery sensor for years | C3 / H2 + deep-sleep | 5 µA sleep, see [ DevKit power] |
 
 > [!tip] PSRAM
-> For cameras (OV2640 2 MP) and LVGL displays take a **WROVER** or an **S3 with 8 MB Octal PSRAM**. Without PSRAM a JPEG frame will not fit in SRAM. Power details - [DevKit boards](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md).
+> For cameras (OV2640 2 MP) and LVGL displays take a **WROVER** or an **S3 with 8 MB Octal PSRAM**. Without PSRAM a JPEG frame will not fit in SRAM. Power details - [ DevKit boards].
 >
 > [!warning] ADC2 + Wi-Fi
 > On Classic/S3 the ADC2 channel clashes with the Wi-Fi driver. For analog readings with Wi-Fi on, use ADC1 only. This is a common cause of jumping readings.
@@ -76,9 +76,9 @@ date: 2026-10-08
 | MicroPython | Yes | S2/S3 partly | C3 yes, C6/H2 experimental |
 | PlatformIO | Yes | Yes | Yes |
 
-Details - [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md).
+Details - [ Environment choice].
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/placeholder.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/placeholder.png)
 > Comparison bench: three DevKits on one desk:
 
 | ESP32 DevKit | USB | Note |
@@ -183,18 +183,18 @@ Details - [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-
 | MicroPython | Experiment (no stable build) | Experiment | Experiment | Yes (compact build) |
 | PlatformIO | Via pioarduino/community | Same path | Yes | Yes |
 
-Details - [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md),
-IDF setup - [ESP-IDF setup](../../../../ESP32-Reference/UA/09-Proshivka/01-ESP-IDF-setup.md),
+Details - [ Environment choice],
+IDF setup - [ ESP-IDF setup],
 Arduino/PIO - [Arduino/PlatformIO](../../../../ESP32-Reference/UA/09-Proshivka/02-Arduino-PlatformIO.md),
 full notes - [10-ESP32-C5-C61](../../../../ESP32-Reference/UA/01-Hardware/10-ESP32-C5-C61.md) and [09-ESP32-C2-P4](../../../../ESP32-Reference/UA/01-Hardware/09-ESP32-C2-P4.md).
 
 ## See also
 
 - [Home map](../../../../ESP32-Reference/Home.md)
-- [How to use it](../../../../ESP32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md)
-- [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md)
-- [DevKit boards](../../../../ESP32-Reference/UA/00-Start/04-Devkit-plati.md)
-- [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ How to use it]
+- [ Glossary]
+- [ DevKit boards]
+- [ Environment choice]
 - [C5/C61](../../../../ESP32-Reference/UA/01-Hardware/10-ESP32-C5-C61.md)
 - [C2/P4](../../../../ESP32-Reference/UA/01-Hardware/09-ESP32-C2-P4.md)
 - [C3/C6/H2](../../../../ESP32-Reference/UA/01-Hardware/04-ESP32-C3-C6-H2.md)

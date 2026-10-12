@@ -33,7 +33,7 @@ FreeRTOS in ESP-IDF is an SMP core (two cores on ESP32/S3) on top of which Wi-Fi
 | Task stack | Given in **bytes** (not words!) | Sensors 2048-3072, network 4096-8192 |
 
 > [!WARNING]
-> The IDLE task feeds the Task Watchdog and cleans memory of deleted tasks. A task with higher priority that never blocks starves IDLE - you get `Task watchdog got triggered ... IDLE0`.
+> The IDLE task feeds the Task Watchdog and cleans memory of deleted tasks. A task with higher priority that never blocks starves IDLE - you get `Task watchdog got triggered... IDLE0`.
 
 ESP-IDF code - task creation with and without pinning:
 
@@ -272,7 +272,7 @@ void heavy_task(void *arg) {
 ```
 
 > [!TIP]
-> Log `Task watchdog got triggered ... Tasks currently running: main` means the `main`/`loop` task spins with no `delay`. Details - [WDT](../../../../ESP32-Reference/UA/07-Timeri-Son/02-WDT.md).
+> Log `Task watchdog got triggered... Tasks currently running: main` means the `main`/`loop` task spins with no `delay`. Details - [WDT](../../../../ESP32-Reference/UA/07-Timeri-Son/02-WDT.md).
 
 ## 7. Tickless idle + light sleep: sleep between ticks
 
@@ -471,7 +471,7 @@ async def conn():
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `Task watchdog got triggered ... IDLE0` | Loop with no `vTaskDelay` / blocking | Add `vTaskDelay` or a blocking `xQueueReceive` |
+| `Task watchdog got triggered... IDLE0` | Loop with no `vTaskDelay` / blocking | Add `vTaskDelay` or a blocking `xQueueReceive` |
 | `Stack overflow in task sensor` | Small stack, large buffer on stack | Grow the stack, `uxTaskGetStackHighWaterMark()`, move buffer to static/heap |
 | `Interrupt wdt timeout on CPU0` | Long critical section / ISR | Shorten ISR, move work to a task |
 | Guru Meditation `LoadProhibited` in queue | Pointer to local stack via notification | Copy data into the queue, not a pointer |

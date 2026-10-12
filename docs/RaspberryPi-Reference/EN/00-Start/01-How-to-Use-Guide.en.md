@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Three paths: newcomer (board to OS to first LED), maker (GPIO to buses to HAT), IoT (network to cloud).*
 
 > [!tip] What this note is
-> Entry point of the base: how to read notes, where to go for your goal, what validators mean. The note standard is single for all sections. Map: [home map](../../../../RaspberryPi-Reference/Home.md), board comparison: [board comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md).
+> Entry point of the base: how to read notes, where to go for your goal, what validators mean. The note standard is single for all sections. Map: [home map](../../../../RaspberryPi-Reference/Home.md), board comparison: [board comparison].
 
 ## 1. Goal
 
@@ -28,7 +28,7 @@ Orient the reader in 15 minutes:
 
 | Who you are | Path | First action |
 | --- | --- | --- |
-| Newcomer, no board yet | Comparison to purchase to Imager | [board comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md) |
+| Newcomer, no board yet | Comparison to purchase to Imager | [ board comparison] |
 | Have a Pi, no OS | Imager to headless to SSH | [Imager flashing](../../../../RaspberryPi-Reference/UA/09-Proshivka/01-Imager-Headless.md) |
 | Maker, need GPIO | Header to gpiozero to sensor | [pin header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md) |
 | IoT, need cloud | WiFi to MQTT to dashboard | [MQTT protocol](../../../../RaspberryPi-Reference/UA/15-Protokoli/01-MQTT.md) |
@@ -139,10 +139,10 @@ Run from the base root: `python3 scripts/check_style.py` and so on. The registry
 
 ## 9. Related notes
 
-- [glossary of terms](../../../../RaspberryPi-Reference/UA/00-Start/02-Glosariy.md) - all base terms.
-- [board comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md) - board choice.
-- [boards and accessories](../../../../RaspberryPi-Reference/UA/00-Start/04-Devkit-plati.md) - what to buy.
-- [environment choice](../../../../RaspberryPi-Reference/UA/00-Start/05-Vibir-seredovischa.md) - OS and languages.
+- [glossary of terms] - all base terms.
+- [board comparison] - board choice.
+- [boards and accessories] - what to buy.
+- [environment choice] - OS and languages.
 - [home map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## Official sources

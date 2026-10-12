@@ -259,7 +259,7 @@ machine.deepsleep(60_000)
 - [NVS](../../../../ESP32-Reference/UA/08-Pamyat/01-Partitions-NVS.md) - офлайн-буфер, ID вузла
 - [FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md) - діагностика ланок
 - [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md) - повний code вузла with реконектом
-- [HTTP/WebSocket](../../../../ESP32-Reference/UA/15-Protokoli/02-HTTP-WebSocket.md) - REST-альтернатива вузлу
+- [HTTP/WebSocket] - REST-альтернатива вузлу
 - [mDNS/NTP/TLS](../../../../ESP32-Reference/UA/15-Protokoli/03-mDNS-NTP-TLS.md) - час for InfluxDB
 - [Provisioning](../../../../ESP32-Reference/UA/15-Protokoli/04-Provisioning.md) - entry WiFi on вузлах
 

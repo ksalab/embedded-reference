@@ -25,7 +25,7 @@ The note collects practice: comparing chemistries from coin lithium to lithium w
 
 A calculation of the average current budget and its conversion into years of work from a common coin cell is shown separately. The example adapts easily to your wakeup period and packet.
 
-Board mains power and decoupling are described in [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Board power supply chains]], and low-consumption modes in [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]].
+Board mains power and decoupling are described in [[EN/02-Power-Supply/01-Power-Supply-Rails.en| Board power supply chains]], and low-consumption modes in [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]].
 
 ## 2. Battery chemistries for STM32 nodes
 
@@ -305,7 +305,7 @@ Panel power is calculated for winter sun, not summer. If the node draws 5 mAh pe
 ## See also
 
 - [[Home.en]]
-- [[02-Power-Supply/01-Lancjugi-zhivlennya.en | Board power supply chains]]
+- [[EN/02-Power-Supply/01-Power-Supply-Rails.en| Board power supply chains]]
 - [[01-Hardware/05-L0-L4-U5.en | Low-power chips]]
 - [[EN/06-Analog/01-ADC.en| ADC measurements]]
 - [[EN/07-Timers/03-Sleep-Stop-Standby.en| Sleep modes]]

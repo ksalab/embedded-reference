@@ -251,7 +251,7 @@ flowchart TB
 
 Place the connector at the board edge, the ESD pack right behind it, route D plus and D minus as an equal-length pair with no sharp corners. Hold solid ground under the pair, route no fast digital signals nearby. A ceramic capacitor near the controller and a ferrite on supply cut ringing that the host reads as packet errors.
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Fix |
 | --- | --- | --- | --- |
@@ -263,7 +263,7 @@ Place the connector at the board edge, the ESD pack right behind it, route D plu
 | 6 | Long market cable | Speed falls and dropouts | Short quality cable up to five meters |
 | 7 | No ESD protection | First static kills the port | Protection pack right behind the connector |
 
-## Official Sources
+## Official sources
 
 - [USB on STM32 overview (ST)](https://www.st.com/en/interfaces-and-transceivers/usb.html) - controllers, physics, classes.
 - [AN4879 USB hardware design (ST)](https://www.st.com/resource/en/application_note/an4879-usb-hardware-and-pcb-guidelines-using-stm32-mcus-stmicroelectronics.pdf) - connectors, protection, routing.
@@ -274,7 +274,7 @@ Place the connector at the board edge, the ESD pack right behind it, route D plu
 - [Home](../../../../STM32-Reference/Home.md)
 - [CubeMX setup](../../../../STM32-Reference/UA/09-Proshivka/01-CubeIDE-CubeMX.md)
 - [HAL and LL layers](../../../../STM32-Reference/UA/09-Proshivka/02-HAL-LL.md)
-- [Flashing via ST-Link](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md)
-- [GPIO modes](../../../../STM32-Reference/UA/03-GPIO/01-GPIO-rezhimi.md)
+- [ Flashing via ST-Link]
+- [ GPIO modes]
 - [FDCAN bus](../../../../STM32-Reference/UA/04-Shini/04-FDCAN.md)
 - [Cards and external flash](../../../../STM32-Reference/UA/04-Shini/06-SDMMC-QUADSPI.md)

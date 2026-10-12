@@ -350,7 +350,7 @@ espefuse.py --port /dev/ttyUSB0 dump
 # рівень на піні ігнорується, дивись тільки eFuse!
 ```
 
-Secure boot link: with secure boot on, ROM ignores part of strapping (downgrade-to-download protection). A board that after enabling secure boot "stopped flashing" - this is normal behavior, not a defect. See [[EN/15-Protocols/08-Security-Hardening.en]] and [[09-Firmware/04-Esptool-Flash.en | Boot and flashing]].
+Secure boot link: with secure boot on, ROM ignores part of strapping (downgrade-to-download protection). A board that after enabling secure boot "stopped flashing" - this is normal behavior, not a defect. See [[EN/15-Protocols/06-Secure-Boot.en]] and [[09-Firmware/04-Esptool-Flash.en | Boot and flashing]].
 
 ## RC calculation of EN delay (why 1 uF and not 10 uF)
 

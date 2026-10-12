@@ -32,7 +32,7 @@ Flash from Imager with a new user, data from the backup. Or monitor+keyboard loc
 **Burned the pin with 5 volts - what to do?** Nothing, the pin is dead. Move to a free GPIO and install a level converter. Details: [comb and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md).**I2C not seeing sensor?**`i2cdetect -y 1`, check SDA/SCL places, braces, SDO address. Details: [tires](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md).**HAT not detected?**Either it is a shield without EEPROM (manual dtoverlay) or ID pin conflict. Details: [HAT and EEPROM](../../../../RaspberryPi-Reference/UA/03-GPIO/03-HAT-EEPROM.md).
 ## Network
 
-**WiFi not seeing 5GHz?**The country is not displayed. `raspi-config` → WiFi-country. Details: [onboard radio](../../../../RaspberryPi-Reference/UA/05-Radio/01-WiFi-BT-Bort.md).**Network drops every hour?**
+**WiFi not seeing 5GHz?**The country is not displayed. `raspi-config` → WiFi-country. Details: [ onboard radio].**Network drops every hour?**
 WiFi power management. Disable PM, add a watchdog script.
 
 **How to enter from outside without a white IP?**
@@ -43,7 +43,7 @@ Tailscale or WireGuard. Port forwarding is a last resort with fail2ban.
 **`pip install` refuses?**Bookworm protects system Python (PEP 668). Work at venv. Details: [ OS settings].**Service does not start after reboot?**
 `enable` was forgotten or the paths are relative. `systemctl status`, absolute paths, `journalctl -u`.
 
-**Old code from raspistill not working?**Stack removed. Rewrite on Picamera2. Details: [CSI camera](../../../../RaspberryPi-Reference/UA/10-Sensori/06-Kamera-CSI.md).
+**Old code from raspistill not working?**Stack removed. Rewrite on Picamera2. Details: [ CSI camera].
 ## Where to search next- Base map: [main map](../../../../RaspberryPi-Reference/Home.md).- Diagnosis by symptoms: [diagnostic card](../../../../RaspberryPi-Reference/UA/99-Dodatki/03-Diagnostic-Map.md) - queue note 4.- Datasheets: [links to datasheets](../../../../RaspberryPi-Reference/UA/99-Dodatki/02-Datasheet-Links.md).
 
 ## Common issues

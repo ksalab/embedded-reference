@@ -208,7 +208,7 @@ The diagram reads top down. With no antenna and no bulk capacitor, go no further
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [long-range radio](../../../../ARDUINO-Reference/UA/05-Radio/01-LoRa-moduli.md)
+- [long-range radio]
 - [serial port](../../../../ARDUINO-Reference/UA/04-Shini/01-UART.md)
 - [autonomous power]
 - [VIN power supply]

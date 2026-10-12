@@ -35,8 +35,8 @@ The reference follows the MOC principle: [[Home.en | Home map]] links everything
 | --- | --- | --- |
 | `00-Start/` | Entry, glossary, choice | This note, [[EN/00-Start/02-Glossary.en| Glossary]], [[EN/00-Start/03-Chip-Comparison.en| Chips]] |
 | `01-Hardware/` | Chips and differences | [[01-Hardware/04-ESP32-C3-C6-H2.en | C3/C6/H2 chips]], [[01-Hardware/10-ESP32-C5-C61.en | C5/C61]] |
-| `02-Power-Supply/` | Power, batteries | [[02-Power-Supply/04-Akumulyatori-TP4056.en | Batteries]], [[02-Power-Supply/03-Spozhivannya.en | Power consumption]] |
-| `03-GPIO/` | Pins, strapping | [[03-GPIO/01-GPIO-oglyad.en | GPIO overview]], [[03-GPIO/02-Strapping-pini.en | Strapping]] |
+| `02-Power-Supply/` | Power, batteries | [[EN/02-Power-Supply/04-Batteries-TP4056.en| Batteries]], [[EN/02-Power-Supply/03-Power-Consumption.en| Power consumption]] |
+| `03-GPIO/` | Pins, strapping | [[EN/03-GPIO/01-GPIO-Overview.en| GPIO overview]], [[EN/03-GPIO/02-Strapping-Pins.en| Strapping]] |
 | `04-Interfaces/` | UART, SPI, I2C | [[04-Interfaces/01-UART.en | UART]], [[04-Interfaces/03-I2C.en | I2C]] |
 | `05-Radio/` | WiFi STA/AP, BLE | [[05-Radio/01-WiFi-STA-AP.en | WiFi STA/AP]], [[05-Radio/02-BLE-Bluetooth.en | BLE]] |
 | `06-Analog/` | ADC, DAC | [[06-Analog/01-ADC.en | ADC]] |

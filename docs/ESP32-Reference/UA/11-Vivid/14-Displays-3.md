@@ -4,6 +4,7 @@ title: Дисплеї 3: SSD1322, SSD1351, ST7796, GC9A01, RA8875, FT81x (LVGL +
 tags: [esp32, display, tft, ssd1322, ssd1351, gc9a01, ra8875, ft81x, lvgl, squareline]
 category: Vivid
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Дисплеї 3: SSD1322, SSD1351, ST7796, GC9A01, RA8875, FT81x

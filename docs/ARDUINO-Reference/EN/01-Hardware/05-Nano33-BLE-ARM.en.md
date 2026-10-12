@@ -131,7 +131,7 @@ void loop() {
 ## 8. Related notes
 
 - [Due/Zero](../../../../ARDUINO-Reference/UA/01-Hardware/03-Due-Zero-ARM.md) - basic ARM.
-- [Board comparison](../../../../ARDUINO-Reference/UA/00-Start/03-Porivnyannya-plat.md) - the whole table.
+- [Board comparison] - the whole table.
 - [IDE/CLI](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md) - core installation.
 - [GSM](../../../../ARDUINO-Reference/UA/05-Radio/02-GSM-SIM800.md) - LTE/MKR contrast.
 

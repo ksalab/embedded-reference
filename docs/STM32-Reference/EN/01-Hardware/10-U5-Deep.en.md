@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. U5: M33 sleeps in Stop 3 with SRAM, wakes from LPUART/RTC, secrets live in TrustZone.*
 
 > [!tip] What this note is
-> Successor of L4 for years of battery life: M33, sub-microamp sleep, hardware security. Family: [L0/L4/U5 overview](../../../../STM32-Reference/UA/01-Hardware/05-L0-L4-U5.md), power supply: [Battery power supply](../../../../STM32-Reference/UA/02-Zhivlennya/02-Batareyne-zhivlennya.md).
+> Successor of L4 for years of battery life: M33, sub-microamp sleep, hardware security. Family: [L0/L4/U5 overview](../../../../STM32-Reference/UA/01-Hardware/05-L0-L4-U5.md), power supply: [ Battery power supply].
 
 ## 1. Goal
 
@@ -152,7 +152,7 @@ while True:
 ## 10. Related Notes
 
 - [L0/L4/U5 overview](../../../../STM32-Reference/UA/01-Hardware/05-L0-L4-U5.md) - place in the lineup.
-- [Battery power supply](../../../../STM32-Reference/UA/02-Zhivlennya/02-Batareyne-zhivlennya.md) - current sources.
+- [ Battery power supply] - current sources.
 - [Sleep modes](../../../../STM32-Reference/UA/07-Timeri-Son/03-Sleep-Stop-Standby.md) - sleep details.
 - [Secure boot](../../../../STM32-Reference/UA/15-Protokoli/06-Secure-Boot.md) - production security.
 - [Main map](../../../../STM32-Reference/Home.md) - full navigation.

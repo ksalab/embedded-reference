@@ -350,4 +350,4 @@ A ladder teaches the principle but loses exactness.
 - [Home](../../../../ARDUINO-Reference/Home.md)
 - [voltage measurement](../../../../ARDUINO-Reference/UA/06-Analog/01-ADC.md)
 - [pulse-width modulation](../../../../ARDUINO-Reference/UA/03-GPIO/02-PWM-analogWrite.md)
-- [timers and time](../../../../ARDUINO-Reference/UA/07-Timeri-Son/01-Timeri-millis.md)
+- [timers and time]

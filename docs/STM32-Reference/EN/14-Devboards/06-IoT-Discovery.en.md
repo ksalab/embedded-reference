@@ -70,7 +70,7 @@ ST-Link V2-1 on платі - прошивка по USB без зовнішньо
 | VL53L0X | дальність ToF | I2C 0x29 |
 | MP34DT01 ×2 | звук, PDM | DFSDM/SAI |
 
-Це готовий набір for метеостанції with компасом and детектором руху - див. [метеостанцію](../../../../STM32-Reference/UA/16-Proekti/01-Meteostantsiya.md) and [магнітометри](../../../../STM32-Reference/UA/10-Sensori/14-Mag-Gesture-RTC.md).
+Це готовий набір for метеостанції with компасом and детектором руху - див. [метеостанцію] and [магнітометри](../../../../STM32-Reference/UA/10-Sensori/14-Mag-Gesture-RTC.md).
 
 ## 5. Робочий code HAL
 
@@ -124,29 +124,29 @@ flowchart LR
 - Arduino Uno V3 - шилди реле, дисплеїв, моторів;
 - PMOD - модулі Digilent (BT, дисплей, датчики);
 - власні датчики - вільні I2C/SPI/UART on гребінках;
-- Sub-GHz антена - U.FL роз'єм, not забути антену (див. [узгодження антен](../../../../STM32-Reference/UA/05-Radio/03-Antena-50ohm.md)).
+- Sub-GHz антена - U.FL роз'єм, not забути антену (див. [узгодження антен]).
 
-## 8. typical errors
+## 8. Common issues
 
-| Симптом | Причина | Лікування |
+| Symptom | Cause | Fix |
 | --- | --- | --- |
-| ST-Link not бачить плату | перемички живлення ST-Link | JP: U5V, драйвер ST-Link переустановити |
-| WiFi not конектиться | 5 ГГц мережа (модуль лише 2.4) | точка 2.4 ГГц, WPA2, без спецсимволів у паролі |
-| I2C сенсори мовчать | шина зайнята NFC або швидкість | 100 кГц for старту, сканер адрес |
-| BLE not рекламується | демо без ініціалізації BlueNRG | example BLE_Beacon зі CubeL4 |
-| Жере батарею | WiFi not спить | Stop 2 + вимикання ISM43362 між сесіями |
-| NFC not читається | антена закрита металом корпусу | пластиковий корпус, мітка догори |
+| ST-Link does not see the board | ST-Link power jumpers | JP: U5V, reinstall the ST-Link driver |
+| WiFi does not connect | 5 GHz network (module is 2.4 only) | 2.4 GHz access point, WPA2, no special chars in password |
+| I2C sensors silent | Bus busy with NFC or speed | 100 kHz for start, address scanner |
+| BLE does not advertise | Demo without BlueNRG init | BLE_Beacon example from CubeL4 |
+| Drains the battery | WiFi never sleeps | Stop 2 + ISM43362 off between sessions |
+| NFC does not read | Antenna covered by metal case | Plastic case, tag facing up |
 
-## 9. Суміжні ноти
+## 9. Related notes
 
 - [лінійка Discovery](../../../../STM32-Reference/UA/14-Devboards/04-Discovery.md) - огляд усіх плат.
 - [лінійка Nucleo](../../../../STM32-Reference/UA/14-Devboards/03-Nucleo.md) - альтернатива без радіо.
 - [родини L0/L4/U5](../../../../STM32-Reference/UA/01-Hardware/05-L0-L4-U5.md) - low-power лінійка.
 - [магнітометри and RTC](../../../../STM32-Reference/UA/10-Sensori/14-Mag-Gesture-RTC.md) - сенсори плати детально.
-- [метеостанція](../../../../STM32-Reference/UA/16-Proekti/01-Meteostantsiya.md) - перший проєкт on платі.
+- [метеостанція] - перший проєкт on платі.
 
-## official джерела
+## Official sources
 
-- [B-L475E-IOT01A (STMicroelectronics)](https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html) - характеристики, схеми, Gerber.
-- [Disco L475 IoT1 (Zephyr)](https://docs.zephyrproject.org/latest/boards/st/disco_l475_iot1/doc/index.html) - підтримка Zephyr, мапа пінів.
-- [STM32CubeL4 (STMicroelectronics, GitHub)](https://github.com/STMicroelectronics/STM32CubeL4) - HAL, демо B-L475E-IOT01A.
+- [B-L475E-IOT01A (STMicroelectronics)](https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html) - features, schematics, Gerber.
+- [Disco L475 IoT1 (Zephyr)](https://docs.zephyrproject.org/latest/boards/st/disco_l475_iot1/doc/index.html) - Zephyr support, pin map.
+- [STM32CubeL4 (STMicroelectronics, GitHub)](https://github.com/STMicroelectronics/STM32CubeL4) - HAL, B-L475E-IOT01A demos.

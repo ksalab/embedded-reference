@@ -175,4 +175,4 @@ RCC->AHBENR |= RCC_AHBENR_GPIOCEN;   // інша шина!
 - [Chip classics](../../../../STM32-Reference/UA/01-Hardware/01-F0-F1-Classic.md)
 - [Modern families](../../../../STM32-Reference/UA/01-Hardware/03-G0-G4.md)
 - [Flagships](../../../../STM32-Reference/UA/01-Hardware/04-H5-H7.md)
-- [Chip comparison](../../../../STM32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
+- [ Chip comparison]

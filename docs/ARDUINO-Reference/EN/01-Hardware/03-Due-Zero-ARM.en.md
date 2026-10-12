@@ -206,8 +206,8 @@ Microsecond-level time delays are recalibrated because of the different frequenc
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [board overview](../../../../ARDUINO-Reference/UA/00-Start/04-Devkit-plati.md)
-- [environment choice](../../../../ARDUINO-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [board overview]
+- [environment choice]
 - [compact and pins](../../../../ARDUINO-Reference/UA/01-Hardware/02-Nano-Mega.md)
 - [modern Uno](../../../../ARDUINO-Reference/UA/01-Hardware/04-Uno-R4.md)
 - [environment and CLI](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md)

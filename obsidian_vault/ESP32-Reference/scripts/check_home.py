@@ -15,7 +15,7 @@ import sys
 
 VAULT = pathlib.Path(__file__).resolve().parent.parent
 META = {"CHANGELOG.md", "TODO.md", "TODO-UNIFY.md", "Home.md", "Home.en.md",
-        "COMPONENTS.md"}
+        "COMPONENTS.md", "CHANGELOG.en.md", "TODO.en.md", "COMPONENTS.en.md"}
 META_DIRS = {"_templates", "scripts", "assets"}
 HOMES = (("Home.md", "UA", re.compile(r"\((\d+) нот[а-я]*\)")),
          ("EN/Home.en.md", "EN", re.compile(r"\((\d+) notes?\)")))

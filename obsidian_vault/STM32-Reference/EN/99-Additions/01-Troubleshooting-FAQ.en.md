@@ -242,7 +242,7 @@ Deciphering the drop address:1. Take the address from BFAR or from the stack (PC
 | Garbage in UART | Baudrate, earth, inversion |
 | SPI bit shift | CPOL and CPHA on both sides |
 
-## See also- [[Home | Home]]
+## See also- [[Home.en | Home]]
 - [[EN/00-Start/01-How-to-Use-Guide.en| reference guide]]
 - [[02-Power-Supply/01-Power-Supply-Rails.en | board power supply circuits]]
 - [[EN/04-Interfaces/01-UART.en| UART serial port]]

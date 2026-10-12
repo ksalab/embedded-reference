@@ -31,7 +31,7 @@ EN version: `/home/ksalab/projects/embedded-reference/ESP32-Reference/16-Proekti
 | Модель | person-detection int8, ~300 КБ |
 | Вхід | 96×96 grayscale |
 | Швидкість | 5-8 fps на S3 240 МГц |
-| Точність | ~85 % вдень, гірше вночі |
+| Точність | ~85% вдень, гірше вночі |
 | Живлення | сонце 10W + 2×18650 |
 
 ## 2. Архітектура

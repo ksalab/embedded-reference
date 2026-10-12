@@ -128,7 +128,7 @@ Each ESP32 UART has a **128-byte hardware FIFO** for RX and TX plus a separate s
 | HW RX FIFO | 128 bytes | `uart_set_rx_full_thr()` / `rxfifo_full_thrhd` |
 | HW TX FIFO | 128 bytes | `txfifo_empty_thrhd` |
 | RX timeout | ~10 symbol times of silence | `rx_timeout_thrhd` - packet boundary (Modbus!) |
-| SW ring (IDF) | 256-1024 by default | `uart_driver_install(u, rx_size, tx_size, ...)` |
+| SW ring (IDF) | 256-1024 by default | `uart_driver_install(u, rx_size, tx_size,...)` |
 | Arduino SW buffer | 256 bytes | `Serial.setRxBufferSize(n)` before `begin()` |
 
 Practice:

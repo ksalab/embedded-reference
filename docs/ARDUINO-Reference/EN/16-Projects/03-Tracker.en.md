@@ -4,14 +4,14 @@ description: Builds GPS tracker with position, speed, SD logging and display; sh
 tags: [arduino, tracker, gps, logger, sd, display]
 category: Proekti
 lang: en
-original: 16-Projects/03-Treker.md
+original: 16-Proekti/03-Treker.md
 date-created: 2026-10-05
 date: 2026-10-09
 ---
 
 # Tracker - GPS and Data Logger
 
-![[assets/img/arduino-tracker-scheme.png|600]]
+![](../../../../ARDUINO-Reference/assets/img/arduino-tracker-scheme.png)
 *Fig. Tracker: GPS module, board, SD card, battery, display with position.*
 
 > [!tip] Purpose
@@ -168,5 +168,5 @@ Label power switch and status LED outside for field checks.
 
 ## See also
 
-- [[Home.en]]
-- [[EN/12-Comm-Modules/04-GPS-NEO.en|GPS position]]
+- [Home](../../../../ARDUINO-Reference/Home.md)
+- [GPS position](../../../../ARDUINO-Reference/UA/12-Moduli-zvyazku/04-GPS-NEO.md)

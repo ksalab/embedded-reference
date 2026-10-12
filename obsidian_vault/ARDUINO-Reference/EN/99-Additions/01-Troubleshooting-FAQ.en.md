@@ -265,7 +265,7 @@ H[Hot LDO or rebuts] --> LOAD{What is powered by the board?}LOAD -->|Motors/Rela
 - [Arduino - Language Help and Bus Scanner Example](https://docs.arduino.cc/learn/communication/wire/) - Exchange library and examples.
 - [ATmega328P datasheet - watchdog and reset](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf) - causes of resets and freezes.
 
-## See also- [[Home | Home]]
+## See also- [[Home.en | Home]]
 
 - [[EN/09-Firmware/01-IDE-CLI.en| environment and CLI]]
 - [[EN/09-Firmware/02-Bootloader-AVRDUDE.en| bootloader and avrdude]]

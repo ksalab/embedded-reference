@@ -4,6 +4,7 @@ title: DRV8825/TB6600-DM542/TMC5160/SimpleFOC-BLDC-ESC - силові драйв
 tags: [esp32, stepper, bldc, foc, drv8825, tb6600, dm542, tmc5160, esc, mcpwm]
 category: Vivid
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Силові драйвери 2 - DRV8825, TB6600/DM542, TMC5160, SimpleFOC/BLDC/ESC

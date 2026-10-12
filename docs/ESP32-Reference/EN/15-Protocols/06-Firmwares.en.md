@@ -381,7 +381,7 @@ c.publish(BASE + b"/$state", b"ready", retain=True)
 
 - [Home](../../../../ESP32-Reference/Home.md)
 - [MQTT](../../../../ESP32-Reference/UA/15-Protokoli/01-MQTT.md) - broker, QoS, LWT for Tasmota/Homie
-- [Notify/Voice](../../../../ESP32-Reference/UA/15-Protokoli/07-Notify-Voice.md) - сповіщення and голосове керування готовими прошивками
+- [Notify/Voice] - сповіщення and голосове керування готовими прошивками
 - [WiFi STA/AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md) - режими радіо, AP-портали першого запуску
 - [LED Strip Power](../../../../ESP32-Reference/UA/11-Vivid/09-LED-Strip-Power-SK6812-APA102.md) - струм, дроти, ABL for WLED - читати ДО стрічки!
 - [FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md) - діагностика обривів and живлення

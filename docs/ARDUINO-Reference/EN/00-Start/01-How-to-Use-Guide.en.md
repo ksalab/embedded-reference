@@ -201,5 +201,5 @@ Before handing over a batch, run three checks from the vault root. First style, 
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [glossary of terms](../../../../ARDUINO-Reference/UA/00-Start/02-Glosariy.md)
-- [board comparison](../../../../ARDUINO-Reference/UA/00-Start/03-Porivnyannya-plat.md)
+- [ glossary of terms]
+- [ board comparison]

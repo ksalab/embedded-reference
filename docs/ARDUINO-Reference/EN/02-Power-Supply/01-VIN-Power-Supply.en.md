@@ -371,4 +371,4 @@ The third power-on is already in the enclosure: verify heat after ten minutes of
 - [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
 - [board overview]
 - [battery autonomy]
-- [sleep and watchdog](../../../../ARDUINO-Reference/UA/07-Timeri-Son/02-Son-WDT.md)
+- [sleep and watchdog]

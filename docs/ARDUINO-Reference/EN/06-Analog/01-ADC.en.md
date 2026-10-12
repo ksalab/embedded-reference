@@ -350,5 +350,5 @@ Calibration removes systematic error.
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
 - [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
-- [DAC replacement](../../../../ARDUINO-Reference/UA/06-Analog/02-DAC-nema.md)
-- [timers and time](../../../../ARDUINO-Reference/UA/07-Timeri-Son/01-Timeri-millis.md)
+- [DAC replacement]
+- [timers and time]

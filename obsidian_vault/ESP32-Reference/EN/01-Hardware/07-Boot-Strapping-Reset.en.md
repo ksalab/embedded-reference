@@ -26,7 +26,7 @@ Boot, Strapping, Reset - strapping table (Classic); modes; BOOT+EN sequence. Wit
 | GPIO | Low (0) | High (1) | Default |
 | --- | --- | --- | --- |
 | GPIO0 | Download mode | SPI-boot | Pull-up to 3.3V |
-| GPIO2 | - | Must be floating/low | See [[EN/03-GPIO/01-GPIO-oglyad.en]] |
+| GPIO2 | - | Must be floating/low | See [[EN/03-GPIO/01-GPIO-Overview.en]] |
 | GPIO5 | - | Must be high | Pull-up to 3.3V |
 | GPIO12 | VDD_SPI 3.3V | VDD_SPI 1.8V | Must be low (3.3V flash) |
 | GPIO15 | - | Must be high | Pull-up to 3.3V |
@@ -46,10 +46,10 @@ Boot, Strapping, Reset - strapping table (Classic); modes; BOOT+EN sequence. Wit
 1. Hold BOOT (GPIO0 to GND).
 2. Press-release EN (RESET).
 3. Release BOOT after waiting for download appears.
-4. Power stays stable **3.3V** all the time, see [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]].
+4. Power stays stable **3.3V** all the time, see [[EN/02-Power-Supply/01-Power-Rails.en]].
 
 > [!tip] EN RC circuit
-> EN: 10 kOhm to 3.3V + 1 uF to GND + button to GND. Without the capacitor - random resets from WiFi dips. Current details: [[EN/03-Spozhivannya.en]].
+> EN: 10 kOhm to 3.3V + 1 uF to GND + button to GND. Without the capacitor - random resets from WiFi dips. Current details: [[EN/02-Power-Supply/03-Power-Consumption.en]].
 
 ## Common issues
 
@@ -79,7 +79,7 @@ Boot, Strapping, Reset - strapping table (Classic); modes; BOOT+EN sequence. Wit
 ## Full strapping table by chip
 
 > [!danger] Strapping is latched at the moment of reset!
-> Levels on strapping pins are captured by the EN edge. Whatever sat on the pin in the millisecond of reset is what gets remembered. Buttons/sensors on strapping pins are the main source of "flashes once, fails next time". Power must be stable 3.3V: [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]].
+> Levels on strapping pins are captured by the EN edge. Whatever sat on the pin in the millisecond of reset is what gets remembered. Buttons/sensors on strapping pins are the main source of "flashes once, fails next time". Power must be stable 3.3V: [[EN/02-Power-Supply/01-Power-Rails.en]].
 
 | Chip | Boot pin (LOW=download) | VDD_SPI / flash voltage | Other strapping | Trap |
 | --- | --- | --- | --- | --- |
@@ -103,7 +103,7 @@ Detailed Classic table (most common):
 | GPIO15 | Glitch | Normal | HIGH | 10 kOhm to 3.3V |
 | EN | Reset (chip held) | Running | HIGH | 10 kOhm to 3.3V + RC |
 
-GPIO overview and pull resistors: [[EN/03-GPIO/01-GPIO-oglyad.en]], [[EN/03-GPIO/02-Strapping-pini.en]], [[EN/03-GPIO/03-Pidtyaguvannya-rivni.en]].
+GPIO overview and pull resistors: [[EN/03-GPIO/01-GPIO-Overview.en]], [[EN/03-GPIO/02-Strapping-Pins.en]], [[EN/03-GPIO/03-Pull-Ups-Levels.en]].
 
 ## EN RC circuit with values
 
@@ -190,9 +190,9 @@ flowchart TB
 ## See also
 
 - [[EN/Home.en]]
-- [[EN/00-Start/03-Porivnyannya-chipiv.en]]
-- [[EN/03-GPIO/01-GPIO-oglyad.en]]
-- [[EN/03-GPIO/02-Strapping-pini.en]]
-- [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]]
+- [[EN/00-Start/03-Chip-Comparison.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/03-GPIO/02-Strapping-Pins.en]]
+- [[EN/02-Power-Supply/01-Power-Rails.en]]
 - [[EN/01-Hardware/01-ESP32-Classic.en]]
 - [[EN/01-Hardware/06-Flash-PSRAM.en]]

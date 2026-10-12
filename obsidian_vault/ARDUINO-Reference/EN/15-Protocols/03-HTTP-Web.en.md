@@ -163,7 +163,7 @@ Timeouts everywhere: a hung `connect` with no timeout hangs the node for good. F
 - [[EN/15-Protocols/02-MQTT-ESP.en|MQTT on ESP]] - alternative for frequent data.
 - [[EN/12-Comm-Modules/05-BT-Ethernet.en|BT and Ethernet]] - transport level.
 - [[EN/12-Comm-Modules/03-ESP8266-WiFi.en|WiFi through ESP8266]] - wireless transport.
-- [[EN/16-Proekti/01-Weather-Station.en|weather station]] - first cloud client.
+- [[EN/16-Projects/01-Weather-Station.en|weather station]] - first cloud client.
 - [[EN/09-Firmware/01-IDE-CLI.en|IDE and CLI setup]] - libraries and managers.
 
 ## Official sources

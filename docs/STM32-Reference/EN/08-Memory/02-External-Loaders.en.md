@@ -171,5 +171,5 @@ flowchart TB
 - [Home](../../../../STM32-Reference/Home.md)
 - [internal memory](../../../../STM32-Reference/UA/08-Pamyat/01-Flash-OTP-EEPROM.md)
 - [cards and outer flash](../../../../STM32-Reference/UA/04-Shini/06-SDMMC-QUADSPI.md)
-- [flashing via ST-Link](../../../../STM32-Reference/UA/09-Proshivka/03-ST-Link-Proshivka.md)
+- [flashing via ST-Link]
 - [firmware update](../../../../STM32-Reference/UA/15-Protokoli/02-DFU-Bootloader.md)

@@ -184,7 +184,7 @@ flowchart TB
     Proto --> OK
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why it is bad | Correct way |
 | --- | --- | --- | --- |
@@ -195,7 +195,7 @@ flowchart TB
 | 5 | Ampere currents through breadboard contacts | Contacts heat, melt, fall | Terminal blocks and solder for force chains |
 | 6 | Ground as a loop across the board | Sags and crosstalk between nodes | Star ground to one point near the input |
 
-## Official Sources
+## Official sources
 
 - [Arduino documentation - wiring and breadboard basics](https://docs.arduino.cc/built-in-examples/basics/) - base wiring-build examples for starters.
 - [Arduino UNO R3 - board wiring as a model](https://docs.arduino.cc/hardware/uno-rev3/) - decoupling, regulator, power routing.

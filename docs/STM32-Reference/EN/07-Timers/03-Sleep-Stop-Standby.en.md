@@ -184,7 +184,7 @@ void stop2_example(void)
 }
 ```
 
-Before sleep entry kill the extras: turn LEDs off, move pins to a safe state, clear flags. For pin setup see [alternate function mapping](../../../../STM32-Reference/UA/03-GPIO/02-AF-maping.md). After a Stop wake-up the fast oscillators must be set again, because they were off.
+Before sleep entry kill the extras: turn LEDs off, move pins to a safe state, clear flags. For pin setup see [alternate function mapping]. After a Stop wake-up the fast oscillators must be set again, because they were off.
 
 ```c
 void prepare_sleep_example(void)

@@ -275,6 +275,6 @@ Place the connector at the board edge, the ESD pack right behind it, route D plu
 - [[EN/09-Firmware/01-CubeIDE-CubeMX.en| CubeMX setup]]
 - [[EN/09-Firmware/02-HAL-LL.en| HAL and LL layers]]
 - [[EN/09-Firmware/03-ST-Link-Flashing.en| Flashing via ST-Link]]
-- [[03-GPIO/01-GPIO-rezhimi.en | GPIO modes]]
+- [[EN/03-GPIO/01-GPIO-Modes.en| GPIO modes]]
 - [[04-Interfaces/04-FDCAN.en | FDCAN bus]]
 - [[04-Interfaces/06-SDMMC-QUADSPI.en | Cards and external flash]]

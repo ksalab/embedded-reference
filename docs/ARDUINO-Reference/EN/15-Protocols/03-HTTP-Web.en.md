@@ -163,7 +163,7 @@ Timeouts everywhere: a hung `connect` with no timeout hangs the node for good. F
 - [MQTT on ESP](../../../../ARDUINO-Reference/UA/15-Protokoli/02-MQTT-ESP.md) - alternative for frequent data.
 - [BT and Ethernet](../../../../ARDUINO-Reference/UA/12-Moduli-zvyazku/05-BT-Ethernet.md) - transport level.
 - [WiFi through ESP8266](../../../../ARDUINO-Reference/UA/12-Moduli-zvyazku/03-ESP8266-WiFi.md) - wireless transport.
-- [weather station](../../../../ARDUINO-Reference/UA/16-Proekti/01-Meteostantsiya.md) - first cloud client.
+- [weather station] - first cloud client.
 - [IDE and CLI setup](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md) - libraries and managers.
 
 ## Official sources

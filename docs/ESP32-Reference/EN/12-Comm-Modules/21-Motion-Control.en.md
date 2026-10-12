@@ -5,6 +5,8 @@ tags: [esp32, motion, fluidnc, grbl-esp32, klipper, micro-ros, esp-drone, cnc, t
 category: Moduli
 lang: en
 date-created: 2026-09-29
+date: 2026-10-10
+original: 12-Moduli-zvyazku/21-Motion-Control.md
 ---
 
 # Motion Control on ESP32 - FluidNC / grbl_ESP32 / Klipper / micro-ROS / ESP-Drone
@@ -51,7 +53,7 @@ ESP-Drone (режими stabilize/height-hold/position-hold, flow-deck),
 ## FluidNC - головний контролер ЧПК
 
 FluidNC - наступник grbl_ESP32 from того ж автора (bdring). Архітектура
-об'єктна: маbus описується текстовим `config.yaml`, прошивка одна on всіх -
+Object-oriented: the machine is described by a text `config.yaml`, one firmware for all -
 перекомпіляція not потрібна. Підтримує до 6 координованих осей, подвійні
 мотори on вісь with авто-вирівнюванням порталу (auto-squaring), шпиндель PWM /
 RS485 Modbus / DAC 0-10 in / реле, лазер with компенсацією потужності from швидкості,
@@ -85,7 +87,7 @@ Telnet-подачу G-коду, OTA-оновлення and push-сповіщен
 | GPIO4 | UART TX до TMC2209 | RX драйверів (ланцюжок) | один TX on всіх: адреси 0/1/2 перемичками MS1/MS2 |
 | GPIO15 | UART RX from TMC2209 | TX драйверів via 1 кОм | резистор-суматор обов'язковий at ланцюжку! |
 | GPIO34 | X.limit | кінцевик X, NO до GND | вхід only-input, тільки pull-up, without виходу! |
-| GPIO35 | Y.limit | кінцевик Y | only-input, див. [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md) |
+| GPIO35 | Y.limit | кінцевик Y | only-input, див. [EN/03-GPIO/01-GPIO-Overview.en] |
 | GPIO32 | Z.probe | щуп Z | підтяжка до 3V3, екран from шпинделя |
 | GPIO27 | spindle PWM | MOSFET/лазер TTL | via [11-PowerMotion-2](../../../../ESP32-Reference/UA/11-Vivid/11-PowerMotion-2.md) |
 | GPIO13, GPIO5, GPIO23, GPIO19, GPIO18 | SD SPI | SD-карта | SCK/MOSI/MISO/CS how in [07-SD-SDIO](../../../../ESP32-Reference/UA/04-Shini/07-SD-SDIO.md) |
@@ -438,7 +440,7 @@ STM32-польотник (Betaflight/INAV)  <──CRS F/SBUS/MAVLink──>  ES
 
 Деталі CRSF-парсингу, інверсії SBUS and MAVLink-heartbeat - in ноті
 [12-RC-Protocols](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/12-RC-Protocols.md), таймінг DShot via RMT -
-in [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md).
+in [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en].
 
 ## Code 1 - FluidNC `config.yaml` (3 осі + TMC2209 + лазер/шпиндель)
 
@@ -842,11 +844,11 @@ void loop() {
 - [Home](../../../../ESP32-Reference/Home.md)
 - [11-PowerMotion-2](../../../../ESP32-Reference/UA/11-Vivid/11-PowerMotion-2.md)
 - [06-PCA9685-MG996R-28BYJ48-TMC2209](../../../../ESP32-Reference/UA/11-Vivid/06-PCA9685-MG996R-28BYJ48-TMC2209.md)
-- [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md)
+- [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)
 - [12-RC-Protocols](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/12-RC-Protocols.md)
 - [07-SD-SDIO](../../../../ESP32-Reference/UA/04-Shini/07-SD-SDIO.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
+- [EN/03-GPIO/01-GPIO-Overview.en]
 - [01-WiFi-STA-AP](../../../../ESP32-Reference/UA/05-Radio/01-WiFi-STA-AP.md)
 - [06-FreeRTOS-Patterns](../../../../ESP32-Reference/UA/09-Proshivka/06-FreeRTOS-Patterns.md)
 - [19-IMU-6-9DOF](../../../../ESP32-Reference/UA/10-Sensori/19-IMU-6-9DOF.md)

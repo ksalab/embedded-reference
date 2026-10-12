@@ -134,7 +134,7 @@ SIG --> LOC[Localized to one node]```
 - [Arduino Troubleshooting (Arduino)](https://support.arduino.cc/hc/en-us/sections/360003198300-Upload-issues) - fill, ports, drivers.
 - [Arduino Language Reference (Arduino)](https://docs.arduino.cc/language-reference/) - functions and behavior.
 
-## See also- [[Home | Home]]
+## See also- [[Home.en | Home]]
 - [[EN/99-Additions/01-Troubleshooting-FAQ.en| answers to questions]]
 - [[EN/99-Additions/02-Cheklisti-Datasheet.en| lists and datasheets]]
 - [[EN/17-Lab/01-Instruments.en| measuring devices]]

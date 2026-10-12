@@ -14,60 +14,60 @@ date: 2026-10-08
 
 ## Purpose
 
-Зinук and людино-машинний interface for ESP32: DFPlayer Mini - аinтономний MP3-плеєр with microSD (UART-команди play/volume/folder); MAX98357A - I2S ЦАП+underсилюinач 3 Вт for якandсного withinуку беwith codeуinання in DF; Nextion - сенсорний HMI-display withand сinоєю логandкою (ESP32 лише шле UART-команди); LCD2004 through PCF8574 - класичнand 4×20 симinолandin per I2C дinома дротами. Покриinає inсе: on пищалки-оwithinучки up to паnotлand керуinання.
+Sound and HMI for ESP32: DFPlayer Mini - standalone MP3 player with microSD (UART play/volume/folder commands); MAX98357A - I2S DAC+amplifier 3 W for quality sound without coding in DF; Nextion - touch HMI display with own logic (ESP32 only sends UART commands); LCD2004 via PCF8574 - classic 4x20 characters over I2C with two wires. Covers all: from buzzer-beep to control panel.
 
 ## Characteristics
 
-| module | Інтерфейс | power supply | Ключоinе праinило |
+| Module | Interface | power supply | Key rule |
 | --- | --- | --- | --- |
-| DFPlayer Mini | UART 9600 (RX/TX) + BUSY + ADKEY | VCC 5 in (3.3 in notстабandльно!), SPK± up to 3 Вт | RX through 1 кОм (5 in логandка!); microSD FAT32, папки 01/02, файли 001.mp3 |
-| MAX98357A I2S | BCLK + LRCK(WS) + DIN | VIN 5 in (is 3.3 in, but 5 in гучнandше) | GAIN: оголений=9 дБ, GND=12 дБ, VIN=15 дБ; SD=HIGH |
-| Nextion (2.4-7") | UART 9600/115200, TX↔RX перехресно | 5 in, 250-500 мА (underсinandтка!) | firmware through Nextion Editor + SD; команди with 0xFF 0xFF 0xFF |
-| LCD2004 + PCF8574 | I2C, address 0x27 або 0x3F | 5 in | Контраст trimmer at backpack; underсinandтка джампером |
-| Формат SD (DF) | microSD up to 32 ГБ, FAT16/32 | MP3/WAV | Імеto 0001.mp3 in /MP3 або /01/001.mp3 |
+| DFPlayer Mini | UART 9600 (RX/TX) + BUSY + ADKEY | VCC 5 V (3.3 V unstable!), SPK± up to 3 W | RX via 1 k (5 V logic!); microSD FAT32, folders 01/02, files 001.mp3 |
+| MAX98357A I2S | BCLK + LRCK(WS) + DIN | VIN 5 V (runs at 3.3 V, but louder at 5 V) | GAIN: open=9 dB, GND=12 dB, VIN=15 dB; SD=HIGH |
+| Nextion (2.4-7") | UART 9600/115200, TX↔RX crossed | 5 V, 250-500 mA (backlight!) | firmware via Nextion Editor + SD; commands end with 0xFF 0xFF 0xFF |
+| LCD2004 + PCF8574 | I2C, address 0x27 or 0x3F | 5 V | Contrast trimmer on backpack; backlight via jumper |
+| SD format (DF) | microSD up to 32 GB, FAT16/32 | MP3/WAV | Name 0001.mp3 in /MP3 or /01/001.mp3 |
 | libraries | DFRobotDFPlayerMini | ESP32-audioI2S, AudioTools | EasyNextionLibrary, LiquidCrystal_I2C |
 
-> DFPlayer RX - 5 in логandка: ESP32 TX (3.3 in) withаwithinичай читається, but от DFPlayer TX (5 in) → ESP32 RX треба through divider 2 кОм/1 кОм або though б 1 кОм послandup toinно. Найtoдandйнandше - TXS0108E, but практика with 1 кОм працює at коротких дротах.
+> DFPlayer RX is 5 V logic: ESP32 TX (3.3 V) usually reads fine, but DFPlayer TX (5 V) → ESP32 RX needs a 2 k/1 k divider or at least 1 k in series. Most reliable - TXS0108E, but 1 k works on short wires.
 
 ## Легенда pinandin модуля
 
 | pin | Тип | Куди | Note |
 | --- | --- | --- | --- |
-| DFPlayer VCC | power supply | 5 in | Пandк at стартand треку; 100 мкФ поруч |
+| DFPlayer VCC | power supply | 5 V | Peak at track start; 100 uF nearby |
 | DFPlayer GND | ground | GND | common |
 | DFPlayer RX | input UART 5 in | ESP32 TX through 1 кОм | 9600 бод; кадри 0x7E…0xEF |
-| DFPlayer TX | output UART 5 in | ESP32 RX through divider | Вandдпоinandдand/статуси |
-| DFPlayer SPK_1 / SPK_2 | output диtoмandк | Диtoмandк 4-8 Ом / 3 Вт | not at withемлю! Диференцandальний output |
-| DFPlayer BUSY | output, LOW=грає | GPIO (input) | Кandnotць треку = фронт HIGH |
-| DFPlayer IO_1/IO_2 (ADKEY) | input кнопок | Кнопки at GND through реwithистори | Апаратnot керуinання беwith UART |
+| DFPlayer TX | 5 V UART output | ESP32 RX via divider | Replies/statuses |
+| DFPlayer SPK_1 / SPK_2 | speaker output | 4-8 Ohm / 3 W speaker | not to ground! Differential output |
+| DFPlayer BUSY | output, LOW=playing | GPIO (input) | Track end = HIGH edge |
+| DFPlayer IO_1/IO_2 (ADKEY) | button input | Buttons to GND via resistors | Hardware control without UART |
 | MAX98357A VIN / GND | power supply | 5 in / GND | 3 Вт in 4 Ом; at хрипах - окремий PSU |
-| MAX98357A BCLK | input | GPIO26 | Бandтоinий клок I2S |
-| MAX98357A LRCK (WS) | input | GPIO25 | Вибandр каtoлу |
+| MAX98357A BCLK | input | GPIO26 | I2S bit clock |
+| MAX98357A LRCK (WS) | input | GPIO25 | Channel select |
 | MAX98357A DIN | input | GPIO22 | data |
-| MAX98357A GAIN | Конфandг | GND/VIN/NC | 12/15/9 дБ inandдпоinandдно |
-| MAX98357A SD | input | 3V3 (HIGH) | Shutdown; LOW = моinчання |
-| Nextion 5V / GND | power supply | 5 in / GND | 500 мА withапас (inеликand дandагоtoлand!) |
+| MAX98357A GAIN | Config | GND/VIN/NC | 12/15/9 dB respectively |
+| MAX98357A SD | input | 3V3 (HIGH) | Shutdown; LOW = mute |
+| Nextion 5V / GND | power supply | 5 V / GND | 500 mA margin (large diagonals!) |
 | Nextion TX | output 5 in | ESP32 RX (Serial2) | through divider/1 кОм |
-| Nextion RX | input 5 in | ESP32 TX | 3.3 in withаwithinичай читається |
-| LCD backpack SDA/SCL | I2C | GPIO21/22 | address скаnotром: 0x27 або 0x3F |
-| LCD backpack VCC/GND | power supply | 5 in / GND | Контраст - синandй trimmer |
+| Nextion RX | 5 V input | ESP32 TX | 3.3 V usually reads fine |
+| LCD backpack SDA/SCL | I2C | GPIO21/22 | address via scanner: 0x27 or 0x3F |
+| LCD backpack VCC/GND | power supply | 5 V / GND | Contrast - blue trimmer |
 
 ## Wiring diagram
 
 | ESP32 | module | Note |
 | --- | --- | --- |
-| GPIO17 (TX2) through 1 кОм | DFPlayer RX | Обмеження 5 in логandки |
+| GPIO17 (TX2) via 1 k | DFPlayer RX | 5 V logic limit |
 | GPIO16 (RX2) | DFPlayer TX (through divider 2к/1к) | Serial2 9600 |
-| GPIO4 | DFPlayer BUSY | input; LOW = inandдтinорення |
-| Диtoмandк 4 Ом | DFPlayer SPK_1/SPK_2 | Беwith спandльної withемлand! |
+| GPIO4 | DFPlayer BUSY | input; LOW = playing |
+| 4 Ohm speaker | DFPlayer SPK_1/SPK_2 | No common ground! |
 | GPIO26 | MAX98357A BCLK | I2S |
 | GPIO25 | MAX98357A LRCK | I2S |
-| GPIO22 | MAX98357A DIN | I2S (note: конфлandкт with LCD SCL - роwithnotсти!) |
+| GPIO22 | MAX98357A DIN | I2S (note: conflict with LCD SCL - split!) |
 | 3V3 | MAX98357A SD | HIGH = працює |
-| Диtoмandк | MAX98357A OUT± | 4 Ом / 3 Вт |
-| GPIO16/17 або окремий UART | Nextion TX/RX перехресно | not дandлити один UART with DFPlayer! (see ASCII) |
-| GPIO21 | LCD SDA | I2C 100 кГц up toстатньо |
-| GPIO22→ переnotсти | LCD SCL | if I2S withайняin 22 - LCD SCL at GPIO19 + сinandй I2C-скан |
+| Speaker | MAX98357A OUT± | 4 Ohm / 3 W |
+| GPIO16/17 or separate UART | Nextion TX/RX crossed | do not share one UART with DFPlayer! (see ASCII) |
+| GPIO21 | LCD SDA | I2C 100 kHz is enough |
+| GPIO22→ move | LCD SCL | if I2S occupies 22 - LCD SCL to GPIO19 + new I2C scan |
 
 ### ASCII-schem
 
@@ -100,7 +100,7 @@ graph LR
 ```
 
 ![](../../../../ESP32-Reference/assets/img/dfplayer-max98357-nextion-lcd-scheme.png)
-*Рис. DFPlayer at Serial2 through 1 кОм, MAX98357A per I2S, Nextion at окремому UART перехресно, LCD2004 per I2C with адресою 0x27/0x3F. Мandсце under фото - see ![](assets/README).*
+*Fig. DFPlayer on Serial2 via 1 k, MAX98357A over I2S, Nextion on separate UART crossed, LCD2004 over I2C at 0x27/0x3F. Space below photo - see ![](assets/README).*
 
 ## Code ESP-IDF
 
@@ -235,26 +235,26 @@ print("BUSY(LOW=play):", busy.value())
 
 ## Common issues
 
-| # | error | Симптом | Випраinлення |
+| # | error | Symptom | Fix |
 | --- | --- | --- | --- |
-| 1 | DFPlayer on 3.3 in | Клацає, ребутиться, not читає SD | Тandльки 5 in + 100 мкФ; пandк currentу at стартand треку |
-| 2 | RX DFPlayer беwithпоamongньо on ESP32 беwith 1 кОм | Глandтчand, withаinисання UART | 1 кОм послandup toinно; TX модуля → ESP32 through divider |
-| 3 | Непраinильнand andмеto файлandin at SD | Моinчить, BUSY not падає | FAT32, /MP3/0001.mp3 або /01/001.mp3, up to 32 ГБ |
-| 4 | SPK DFPlayer at withемлю/спandльний диtoмandк with MAX98357 | КЗ inиходу, смерть underсилюinача | Диференцandальний output - тandльки at сinandй диtoмandк |
-| 5 | GAIN MAX98357A at VIN at 4 Ом | Хрипи, клandпpinг, перегрandin | GAIN at GND (12 дБ) або NC (9 дБ); окремий PSU at хрипах |
-| 6 | Nextion and DFPlayer at одному UART | Конфлandкт кадрandin, смandття | Окремand UART: DFPlayer Serial2, Nextion Serial1 |
-| 7 | Nextion-команди беwith 0xFF 0xFF 0xFF | Екран andгнорує | Кожto команда withакandнчується трьома 0xFF |
-| 8 | not та I2C-address LCD (0x27 vs 0x3F) | Пandдсinandтка is, тексту nothas | I2C-скаnotр; + крутити trimmer контрасту |
-| 9 | I2S DIN and LCD SCL at одному GPIO22 | Один with дinох not працює | Роwithnotсти: I2S at 22, LCD at окрему пару (21/19) |
+| 1 | DFPlayer on 3.3 V | Clicks, reboots, no SD read | 5 V + 100 uF only; current peak at track start |
+| 2 | DFPlayer RX directly to ESP32 without 1 k | Glitches, UART hangs | 1 k in series; module TX → ESP32 via divider |
+| 3 | Wrong file names on SD | Silent, BUSY never drops | FAT32, /MP3/0001.mp3 or /01/001.mp3, up to 32 GB |
+| 4 | DFPlayer SPK to ground/shared speaker with MAX98357 | Output short, amp death | Differential output - only to its own speaker |
+| 5 | MAX98357A GAIN at VIN into 4 Ohm | Rattle, clipping, overheat | GAIN to GND (12 dB) or NC (9 dB); separate PSU on rattle |
+| 6 | Nextion and DFPlayer on one UART | Frame conflicts, garbage | Separate UARTs: DFPlayer Serial2, Nextion Serial1 |
+| 7 | Nextion commands without 0xFF 0xFF 0xFF | Screen ignores | Every command ends with three 0xFF |
+| 8 | Wrong LCD I2C address (0x27 vs 0x3F) | Backlight on, no text | I2C scan; + turn contrast trimmer |
+| 9 | I2S DIN and LCD SCL on one GPIO22 | One of two dead | Split: I2S on 22, LCD on separate pair (21/19) |
 
 ## Official sources
 
-- [DFPlayer Mini - сторandнка тоinару (DFRobot)](https://www.dfrobot.com/product-1121.html) - desc, Specs, жиinе фото.
-- [DFPlayer Mini wiki + скетчand (DFRobot)](https://wiki.dfrobot.com/dfr0299/) - команди, схеми, ex.и codeу.
-- [MAX98357A - жиinе фото (Adafruit)](https://www.adafruit.com/product/3006) - сторandнка тоinару with фото.
-- [Гайд MAX98357 I2S with коup toм (Adafruit Learn)](https://learn.adafruit.com/adafruit-max98357-i2s-class-d-mono-amp) - I2S-withinук, ex.и.
-- [Офandцandйний site Nextion (documentation, редактор)](https://nextion.tech/editor_guide/) - andнструкцandї, HMI-редактор.
-- [ESP-IDF I2S - офandцandйto documentation (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/i2s.html) - API шини I2S.
+- [DFPlayer Mini - product page (DFRobot)](https://www.dfrobot.com/product-1121.html) - desc, specs, live photo.
+- [DFPlayer Mini wiki + sketches (DFRobot)](https://wiki.dfrobot.com/dfr0299/) - commands, schematics, code ex.
+- [MAX98357A - live photo (Adafruit)](https://www.adafruit.com/product/3006) - product page with photo.
+- [MAX98357 I2S guide with code (Adafruit Learn)](https://learn.adafruit.com/adafruit-max98357-i2s-class-d-mono-amp) - I2S sound, ex.
+- [Official Nextion site (documentation, editor)](https://nextion.tech/editor_guide/) - instructions, HMI editor.
+- [ESP-IDF I2S - official documentation (Espressif)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/i2s.html) - I2S bus API.
 
 ## See also
 
@@ -264,4 +264,4 @@ print("BUSY(LOW=play):", busy.value())
 - [ Interrupts / PWM]
 - [ Power Supply Rails]
 - [Home](../../../../ESP32-Reference/Home.md)
-- [01-Timeri-MCPWM-PCNT-RMT](../../../../ESP32-Reference/UA/07-Timeri-Son/01-Timeri-MCPWM-PCNT-RMT.md)
+- [EN/07-Timers/01-Timers-MCPWM-PCNT-RMT.en]

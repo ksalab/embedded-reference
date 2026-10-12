@@ -263,7 +263,7 @@ print("Готово: скопіюйте .raw на ПК → Edge Impulse Data Acq
 
 - [Edge Impulse - документація (датасет → impulse → deploy)](https://docs.edgeimpulse.com/docs/) - гайди збору даних, EON Tuner, deploy як Arduino-lib/IDF-компонент.
 - [LiteRT for Microcontrollers (ex-TFLite-Micro) - micro_speech / person detection](https://www.tensorflow.org/lite/microcontrollers) - арена пам'яті, квантування int8, приклади.
-- [ESP-DL - нейроінференс Espressif (EfficientNet, YOLO, .espdl)](https://github.com/espressif/esp-dl) - квантування esp-ppq, Model Zoo, dual-core.
+- [ESP-DL - нейроінференс Espressif (EfficientNet, YOLO,.espdl)](https://github.com/espressif/esp-dl) - квантування esp-ppq, Model Zoo, dual-core.
 - [ESP-WHO - детекція/розпізнавання облич на камері](https://github.com/espressif/esp-who) - асинхронний пайплайн, плати S3-EYE/Korvo-2.
 - [ESP-SR - WakeNet «Hi ESP», MultiNet-команди, AFE (AEC/VAD)](https://github.com/espressif/esp-sr) - моделі wn10_hiesp/mn7, мікрофонні матриці.
 

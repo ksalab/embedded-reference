@@ -38,7 +38,7 @@ ESP32 вміє не тільки мигати, а й кричати: «прот�
 | --- | --- | --- | --- | --- | --- |
 | Реєстрація | @BotFather → токен | номер у контактах CallMeBot, apikey | ключ maker.ifttt.com + APP/USER keys | без реєстрації | акаунт + APP_KEY/SECRET |
 | Протокол | HTTPS `api.telegram.org` | HTTPS GET 1 запитом | HTTPS POST JSON | UDP discovery + HTTP (LAN) | WebSocket/MQTT TLS до хмари |
-| Прийом команд | long-poll `getUpdates` | тільки відправка | через IFTTT-аплети | голос «turn on/off/set %» | голос + застосунок |
+| Прийом команд | long-poll `getUpdates` | тільки відправка | через IFTTT-аплети | голос «turn on/off/set%» | голос + застосунок |
 | Фото/файли | `sendPhoto` з камери! | текст (медіа - платно) | Pushover attachment 5 МБ | ні | камера (окремі приклади) |
 | Вартість | безкоштовно | free personal / TextMeBot платно | IFTTT free-ліміти, Pushover разовий платіж | безкоштовно | 3 девайси free, далі $/рік |
 | Затримка | 1-3 с | 5-30 с (черга) | 2-15 с | < 1 с (LAN) | 1-3 с |
@@ -256,7 +256,7 @@ Pushbullet - простіше (1 токен, канали), але без emerge
 
 ## Alexa через fauxmoESP + Sinric Pro, Google Home
 
-fauxmoESP - локальна емуляція ламп для Alexa, інтернет НЕ потрібен. Працює так: ESP32 прикидається Philips Hue (v3+, раніше - Belkin WeMo), колонка Echo знаходить її в LAN і шле `turn on/off/set %`.
+fauxmoESP - локальна емуляція ламп для Alexa, інтернет НЕ потрібен. Працює так: ESP32 прикидається Philips Hue (v3+, раніше - Belkin WeMo), колонка Echo знаходить її в LAN і шле `turn on/off/set%`.
 
 > [!note] Історична деталь: до v3.0 fauxmoESP емулював Belkin WeMo, з v3.0 - Philips Hue (дає димування «set to 50%»). У старих гайдах ще пишуть «WeMo» - суть та сама: локальний discovery без хмари.
 

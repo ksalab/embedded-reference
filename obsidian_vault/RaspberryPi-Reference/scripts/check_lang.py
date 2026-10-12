@@ -73,7 +73,7 @@ def main() -> int:
         for ln in body_lines(text):
             for lm in LINK.finditer(ln):
                 tgt = split_target(lm.group(1))
-                if not tgt or tgt.startswith("assets/") or tgt.startswith("scripts/") or tgt.endswith(".png"):
+                if not tgt or tgt.startswith("assets/") or tgt.startswith("scripts/") or tgt.startswith("_templates/") or tgt.endswith(".png"):
                     continue
                 pp = pathlib.PurePosixPath(tgt)
                 stem = pp.stem

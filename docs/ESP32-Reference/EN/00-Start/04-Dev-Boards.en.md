@@ -25,7 +25,7 @@ date: 2026-10-08
 # DevKit boards - choice and power
 
 > [!tip] What to buy in 2026
-> First board - **ESP32-DevKitC V4 / DOIT V1 (WROOM-32)** for compatibility. Second - **ESP32-S3-DevKitC-1** for camera/displays. Third - **C3 SuperMini** for tiny sensors. Crystal comparison - [Chip comparison](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md), terms - [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md), flashing - [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md).
+> First board - **ESP32-DevKitC V4 / DOIT V1 (WROOM-32)** for compatibility. Second - **ESP32-S3-DevKitC-1** for camera/displays. Third - **C3 SuperMini** for tiny sensors. Crystal comparison - [ Chip comparison], terms - [ Glossary], flashing - [ Environment choice].
 >
 > [!warning] 5V on VIN/USB only!
 > On a DevKit the `5V/VIN` pin is a power input. All GPIO, TX/RX, SDA/SCL are **3.3V**. Wiring a 5V sensor signal into GPIO kills the pin or the chip. Use the [level-matching template](../../../../ESP32-Reference/_templates/Component-Template.md).
@@ -41,7 +41,7 @@ date: 2026-10-08
 | ESP32-C3 SuperMini | C3FN4 | Native CDC | USB-C | No | 22x18 mm, 4 mA deep-sleep |
 | Generic C3 DevKitM | C3-MINI-1 | Native CDC | Micro-USB | No | Cheap, weaker LDO |
 
-Reference map - [Home map](../../../../ESP32-Reference/Home.md), how to search - [How to use it](../../../../ESP32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md).
+Reference map - [Home map](../../../../ESP32-Reference/Home.md), how to search - [ How to use it].
 
 ## Power and USB-UART
 
@@ -80,7 +80,7 @@ If auto-reset fails (cheap boards), enter the mode by hand using the table above
 
 ## Typical power wiring
 
-> [!example] Photo/schematic: ![](../../../../ESP32-Reference/assets/img/devkit-boards-compare.png)
+> [!example] Photo/schematic:![](../../../../ESP32-Reference/assets/img/devkit-boards-compare.png)
 > Baseline: DevKit power from USB + external 5V sensor:
 
 | ESP32 DevKit | External module | Note |
@@ -94,10 +94,10 @@ If auto-reset fails (cheap boards), enter the mode by hand using the table above
 ## See also
 
 - [Home map](../../../../ESP32-Reference/Home.md)
-- [How to use it](../../../../ESP32-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md)
-- [Glossary](../../../../ESP32-Reference/UA/00-Start/02-Glosariy.md)
-- [Chip comparison](../../../../ESP32-Reference/UA/00-Start/03-Porivnyannya-chipiv.md)
-- [Environment choice](../../../../ESP32-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ How to use it]
+- [ Glossary]
+- [ Chip comparison]
+- [ Environment choice]
 - [Component template](../../../../ESP32-Reference/_templates/Component-Template.md)
 - [DOIT DevKitV1 / NodeMCU-32S](../../../../ESP32-Reference/UA/14-Devboards/01-DOIT-DevKitV1-NodeMCU32S.md)
 - [02-Wemos-D1-R32](../../../../ESP32-Reference/UA/14-Devboards/02-Wemos-D1-R32.md)

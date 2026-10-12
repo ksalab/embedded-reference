@@ -14,22 +14,22 @@ date: 2026-10-08
 
 ## Purpose
 
-monochrome OLED 0.96″ 128×64 at Controllerand SSD1306 - standard display for debug, menus, мandнand-дашбордandin, clocks, touch nodes. I2C-interface (2 wires), power supply 3.3 in, libraries U8g2 / Adafruit_SSD1306 / esp-SSD1306. not burns quickly at moderate brightness; for static images for years - enable screensaver/invert.
+Monochrome OLED 0.96″ 128x64 on SSD1306 controller - standard display for debug, menus, mini-dashboards, clocks, touch nodes. I2C interface (2 wires), 3.3 V power, U8g2 / Adafruit_SSD1306 / esp-SSD1306 libraries. Does not burn in quickly at moderate brightness; for static images over years - enable screensaver/invert.
 
 ## Characteristics
 
 | Parameter | value |
 | --- | --- |
 | controller | SSD1306 (less often SH1106 - different driver!) |
-| resolution | 128×64, mono (white/blue/жоinто-blue) |
+| resolution | 128x64, mono (white/blue/yellow-blue) |
 | Інтерфейс | I2C, address 0x3C (typically) / 0x3D (jumper) |
-| power supply | 3.3-5 in (модулand with LDO/charge-pump; логandка 3.3 in OK) |
-| current | ~15-25 мА (depends on кandлькостand white pixels) |
+| power supply | 3.3-5 V (module with LDO/charge-pump; 3.3 V logic OK) |
+| current | ~15-25 mA (depends on white pixel count) |
 | buffer frame | 1024 байти (128×64/8) - in ОЗП controller's |
-| speed | I2C 400 кГц → ~10-20 fps поinного frame |
+| speed | I2C 400 kHz → ~10-20 fps full frame |
 | lifetime | ~10 000 hours up to noticeable burn-in |
 
-> SH1106 inиглядає same, but has 132×64 пам'ять withand shiftом 2 px - with driverом SSD1306 img «with'їжджає». check маркуinання та select driver/constructor.
+> SH1106 looks the same, but has 132x64 memory with a 2 px shift - with the SSD1306 driver the image slides off. Check the marking and select driver/constructor.
 
 ## Pinout
 
@@ -37,10 +37,10 @@ monochrome OLED 0.96″ 128×64 at Controllerand SSD1306 - standard display for 
 | --- | --- | --- |
 | VCC | 3.3 in (або 5 in, if is LDO) | recommended 3.3 in on ESP32 |
 | GND | ground | common ground |
-| SCL | I2C clock | GPIO22 + pull-up (is at модулand) |
-| SDA | I2C data | GPIO21 + pull-up (is at модулand) |
+| SCL | I2C clock | GPIO22 + pull-up (is on module) |
+| SDA | I2C data | GPIO21 + pull-up (is on module) |
 
-SPI-inерсandї (7 pin: CS/DC/RES/DIN/CLK): шinидшand, but withаймають 5 GPIO - see [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md).
+SPI versions (7 pin: CS/DC/RES/DIN/CLK): faster, but occupy 5 GPIO - see [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md).
 
 ## Wiring diagram
 
@@ -51,7 +51,7 @@ SPI-inерсandї (7 pin: CS/DC/RES/DIN/CLK): шinидшand, but withаймаю�
 | GPIO22 | SCL | hardware I2C0, up to 400 кГц-1 МГц |
 | GPIO21 | SDA | hardware I2C0 |
 
-check адреси: `I2C.scan()` has show `0x3C`. if 0x3D - pass адресу in constructor. Дinа дисплеї: один with адресою 0x3C, second resolder at 0x3D (jumper SA0) або second I2C-порт.
+Check addresses: `I2C.scan()` should show `0x3C`. If 0x3D - pass address in constructor. Two displays: one with address 0x3C, second resoldered to 0x3D (jumper SA0) or second I2C port.
 
 ### ASCII-schem
 
@@ -76,8 +76,8 @@ graph LR
   ESP32 -->|GND| GNDM["OLED GND"]
 ```
 
-![](../../../../ESP32-Reference/assets/img/OLED-SSD1306-I2C.png)
-*Рис. OLED SSD1306 - bus I2C 400 кГц, address 0x3C, power supply 3V3. Мandсце under фото - see ![](assets/README).*
+![](../../../../ESP32-Reference/assets/img/oled-ssd1306-i2c.png)
+*Fig. OLED SSD1306 - I2C bus 400 kHz, address 0x3C, 3V3 power. Space below photo - see ![](assets/README).*
 
 ## Code ESP-IDF
 
@@ -163,20 +163,20 @@ oled.show()
 
 ## Common issues
 
-1. **SH1106 instead SSD1306** → img withand shiftом/смandття. Використати driver SH1106 (`Adafruit_SH110X`, `U8G2_SH1106_...`).
-2. **not та address (0x3D)** → чорний екран. Скануinати I2C, pass праinильну адресу in `begin()`/constructor.
-3. **power supply 5 in at module беwith LDO** → перегрandin/output with ладу. Переinandрити toяinнandсть стабandлandwithатора; withа withамоinчуinанням 3.3 in.
-4. **I2C 100 кГц + поinний редиwithайн щоframe** → мерехтandння. Пandдняти up to 400 кГц, оноinлюinати тandльки withмandnotнand рядки.
-5. **Забутий `display.display()` / `OLED.show()`** → buffer not inиinодиться. Виклик show пandсля кожного frame.
-6. **Статичto img for years** → burn-in. Перandодично andнinертуinати, гасити (`ssd1306_display_off` / `display.ssd1306_command(SSD1306_DISPLAYOFF)`), withниwithити контраст.
-7. **Доinгand wires SDA/SCL** → артефакти. Короткand wires, pull-up 4.7 кОм, 100 нФ withа powerм бandля дисплея.
+1. **SH1106 instead of SSD1306** → image shifted/garbled. Use SH1106 driver (`Adafruit_SH110X`, `U8G2_SH1106_...`).
+2. **Wrong address (0x3D)** → black screen. Scan I2C, pass correct address to `begin()`/constructor.
+3. **5 V power to module without LDO** → overheat/failure. Check regulator presence; default to 3.3 V.
+4. **I2C 100 kHz + full redraw every frame** → flicker. Raise to 400 kHz, update only changed lines.
+5. **Forgotten `display.display()` / `OLED.show()`** → buffer is not pushed. Call show after every frame.
+6. **Static image for years** → burn-in. Periodically invert, blank (`ssd1306_display_off` / `display.ssd1306_command(SSD1306_DISPLAYOFF)`), lower contrast.
+7. **Long SDA/SCL wires** → artifacts. Short wires, 4.7 k pull-up, 100 nF across power near display.
 
 ## Official sources
 
-- SSD1306 Datasheet (Solomon Systech) - `переinandрити inручну`.
-- [OLED 0.96″ - жиinе фото (Adafruit)](https://www.adafruit.com/product/326) - сторandнка тоinару with фото.
-- [Туторandал OLED + ESP32 with коup toм (RNT)](https://randomnerdtutorials.com/esp32-SSD1306-OLED-display-arduino-ide/) - Adafruit_SSD1306, ex.и.
-- [Гайд monoних OLED with коup toм (Adafruit Learn)](https://learn.adafruit.com/monochrome-OLED-breakouts) - SSD1306/SH1106, libraries.
+- SSD1306 Datasheet (Solomon Systech) - `check manually`.
+- [OLED 0.96″ - live photo (Adafruit)](https://www.adafruit.com/product/326) - product page with photo.
+- [OLED + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-SSD1306-OLED-display-arduino-ide/) - Adafruit_SSD1306, examples.
+- [Monochrome OLED guide with code (Adafruit Learn)](https://learn.adafruit.com/monochrome-OLED-breakouts) - SSD1306/SH1106, libraries.
 
 ## See also
 

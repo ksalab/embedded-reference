@@ -206,8 +206,8 @@ Microsecond-level time delays are recalibrated because of the different frequenc
 ## See also
 
 - [[Home.en]]
-- [[EN/00-Start/04-Devkit-plati.en|board overview]]
-- [[EN/00-Start/05-Vibir-seredovischa.en|environment choice]]
+- [[EN/00-Start/04-Dev-Boards.en|board overview]]
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]]
 - [[EN/01-Hardware/02-Nano-Mega.en|compact and pins]]
 - [[EN/01-Hardware/04-Uno-R4.en|modern Uno]]
 - [[EN/09-Firmware/01-IDE-CLI.en|environment and CLI]]

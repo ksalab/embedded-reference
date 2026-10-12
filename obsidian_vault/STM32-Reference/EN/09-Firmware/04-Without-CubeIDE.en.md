@@ -166,5 +166,5 @@ openocd -f interface/stlink.cfg -f target/stm32f1x.cfg \
 
 - [[Home.en]]
 - [[EN/09-Firmware/01-CubeIDE-CubeMX.en|CubeIDE]]
-- [[EN/09-Firmware/03-ST-Link-Proshivka.en|ST-Link]]
-- [[EN/00-Start/05-Vibir-seredovischa.en|environment choice]]
+- [[EN/09-Firmware/03-ST-Link-Flashing.en|ST-Link]]
+- [[EN/00-Start/05-Environment-Choice.en|environment choice]]

@@ -49,7 +49,7 @@ Requirements:
 
 | Component | Reference note | Price, approx. |
 | --- | --- | --- |
-| ESP32 DevKit (WROOM-32) | [[00-Start/04-Devkit-plati.en | DevKit]] | $6 |
+| ESP32 DevKit (WROOM-32) | [[EN/00-Start/04-Dev-Boards.en| DevKit]] | $6 |
 | RC522 module 13.56 MHz | [[12-Comm-Modules/01-RC522-RFID.en | RC522]] | $2 |
 | Relay module 5V (opto, LOW trigger) | [[11-Vivid/03-NeoPixel-Servo-Rele-MOSFET.en | Relay]] | $2 |
 | Electric lock 12V + 12V PSU 2A | [[11-Vivid/07-BTS7960-L9110S-SSR-Solenoid.en | Power]] | $20 |

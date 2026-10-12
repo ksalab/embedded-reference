@@ -225,4 +225,4 @@ flowchart TB
 - [Home](../../../../ARDUINO-Reference/Home.md)
 - [serial port](../../../../ARDUINO-Reference/UA/04-Shini/01-UART.md)
 - [industrial protocol](../../../../ARDUINO-Reference/UA/15-Protokoli/01-Modbus.md)
-- [weather node](../../../../ARDUINO-Reference/UA/16-Proekti/01-Meteostantsiya.md)
+- [weather node]

@@ -15,7 +15,7 @@ date: 2026-10-09
 *Fig. Three buses off one header: I2C - sensors, SPI - displays, UART - console and modems; speeds and pull-ups.*
 
 > [!tip] What this note is
-> Bus practical minimum: enable, find the device, push data. I2C - sensors, SPI - displays/ADC, UART - console/modems/GPS. Base: [header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md), [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md).
+> Bus practical minimum: enable, find the device, push data. I2C - sensors, SPI - displays/ADC, UART - console/modems/GPS. Base: [header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md), [ OS setup].
 
 ## 1. Goal
 
@@ -137,8 +137,8 @@ Packages: `i2c-tools`, `python3-spidev`, `python3-serial`. Turn the console off 
 
 - [header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md) - bus pins.
 - [logic analyzer](../../../../RaspberryPi-Reference/UA/04-Shini/02-Logic-Analyzer.md) - bus debugging.
-- [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md) - config.txt and groups.
-- [BME280 climate](../../../../RaspberryPi-Reference/UA/10-Sensori/01-BME280-Klimat.md) - first I2C sensor.
+- [ OS setup] - config.txt and groups.
+- [ BME280 climate] - first I2C sensor.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## 9.1 Bus address book

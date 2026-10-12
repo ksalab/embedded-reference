@@ -200,5 +200,5 @@ The chain reads top to bottom without breaks. Code rests on a library, the libra
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [reference guide](../../../../ARDUINO-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md)
-- [board comparison](../../../../ARDUINO-Reference/UA/00-Start/03-Porivnyannya-plat.md)
+- [ reference guide]
+- [ board comparison]

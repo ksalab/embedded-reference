@@ -4,6 +4,7 @@ title: Глибокий тулчейн IDF, PlatformIO та MicroPython
 tags: [esp32, esp-idf, component-manager, cmake, sdkconfig, platformio, micropython, ulab, asyncio]
 category: Proshivka
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Глибокий тулчейн: IDF Components, PlatformIO, MicroPython
@@ -37,7 +38,7 @@ date-created: 2026-09-28
 | `example/cmp: "^1.2.3"` | `>=1.2.3, <2.0.0` (рекомендовано) |
 | `example/cmp: "~1.2.3"` | `>=1.2.3, <1.3.0` |
 | `example/cmp: "<=3.3.3"` | Не новіша за 3.3.3 |
-| `test_component: {git: ..., path: ...}` | Залежність з Git-монорепо |
+| `test_component: {git:..., path:...}` | Залежність з Git-монорепо |
 
 Код ESP-IDF - свій компонент `components/sensor_hub/idf_component.yml`:
 
@@ -144,7 +145,7 @@ project(weather-station)
 | Файл | Мінімум |
 | --- | --- |
 | Кореневий `CMakeLists.txt` | 3 рядки: `cmake_minimum_required` + `include(project.cmake)` + `project()` |
-| `main/CMakeLists.txt` | `idf_component_register(SRCS ... REQUIRES ...)` |
+| `main/CMakeLists.txt` | `idf_component_register(SRCS... REQUIRES...)` |
 | `components/foo/CMakeLists.txt` | Те саме + `INCLUDE_DIRS` |
 | `Kconfig` / `Kconfig.projbuild` | Опційно, пункти `menuconfig` |
 | `project_include.cmake` | Рідко, глобальні прапорці до конфігурації |
@@ -543,7 +544,7 @@ esp_err_t sensor_init(sensor_t *dev) {
 | `set-target` зніс конфіг | Нормальна поведінка, `sdkconfig.old` | Відновити потрібні рядки в `sdkconfig.defaults.*` |
 | `REQUIRES` циклічна залежність A↔B | Обидва інклудять публічні `.h` одне одного | Виділити спільне в компонент C, або `PRIV_REQUIRES` + forward-decl |
 | PIO: `board not found: esp32-s3-devkitc-1` | Стара платформа | `platform = espressif32 @ 6.7.0` або нове ім'я плати з реєстру |
-| PIO: `partition too big` | Кастомна CSV не підхоплена | `board_build.partitions = ...csv`, `pio run -t erase` |
+| PIO: `partition too big` | Кастомна CSV не підхоплена | `board_build.partitions =...csv`, `pio run -t erase` |
 | PIO OTA: `No response` | Не той порт/пароль, плата в sleep | `upload_port = *.local`, `--auth`, розбудити плату |
 | MP: `ImportError: no module ulab` | Стокова прошивка без ulab | Кастомний білд або фолбек на чистий Python |
 | MP: `ENOMEM` після frozen+mpy | Забагато модулів у RAM | Frozen для ядра, `.mpy` для решти, прибрати дублікати з `/lib` |

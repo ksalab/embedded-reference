@@ -4,6 +4,7 @@ title: Промислові дискретні входи ESP32 - індукти
 tags: [esp32, proximity, inductive, capacitive, photoelectric, npn, pnp, optocoupler, pc817, industrial, dry-contact, isolated-input]
 category: Moduli
 date-created: 2026-09-29
+date: 2026-09-29
 ---
 
 # Промислові дискретні входи: індуктивні LJ12A3, ємнісні, фотоелектричні E18-D80NK, NPN/PNP, PC817 для 12/24 В, сухий контакт, ізольовані 8ch

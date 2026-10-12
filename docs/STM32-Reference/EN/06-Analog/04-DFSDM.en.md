@@ -239,7 +239,7 @@ flowchart TB
     Sar --> DoneSar[Timer trigger and averaging]
 ```
 
-## Common Issues
+## Common issues
 
 | # | Issue | Why bad | Fix |
 | --- | --- | --- | --- |
@@ -250,7 +250,7 @@ flowchart TB
 | 5 | Waiting for code to guard a short | Code arrives late, switches burn | Separate stream detector straight to timer stop |
 | 6 | Filter picked for a plain knob | Complexity with no gain, slow response | Keep the plain converter for batteries and knobs |
 
-## Official Sources
+## Official sources
 
 - [Sigma-delta filter application guide (ST)](https://www.st.com/resource/en/application_note/an4990-digital-filter-for-sigma-delta-modulators-dfsdm--stmicroelectronics.pdf) - filters, decimation, detector and access link.
 - [Module description in STM32L4 reference guide (ST)](https://www.st.com/en/microcontrollers-microprocessors/stm32l476rg.html) - channels, order, interrupts and registers.

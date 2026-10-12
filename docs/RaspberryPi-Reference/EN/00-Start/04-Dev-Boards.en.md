@@ -15,7 +15,7 @@ date: 2026-10-08
 *Fig. Mandatory minimum: board + official PSU + A2 SD + cooling; then - camera, display, HAT.*
 
 > [!tip] What this note is
-> Purchase checklist: what is mandatory, what is advised, what to skip. Half of "dead" Pi boards - savings on PSU and SD card. After purchase - [environment](../../../../RaspberryPi-Reference/UA/00-Start/05-Vibir-seredovischa.md) and flashing. Boards in detail: Pi 5 flagship.
+> Purchase checklist: what is mandatory, what is advised, what to skip. Half of "dead" Pi boards - savings on PSU and SD card. After purchase - [environment] and flashing. Boards in detail: Pi 5 flagship.
 
 ## 1. Goal
 
@@ -71,7 +71,7 @@ Official PSU - not marketing: holds 5.1V at peak, cheap ones sag to 4.6V and rai
 | --- | --- | --- | --- |
 | Camera Module 3 | 12 MP, autofocus | ArduCam analogues | CSI camera |
 | AI Camera | Sony IMX500 + Hailo | - | CSI camera |
-| Display 7" DSI | 800x480, touch | Waveshare analogues | [displays](../../../../RaspberryPi-Reference/UA/11-Vivid/01-DSI-HDMI-Displeyi.md) |
+| Display 7" DSI | 800x480, touch | Waveshare analogues | [ displays] |
 | Display 5" DSI | compact | - | displays |
 
 CSI/DSI flexes are fragile: 90-degree bend near the connector - a break. A spare flex in the bag saves a week.
@@ -140,11 +140,11 @@ Next level after the analyzer:
 
 ## 9. Related notes
 
-- [board comparison](../../../../RaspberryPi-Reference/UA/00-Start/03-Porivnyannya-plate.md) - board choice.
-- [Pi 5 flagship](../../../../RaspberryPi-Reference/UA/14-Devboards/01-Pi5-Flagman.md) - board in detail.
+- [board comparison] - board choice.
+- [Pi 5 flagship] - board in detail.
 - [USB-C power](../../../../RaspberryPi-Reference/UA/02-Zhivlennya/01-USB-C-PD.md) - power demands.
 - [memory media](../../../../RaspberryPi-Reference/UA/08-Pamyat/01-SD-eMMC-NVMe.md) - SD and NVMe.
-- [CSI camera](../../../../RaspberryPi-Reference/UA/10-Sensori/06-Kamera-CSI.md) - cameras in detail.
+- [CSI camera] - cameras in detail.
 
 ## Official sources
 

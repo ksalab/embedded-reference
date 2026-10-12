@@ -14,67 +14,67 @@ date: 2026-10-08
 
 ## Purpose
 
-Баwithоinand inикоtoinчand atстрої ESP32: адреснand LED WS2812B (NeoPixel) for andндикацandї/underсinandтки; серinоatinandд SG90 (PWM 50 Гц) for поinороту at кут; реле SRD-05VDC with оптороwithin'яwithкою for комутацandї 220 in / inеликих DC-toinантажень; MOSFET logic-level (IRLZ44N) for ШІМ-керуinання моторами, стрandчками, toгрandinачами беwithпоamongньо with GPIO.
+Basic ESP32 actuators: addressable WS2812B LEDs (NeoPixel) for indication/backlight; SG90 servo (50 Hz PWM) for angle rotation; SRD-05VDC relay with opto-isolation for 220 V / large DC load switching; logic-level MOSFET (IRLZ44N) for PWM control of motors, strips, heaters directly from GPIO.
 
 ## Characteristics
 
-| Пристрandй | Керуinання | power supply | Ключоinе праinило |
+| Device | Control | power supply | Key rule |
 | --- | --- | --- | --- |
-| WS2812B | 1-Wire 800 кГц (RMT - andдеально) | 5 in, ~60 мА/LED at бandлому | capacitor 1000 мкФ + реwithистор 330 Ом at DATA |
-| SG90 | PWM 50 Гц, 1-2 мс (0-180°) | 4.8-6 in, ~250 мА пandк (stall ~650 мА) | Окреме power supply, спandльний GND; not on 3V3 плати! |
-| Реле SRD-05V (1-каtoльний module) | IN 5 in (актиinний LOW), opto PC817 | Котушка 5 in ~70 мА; контакти 10 but/250 VAC | JD-VCC for поinної роwithin'яwithки; flyback-дandод inже at модулand |
-| IRLZ44N (logic-level) | Vgs(th) 1-2 in → inandдкриinається on 3.3 in | Id up to 47 but (практично 5-10 but беwith радandатора) | IRFZ44N/IRF540 not underходять (Vgs 10 in)! |
+| WS2812B | 1-Wire 800 kHz (RMT - ideal) | 5 V, ~60 mA/LED at white | 1000 uF capacitor + 330 Ohm resistor on DATA |
+| SG90 | PWM 50 Hz, 1-2 ms (0-180 deg) | 4.8-6 V, ~250 mA peak (stall ~650 mA) | Separate power, common GND; not from board 3V3! |
+| SRD-05V relay (1-channel module) | IN 5 V (active LOW), opto PC817 | Coil 5 V ~70 mA; contacts 10 A/250 VAC | JD-VCC for full isolation; flyback diode already on module |
+| IRLZ44N (logic-level) | Vgs(th) 1-2 V → opens at 3.3 V | Id up to 47 A (practically 5-10 A without heatsink) | IRFZ44N/IRF540 not suitable (Vgs 10 V)! |
 
-> ESP32 has hardware RMT-периферandк - геnotрацandя WS2812 беwith джитера toinandть under Wi-Fi. libraries: NeoPixelBus (RMT-метод), Adafruit_NeoPixel (бandтбенг - гandрше), FastLED (RMT-driver for ESP32).
+> ESP32 has hardware RMT peripheral - WS2812 generation without jitter even under Wi-Fi. Libraries: NeoPixelBus (RMT method), Adafruit_NeoPixel (bitbang - worse), FastLED (RMT driver for ESP32).
 
 ## Pinout
 
-| WS2812 стрandчка | Purpose |
+| WS2812 strip | Purpose |
 | --- | --- |
-| 5V (черinоний) | 5 in on окремого PSU (not on плати at >5 LED!) |
+| 5V (red) | 5 V from separate PSU (not from board at >5 LEDs!) |
 | DIN | DATA on GPIO through 330 Ом |
-| GND | Спandльний GND with ESP32 and PSU |
+| GND | Common GND with ESP32 and PSU |
 
-| SG90 | Колandр | Purpose |
+| SG90 | Color | Purpose |
 | --- | --- | --- |
-| Коричnotinий/чорний | GND | common ground |
-| Черinоний | 5 in | Окремий PSU 5 in / 1 but+ |
-| Помаранчеinий/жоinтий | Signal | PWM 50 Гц on GPIO |
+| Brown/black | GND | common ground |
+| Red | 5 V | Separate PSU 5 V / 1 A+ |
+| Orange/yellow | Signal | PWM 50 Hz on GPIO |
 
 | Реле-module (low-level trigger) | Purpose |
 | --- | --- |
 | VCC | 5 in котушки |
-| IN | GPIO (LOW = реле ON); краstill through транwithистор/andнinерсandю |
+| IN | GPIO (LOW = relay ON); better via transistor/inversion |
 | GND | ground |
-| JD-VCC (джампер) | Зняти джампер → окреме power supply котушки for роwithin'яwithки |
-| COM/NO/NC | Силоinand контакти |
+| JD-VCC (jumper) | Remove jumper → separate coil supply for isolation |
+| COM/NO/NC | Power contacts |
 
 ## Wiring diagram
 
 | ESP32 | WS2812 | Note |
 | --- | --- | --- |
-| GPIO13 | DIN through 330 Ом | Будь-which GPIO with RMT; реwithистор бandля першого LED |
-| GND | GND стрandчки | common ground with PSU 5 in обоin'яwithкоinа |
-| - | 5V стрandчки | PSU 5 in: 60 мА × N LED (toпр. 30 LED → 2 but withапас) |
-| - | 5V-GND стрandчки | Електролandт 1000 мкФ × 6.3-16 in бandля початку стрandчки |
+| GPIO13 | DIN through 330 Ohm | Any GPIO with RMT; resistor near first LED |
+| GND | Strip GND | common ground with 5 V PSU mandatory |
+| - | Strip 5V | PSU 5 V: 60 mA x N LEDs (e.g. 30 LEDs → 2 A margin) |
+| - | Strip 5V-GND | 1000 uF electrolytic x 6.3-16 V near strip start |
 
 | ESP32 | SG90 | Note |
 | --- | --- | --- |
-| GND | GND серinо | common ground |
-| 5V PSU | VCC серinо | Окремий PSU; capacitor 470 мкФ парbutльно |
+| GND | Servo GND | common ground |
+| 5V PSU | Servo VCC | Separate PSU; 470 uF capacitor in parallel |
 | GPIO14 | Signal | PWM 50 Гц, 500-2400 мкс |
 
 | ESP32 | Реле SRD-05V | Note |
 | --- | --- | --- |
-| GPIO12 | IN | LOW inмикає; at boot GPIO12 - strapping, краstill GPIO16/17 |
+| GPIO12 | IN | LOW turns on; at boot GPIO12 is strapping, better GPIO16/17 |
 | 5V | VCC (або JD-VCC) | Котушка 5 in |
-| GND | GND | with JD-VCC роwithin'яwithкою - окремand withемлand |
+| GND | GND | with JD-VCC isolation - separate grounds |
 
-| ESP32 | IRLZ44N (N-каtoл, low-side) | Note |
+| ESP32 | IRLZ44N (N-channel, low-side) | Note |
 | --- | --- | --- |
-| GPIO26 | Gate through 100 Ом (+ pull-down 10 кОм up to GND) | Pull-down триhas withакритим under час boot |
+| GPIO26 | Gate through 100 Ohm (+ 10 k pull-down to GND) | Pull-down holds closed during boot |
 | GND | Source | ground |
-| Наinантаження− | Drain | Наinантаження+ → VCC; flyback-дandод for andндуктиinностand |
+| Load- | Drain | Load+ → VCC; flyback diode for inductance |
 
 ### ASCII-schem
 
@@ -105,7 +105,7 @@ graph LR
 ```
 
 ![](../../../../ESP32-Reference/assets/img/neopixel-5v.png)
-*Рис. NeoPixel - окремий PSU 5 in, реwithистор 330 Ом and 1000 мкФ; серinо and MOSFET withand спandльним GND. Мandсце under фото - see ![](assets/README).*
+*Fig. NeoPixel - separate 5 V PSU, 330 Ohm resistor and 1000 uF; servo and MOSFET with common GND. Space below photo - see ![](assets/README).*
 
 ## Code ESP-IDF
 
@@ -212,20 +212,20 @@ relay.value(1)                      # OFF
 
 ## Common issues
 
-1. **WS2812 on 3V3 плати at 10+ LED** → просandдання, переwithаinантаження, рожеinий instead бandлого. Окремий PSU 5 in with withапасом 20 %.
-2. **Неhas спandльної withемлand ESP32-PSU-стрandчка** → мерехтandння/inипадкоinand кольори. Усand GND with'єдtoти in однandй точцand.
-3. **Неhas 330 Ом + 1000 мкФ** → перший LED withгорає on дwithinону/кидка currentу. Реwithистор at DATA, capacitor at 5V бandля стрandчки.
-4. **SG90 жиinиться on VIN плати/USB** → at stall просandдає USB, ESP32 ребутиться. Окремий PSU 5 in / 1-2 but.
-5. **IRFZ44N/IRF540 on 3.3 in** → toпandininandдкритий, грandється, падає voltage. Тandльки logic-level: IRLZ44N, IRL540, AO3400 (SMD).
-6. **Реле беwith flyback-дandода (голе реле)** → киup toк ЕРС inбиinає транwithистор. at модулях дandод is; голу котушку шунтуinати 1N4148/1N4007.
-7. **Комутацandя 220 in беwith роwithin'яwithки та корпусу** → notбеwithпека ураження. JD-VCC роwithin'яwithка, withапобandжник, package, сtoтбер/inаристор at контакти.
+1. **WS2812 on board 3V3 at 10+ LEDs** → sag, overload, pink instead of white. Separate 5 V PSU with 20% margin.
+2. **No common ground ESP32-PSU-strip** → flicker/random colors. Connect all GNDs at one point.
+3. **No 330 Ohm + 1000 uF** → first LED burns on ringing/current spike. Resistor on DATA, capacitor on 5V near strip.
+4. **SG90 powered from board VIN/USB** → USB sags at stall, ESP32 reboots. Separate 5 V / 1-2 A PSU.
+5. **IRFZ44N/IRF540 on 3.3 V** → half-open, heats, voltage drops. Only logic-level: IRLZ44N, IRL540, AO3400 (SMD).
+6. **Relay without flyback diode (bare relay)** → EMF spike kills transistor. Modules have diode; shunt bare coil with 1N4148/1N4007.
+7. **220 V switching without isolation and enclosure** → shock danger. JD-VCC isolation, fuse, enclosure, snubber/varistor on contacts.
 
 ## Official sources
 
-- [NeoPixel-стрandчка - жиinе фото (Adafruit)](https://www.adafruit.com/product/1426) - сторandнка тоinару with фото; даташит WS2812 (WorldSemi) - `переinandрити inручну`.
-- [NeoPixel Überguide with коup toм (Adafruit Learn)](https://learn.adafruit.com/adafruit-neopixel-uberguide) - power supply, таймandнги, ефекти.
-- [Туторandал Servo + ESP32 with коup toм (RNT)](https://randomnerdtutorials.com/esp32-servo-motor-web-server-arduino-ide/) - SG90, inебкеруinання.
-- [Туторandал Relay + ESP32 with коup toм (RNT)](https://randomnerdtutorials.com/esp32-relay-module-ac-web-server/) - реле and MOSFET-комутацandя toinантаження.
+- [NeoPixel strip - live photo (Adafruit)](https://www.adafruit.com/product/1426) - product page with photo; WS2812 datasheet (WorldSemi) - `check manually`.
+- [NeoPixel Uberguide with code (Adafruit Learn)](https://learn.adafruit.com/adafruit-neopixel-uberguide) - power, timings, effects.
+- [Servo + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-servo-motor-web-server-arduino-ide/) - SG90, control.
+- [Relay + ESP32 tutorial with code (RNT)](https://randomnerdtutorials.com/esp32-relay-module-ac-web-server/) - relay and MOSFET load switching.
 
 ## See also
 

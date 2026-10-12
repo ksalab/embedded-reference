@@ -238,8 +238,8 @@ Old microsecond timing tricks are recalibrated, because the core frequency is th
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [board comparison](../../../../ARDUINO-Reference/UA/00-Start/03-Porivnyannya-plat.md)
-- [environment choice](../../../../ARDUINO-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [board comparison]
+- [environment choice]
 - [classic AVR](../../../../ARDUINO-Reference/UA/01-Hardware/01-AVR-Uno.md)
 - [ARM boards](../../../../ARDUINO-Reference/UA/01-Hardware/03-Due-Zero-ARM.md)
 - [environment and CLI](../../../../ARDUINO-Reference/UA/09-Proshivka/01-IDE-CLI.md)

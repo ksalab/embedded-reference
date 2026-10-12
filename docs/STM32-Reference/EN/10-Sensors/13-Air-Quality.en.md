@@ -126,7 +126,7 @@ SGP40 VOC index: 100 is mean clean air, below 100 cleaner, above 100 worse, scal
 - SGP40 - inside the room, away from the kitchen and alcohol-based products;
 - louvered case, sensors vertical (PMS fan blows up);
 - first 24 hours - burn-in run, do not publish data;
-- cross-check: two same sensors side by side for a week, PM2.5 mismatch up to 20 % is hobby-class normal.
+- cross-check: two same sensors side by side for a week, PM2.5 mismatch up to 20% is hobby-class normal.
 
 ## 8. Common issues
 
@@ -136,7 +136,7 @@ SGP40 VOC index: 100 is mean clean air, below 100 cleaner, above 100 worse, scal
 | Checksum never matches | frame shift after restart | search for the 42 4D header, resync |
 | SGP40 always 100 | no RH/T compensation | connect BME280, send ticks every second |
 | PM2.5 jumps 10 times | fan clogged with dust | SPS30 auto-clean, blow out PMS |
-| Data spikes at night | moisture/fog counts as PM | humidity filter: RH over 85 % means mark data suspect |
+| Data spikes at night | moisture/fog counts as PM | humidity filter: RH over 85% means mark data suspect |
 | I2C hangs after SGP40 | clock-stretching on a slow bus | 100 kHz, 4.7 kOhm pull-ups, HAL timeouts |
 
 ## 9. Related Notes
@@ -145,7 +145,7 @@ SGP40 VOC index: 100 is mean clean air, below 100 cleaner, above 100 worse, scal
 - [BME280 and humidity](../../../../STM32-Reference/UA/10-Sensori/02-BME280-SHT3x.md) - compensation for SGP40.
 - [MQ gas sensors](../../../../STM32-Reference/UA/10-Sensori/10-MQ-Gas.md) - cheap VOC alternative.
 - [I2C bus](../../../../STM32-Reference/UA/04-Shini/03-I2C.md) - addresses, pull-ups, clock-stretching.
-- [weather station](../../../../STM32-Reference/UA/16-Proekti/01-Meteostantsiya.md) - where to fit the post.
+- [weather station] - where to fit the post.
 
 ## Official sources
 

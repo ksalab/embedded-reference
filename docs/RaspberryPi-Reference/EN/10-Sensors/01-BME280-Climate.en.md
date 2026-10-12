@@ -30,7 +30,7 @@ Launch a climate node in one evening:
 | Parameter | Range | Accuracy |
 | --- | --- | --- |
 | Temperature | -40...+85 °C | ±1 °C |
-| Humidity | 0-100 % | ±3 % |
+| Humidity | 0-100% | ±3% |
 | Pressure | 300-1100 hPa | ±1 hPa |
 | Power supply | 1.8-3.6V (modules - 5V with LDO) | - |
 
@@ -130,7 +130,7 @@ We compute altitude relative to `sea_level_pressure`: update QNH from the weathe
 | Wrong address | SDO jumper | LOW=0x76, HIGH=0x77, compare with code |
 | Temperature +2 °C | self-heating + frequent polling | forced mode, once a minute |
 | Pressure "wrong" | QNH not updated | update sea_level_pressure |
-| Humidity 100 % all the time | condensate in the housing | ventilation, silica gel |
+| Humidity 100% all the time | condensate in the housing | ventilation, silica gel |
 | Works, then hangs | long I2C wires | shorter than 30 cm or lower speed |
 
 ## 9. BME280 quick cheat sheet
@@ -145,7 +145,7 @@ We compute altitude relative to `sea_level_pressure`: update QNH from the weathe
 
 - [I2C/SPI/UART buses](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md) - bus in detail.
 - [header and gpiozero](../../../../RaspberryPi-Reference/UA/03-GPIO/01-Header-Gpiozero.md) - pins.
-- [ready weather station](../../../../RaspberryPi-Reference/UA/16-Proekti/01-Meteostantsiya.md) - full project.
+- [ready weather station] - full project.
 - [telemetry over MQTT](../../../../RaspberryPi-Reference/UA/15-Protokoli/01-MQTT.md) - protocol and broker.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 

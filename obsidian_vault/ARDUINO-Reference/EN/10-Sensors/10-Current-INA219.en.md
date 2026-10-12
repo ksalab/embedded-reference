@@ -169,7 +169,7 @@ Factor 66.0 - 30 A version; 5 A - 185.0, 20 A - 100.0. `ina_amps` returns amps a
 - [[EN/06-Analog/01-ADC.en|analog inputs]] - reference voltage, bit depth.
 - [[EN/04-Interfaces/03-I2C-Wire.en|I2C Wire bus]] - addresses, scanner.
 - [[EN/08-Memory/01-Memory-EEPROM.en|EEPROM memory]] - counter backup.
-- [[EN/16-Proekti/04-SD-Logger.en|SD logger]] - where to write watts.
+- [[EN/16-Projects/04-SD-Logger.en|SD logger]] - where to write watts.
 
 ## Official sources
 

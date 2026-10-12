@@ -34,7 +34,7 @@ WDT - сторожові таймери - Порівняння; Типові п�
 | Лог | Причина | Лікування |
 | --- | --- | --- |
 | `Task watchdog got triggered. The following tasks did not reset the watchdog in time: loopTask` | `delay(10000)` / `while(1)` без yield | розбий на шматки + `vTaskDelay` / `yield()` |
-| `Guru Meditation ... LoadProhibited` після WDT | переповнення стека task | збільш stack в `xTaskCreate` |
+| `Guru Meditation... LoadProhibited` після WDT | переповнення стека task | збільш stack в `xTaskCreate` |
 | reboot кожні ~9 с в deep-sleep | RTC WDT + довгий hold | скороти RTC-операції |
 
 ## Таблиця з'єднань (індикація panic)
@@ -245,9 +245,9 @@ void wifiTask(void *p) {
 
 | Лог | Який WDT | Що робити |
 | --- | --- | --- |
-| `Guru Meditation ... Interrupt wdt timeout on CPU0` + backtrace в ISR/`spi_device_transmit` | IWDT | винеси важке з ISR в task (черга!), скороти критичну секцію |
-| `Task watchdog got triggered ... IDLE0 ... Tasks currently running: main` | TWDT, голод IDLE0 | `main` крутиться без yield - додай `vTaskDelay(1)` |
-| `... IDLE1 ... CPU 1: wifi` | TWDT, голод IDLE1 | WiFi-task з пріоритетом задушив IDLE - знизь пріоритет або додай паузи |
+| `Guru Meditation... Interrupt wdt timeout on CPU0` + backtrace в ISR/`spi_device_transmit` | IWDT | винеси важке з ISR в task (черга!), скороти критичну секцію |
+| `Task watchdog got triggered... IDLE0... Tasks currently running: main` | TWDT, голод IDLE0 | `main` крутиться без yield - додай `vTaskDelay(1)` |
+| `... IDLE1... CPU 1: wifi` | TWDT, голод IDLE1 | WiFi-task з пріоритетом задушив IDLE - знизь пріоритет або додай паузи |
 | `... loopTask` | TWDT, loop завис | шукай блокуючий `while`/`delay` в `loop()` |
 | Обидва по черзі | каскад: спочатку TWDT-гальма, потім ISR не встигає | чини першопричину (TWDT), IWDT згасне сам |
 

@@ -5,6 +5,7 @@ title: LD2410 радар, DWM1000 UWB, VS1838 IR, SU-03T голос
 description: LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування - LD2410 mmWave-радар присутності (UART + OUT); Легенда пінів модуля LD2410; ASCII-схема; shows schematics, code and tables.
 tags: [esp32, ld2410, mmwave, radar, uwb, dwm1000, ir, vs1838, rmt, voice, su-03t]
 date: 2026-10-08
+original: 12-Moduli-zvyazku/08-LD2410-UWB-IR-Voice.md
 ---
 
 # LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування
@@ -21,11 +22,11 @@ date: 2026-10-08
 | VS1838B | ІЧ-фотоприймач 38 кГц | Цифровий OUT | 3.3V (або 5V with дільником OUT) | 5-10 м (with пультом) | Демодулятор всередині; ESP32 RMT декодує NEC/RC5 |
 | SU-03T | Voice AI (NPU офлайн) | UART 115200 + GPIO-виходи | 5V | Мікрофон 3-5 м | Прошивка команд via WiseLight; відповідь синтезом/пінами |
 
-Навігація: UART [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), I2C [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md), живлення [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), радіомодулі [02-NRF24-LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md), start [Home](../../../../ESP32-Reference/Home.md).
+Навігація: UART [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), I2C [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md), живлення [EN/02-Power-Supply/01-Power-Rails.en], радіомодулі [02-NRF24-LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md), start [Home](../../../../ESP32-Reference/Home.md).
 
 ## Purpose
 
-LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування - LD2410 mmWave-радар присутності (UART + OUT); Легенда пінів модуля LD2410; ASCII-схема. LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування. Навігація: UART [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), I2C [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md), живлення [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md), радіомодулі 12-Comm-Modules/02-NRF24-LoRa, start Home.
+LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування - LD2410 mmWave-радар присутності (UART + OUT); Легенда пінів модуля LD2410; ASCII-схема. LD2410 радар / DWM1000 UWB / VS1838 IR / SU-03T голос - сенсори присутності та керування. Навігація: UART [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), SPI [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md), I2C [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md), живлення [EN/02-Power-Supply/01-Power-Rails.en], радіомодулі 12-Comm-Modules/02-NRF24-LoRa, start Home.
 
 ## 1. LD2410 mmWave-радар присутності (UART + OUT)
 
@@ -89,7 +90,7 @@ UWB-module Decawave DW1000: вимірює **час прольоту** раді�
 | MOSI | Вхід SPI | GPIO23 | VSPI MOSI |
 | MISO | Вихід SPI | GPIO19 | VSPI MISO |
 | CS | Вхід SPI | GPIO5 | Chip select |
-| RST (RSTn) | Вхід, active low | GPIO15 | Апаратний reset: LOW 10 мс at startі |
+| RST (RSTn) | Вхід, active low | GPIO15 | Апаратний reset: LOW 10 мс at старті |
 | IRQ | Вихід | GPIO4 | Переривання RX/TX done - обов'язково for TWR-таймінгів |
 | WAKEUP | Вхід | NC / 3V3 | for сну; in базовому прикладі NC |
 | ANT | Вбудована антена | Вільний простір! | not закривати металом/рукою; орієнтація модулів однакова; відстань from ESP32-антени ≥5 см |
@@ -379,7 +380,7 @@ ESP32 GPIO4 ◄── OUT LD2410C/LD2420 (HIGH=присутність, як PIR)
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md) - UART2 for LD2410/SU-03T, швидкості 256000/115200
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md) - VSPI for DWM1000, вимоги до довжини
 - [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md) - шини датчиків (резервні інтерфейси)
-- [01-Lancjugi-zhivlennya](../../../../ESP32-Reference/UA/02-Zhivlennya/01-Lancjugi-zhivlennya.md) - LDO, ферити, електроліти for радіо
+- [EN/02-Power-Supply/01-Power-Rails.en] - LDO, ферити, електроліти for радіо
 - [01-RC522-RFID](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/01-RC522-RFID.md) - антенні практики (метал, орієнтація)
 - [02-NRF24-LoRa](../../../../ESP32-Reference/UA/12-Moduli-zvyazku/02-NRF24-LoRa.md) - радіодальність, порівняння with UWB
-- [Home](../../../../ESP32-Reference/Home.md) - startова сторінка довідника
+- [Home](../../../../ESP32-Reference/Home.md) - стартова сторінка довідника

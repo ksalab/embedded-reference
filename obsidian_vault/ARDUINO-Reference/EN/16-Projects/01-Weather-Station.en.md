@@ -4,7 +4,7 @@ description: Builds weather station with temperature, humidity, pressure sensors
 tags: [arduino, weather, station, sensor, display]
 category: Proekti
 lang: en
-original: 16-Projects/01-Meteostantsiya.md
+original: 16-Proekti/01-Meteostantsiya.md
 date-created: 2026-10-05
 date: 2026-10-09
 ---

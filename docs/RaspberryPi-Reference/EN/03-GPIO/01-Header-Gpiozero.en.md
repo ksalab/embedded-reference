@@ -133,7 +133,7 @@ pause()
 - [glossary] - all terms.
 - [PWM and interrupts] - next level.
 - [I2C/SPI/UART buses](../../../../RaspberryPi-Reference/UA/04-Shini/01-I2C-SPI-UART.md) - bus sensors.
-- [OS setup](../../../../RaspberryPi-Reference/UA/09-Proshivka/03-OS-Nalashtuvannya.md) - groups and rights.
+- [OS setup] - groups and rights.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## 11. Pocket pin card

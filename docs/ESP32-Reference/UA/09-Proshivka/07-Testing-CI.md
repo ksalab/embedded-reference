@@ -4,6 +4,7 @@ title: Тестування та CI для ESP32
 tags: [esp32, testing, unity, ci, github-actions, hil, ota, logging, semver]
 category: Proshivka
 date-created: 2026-09-28
+date: 2026-09-28
 ---
 
 # Тестування та CI для ESP32
@@ -375,7 +376,7 @@ CONFIG_LOG_DEFAULT_LEVEL_DEBUG=y
 | `ESP_LOGW` | Деградація, ретрай | `W (456) i2c: NACK addr=0x76, retry 2/5` |
 | `ESP_LOGI` | Життєвий цикл: boot, OTA, версія | `I (789) ota: updated to 2.5.0, reboot` |
 | `ESP_LOGD` | Діагностика стенду | `D (...) sens: raw=519888 comp=25.01` |
-| `ESP_LOGV` | Дамп байтів, тільки HIL | `V (...) i2c: >> 88 01 ...` |
+| `ESP_LOGV` | Дамп байтів, тільки HIL | `V (...) i2c: >> 88 01...` |
 | Керування | `esp_log_level_set("sens", ESP_LOG_DEBUG)` | `beta`=DEBUG, `stable`=INFO |
 
 Код ESP-IDF:

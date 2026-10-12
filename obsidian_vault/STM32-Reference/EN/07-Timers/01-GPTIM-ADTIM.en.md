@@ -227,7 +227,7 @@ void ll_capture_irq(void)
 }
 ```
 
-Pin setup for channels goes via alternate functions. For the mapping table see [[EN/03-GPIO/02-AF-maping.en|alternate function mapping]]. Without the correct function number the pin stays silent.
+Pin setup for channels goes via alternate functions. For the mapping table see [[EN/03-GPIO/02-AF-Mapping.en|alternate function mapping]]. Without the correct function number the pin stays silent.
 
 ## 14. Mode selection chart
 
@@ -281,7 +281,7 @@ flowchart TB
 - [[Home.en]]
 - [[EN/07-Timers/02-LPTIM-RTC-WDT.en|time and watchdog timers]]
 - [[EN/07-Timers/03-Sleep-Stop-Standby.en|sleep modes]]
-- [[EN/03-GPIO/02-AF-maping.en|alternate function mapping]]
+- [[EN/03-GPIO/02-AF-Mapping.en|alternate function mapping]]
 - [[EN/06-Analog/03-COMP-OPAMP.en|comparators and op-amps]]
 - [[EN/06-Analog/01-ADC.en|measurement via ADC]]
 - [[EN/09-Firmware/02-HAL-LL.en|HAL and LL layers]]

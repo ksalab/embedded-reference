@@ -50,7 +50,7 @@ Golden rule: system on the most enduring media, media files on the largest, back
 ## 3. SD cards: maximum survival
 
 - class A2 mandatory (random OS operations);
-- 50 % volume headroom - the controller has room to spread wear;
+- 50% volume headroom - the controller has room to spread wear;
 - `f3`/`H2testw` over the full volume before the first flash;
 - logs in RAM, swap off or zram;
 - monitoring: sudden read-only - a pre-death symptom;
@@ -112,7 +112,7 @@ USB resets in logs are the first sign of weak disk power supply. NVMe temperatur
 | Suddenly read-only | SD died | backup, new A2, restore |
 | NVMe not visible | no pciex1/old EEPROM | both together + reboot |
 | USB disk drops | power supply | powered hub, short cable |
-| Slow after half a year | full disk + no TRIM | `fstrim`, 30 % free headroom |
+| Slow after half a year | full disk + no TRIM | `fstrim`, 30% free headroom |
 | No boot from USB/NVMe | order in EEPROM | BOOT_ORDER 0xf416 (6 = NVMe) |
 | btrfs does not mount | crash without clean stop | `btrfs rescue`, backup in advance |
 
@@ -129,7 +129,7 @@ USB resets in logs are the first sign of weak disk power supply. NVMe temperatur
 - [Imager flashing](../../../../RaspberryPi-Reference/UA/09-Proshivka/01-Imager-Headless.md) - writing images.
 - [EEPROM boot](../../../../RaspberryPi-Reference/UA/09-Proshivka/02-EEPROM-Boot.md) - media order.
 - [backups and clones](../../../../RaspberryPi-Reference/UA/08-Pamyat/02-Backup-Clone.md) - copy strategy.
-- [Pi 5 flagship](../../../../RaspberryPi-Reference/UA/14-Devboards/01-Pi5-Flagman.md) - NVMe HAT boards.
+- [Pi 5 flagship] - NVMe HAT boards.
 - [main map](../../../../RaspberryPi-Reference/Home.md) - full navigation.
 
 ## 11. Media choice in one table

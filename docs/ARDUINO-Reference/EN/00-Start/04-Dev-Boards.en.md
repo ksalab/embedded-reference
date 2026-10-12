@@ -247,7 +247,7 @@ flowchart TB
 ## See also
 
 - [Home](../../../../ARDUINO-Reference/Home.md)
-- [reference guide](../../../../ARDUINO-Reference/UA/00-Start/01-Yak-koristuvatis-dovidnikom.md)
-- [glossary of terms](../../../../ARDUINO-Reference/UA/00-Start/02-Glosariy.md)
-- [board comparison](../../../../ARDUINO-Reference/UA/00-Start/03-Porivnyannya-plat.md)
-- [environment choice](../../../../ARDUINO-Reference/UA/00-Start/05-Vibir-seredovischa.md)
+- [ reference guide]
+- [ glossary of terms]
+- [ board comparison]
+- [ environment choice]

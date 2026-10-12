@@ -17,7 +17,7 @@ date: 2026-10-08
 
 ![](../../../../ESP32-Reference/assets/img/esp32-c3-supermini-pinout.png)
 
-GPIO base: [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md), buses [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md) [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md) [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), sleep [03-Sleep-ULP](../../../../ESP32-Reference/UA/07-Timeri-Son/03-Sleep-ULP.md), analog [ADC](../../../../ESP32-Reference/UA/06-Analog/01-ADC.md), start [Home](../../../../ESP32-Reference/Home.md), repair [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md).
+GPIO base: [EN/03-GPIO/01-GPIO-Overview.en], buses [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md) [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md) [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md), sleep [03-Sleep-ULP](../../../../ESP32-Reference/UA/07-Timeri-Son/03-Sleep-ULP.md), analog [ADC](../../../../ESP32-Reference/UA/06-Analog/01-ADC.md), start [Home](../../../../ESP32-Reference/Home.md), repair [02-Troubleshooting-FAQ](../../../../ESP32-Reference/UA/99-Dodatki/02-Troubleshooting-FAQ.md).
 
 ## 1. ESP32 DevKit V1 (classic D0WD, 30 pins)
 
@@ -108,7 +108,7 @@ Details: [C6 boards](../../../../ESP32-Reference/UA/14-Devboards/13-ESP32C6-Boar
 ## See Also
 
 - [Home](../../../../ESP32-Reference/Home.md)
-- [01-GPIO-oglyad](../../../../ESP32-Reference/UA/03-GPIO/01-GPIO-oglyad.md)
+- [EN/03-GPIO/01-GPIO-Overview.en]
 - [SPI](../../../../ESP32-Reference/UA/04-Shini/02-SPI.md)
 - [I2C](../../../../ESP32-Reference/UA/04-Shini/03-I2C.md)
 - [UART](../../../../ESP32-Reference/UA/04-Shini/01-UART.md)

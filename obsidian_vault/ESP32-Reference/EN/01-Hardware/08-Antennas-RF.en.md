@@ -15,11 +15,11 @@ original: 01-Hardware/08-Anteni-RF.md
 ![[assets/img/placeholder.png]]
 
 > [!warning] RF stage runs on 3.3V!
-> TX power directly depends on stable **3.3V**. A dip to 3.0V cuts the range in half. Capacitors from [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]] are mandatory.
+> TX power directly depends on stable **3.3V**. A dip to 3.0V cuts the range in half. Capacitors from [[EN/02-Power-Supply/01-Power-Rails.en]] are mandatory.
 
 ## Purpose
 
-Antennas and RF - PCB vs IPEX; keepout zone and layout; ESP-NOW range. TX power directly depends on stable 3.3V. A dip to 3.0V cuts the range in half. Capacitors from [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]] are mandatory. Do not power modules with IPEX without an antenna into transmit. Reflected power burns the output. Check modules: 05-Moduli-WROOM-WROVER-MINI.
+Antennas and RF - PCB vs IPEX; keepout zone and layout; ESP-NOW range. TX power directly depends on stable 3.3V. A dip to 3.0V cuts the range in half. Capacitors from [[EN/02-Power-Supply/01-Power-Rails.en]] are mandatory. Do not power modules with IPEX without an antenna into transmit. Reflected power burns the output. Check modules: 05-Moduli-WROOM-WROVER-MINI.
 
 ## PCB vs IPEX
 
@@ -54,7 +54,7 @@ Antennas and RF - PCB vs IPEX; keepout zone and layout; ESP-NOW range. TX power 
 | Field line of sight | 150 m | 400 m |
 | Speed 1 Mbps | farthest | farthest |
 
-Power for range tests - only stable **3.3V**, measure consumption per [[EN/03-Spozhivannya.en]].
+Power for range tests - only stable **3.3V**, measure consumption per [[EN/02-Power-Supply/03-Power-Consumption.en]].
 
 ## ESP32 to module wiring table
 
@@ -106,7 +106,7 @@ Numeric rules (from Hardware Design Guidelines):
 | Ground under the RF part | Solid polygon plus via wall | Cut ground = a loop antenna for noise |
 
 > [!danger] The case kills the range
-> A metal case without an external antenna = -15 to -20 dB (range divided by 10). Filled plastic = -3 dB. Before a batch, always test ESP-NOW at 50 m in the real case. Power during tests - stable 3.3V: [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]].
+> A metal case without an external antenna = -15 to -20 dB (range divided by 10). Filled plastic = -3 dB. Before a batch, always test ESP-NOW at 50 m in the real case. Power during tests - stable 3.3V: [[EN/02-Power-Supply/01-Power-Rails.en]].
 
 ## PCB antenna orientation
 
@@ -208,8 +208,8 @@ flowchart TB
 
 - [[EN/Home.en]]
 - [[EN/00-Start/03-Chip-Comparison.en]]
-- [[EN/03-GPIO/01-GPIO-oglyad.en]]
-- [[EN/03-GPIO/02-Strapping-pini.en]]
-- [[EN/02-Power-Supply/01-Lancjugi-zhivlennya.en]]
+- [[EN/03-GPIO/01-GPIO-Overview.en]]
+- [[EN/03-GPIO/02-Strapping-Pins.en]]
+- [[EN/02-Power-Supply/01-Power-Rails.en]]
 - [[EN/05-WROOM-WROVER-MINI-Modules.en]]
 - [[EN/01-Hardware/01-ESP32-Classic.en]]
