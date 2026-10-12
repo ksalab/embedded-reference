@@ -106,7 +106,7 @@ Order: caches -> MPU -> FMC -> SDRAM init (precharge/refresh/mode). Without MPU,
 ## 6. Working Code (MicroPython)
 
 ```python
-# MicroPython: H7 як швидкий логер (периферія через mem32)
+# MicroPython: H7 as fast logger (peripherals via mem32)
 import time
 import machine
 

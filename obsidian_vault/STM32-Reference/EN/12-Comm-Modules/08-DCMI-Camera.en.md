@@ -104,7 +104,7 @@ SNAPSHOT mode: frame → stop → process → restart. Continuous is for video w
 ## 6. Working code (MicroPython)
 
 ```python
-# MicroPython: керування камерою-вузлом (захват — на C-ядрі)
+# MicroPython: camera-node control (capture runs on the C core)
 import time
 import machine
 import network

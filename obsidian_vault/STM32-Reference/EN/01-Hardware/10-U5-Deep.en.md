@@ -100,7 +100,7 @@ Beginner mistake: not restoring clocks after Stop - the MCU runs but on slow MSI
 ## 6. Working Code (MicroPython)
 
 ```python
-# MicroPython: U5-вузол сну і виміру (порт під U5)
+# MicroPython: U5 sleep-and-measure node (port for U5)
 import time
 import machine
 

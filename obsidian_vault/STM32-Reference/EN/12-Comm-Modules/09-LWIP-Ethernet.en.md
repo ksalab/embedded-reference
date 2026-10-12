@@ -107,7 +107,7 @@ A simple client (connect-publish-close) is enough for telemetry every 5 s. A per
 ## 6. Working code (MicroPython)
 
 ```python
-# MicroPython: мережевий міст через W5500-SPI (навчальний)
+# MicroPython: network bridge via W5500-SPI (tutorial)
 import time
 import network
 from machine import Pin, SPI

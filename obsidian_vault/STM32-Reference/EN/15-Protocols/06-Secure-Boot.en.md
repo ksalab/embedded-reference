@@ -102,7 +102,7 @@ Hash + signature + version check - three conditions, not one. Skipping any is a 
 ## 6. Working code (MicroPython)
 
 ```python
-# MicroPython: перевірка цілісності конфігів (не boot — політика!)
+# MicroPython: config integrity check (policy, not boot!)
 import hashlib
 import json
 import time

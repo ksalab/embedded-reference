@@ -100,7 +100,7 @@ Principle: load turns on AFTER the contract. Otherwise a sag at negotiation time
 ## 6. Working code (MicroPython)
 
 ```python
-# MicroPython: монітор PD-контракту і живлення
+# MicroPython: PD-contract and power monitor
 import time
 from machine import Pin, ADC
 

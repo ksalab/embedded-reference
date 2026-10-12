@@ -121,7 +121,7 @@ Practice:
 | Port separates types | Port 1 - measurements, port 2 - service |
 
 ```c
-// Приклад пакування: температура і вологість в 4 байти:
+// Packing example: temperature and humidity into 4 bytes:
 int16_t t = (int16_t)(temp_c * 100);
 uint16_t h = (uint16_t)(hum_pct * 100);
 payload[0] = t >> 8; payload[1] = t & 0xFF;
